@@ -16,9 +16,25 @@ public class MovementManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateNextMovement();
+        UpdateLocations();
+    }
+
+    private void UpdateFloorLocation() 
+    {
         Material groundMat = ground.GetComponent<Renderer>().material;
         groundMat.SetFloat("_XPos", bike.GetPosition().x);
         groundMat.SetFloat("_YPos", bike.GetPosition().y);
         Debug.Log(bike.GetPosition());
+    }
+
+    private void UpdateNextMovement() 
+    {
+    
+    }
+
+    private void UpdateLocations() 
+    {
+        UpdateFloorLocation();
     }
 }

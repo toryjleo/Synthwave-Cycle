@@ -5,8 +5,8 @@ using UnityEngine;
 public class BikeScript : MonoBehaviour
 {
 
-    Vector2 position;
-    float speed = .001f;
+    public Vector2 position;
+    float speed = .004f;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +23,7 @@ public class BikeScript : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) { position.x += 1 * speed; }
     }
 
-    public Vector2 GetPosition() 
+    public Vector2 GetPosition()
     {
         return position;
     }
