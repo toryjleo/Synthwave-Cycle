@@ -492,6 +492,7 @@ GameObject:
   - component: {fileID: 1183939800517801601}
   - component: {fileID: 3846661697261210032}
   - component: {fileID: 415200021287175039}
+  - component: {fileID: 6185426600550870861}
   m_Layer: 0
   m_Name: Cactrus
   m_TagString: Untagged
@@ -507,8 +508,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5811562474388505295}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.4554387, y: 57.172993, z: 65.74098}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: -1.527, y: 44.663, z: 65.717}
+  m_LocalScale: {x: 8.22237, y: 8.22237, z: 8.22237}
   m_Children:
   - {fileID: 4604437521479761759}
   - {fileID: 8234742196844822904}
@@ -549,7 +550,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d587d49b2055a304d98b4eddafd9865a, type: 2}
-  - {fileID: 2100000, guid: d587d49b2055a304d98b4eddafd9865a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -584,6 +584,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6185426600550870861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5811562474388505295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e776266a734cfa246a62beb290e5c54f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cPosition: {x: 0, y: 0}
+  g: {fileID: 0}
+  c: {fileID: 0}
+  spawnPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &6270396065795615396
 GameObject:
   m_ObjectHideFlags: 0

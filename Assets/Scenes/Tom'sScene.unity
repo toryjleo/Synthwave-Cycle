@@ -295,6 +295,14 @@ PrefabInstance:
       propertyPath: bike
       value: 
       objectReference: {fileID: 596284116}
+    - target: {fileID: 4682829267618048402, guid: b5611c0821da3044d821135738fb973f, type: 3}
+      propertyPath: Cactus
+      value: 
+      objectReference: {fileID: 5811562474388505295, guid: 6cdbe3db9f170dd4a8679c9613211708, type: 3}
+    - target: {fileID: 4682829267618048402, guid: b5611c0821da3044d821135738fb973f, type: 3}
+      propertyPath: cacti.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4682829268467853072, guid: b5611c0821da3044d821135738fb973f, type: 3}
       propertyPath: m_Name
       value: Ground

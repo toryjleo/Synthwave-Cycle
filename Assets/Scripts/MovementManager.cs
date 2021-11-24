@@ -6,11 +6,19 @@ public class MovementManager : MonoBehaviour
 {
     public GameObject ground;
     public BikeScript bike;
+    public GameObject Cactus;
+    public GameObject[] cacti;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        cacti = new GameObject[10];
+        for (int i =0;i<10;i++)
+        {
+            GameObject go = Instantiate(Cactus, new Vector3(Random.Range(-60, 60), 0, Random.Range(-60, 60)), Quaternion.identity) as GameObject;
+            go.transform.localScale = Vector3.one;
+            cacti[i] = go;
+        } 
     }
 
     // Update is called once per frame
@@ -30,7 +38,7 @@ public class MovementManager : MonoBehaviour
 
     private void UpdateNextMovement() 
     {
-    
+        
     }
 
     private void UpdateLocations() 
