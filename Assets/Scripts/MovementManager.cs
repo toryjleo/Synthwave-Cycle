@@ -16,7 +16,7 @@ public class MovementManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        UpdateNextMovement();
+        ApplyForces();
         UpdateLocations();
     }
 
@@ -28,14 +28,14 @@ public class MovementManager : MonoBehaviour
         Debug.Log(bike.GetPosition());
     }
 
-    private void UpdateNextMovement() 
+    private void ApplyForces() 
     {
-        bike.UpdateNextMovement();
-        bike.UpdateLocations();
+        bike.ApplyForces();
     }
 
     private void UpdateLocations() 
     {
         UpdateFloorLocation();
+        bike.UpdateLocations();
     }
 }

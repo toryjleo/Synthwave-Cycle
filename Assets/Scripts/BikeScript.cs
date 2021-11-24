@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class BikeScript : MonoBehaviour
 {
-    public GameObject bikeMesh;
+    public GameObject bikeMeshParent;
+    public GameObject bikeMeshChild;
     public Vector2 position;
     public Vector2 velocity;
     public Vector2 acceleration;
     private float mass = 1f;
     private float engineForce = 1f;
-    private float rotationSpeed = 30f;
-    private float dragCoefficient = 10f;
+    private float rotationSpeed = 60f;
+    private float dragCoefficient = 2f;
     float speed = .004f;
+
+    private float maxLean = 40.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -35,28 +38,59 @@ public class BikeScript : MonoBehaviour
         }
     }
 
-    public void UpdateNextMovement() 
+    public void ClearRotation() 
     {
-        Vector2 forward = new Vector2(-bikeMesh.transform.right.x, bikeMesh.transform.right.z);
-        // Force of engine
-        if (Input.GetKey(KeyCode.W)) 
-        {
-            ApplyForce(forward * engineForce);
-            //ApplyForce(new Vector2(engineForce, 0));
-        }
-        if (Input.GetKey(KeyCode.S)) 
-        {
-            ApplyForce(-forward * engineForce);
-        }
-        if (Input.GetKey(KeyCode.A)) 
-        {
-            RotateYAxis(-rotationSpeed * Time.fixedDeltaTime);
-        }
-        if (Input.GetKey(KeyCode.D)) 
-        {
-            RotateYAxis(rotationSpeed * Time.fixedDeltaTime);
-        }
+        bikeMeshChild.transform.localRotation = Quaternion.Euler(0, 0, 0);
+    }
 
+    public void MoveForward() 
+    {
+        Vector2 forward = ForwardVector();
+        ApplyForce(forward * engineForce);
+    }
+
+    public void MoveBackward() 
+    {
+        Vector2 forward = ForwardVector();
+        ApplyForce(-forward * engineForce);
+    }
+
+    public void TurnRight()
+    {
+        bikeMeshChild.transform.localRotation = Quaternion.Euler(-maxLean, 0, 0);
+        RotateYAxis(-rotationSpeed * Time.fixedDeltaTime);
+    }
+
+    public void TurnLeft() 
+    {
+        bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean, 0, 0);
+        RotateYAxis(rotationSpeed * Time.fixedDeltaTime);
+    }
+
+    private Vector2 ForwardVector() 
+    {
+        return new Vector2(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.z);
+    }
+
+    public void ApplyForces() 
+    {
+        ClearRotation();
+        if (Input.GetKey(KeyCode.W))
+        {
+            MoveForward();
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            MoveBackward();
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            TurnRight();
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            TurnLeft();
+        }
         Vector2 dragForce = velocity * velocity * dragCoefficient / 2;
         dragForce = -velocity.normalized * dragForce;
 
@@ -71,7 +105,7 @@ public class BikeScript : MonoBehaviour
 
     private void RotateYAxis(float speedAndDirection) 
     {
-        bikeMesh.transform.Rotate(0, speedAndDirection, 0, Space.Self);
+        bikeMeshParent.transform.Rotate(0, speedAndDirection, 0, Space.Self);
     }
 
 
