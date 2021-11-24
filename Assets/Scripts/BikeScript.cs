@@ -5,7 +5,7 @@ using UnityEngine;
 public class BikeScript : MonoBehaviour
 {
 
-    Vector2 position;
+    public Vector2 position;
     float speed = .004f;
 
     // Start is called before the first frame update
