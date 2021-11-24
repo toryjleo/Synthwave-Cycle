@@ -6,7 +6,7 @@ public class BikeScript : MonoBehaviour
 {
 
     Vector2 position;
-    float speed = .004f;
+    float speed = .001f;
 
     // Start is called before the first frame update
     void Start()
