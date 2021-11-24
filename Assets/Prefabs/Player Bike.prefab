@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2704707542116306734}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 180}
 --- !u!20 &2451000880281294910
 Camera:
@@ -107,12 +107,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2451000881222010397}
-  m_LocalRotation: {x: -0, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.86, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.68, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 2704707542116306734}
-  m_RootOrder: 1
+  m_Father: {fileID: 3312741807752003190}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &2451000881222010396
 Light:
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 2704707542116306734}
   - component: {fileID: 2451000880455329689}
   m_Layer: 0
-  m_Name: Tracer-0-Tracer
+  m_Name: Player Bike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -205,7 +205,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3312741807752003190}
-  - {fileID: 2451000881222010399}
   - {fileID: 2451000880281294905}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -222,7 +221,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b6ce2be33d48b04fb435a0364435e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bikeMesh: {fileID: 0}
   position: {x: 0, y: 0}
+  velocity: {x: 0, y: 0}
+  acceleration: {x: 0, y: 0}
 --- !u!1 &6003041435224026445
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,7 +253,8 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 2451000881222010399}
   m_Father: {fileID: 2704707542116306734}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
