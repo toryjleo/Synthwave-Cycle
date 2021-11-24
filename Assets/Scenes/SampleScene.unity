@@ -134,6 +134,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b6ce2be33d48b04fb435a0364435e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &597897152 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6003041435224026445, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+  m_PrefabInstance: {fileID: 2451000880934106445}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,6 +239,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2451000880281294905, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2451000880281294905, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2451000880281294905, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2451000880281294905, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2451000880281294905, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2451000880455329689, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: bikeMesh
+      value: 
+      objectReference: {fileID: 597897152}
     - target: {fileID: 2704707542116306734, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -278,9 +307,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3312741807752003190, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3312741807752003190, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3312741807752003190, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3312741807752003190, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3312741807752003190, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3312741807752003190, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
     - target: {fileID: 3369499019353642388, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
       propertyPath: m_Name
       value: Tracer-0-Tracer
+      objectReference: {fileID: 0}
+    - target: {fileID: 6003041435224026445, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: m_Name
+      value: TracerMesh
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
