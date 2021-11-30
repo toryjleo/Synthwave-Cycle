@@ -12,13 +12,18 @@ public class CactusScript : MonoBehaviour
     public Vector3 spawnPoint;
     
    
+    
 
+    public Vector2 getPosition()
+    {
+        return cPosition;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
 
+        cPosition = transform.position;
         
 
     }
@@ -27,5 +32,6 @@ public class CactusScript : MonoBehaviour
     void Update()
     {
         
+
     }
 }

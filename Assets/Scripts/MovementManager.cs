@@ -8,6 +8,7 @@ public class MovementManager : MonoBehaviour
     public BikeScript bike;
     public GameObject Cactus;
     public GameObject[] cacti;
+    public Vector3 previousFrame;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +29,7 @@ public class MovementManager : MonoBehaviour
         UpdateLocations();
     }
 
-    private void UpdateFloorLocation()
+    private void UpdateFloorLocation() //Update the floor mesh to reflect movement
     {
         Material groundMat = ground.GetComponent<Renderer>().material;
         groundMat.SetFloat("_XPos", -bike.GetPosition().x);
@@ -36,8 +37,28 @@ public class MovementManager : MonoBehaviour
         Debug.Log(bike.GetPosition());
     }
 
+    private void UpdateCactiLocation()
+    {
+        
+        for (int i = 0; i < 10; i++)
+        {
+
+            Vector3 boop = new Vector3(bike.GetPosition().x, 0, bike.GetPosition().y);
+            boop =  previousFrame - boop;
+
+                cacti[i].transform.position = new Vector3(
+                cacti[i].transform.position.x-boop.x,
+                0,
+                cacti[i].transform.position.z-boop.z
+                );
+            
+        }
+
+    }
+
     private void UpdateNextMovement()
     {
+        previousFrame = bike.transform.position;
         bike.UpdateNextMovement();
         bike.UpdateLocations();
     }
@@ -45,5 +66,6 @@ public class MovementManager : MonoBehaviour
     private void UpdateLocations()
     {
         UpdateFloorLocation();
+        UpdateCactiLocation();
     }
 }

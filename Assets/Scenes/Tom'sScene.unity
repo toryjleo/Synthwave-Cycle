@@ -227,6 +227,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1233019485 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6003041435224026445, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+  m_PrefabInstance: {fileID: 2451000880934106445}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2451000880934106445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -234,6 +239,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2451000880455329689, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: bikeMesh
+      value: 
+      objectReference: {fileID: 1233019485}
     - target: {fileID: 2704707542116306734, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
       propertyPath: m_RootOrder
       value: 0
