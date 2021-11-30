@@ -25,7 +25,7 @@ public class MovementManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        UpdateNextMovement();
+        ApplyForces();
         UpdateLocations();
     }
 
@@ -37,9 +37,10 @@ public class MovementManager : MonoBehaviour
         Debug.Log(bike.GetPosition());
     }
 
+
     private void UpdateCactiLocation()
     {
-        
+
         for (int i = 0; i < 10; i++)
         {
 
@@ -51,7 +52,7 @@ public class MovementManager : MonoBehaviour
                 0,
                 cacti[i].transform.position.z-boop.z
                 );
-            
+
         }
 
     }
@@ -61,11 +62,18 @@ public class MovementManager : MonoBehaviour
         previousFrame = bike.transform.position;
         bike.UpdateNextMovement();
         bike.UpdateLocations();
+
+    }
+
+    private void ApplyForces()
+    {
+        bike.ApplyForces();
+
     }
 
     private void UpdateLocations()
     {
         UpdateFloorLocation();
-        UpdateCactiLocation();
+        bike.UpdateLocations();
     }
 }
