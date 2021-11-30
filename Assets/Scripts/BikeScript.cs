@@ -25,7 +25,7 @@ public class BikeScript : MonoBehaviour
         acceleration = new Vector2(0, 0);
     }
 
-    public Vector2 GetPosition()
+    public Vector3 GetPosition()
     {
         return position;
     }

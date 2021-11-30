@@ -1,30 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MovementManager : MonoBehaviour
 {
     public GameObject ground;
     public BikeScript bike;
     public GameObject Cactus;
+    public CactusScript cacscrip;
     public GameObject[] cacti;
-    public Vector3 previousFrame;
+    public Vector3 preVec;
+    public Vector3 curVec;
 
     // Start is called before the first frame update
     void Start()
     {
+
+        
+
+        //Spawn Cactai
         cacti = new GameObject[10];
-        for (int i =0;i<10;i++)
-        {
-            GameObject go = Instantiate(Cactus, new Vector3(Random.Range(-60, 60), 0, Random.Range(-60, 60)), Quaternion.identity) as GameObject;
-            go.transform.localScale = Vector3.one;
-            cacti[i] = go;
+        for (int i = 0; i < 10; i++)
+        {         
+            //cacti[i] = Cactus;
         }
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        BikePositionLastFrame();
         ApplyForces();
         UpdateLocations();
     }
@@ -34,46 +37,40 @@ public class MovementManager : MonoBehaviour
         Material groundMat = ground.GetComponent<Renderer>().material;
         groundMat.SetFloat("_XPos", -bike.GetPosition().x);
         groundMat.SetFloat("_YPos", bike.GetPosition().y);
-        Debug.Log(bike.GetPosition());
+        //Debug.Log(bike.GetPosition());
     }
 
 
     private void UpdateCactiLocation()
     {
 
-        for (int i = 0; i < 10; i++)
-        {
-
-            Vector3 boop = new Vector3(bike.GetPosition().x, 0, bike.GetPosition().y);
-            boop =  previousFrame - boop;
-
-                cacti[i].transform.position = new Vector3(
-                cacti[i].transform.position.x-boop.x,
-                0,
-                cacti[i].transform.position.z-boop.z
-                );
-
-        }
-
+        Debug.Log(curVec+" "+preVec);
+        Vector3 offset = curVec - preVec;
+        cacscrip.move(offset);
     }
 
-    private void UpdateNextMovement()
+    private void BikePositionLastFrame()
     {
-        previousFrame = bike.transform.position;
-        bike.UpdateNextMovement();
-        bike.UpdateLocations();
-
+        
     }
 
     private void ApplyForces()
     {
+        
         bike.ApplyForces();
-
+        
+        
     }
 
     private void UpdateLocations()
     {
-        UpdateFloorLocation();
+        
+        
+        preVec = new Vector3(bike.position.x, 0, bike.position.y);
         bike.UpdateLocations();
+        curVec = new Vector3(bike.position.x, 0, bike.position.y);
+
+        UpdateCactiLocation();
+        UpdateFloorLocation();
     }
 }
