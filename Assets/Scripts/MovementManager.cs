@@ -9,6 +9,7 @@ public class MovementManager : MonoBehaviour
     public GameObject[] cacti;
     public Vector3 preVec;
     public Vector3 curVec;
+    private float uvScrollSpeed = .013f;
 
     // Start is called before the first frame update
     void Start()
@@ -35,8 +36,8 @@ public class MovementManager : MonoBehaviour
     private void UpdateFloorLocation() //Update the floor mesh to reflect movement
     {
         Material groundMat = ground.GetComponent<Renderer>().material;
-        groundMat.SetFloat("_XPos", -bike.GetPosition().x);
-        groundMat.SetFloat("_YPos", bike.GetPosition().y);
+        groundMat.SetFloat("_XPos", -bike.GetPosition().x * uvScrollSpeed);
+        groundMat.SetFloat("_YPos", bike.GetPosition().y * uvScrollSpeed);
         //Debug.Log(bike.GetPosition());
     }
 
@@ -45,8 +46,8 @@ public class MovementManager : MonoBehaviour
     {
 
         Debug.Log(curVec+" "+preVec);
-        Vector3 offset = curVec - preVec;
-        cacscrip.move(offset);
+        //Vector3 offset = curVec - preVec;
+        cacscrip.move(curVec);
     }
 
     private void BikePositionLastFrame()
@@ -55,11 +56,8 @@ public class MovementManager : MonoBehaviour
     }
 
     private void ApplyForces()
-    {
-        
-        bike.ApplyForces();
-        
-        
+    {      
+        bike.ApplyForces();       
     }
 
     private void UpdateLocations()

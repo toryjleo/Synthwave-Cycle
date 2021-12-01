@@ -20,9 +20,8 @@ public class CactusScript : MonoBehaviour
     public void move(Vector3 offset)
     {
 
-        print(offset);
-        cPosition -= offset;
-        transform.position = cPosition;
+        
+        transform.position = new Vector3(-offset.x, 0, offset.z);
     }
 
     public Vector2 getPosition()

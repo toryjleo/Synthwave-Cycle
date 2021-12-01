@@ -113,7 +113,7 @@ public class BikeScript : MonoBehaviour
     {
 
         position += velocity * Time.fixedDeltaTime;
-
+        
     }
 
     private void ScrollMovement()
