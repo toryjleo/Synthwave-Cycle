@@ -9,11 +9,11 @@ public class BikeScript : MonoBehaviour
     public Vector2 position;
     public Vector2 velocity;
     public Vector2 acceleration;
-    private float mass = 1f;
-    private float engineForce = 1f;
-    private float rotationSpeed = 60f;
+    private float mass = 1f; //mass of bike (DO NOT CHANGE)
+    private float engineForce = 800f; // force that the engine 
+    private float rotationSpeed = 80f;
     private float dragCoefficient = 2f;
-    float speed = .004f;
+    float speed = 1f;
 
     private float maxLean = 40.0f;
 
@@ -114,13 +114,5 @@ public class BikeScript : MonoBehaviour
 
         position += velocity * Time.fixedDeltaTime;
         
-    }
-
-    private void ScrollMovement()
-    {
-        if (Input.GetKey(KeyCode.W)) { position.y += 1 * speed; }
-        if (Input.GetKey(KeyCode.S)) { position.y -= 1 * speed; }
-        if (Input.GetKey(KeyCode.A)) { position.x -= 1 * speed; }
-        if (Input.GetKey(KeyCode.D)) { position.x += 1 * speed; }
     }
 }

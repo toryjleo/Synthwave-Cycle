@@ -17,18 +17,23 @@ public class MovementManager : MonoBehaviour
 
         
 
-        //Spawn Cactai
+        //Spawn Cactai 
         cacti = new GameObject[10];
+
         for (int i = 0; i < 10; i++)
-        {         
-            //cacti[i] = Cactus;
+        {
+            Vector3 spawnP = new Vector3(Random.Range(-80, 80), -2, Random.Range(-80, 80));
+            cacti[i] = Instantiate(Cactus, spawnP, Quaternion.identity);
+            cacti[i].GetComponent<CactusScript>().grow(spawnP);
+            print(cacti[i].transform.position);
+
         }
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        BikePositionLastFrame();
+       
         ApplyForces();
         UpdateLocations();
     }
@@ -44,10 +49,15 @@ public class MovementManager : MonoBehaviour
 
     private void UpdateCactiLocation()
     {
-
-        Debug.Log(curVec+" "+preVec);
+ 
         //Vector3 offset = curVec - preVec;
-        cacscrip.move(curVec);
+        
+        for(int i = 0; i<10; i++)
+        {
+            cacti[i].GetComponent<CactusScript>().move(curVec);
+            
+        }
+
     }
 
     private void BikePositionLastFrame()

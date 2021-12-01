@@ -10,18 +10,28 @@ public class CactusScript : MonoBehaviour
     public bool alive; 
     
     
-    public void grow(Vector2 spawnPoint)
+    public void grow(Vector3 spawn)
     {
         HP = 1;
         alive = true;
-        //Instantiate SPAWN SAID CACTUS 
+        cPosition = spawn;
+        transform.position = spawn; 
     }
 
     public void move(Vector3 offset)
     {
 
+        //need to figure out how to turn this statement to take into account mocement of player 
+        Debug.Log(cPosition+" "+offset);
         
-        transform.position = new Vector3(-offset.x, 0, offset.z);
+        Vector3 move = new Vector3(-offset.x, 0, offset.z);
+
+        transform.position = cPosition + move;
+
+        Debug.Log(transform.position + " " + offset);
+        // transform.position = new Vector3(-offset.x, 0, offset.z);
+
+
     }
 
     public Vector2 getPosition()
