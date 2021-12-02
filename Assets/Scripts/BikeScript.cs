@@ -7,6 +7,7 @@ public class BikeScript : MonoBehaviour
     public GameObject bikeMeshParent;
     public GameObject bikeMeshChild;
     public Vector2 position;
+    public Vector3 deltaPosition;
     public Vector2 velocity;
     public Vector2 acceleration;
     private float mass = 1f; //mass of bike (DO NOT CHANGE)
@@ -28,6 +29,11 @@ public class BikeScript : MonoBehaviour
     public Vector3 GetPosition()
     {
         return position;
+    }
+
+    public Vector3 GetDeltaPosition() 
+    {
+        return deltaPosition;
     }
 
     public void ApplyForce(Vector2 force)
@@ -113,6 +119,6 @@ public class BikeScript : MonoBehaviour
     {
 
         position += velocity * Time.fixedDeltaTime;
-        
+        deltaPosition = new Vector3(velocity.x, 0, velocity.y) * Time.fixedDeltaTime;
     }
 }

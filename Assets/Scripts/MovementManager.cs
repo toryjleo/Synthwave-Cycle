@@ -10,6 +10,7 @@ public class MovementManager : MonoBehaviour
     public Vector3 preVec;
     public Vector3 curVec;
     private float uvScrollSpeed = .013f;
+    private Vector3 floorOffset;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,8 @@ public class MovementManager : MonoBehaviour
             print(cacti[i].transform.position);
 
         }
+
+        floorOffset = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
@@ -40,10 +43,14 @@ public class MovementManager : MonoBehaviour
 
     private void UpdateFloorLocation() //Update the floor mesh to reflect movement
     {
+        Vector3 deltaPosition = bike.GetDeltaPosition();
+        Debug.Log(deltaPosition);
+        floorOffset.x -= deltaPosition.x;
+        floorOffset.z += deltaPosition.z;
+
         Material groundMat = ground.GetComponent<Renderer>().material;
-        groundMat.SetFloat("_XPos", -bike.GetPosition().x * uvScrollSpeed);
-        groundMat.SetFloat("_YPos", bike.GetPosition().y * uvScrollSpeed);
-        //Debug.Log(bike.GetPosition());
+        groundMat.SetFloat("_XPos", floorOffset.x * uvScrollSpeed);
+        groundMat.SetFloat("_YPos", floorOffset.z * uvScrollSpeed);
     }
 
 

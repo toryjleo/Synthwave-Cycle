@@ -22,13 +22,11 @@ public class CactusScript : MonoBehaviour
     {
 
         //need to figure out how to turn this statement to take into account mocement of player 
-        Debug.Log(cPosition+" "+offset);
         
         Vector3 move = new Vector3(-offset.x, 0, offset.z);
 
         transform.position = cPosition + move;
 
-        Debug.Log(transform.position + " " + offset);
         // transform.position = new Vector3(-offset.x, 0, offset.z);
 
 
