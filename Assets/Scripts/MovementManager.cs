@@ -7,7 +7,6 @@ public class MovementManager : MonoBehaviour
     public GameObject Cactus;
     public CactusScript cacscrip;
     public GameObject[] cacti;
-    public Vector3 preVec;
     public Vector3 curVec;
     private float uvScrollSpeed = .013f;
     private Vector3 floorOffset;
@@ -56,8 +55,6 @@ public class MovementManager : MonoBehaviour
 
     private void UpdateCactiLocation()
     {
- 
-        //Vector3 offset = curVec - preVec;
         
         for(int i = 0; i<10; i++)
         {
@@ -67,11 +64,6 @@ public class MovementManager : MonoBehaviour
 
     }
 
-    private void BikePositionLastFrame()
-    {
-        
-    }
-
     private void ApplyForces()
     {      
         bike.ApplyForces();       
@@ -79,11 +71,8 @@ public class MovementManager : MonoBehaviour
 
     private void UpdateLocations()
     {
-        
-        
-        preVec = new Vector3(bike.position.x, 0, bike.position.y);
         bike.UpdateLocations();
-        curVec = new Vector3(bike.position.x, 0, bike.position.y);
+        curVec = bike.GetDeltaPosition();
 
         UpdateCactiLocation();
         UpdateFloorLocation();

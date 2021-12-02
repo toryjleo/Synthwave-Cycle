@@ -24,8 +24,8 @@ public class CactusScript : MonoBehaviour
         //need to figure out how to turn this statement to take into account mocement of player 
         
         Vector3 move = new Vector3(-offset.x, 0, offset.z);
-
-        transform.position = cPosition + move;
+        cPosition += move;
+        transform.position = cPosition;
 
         // transform.position = new Vector3(-offset.x, 0, offset.z);
 
