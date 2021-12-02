@@ -45,12 +45,12 @@ public class MovementManager : MonoBehaviour
     {
         Vector3 deltaPosition = bike.GetDeltaPosition();
         Debug.Log(deltaPosition);
-        floorOffset.x -= deltaPosition.x;
-        floorOffset.z += deltaPosition.z;
+        floorOffset.x = (floorOffset.x - (deltaPosition.x  * uvScrollSpeed)) % 1;
+        floorOffset.z = (floorOffset.z + (deltaPosition.z * uvScrollSpeed)) % 1;
 
         Material groundMat = ground.GetComponent<Renderer>().material;
-        groundMat.SetFloat("_XPos", floorOffset.x * uvScrollSpeed);
-        groundMat.SetFloat("_YPos", floorOffset.z * uvScrollSpeed);
+        groundMat.SetFloat("_XPos", floorOffset.x);
+        groundMat.SetFloat("_YPos", floorOffset.z);
     }
 
 
