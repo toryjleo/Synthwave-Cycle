@@ -35,18 +35,19 @@ public class MovementManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-       
         ApplyForces();
         UpdateLocations();
     }
 
-    private void UpdateFloorLocation() //Update the floor mesh to reflect movement
+    /// <summary>Updates the floor mesh to reflect Player movement.</summary>
+    private void UpdateFloorLocation()
     {
-        Vector3 deltaPosition = bike.GetDeltaPosition();
+        Vector3 deltaPosition = bike.DeltaPosition;
         Debug.Log(deltaPosition);
         floorOffset.x = (floorOffset.x - (deltaPosition.x  * uvScrollSpeed)) % 1;
         floorOffset.z = (floorOffset.z + (deltaPosition.z * uvScrollSpeed)) % 1;
 
+        // Edit the UV's coords of the ground shader
         Material groundMat = ground.GetComponent<Renderer>().material;
         groundMat.SetFloat("_XPos", floorOffset.x);
         groundMat.SetFloat("_YPos", floorOffset.z);
@@ -64,15 +65,17 @@ public class MovementManager : MonoBehaviour
 
     }
 
+    /// <summary>Applies all forces to the Player bike this frame before position is updated.</summary>
     private void ApplyForces()
     {      
         bike.ApplyForces();       
     }
 
+    /// <summary>Update the locations of all objects in the scene at once.</summary>
     private void UpdateLocations()
     {
         bike.UpdateLocations();
-        curVec = bike.GetDeltaPosition();
+        curVec = bike.DeltaPosition; // Distance Player bike has moved this frame
 
         UpdateCactiLocation();
         UpdateFloorLocation();
