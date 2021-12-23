@@ -13,9 +13,9 @@ public class BikeScript : MonoBehaviour
     public Vector2 velocity; // The velocity of the bike
     public Vector2 acceleration; // The acceleration of the bike this frame
 
-    private float mass = 1f; // The mass of the bike
-    private float engineForce = 800f; // The force of the engine
-    private float rotationSpeed = 80f; // A linear scale of how fast the bike will turn
+    private float mass = 3f; // The mass of the bike
+    private float engineForce = 1600f; // The force of the engine
+    private float rotationSpeed = 120f; // A linear scale of how fast the bike will turn
     private float dragCoefficient = 2f; // A linear scale of how much drag will be applied to the bike
 
     private float maxLean = 40.0f;
