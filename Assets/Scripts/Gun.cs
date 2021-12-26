@@ -21,7 +21,6 @@ public class Gun : MonoBehaviour
 
     private void Awake()
     {
-        bulletPool = new BulletPool(bulletPrefab);
     }
 
     // Start is called before the first frame update
@@ -34,6 +33,11 @@ public class Gun : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void Init(NotifyPlayerPosition playerPositionUpdate) 
+    {
+        bulletPool = new BulletPool(bulletPrefab, playerPositionUpdate);
     }
 
     public void Shoot(Vector3 initialVelocity) 

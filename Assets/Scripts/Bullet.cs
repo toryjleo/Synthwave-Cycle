@@ -44,8 +44,9 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector3 bulletToPlayer = playerPosition - transform.position;
         // Assumes player is at world origin
-        if (transform.position.sqrMagnitude > DESPAWN_DIST_FROM_PLAYER * DESPAWN_DIST_FROM_PLAYER) 
+        if (bulletToPlayer.sqrMagnitude > DESPAWN_DIST_FROM_PLAYER * DESPAWN_DIST_FROM_PLAYER) 
         {
             // Return to object pool
             OnBulletDespawn();

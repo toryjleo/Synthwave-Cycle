@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+public delegate void NotifyPlayerPosition(Vector3 currentPlayerPosition);  // delegate
+
 public class MovementManager : MonoBehaviour
 {
     public GameObject ground;
@@ -11,12 +13,24 @@ public class MovementManager : MonoBehaviour
     private float uvScrollSpeed = .013f;
     private Vector3 floorOffset;
 
+    public Gun InitialPlayerGun;
+
+
+
+    public event NotifyPlayerPosition playerPositionUpdate; // event
+
+
+    private void Awake()
+    {
+        InitialPlayerGun.Init(playerPositionUpdate);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
 
-        
 
+        bike.EquipGun(InitialPlayerGun);
         //Spawn Cactai 
         cacti = new GameObject[10];
 
@@ -75,7 +89,15 @@ public class MovementManager : MonoBehaviour
         bike.UpdateLocations();
         curVec = bike.DeltaPosition; // Distance Player bike has moved this frame
 
+        OnPlayerMove();
+
         //UpdateCactiLocation();
         //UpdateFloorLocation();
+    }
+
+    protected virtual void OnPlayerMove() //protected virtual method
+    {
+        Vector3 bikePosition = bike.transform.position;
+        playerPositionUpdate?.Invoke(bikePosition);
     }
 }

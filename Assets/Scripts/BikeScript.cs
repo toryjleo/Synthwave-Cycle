@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void NotifyPlayerPosition(Vector3 currentPlayerPosition);  // delegate
+
 
 /// <summary>Class <c>BikeScript</c> A Unity Component which holds the logic for the Player movement.</summary>
 ///
@@ -24,8 +24,6 @@ public class BikeScript : MonoBehaviour
 
 
     public Gun currentGun;
-
-    public event NotifyPlayerPosition playerPositionUpdate; // event
 
     // Start is called before the first frame update
     void Start()
@@ -129,7 +127,6 @@ public class BikeScript : MonoBehaviour
         {
             currentGun.Shoot(rb.velocity);
         }
-        OnPlayerMove();
     }
 
     /// <summary>Sets the bikeMeshParent's local yAngle to the unput float.</summary>
@@ -157,16 +154,12 @@ public class BikeScript : MonoBehaviour
 
     public void EquipGun(Gun gunToEquip) 
     {
+        this.currentGun = gunToEquip;
         // Make gun child of TracerMeshParent
-        gunToEquip.transform.parent = bikeMeshParent.transform;
+        currentGun.transform.parent = bikeMeshParent.transform;
 
         // Hook up event
-        gunToEquip.BulletShot += bl_ProcessCompleted;
+        currentGun.BulletShot += bl_ProcessCompleted;
     }
 
-    protected virtual void OnPlayerMove() //protected virtual method
-    {
-        //if BulletDespawn is not null then call delegate
-        playerPositionUpdate?.Invoke(transform.position);
-    }
 }
