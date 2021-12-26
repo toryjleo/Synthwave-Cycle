@@ -4,6 +4,10 @@ using UnityEngine;
 
 public delegate void NotifyReadyToDespawn(Bullet bulletToDespawn);  // delegate
 
+#region BASE_CLASS_CODE
+
+#endregion
+
 public class Bullet : MonoBehaviour
 {
     private const float DESPAWN_DIST_FROM_PLAYER = 100;
@@ -12,8 +16,22 @@ public class Bullet : MonoBehaviour
 
     // Specific to gun
     public float muzzleVelocity = 60;
-    public float mass = 100f;
+    private Vector3 initialVelocity;
+    private float mass = 2f;
 
+#region BASE_CLASS_CODE
+    private Vector3 playerPosition; // Need to include in a base class
+    public void bl_PlayerPositionUpdated(Vector3 currentPlayerPosition)
+    {
+        this.playerPosition = currentPlayerPosition;
+    }
+#endregion
+
+
+    public float Mass
+    {
+        get => mass;
+    }
 
     public event NotifyReadyToDespawn BulletDespawn; // event
 
@@ -33,16 +51,17 @@ public class Bullet : MonoBehaviour
             OnBulletDespawn();
         }
 
-        Vector3 distanceThisFrame = shootDir.normalized * muzzleVelocity * Time.deltaTime;
+        Vector3 distanceThisFrame = ((shootDir.normalized * muzzleVelocity) + initialVelocity) * Time.deltaTime;
         transform.position = transform.position + distanceThisFrame;
     }
 
 
-    public void Shoot(Vector3 curPosition, Vector3 direction) 
+    public void Shoot(Vector3 curPosition, Vector3 direction, Vector3 initialVelocity) 
     {
         transform.position = curPosition;
         shootDir = direction;
         transform.rotation = Quaternion.LookRotation(direction);
+        this.initialVelocity = initialVelocity;
     }
 
     protected virtual void OnBulletDespawn() //protected virtual method
@@ -50,5 +69,7 @@ public class Bullet : MonoBehaviour
         //if BulletDespawn is not null then call delegate
         BulletDespawn?.Invoke(this);
     }
+
+
 
 }

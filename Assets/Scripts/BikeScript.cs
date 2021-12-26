@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void NotifyPlayerPosition(Vector3 currentPlayerPosition);  // delegate
+
 /// <summary>Class <c>BikeScript</c> A Unity Component which holds the logic for the Player movement.</summary>
 ///
 public class BikeScript : MonoBehaviour
@@ -14,7 +16,7 @@ public class BikeScript : MonoBehaviour
     public Vector2 acceleration; // The acceleration of the bike this frame
 
     private float mass = 8f; // The mass of the bike
-    private float engineForce = 800f; // The force of the engine
+    private float engineForce = 75f; // The force of the engine
     private float rotationSpeed = 120f; // A linear scale of how fast the bike will turn
     private float dragCoefficient = 1f; // A linear scale of how much drag will be applied to the bike
 
@@ -23,6 +25,7 @@ public class BikeScript : MonoBehaviour
 
     public Gun currentGun;
 
+    public event NotifyPlayerPosition playerPositionUpdate; // event
 
     // Start is called before the first frame update
     void Start()
@@ -60,15 +63,17 @@ public class BikeScript : MonoBehaviour
     /// <summary>Applies a force in the direction of the bike's forward vector.</summary>
     public void MoveForward()
     {
-        Vector2 forward = ForwardVector().normalized;
-        ApplyForce(forward * engineForce);
+        Vector3 forward = ForwardVector().normalized;
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.AddForce(forward * engineForce);
     }
 
     /// <summary>Applies a force in the opposite direction of the bike's forward vector.</summary>
     public void MoveBackward()
     {
+        Rigidbody rb = GetComponent<Rigidbody>();
         Vector2 forward = ForwardVector().normalized;
-        ApplyForce(-forward * engineForce);
+        rb.AddForce(-forward * engineForce);
     }
 
     /// <summary>Rotates the bike's mesh in a clockwise fashion.</summary>
@@ -88,9 +93,9 @@ public class BikeScript : MonoBehaviour
     /// <summary>This method gets the direction the bike's mesh is currently facing in world coordinates.</summary>
     /// <returns>A Vector2 of the bike's forward vector in world coordinates. The ector's x represents the x direction 
     /// in world coordinates and the vector's y represents the z direction in world coordinates.</returns>
-    private Vector2 ForwardVector()
+    private Vector3 ForwardVector()
     {
-        return new Vector2(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.z);
+        return new Vector3(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.y, -bikeMeshParent.transform.right.z);
     }
 
     private Vector2 RightVector() 
@@ -101,6 +106,7 @@ public class BikeScript : MonoBehaviour
     /// <summary>Applies all of the bike's internaly applied forces. Also gets player input.</summary>
     public void ApplyForces()
     {
+        Rigidbody rb = GetComponent<Rigidbody>();
         ClearRotation();
         // Apply player input
         if (Input.GetKey(KeyCode.W))
@@ -119,23 +125,11 @@ public class BikeScript : MonoBehaviour
         {
             TurnLeft();
         }
-
-        // Apply Drag
-        Vector2 dragForce = velocity * velocity * dragCoefficient / 2;
-        dragForce = -velocity.normalized * dragForce;
-
-        ApplyForce(dragForce);
-
-        // Update velocity based on the acceleration this frame
-        velocity += acceleration * Time.fixedDeltaTime;
-
-        // Reset acceleration for next update
-        acceleration = new Vector2(0, 0);
-    }
-
-    private void Shoot() 
-    {
-    
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            currentGun.Shoot(rb.velocity);
+        }
+        OnPlayerMove();
     }
 
     /// <summary>Sets the bikeMeshParent's local yAngle to the unput float.</summary>
@@ -153,11 +147,12 @@ public class BikeScript : MonoBehaviour
 
     public void bl_ProcessCompleted(Vector3 forceOfBulletOnBike)
     {
-        ApplyForce(new Vector2(forceOfBulletOnBike.x, forceOfBulletOnBike.z));
-        velocity += acceleration * Time.fixedDeltaTime;
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.AddForce(new Vector3(forceOfBulletOnBike.x, forceOfBulletOnBike.y, forceOfBulletOnBike.z));
+        //velocity += acceleration * Time.fixedDeltaTime;
 
         // Reset acceleration for next update
-        acceleration = new Vector2(0, 0);
+        //acceleration = new Vector2(0, 0);
     }
 
     public void EquipGun(Gun gunToEquip) 
@@ -167,5 +162,11 @@ public class BikeScript : MonoBehaviour
 
         // Hook up event
         gunToEquip.BulletShot += bl_ProcessCompleted;
+    }
+
+    protected virtual void OnPlayerMove() //protected virtual method
+    {
+        //if BulletDespawn is not null then call delegate
+        playerPositionUpdate?.Invoke(transform.position);
     }
 }

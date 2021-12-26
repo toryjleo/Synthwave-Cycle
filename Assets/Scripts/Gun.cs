@@ -33,13 +33,10 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Mouse0)) 
-        {
-            Shoot();
-        }
+
     }
 
-    private void Shoot() 
+    public void Shoot(Vector3 initialVelocity) 
     {
         if (Time.time - lastFired > 1 / FireRate)
         {
@@ -52,15 +49,15 @@ public class Gun : MonoBehaviour
             if (muzzle1Turn)
             {
                 shotDir = muzzle1.transform.forward;
-                bullet.Shoot(muzzle1.transform.position, shotDir);
+                bullet.Shoot(muzzle1.transform.position, shotDir, initialVelocity);
             }
             else
             {
                 shotDir = muzzle2.transform.forward;
-                bullet.Shoot(muzzle2.transform.position, shotDir);
+                bullet.Shoot(muzzle2.transform.position, shotDir, initialVelocity);
             }
             muzzle1Turn = !muzzle1Turn;
-            OnBulletShot(shotDir * bullet.mass * bullet.muzzleVelocity);
+            OnBulletShot(shotDir * bullet.Mass * bullet.muzzleVelocity);
         }
     }
 

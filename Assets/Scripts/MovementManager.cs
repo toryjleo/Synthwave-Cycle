@@ -75,7 +75,7 @@ public class MovementManager : MonoBehaviour
         bike.UpdateLocations();
         curVec = bike.DeltaPosition; // Distance Player bike has moved this frame
 
-        UpdateCactiLocation();
-        UpdateFloorLocation();
+        //UpdateCactiLocation();
+        //UpdateFloorLocation();
     }
 }
