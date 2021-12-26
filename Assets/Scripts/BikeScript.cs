@@ -13,16 +13,21 @@ public class BikeScript : MonoBehaviour
     public Vector2 velocity; // The velocity of the bike
     public Vector2 acceleration; // The acceleration of the bike this frame
 
-    private float mass = 3f; // The mass of the bike
-    private float engineForce = 1600f; // The force of the engine
+    private float mass = 8f; // The mass of the bike
+    private float engineForce = 800f; // The force of the engine
     private float rotationSpeed = 120f; // A linear scale of how fast the bike will turn
-    private float dragCoefficient = 2f; // A linear scale of how much drag will be applied to the bike
+    private float dragCoefficient = 1f; // A linear scale of how much drag will be applied to the bike
 
     private float maxLean = 40.0f;
+
+
+    public Gun currentGun;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        EquipGun(currentGun);
         // The bike will begin at rest
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 0);
@@ -55,14 +60,14 @@ public class BikeScript : MonoBehaviour
     /// <summary>Applies a force in the direction of the bike's forward vector.</summary>
     public void MoveForward()
     {
-        Vector2 forward = ForwardVector();
+        Vector2 forward = ForwardVector().normalized;
         ApplyForce(forward * engineForce);
     }
 
     /// <summary>Applies a force in the opposite direction of the bike's forward vector.</summary>
     public void MoveBackward()
     {
-        Vector2 forward = ForwardVector();
+        Vector2 forward = ForwardVector().normalized;
         ApplyForce(-forward * engineForce);
     }
 
@@ -88,6 +93,11 @@ public class BikeScript : MonoBehaviour
         return new Vector2(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.z);
     }
 
+    private Vector2 RightVector() 
+    {
+        return new Vector2(-bikeMeshParent.transform.forward.x, bikeMeshParent.transform.forward.z);
+    }
+
     /// <summary>Applies all of the bike's internaly applied forces. Also gets player input.</summary>
     public void ApplyForces()
     {
@@ -109,6 +119,7 @@ public class BikeScript : MonoBehaviour
         {
             TurnLeft();
         }
+
         // Apply Drag
         Vector2 dragForce = velocity * velocity * dragCoefficient / 2;
         dragForce = -velocity.normalized * dragForce;
@@ -122,6 +133,11 @@ public class BikeScript : MonoBehaviour
         acceleration = new Vector2(0, 0);
     }
 
+    private void Shoot() 
+    {
+    
+    }
+
     /// <summary>Sets the bikeMeshParent's local yAngle to the unput float.</summary>
     /// <param name="speedAndDirection">The yAngle at which to set bikeMeshParent</param>
     private void RotateYAxis(float speedAndDirection)
@@ -133,5 +149,23 @@ public class BikeScript : MonoBehaviour
     public void UpdateLocations()
     {
         deltaPosition = new Vector3(velocity.x, 0, velocity.y) * Time.fixedDeltaTime;
+    }
+
+    public void bl_ProcessCompleted(Vector3 forceOfBulletOnBike)
+    {
+        ApplyForce(new Vector2(forceOfBulletOnBike.x, forceOfBulletOnBike.z));
+        velocity += acceleration * Time.fixedDeltaTime;
+
+        // Reset acceleration for next update
+        acceleration = new Vector2(0, 0);
+    }
+
+    public void EquipGun(Gun gunToEquip) 
+    {
+        // Make gun child of TracerMeshParent
+        gunToEquip.transform.parent = bikeMeshParent.transform;
+
+        // Hook up event
+        gunToEquip.BulletShot += bl_ProcessCompleted;
     }
 }
