@@ -28,7 +28,6 @@ public class BikeScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        EquipGun(currentGun);
         // The bike will begin at rest
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 0);
@@ -70,7 +69,7 @@ public class BikeScript : MonoBehaviour
     public void MoveBackward()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
-        Vector2 forward = ForwardVector().normalized;
+        Vector3 forward = ForwardVector().normalized;
         rb.AddForce(-forward * engineForce);
     }
 
@@ -134,12 +133,6 @@ public class BikeScript : MonoBehaviour
     private void RotateYAxis(float speedAndDirection)
     {
         bikeMeshParent.transform.Rotate(0, speedAndDirection, 0, Space.Self);
-    }
-
-    /// <summary>Applies the net velocity of this bike to get the distance travelled this frame.</summary>
-    public void UpdateLocations()
-    {
-        deltaPosition = new Vector3(velocity.x, 0, velocity.y) * Time.fixedDeltaTime;
     }
 
     public void bl_ProcessCompleted(Vector3 forceOfBulletOnBike)

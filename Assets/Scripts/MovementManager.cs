@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
 
-public delegate void NotifyPlayerPosition(Vector3 currentPlayerPosition);  // delegate
-
 public class MovementManager : MonoBehaviour
 {
-    public GameObject ground;
     public BikeScript bike;
     public GameObject Cactus;
     public CactusScript cacscrip;
@@ -15,12 +12,8 @@ public class MovementManager : MonoBehaviour
 
     public Gun InitialPlayerGun;
 
-
-
-
-    public event NotifyPlayerPosition playerPositionUpdate; // event
-
-
+    #region ground
+    public GameObject ground;
     private GameObject[,] groundTiles;
     private const int GROUND_ARRAY_WIDTH  = 3;
     private int GROUND_ARRAY_HEIGHT = 3;
@@ -28,11 +21,10 @@ public class MovementManager : MonoBehaviour
     private float groundTileSpawnHeight = -3.12f;
     private Vector2 currentTileHorizontalMinMax;
     private Vector2 currentTileVericalMinMax;
-    
+    #endregion
 
     private void Awake()
     {
-        InitialPlayerGun.Init(playerPositionUpdate);
     }
 
     // Start is called before the first frame update
@@ -59,7 +51,6 @@ public class MovementManager : MonoBehaviour
     void FixedUpdate()
     {
         ApplyForces();
-        UpdateLocations();
     }
 
     private void Update()
@@ -67,6 +58,7 @@ public class MovementManager : MonoBehaviour
         CheckUpdateGroundTiles();
     }
 
+    #region ground
     private void InitializeGround() 
     {
         groundSize = ground.GetComponent<Renderer>().bounds.size;
@@ -154,18 +146,7 @@ public class MovementManager : MonoBehaviour
         groundMat.SetFloat("_XPos", floorOffset.x);
         groundMat.SetFloat("_YPos", floorOffset.z);
     }
-
-
-    private void UpdateCactiLocation()
-    {
-        
-        for(int i = 0; i<10; i++)
-        {
-            cacti[i].GetComponent<CactusScript>().move(curVec);
-            
-        }
-
-    }
+    #endregion
 
     /// <summary>Applies all forces to the Player bike this frame before position is updated.</summary>
     private void ApplyForces()
@@ -173,21 +154,4 @@ public class MovementManager : MonoBehaviour
         bike.ApplyForces();       
     }
 
-    /// <summary>Update the locations of all objects in the scene at once.</summary>
-    private void UpdateLocations()
-    {
-        bike.UpdateLocations();
-        curVec = bike.DeltaPosition; // Distance Player bike has moved this frame
-
-        OnPlayerMove();
-
-        //UpdateCactiLocation();
-        //UpdateFloorLocation();
-    }
-
-    protected virtual void OnPlayerMove() //protected virtual method
-    {
-        Vector3 bikePosition = bike.transform.position;
-        playerPositionUpdate?.Invoke(bikePosition);
-    }
 }

@@ -9,7 +9,7 @@ public class BulletPool : MonoBehaviour
 
     private static Queue<Bullet> bulletQueue;
 
-    public BulletPool(Bullet bulletPrefab, NotifyPlayerPosition playerPositionUpdate) 
+    public BulletPool(Bullet bulletPrefab) 
     {
         this.bulletPrefab = bulletPrefab;
 
@@ -19,17 +19,16 @@ public class BulletPool : MonoBehaviour
         // Spawn in defualt bullets
         for (int i = 0; i < bulletStartAmnt; i++) 
         {
-            Bullet newBullet = CreateNewBullet(playerPositionUpdate);
+            Bullet newBullet = CreateNewBullet();
             bulletQueue.Enqueue(newBullet);
         }
     }
 
-    private Bullet CreateNewBullet(NotifyPlayerPosition PlayerPositionUpdate) 
+    private Bullet CreateNewBullet() 
     {
         Bullet newObject = Instantiate(bulletPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         newObject.gameObject.SetActive(false);
         newObject.BulletDespawn += bl_ProcessCompleted;
-        PlayerPositionUpdate += newObject.bl_PlayerPositionUpdated;
         return newObject;
     }
 

@@ -19,14 +19,6 @@ public class Bullet : MonoBehaviour
     private Vector3 initialVelocity;
     private float mass = 2f;
 
-#region BASE_CLASS_CODE
-    private Vector3 playerPosition; // Need to include in a base class
-    public void bl_PlayerPositionUpdated(Vector3 currentPlayerPosition)
-    {
-        this.playerPosition = currentPlayerPosition;
-    }
-#endregion
-
 
     public float Mass
     {
@@ -44,7 +36,7 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 bulletToPlayer = playerPosition - transform.position;
+        Vector3 bulletToPlayer = transform.position;    // TODO: Fix this!
         // Assumes player is at world origin
         if (bulletToPlayer.sqrMagnitude > DESPAWN_DIST_FROM_PLAYER * DESPAWN_DIST_FROM_PLAYER) 
         {
