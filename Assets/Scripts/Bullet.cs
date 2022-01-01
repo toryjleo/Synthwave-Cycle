@@ -2,15 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void NotifyReadyToDespawn(Bullet bulletToDespawn);  // delegate
 
-#region BASE_CLASS_CODE
-
-#endregion
-
-public class Bullet : MonoBehaviour
+public class Bullet : SelfDespawn
 {
-    private const float DESPAWN_DIST_FROM_PLAYER = 100;
 
     private Vector3 shootDir;
 
@@ -25,7 +19,6 @@ public class Bullet : MonoBehaviour
         get => mass;
     }
 
-    public event NotifyReadyToDespawn BulletDespawn; // event
 
     // Start is called before the first frame update
     void Start()
@@ -34,16 +27,9 @@ public class Bullet : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
-        Vector3 bulletToPlayer = transform.position;    // TODO: Fix this!
-        // Assumes player is at world origin
-        if (bulletToPlayer.sqrMagnitude > DESPAWN_DIST_FROM_PLAYER * DESPAWN_DIST_FROM_PLAYER) 
-        {
-            // Return to object pool
-            OnBulletDespawn();
-        }
-
+        base.Update();
         Vector3 distanceThisFrame = ((shootDir.normalized * muzzleVelocity) + initialVelocity) * Time.deltaTime;
         transform.position = transform.position + distanceThisFrame;
     }
@@ -56,13 +42,5 @@ public class Bullet : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(direction);
         this.initialVelocity = initialVelocity;
     }
-
-    protected virtual void OnBulletDespawn() //protected virtual method
-    {
-        //if BulletDespawn is not null then call delegate
-        BulletDespawn?.Invoke(this);
-    }
-
-
 
 }

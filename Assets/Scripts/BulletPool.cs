@@ -28,7 +28,7 @@ public class BulletPool : MonoBehaviour
     {
         Bullet newObject = Instantiate(bulletPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         newObject.gameObject.SetActive(false);
-        newObject.BulletDespawn += bl_ProcessCompleted;
+        newObject.Despawn += bl_ProcessCompleted;
         return newObject;
     }
 
@@ -53,10 +53,10 @@ public class BulletPool : MonoBehaviour
         }
     }
 
-    public static void bl_ProcessCompleted(Bullet bullet)
+    public static void bl_ProcessCompleted(SelfDespawn bullet)
     {
         bullet.gameObject.SetActive(false);
-        bulletQueue.Enqueue(bullet);
+        bulletQueue.Enqueue(bullet as Bullet); // Make sure this is bullet in the future
         Debug.Log("Despawned, Size of queue: " + bulletQueue.Count);
     }
 }

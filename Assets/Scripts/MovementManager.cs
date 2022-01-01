@@ -1,5 +1,34 @@
 ﻿using UnityEngine;
 
+
+/// <summary>Class <c>WorldBounds</c> A static class which will contain the bounds of the world. Updates every frame</summary>
+///
+public static class WorldBounds
+{
+    // Current tile Min/Max
+    public static Vector2 currentTileHorizontalMinMax;
+    public static Vector2 currentTileVericalMinMax;
+    public static Vector3 groundTileSize;
+
+    /// <summary></summary>
+    public static float GroundTileWidth
+    {
+        get => groundTileSize.x;
+    }
+    /// <summary></summary>
+    public static float GroundTileHeight 
+    { 
+        get => groundTileSize.z; 
+    }
+
+
+    public static Vector2 worldBoundsHorizontalMinMax;
+    public static Vector2 worldBoundsVericalMinMax;
+
+}
+
+
+
 public class MovementManager : MonoBehaviour
 {
     public BikeScript bike;
@@ -17,10 +46,7 @@ public class MovementManager : MonoBehaviour
     private GameObject[,] groundTiles;
     private const int GROUND_ARRAY_WIDTH  = 3;
     private int GROUND_ARRAY_HEIGHT = 3;
-    private Vector3 groundSize;
     private float groundTileSpawnHeight = -3.12f;
-    private Vector2 currentTileHorizontalMinMax;
-    private Vector2 currentTileVericalMinMax;
     #endregion
 
     private void Awake()
@@ -61,9 +87,9 @@ public class MovementManager : MonoBehaviour
     #region ground
     private void InitializeGround() 
     {
-        groundSize = ground.GetComponent<Renderer>().bounds.size;
-        float groundWidth = groundSize.x;
-        float groundHeight = groundSize.z;
+        WorldBounds.groundTileSize = ground.GetComponent<Renderer>().bounds.size;
+        float groundWidth = WorldBounds.GroundTileWidth;
+        float groundHeight = WorldBounds.GroundTileHeight;
         groundTiles = new GameObject[GROUND_ARRAY_WIDTH, GROUND_ARRAY_HEIGHT];
 
         // Initialize tiles at origin
@@ -78,6 +104,7 @@ public class MovementManager : MonoBehaviour
             }
         }
         UpdateMiddleTileMinMax();
+        UpdateWorldMinMax();
     }
 
     private GameObject GetMiddleTile() 
@@ -100,10 +127,16 @@ public class MovementManager : MonoBehaviour
     private void UpdateMiddleTileMinMax() 
     {
         Vector3 currentTileLocation = GetMiddleTile().transform.position;
-        float halfTileWidth = groundSize.x / 2;
-        currentTileHorizontalMinMax = new Vector2(currentTileLocation.x - halfTileWidth, currentTileLocation.x + halfTileWidth);
-        float halfTileHeight = groundSize.z / 2;
-        currentTileVericalMinMax = new Vector2(currentTileLocation.z - halfTileHeight, currentTileLocation.z + halfTileHeight);
+        float halfTileWidth = WorldBounds.groundTileSize.x / 2;
+        WorldBounds.currentTileHorizontalMinMax = new Vector2(currentTileLocation.x - halfTileWidth, currentTileLocation.x + halfTileWidth);
+        float halfTileHeight = WorldBounds.groundTileSize.z / 2;
+        WorldBounds.currentTileVericalMinMax = new Vector2(currentTileLocation.z - halfTileHeight, currentTileLocation.z + halfTileHeight);
+    }
+
+    private void UpdateWorldMinMax() 
+    {
+        WorldBounds.worldBoundsHorizontalMinMax = new Vector2(WorldBounds.currentTileHorizontalMinMax.x - WorldBounds.GroundTileWidth, WorldBounds.currentTileHorizontalMinMax.y + WorldBounds.GroundTileWidth);
+        WorldBounds.worldBoundsVericalMinMax = new Vector2(WorldBounds.currentTileVericalMinMax.x - WorldBounds.GroundTileHeight, WorldBounds.currentTileVericalMinMax.y + WorldBounds.GroundTileHeight);
     }
 
     private void CheckUpdateGroundTiles() 
@@ -111,14 +144,14 @@ public class MovementManager : MonoBehaviour
         Vector3 bikePosition = bike.transform.position;
         float bikeHorizontalPos = bikePosition.x;
         float bikeVerticalPos = bikePosition.z;
-        if (bikeHorizontalPos > currentTileHorizontalMinMax.y && bikeVerticalPos > currentTileVericalMinMax.y) { MoveGroundTiles(1, 1); } // Upper Right
-        else if (bikeHorizontalPos > currentTileHorizontalMinMax.y && bikeVerticalPos < currentTileVericalMinMax.x) { MoveGroundTiles(1, -1); } // Lower Right
-        else if (bikeHorizontalPos < currentTileHorizontalMinMax.x && bikeVerticalPos > currentTileVericalMinMax.y) { MoveGroundTiles(-1, 1); } // Upper Left
-        else if (bikeHorizontalPos < currentTileHorizontalMinMax.x && bikeVerticalPos < currentTileVericalMinMax.x) { MoveGroundTiles(-1, -1); } // Lower Left
-        else if (bikeHorizontalPos > currentTileHorizontalMinMax.y) { MoveGroundTiles(1, 0); } // Right Quyadrant
-        else if (bikeHorizontalPos < currentTileHorizontalMinMax.x) { MoveGroundTiles(-1, 0); } // Left Quadrant
-        else if (bikeVerticalPos > currentTileVericalMinMax.y) { MoveGroundTiles(0, 1); } // Upper Quadrant
-        else if (bikeVerticalPos < currentTileVericalMinMax.x) { MoveGroundTiles(0, -1); } // Lower Quadrant
+        if (bikeHorizontalPos > WorldBounds.currentTileHorizontalMinMax.y && bikeVerticalPos > WorldBounds.currentTileVericalMinMax.y) { MoveGroundTiles(1, 1); } // Upper Right
+        else if (bikeHorizontalPos > WorldBounds.currentTileHorizontalMinMax.y && bikeVerticalPos < WorldBounds.currentTileVericalMinMax.x) { MoveGroundTiles(1, -1); } // Lower Right
+        else if (bikeHorizontalPos < WorldBounds.currentTileHorizontalMinMax.x && bikeVerticalPos > WorldBounds.currentTileVericalMinMax.y) { MoveGroundTiles(-1, 1); } // Upper Left
+        else if (bikeHorizontalPos < WorldBounds.currentTileHorizontalMinMax.x && bikeVerticalPos < WorldBounds.currentTileVericalMinMax.x) { MoveGroundTiles(-1, -1); } // Lower Left
+        else if (bikeHorizontalPos > WorldBounds.currentTileHorizontalMinMax.y) { MoveGroundTiles(1, 0); } // Right Quyadrant
+        else if (bikeHorizontalPos < WorldBounds.currentTileHorizontalMinMax.x) { MoveGroundTiles(-1, 0); } // Left Quadrant
+        else if (bikeVerticalPos > WorldBounds.currentTileVericalMinMax.y) { MoveGroundTiles(0, 1); } // Upper Quadrant
+        else if (bikeVerticalPos < WorldBounds.currentTileVericalMinMax.x) { MoveGroundTiles(0, -1); } // Lower Quadrant
     }
 
     private void MoveGroundTiles(int xDiff, int yDiff) 
@@ -127,11 +160,12 @@ public class MovementManager : MonoBehaviour
         {
             for (int j = 0; j < GROUND_ARRAY_WIDTH; j++)
             {
-                Vector3 newPosition = groundTiles[i, j].transform.position + new Vector3(xDiff * groundSize.x, 0, yDiff * groundSize.z);
+                Vector3 newPosition = groundTiles[i, j].transform.position + new Vector3(xDiff * WorldBounds.groundTileSize.x, 0, yDiff * WorldBounds.groundTileSize.z);
                 groundTiles[i, j].transform.position = newPosition;
             }
         }
         UpdateMiddleTileMinMax();
+        UpdateWorldMinMax();
     }
 
     /// <summary>Updates the floor mesh to reflect Player movement.</summary>
