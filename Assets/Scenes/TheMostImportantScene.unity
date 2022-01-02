@@ -311,7 +311,7 @@ RectTransform:
   m_Children:
   - {fileID: 1178305382}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -364,7 +364,7 @@ Transform:
   - {fileID: 55331813}
   - {fileID: 1299319024}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &567056670 stripped
 GameObject:
@@ -473,7 +473,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &1125370525 stripped
 GameObject:
@@ -687,13 +687,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad5cd4428875ab044b5a6725c924d8e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ground: {fileID: 567056670}
   bike: {fileID: 596284116}
   Cactus: {fileID: 5811562474388505295, guid: 6cdbe3db9f170dd4a8679c9613211708, type: 3}
   cacscrip: {fileID: 0}
   cacti: []
   curVec: {x: 0, y: 0, z: 0}
   InitialPlayerGun: {fileID: 455560905}
+  ground: {fileID: 567056670}
 --- !u!4 &1214913151
 Transform:
   m_ObjectHideFlags: 0
@@ -706,7 +706,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1299319020
 GameObject:
@@ -868,7 +868,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1693194752
 AudioSource:
@@ -877,7 +877,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1693194748}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: cd5e826648d025b47997770347f64f67, type: 3}
@@ -966,6 +966,79 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1001 &1933462228
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 128890, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_Name
+      value: Cyborg_Soldier
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.1200104
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -12.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 429198, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9534132, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6b4229a99e1286f4ebba4e16379a0090, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 54e4bfb637d7c37469c5b173378999e6, type: 3}
 --- !u!1 &1965137649
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,10 +1071,10 @@ RectTransform:
   m_Father: {fileID: 1178305382}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 113, y: -223.44}
-  m_SizeDelta: {x: 722.41, y: 111.72}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1965137651
 MonoBehaviour:
@@ -1132,10 +1205,10 @@ RectTransform:
   m_Father: {fileID: 1178305382}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 113, y: 0}
-  m_SizeDelta: {x: 573.99, y: 223.44}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2055109980
 MonoBehaviour:

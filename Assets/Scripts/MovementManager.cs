@@ -36,8 +36,6 @@ public class MovementManager : MonoBehaviour
     public CactusScript cacscrip;
     public GameObject[] cacti;
     public Vector3 curVec;
-    private float uvScrollSpeed = .013f;
-    private Vector3 floorOffset;
 
     public Gun InitialPlayerGun;
 
@@ -69,8 +67,6 @@ public class MovementManager : MonoBehaviour
             cacti[i].GetComponent<CactusScript>().grow(spawnP);
 
         }
-
-        floorOffset = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
@@ -166,19 +162,6 @@ public class MovementManager : MonoBehaviour
         }
         UpdateMiddleTileMinMax();
         UpdateWorldMinMax();
-    }
-
-    /// <summary>Updates the floor mesh to reflect Player movement.</summary>
-    private void UpdateFloorLocation()
-    {
-        Vector3 deltaPosition = bike.DeltaPosition;
-        floorOffset.x = (floorOffset.x - (deltaPosition.x  * uvScrollSpeed)) % 1;
-        floorOffset.z = (floorOffset.z + (deltaPosition.z * uvScrollSpeed)) % 1;
-
-        // Edit the UV's coords of the ground shader
-        Material groundMat = ground.GetComponent<Renderer>().material;
-        groundMat.SetFloat("_XPos", floorOffset.x);
-        groundMat.SetFloat("_YPos", floorOffset.z);
     }
     #endregion
 
