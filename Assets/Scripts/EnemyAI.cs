@@ -7,13 +7,13 @@ public class EnemyAI : MonoBehaviour
 
     public Vector3 targetVec;
     public Vector3 location;
-    public Vector3 velocity;
-    public Vector3 acceleration;
     public GameObject target;
     public Rigidbody rb;
 
     float maxSpeed;
     float maxForce;
+    public float attackRange; 
+
     bool alive; 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +23,7 @@ public class EnemyAI : MonoBehaviour
         //locomotion 
 
         location = transform.position;
-        maxSpeed = 2;
+        maxSpeed = 10;
         
     }
 
@@ -42,16 +42,8 @@ public class EnemyAI : MonoBehaviour
 
         targetVec = target.transform.position;
         location = transform.position;
-        velocity += acceleration;
-        //velocity.limit(maxSpeed);
-        location += velocity;
-        acceleration *= 0;
-
-
-        
-
-        seek(targetVec);
-
+        //seek(targetVec);
+        arrive(targetVec);
            
     }
 
@@ -63,6 +55,7 @@ public class EnemyAI : MonoBehaviour
     void applyForce(Vector3 force)
     {
         rb.AddForce(force);
+        
     }
 
     private void seek(Vector3 target)
@@ -77,16 +70,39 @@ public class EnemyAI : MonoBehaviour
         desiredVec.Normalize();
         desiredVec *= maxSpeed;
 
-        Vector3 steer = desiredVec - velocity;
-
-        
-
+        Vector3 steer = desiredVec - rb.velocity;
         //steer.limit(maxForce);
 
         applyForce(steer); 
+    }
+
+    private void arrive(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee. 
+    {
+
+        Vector3 desiredVec = target - location; 
+        
+        float dMag = desiredVec.magnitude;
+        dMag -= attackRange; // dmag is the distance between the two objects, by subtracking this, I make it so the object doesn't desire to move as far.  
+
+        desiredVec.Normalize();
+
+        if (dMag < maxSpeed)
+        {
+            desiredVec *= dMag;
+        } else { 
+            desiredVec *= maxSpeed; 
+        }
+        
+        Vector3 steer = desiredVec - rb.velocity;
+        //steer.limit(maxForce);
+
+        applyForce(steer);
 
         
     }
+
+
+
 
 
 }

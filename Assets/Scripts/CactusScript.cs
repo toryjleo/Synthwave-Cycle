@@ -7,13 +7,13 @@ public class CactusScript : EnemyAI
 
     public Vector3 cPosition;
     public int HP;
-    public bool alive; 
+
     
     
     public void grow(Vector3 spawn)
     {
         HP = 1;
-        alive = true;
+        
         cPosition = spawn;
         transform.position = spawn; 
     }
