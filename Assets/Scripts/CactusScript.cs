@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CactusScript : MonoBehaviour
+public class CactusScript : EnemyAI
 {
 
     public Vector3 cPosition;
