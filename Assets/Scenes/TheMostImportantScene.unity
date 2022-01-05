@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa987e93736888479b5de2bde076380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1139764191589905874, guid: fe41a6c58344d5f4e9c070825c6717cc, type: 3}
+  bulletPrefab: {fileID: 1463605476535994620, guid: fe41a6c58344d5f4e9c070825c6717cc, type: 3}
 --- !u!65 &354190
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -759,7 +759,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1693194748}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: cd5e826648d025b47997770347f64f67, type: 3}

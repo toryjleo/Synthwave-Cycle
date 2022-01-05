@@ -3,27 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Bullet : SelfDespawn
+public abstract class Bullet : SelfDespawn
 {
 
     private Vector3 shootDir;
+    private Vector3 initialVelocity;
 
     // Specific to gun
-    public float muzzleVelocity = 180;
-    private Vector3 initialVelocity;
-    private float mass = 2f;
+    protected float muzzleVelocity = 0;
+    protected float mass = 0;
+
+
+    public float MuzzleVelocity
+    {
+        get => muzzleVelocity;
+    }
 
 
     public float Mass
     {
         get => mass;
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame

@@ -7,9 +7,9 @@ public class BulletPool : MonoBehaviour
     private Bullet bulletPrefab;
     private int bulletStartAmnt;
 
-    private static Queue<Bullet> bulletQueue;
+    private Queue<Bullet> bulletQueue;
 
-    public BulletPool(Bullet bulletPrefab) 
+    public void Init(Bullet bulletPrefab) 
     {
         this.bulletPrefab = bulletPrefab;
 
@@ -27,6 +27,7 @@ public class BulletPool : MonoBehaviour
     private Bullet CreateNewBullet() 
     {
         Bullet newObject = Instantiate(bulletPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        newObject.Init();
         newObject.gameObject.SetActive(false);
         newObject.Despawn += bl_ProcessCompleted;
         return newObject;
@@ -53,7 +54,7 @@ public class BulletPool : MonoBehaviour
         }
     }
 
-    public static void bl_ProcessCompleted(SelfDespawn bullet)
+    public void bl_ProcessCompleted(SelfDespawn bullet)
     {
         bullet.gameObject.SetActive(false);
         bulletQueue.Enqueue(bullet as Bullet); // Make sure this is bullet in the future

@@ -15,7 +15,8 @@ public class DoubleBarrelLMG : Gun
     {
         lastFired = 0;
         fireRate = 15;
-        bulletPool = new BulletPool(bulletPrefab);
+        bulletPool = gameObject.AddComponent<BulletPool>();
+        bulletPool.Init(bulletPrefab);
     }
 
     public override void Shoot(Vector3 initialVelocity) 
@@ -39,7 +40,7 @@ public class DoubleBarrelLMG : Gun
                 bullet.Shoot(muzzle2.transform.position, shotDir, initialVelocity);
             }
             muzzle1Turn = !muzzle1Turn;
-            OnBulletShot(shotDir * bullet.Mass * bullet.muzzleVelocity);
+            OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
         }
     }
 }

@@ -9,7 +9,7 @@ public abstract class Gun : MonoBehaviour
 {
 
     public Bullet bulletPrefab;
-    protected static BulletPool bulletPool;
+    protected BulletPool bulletPool;
     protected float lastFired = 0;
     protected float fireRate = 0;  // The number of bullets fired per second
 

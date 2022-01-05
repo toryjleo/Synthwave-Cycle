@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class BasicRifle : Gun
 {
-    private float timeBetweenTripleShot = .3f;
+    private float timeBetweenTripleShot = .07f;
 
     public override void Init()
     {
         lastFired = 0;
         fireRate = .5f; // Every 2 seconds
-        bulletPool = new BulletPool(bulletPrefab);
+        bulletPool = gameObject.AddComponent<BulletPool>();
+        bulletPool.Init(bulletPrefab);
     }
 
     public override void Shoot(Vector3 initialVelocity)
@@ -28,15 +29,25 @@ public class BasicRifle : Gun
 
     IEnumerator TripleShot() 
     {
-        Debug.Log("SHOT!");
-        yield return new WaitForSeconds(timeBetweenTripleShot);
+        int numberOfShots = 3;
+        for (int i = 0; i < numberOfShots; i++)
+        {
+            Debug.Log("SHOT!");
+            Bullet bullet = bulletPool.SpawnFromPool();
+            Vector3 shotDir = gameObject.transform.forward;
+            Vector3 bulletPosition = transform.position;
+            Vector3 initialVelocity = Vector3.zero;
+            bullet.Shoot(bulletPosition, shotDir, initialVelocity);
+            yield return new WaitForSeconds(timeBetweenTripleShot);
+        }
+        yield return null;
     }
 
     public void Update()
     {
         if(Input.GetKeyDown(KeyCode.M)) 
         {
-            //Shoot(gameObject.transform.forward);
+            Shoot(Vector3.zero);
         }
     }
 }

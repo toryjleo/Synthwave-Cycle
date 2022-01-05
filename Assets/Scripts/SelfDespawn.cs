@@ -11,6 +11,8 @@ public abstract class SelfDespawn : MonoBehaviour
     public event NotifyReadyToDespawn Despawn; // event
 
 
+    public abstract void Init();
+
     protected virtual void OnDespawn() // protected virtual method
     {
         // if Despawn is not null then call delegate
@@ -20,7 +22,7 @@ public abstract class SelfDespawn : MonoBehaviour
     /// <summary>Returns true if the object is out of the world bounds.</summary>
     /// <returns>A bool. "True" insicating the object should despawn, "False" indicates the object should not 
     /// despawn.</returns>
-    protected bool ShouldDespawn()
+    protected bool IsOutOfWorldBounds()
     {
         Vector3 objectPosition = transform.position;
         float bikeHorizontalPos = objectPosition.x;
@@ -35,8 +37,7 @@ public abstract class SelfDespawn : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
-        // Assumes player is at world origin
-        if (ShouldDespawn())
+        if (IsOutOfWorldBounds())
         {
             // Return to object pool
             OnDespawn();
