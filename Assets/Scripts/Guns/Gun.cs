@@ -26,8 +26,8 @@ public abstract class Gun : MonoBehaviour
     public abstract void Init();
 
     /// <summary>Fires the bullet from the muzzle of the gun. Is responsible for calling OnBulletShot and getting bullet from the object pool.</summary>
-    /// <param name="initialDirection">The normalized vector in which the gun is pointed.</param>
-    public abstract void Shoot(Vector3 initialDirection);
+    /// <param name="initialDirection">The velocity of the gun when the bullet is shot.</param>
+    public abstract void Shoot(Vector3 initialVelocity);
 
     /// <summary>Notifies listeners that a bullet has been shot.</summary>
     /// <param name="forceOfBullet">The force of the actor on the bullet.</param>
@@ -35,5 +35,10 @@ public abstract class Gun : MonoBehaviour
     {
         //if BulletShot is not null then call delegate
         BulletShot?.Invoke(-forceOfBullet);
+    }
+
+    protected bool CanShootAgain() 
+    {
+        return Time.time - lastFired > 1 / fireRate;
     }
 }

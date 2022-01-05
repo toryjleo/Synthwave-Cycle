@@ -25,30 +25,15 @@ public class BikeScript : MonoBehaviour
 
     public Gun currentGun;
 
+    private Rigidbody rb;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         // The bike will begin at rest
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 0);
-    }
-
-
-    /// <summary>Property for distance travelled this frame in world coordinates.</summary>
-    public Vector3 DeltaPosition
-    {
-        get => deltaPosition;
-    }
-
-    /// <summary>Updates the acceleration of the bike this frame.</summary>
-    /// /// <param name="force">A vector containing both the direction and magnatude of the force to be 
-    /// applied.</param>
-    public void ApplyForce(Vector2 force)
-    {
-        if (force.sqrMagnitude != 0)
-        {
-            acceleration += force / mass;
-        }
+        rb = GetComponent<Rigidbody>();
     }
 
     /// <summary>Clears the rotation of the child mesh object.</summary>

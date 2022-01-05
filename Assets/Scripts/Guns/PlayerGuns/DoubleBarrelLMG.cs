@@ -18,9 +18,9 @@ public class DoubleBarrelLMG : Gun
         bulletPool = new BulletPool(bulletPrefab);
     }
 
-    public override void Shoot(Vector3 initialDirection) 
+    public override void Shoot(Vector3 initialVelocity) 
     {
-        if (Time.time - lastFired > 1 / fireRate)
+        if (CanShootAgain())
         {
             lastFired = Time.time;
             Bullet bullet = bulletPool.SpawnFromPool();
@@ -31,12 +31,12 @@ public class DoubleBarrelLMG : Gun
             if (muzzle1Turn)
             {
                 shotDir = muzzle1.transform.forward;
-                bullet.Shoot(muzzle1.transform.position, shotDir, initialDirection);
+                bullet.Shoot(muzzle1.transform.position, shotDir, initialVelocity);
             }
             else
             {
                 shotDir = muzzle2.transform.forward;
-                bullet.Shoot(muzzle2.transform.position, shotDir, initialDirection);
+                bullet.Shoot(muzzle2.transform.position, shotDir, initialVelocity);
             }
             muzzle1Turn = !muzzle1Turn;
             OnBulletShot(shotDir * bullet.Mass * bullet.muzzleVelocity);
