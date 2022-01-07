@@ -17,19 +17,17 @@ public class ObjectPoolSpawner : MonoBehaviour
         pool = new List<EnemyAI>();
         for (int i = 0; i < size; i++)
         {
-            pool.Add(objectToPool);
-        }
-
-        foreach (EnemyAI g in pool) //spawn the initial wave 
-        {
+            
             Vector3 ranPos = new Vector3(Random.Range(-30, 30), 0, Random.Range(-30, 30));
-            Instantiate(g, ranPos, Quaternion.identity);
+            EnemyAI newEnemy = Instantiate(objectToPool, ranPos, Quaternion.identity);
 
-            g.setUpEnemy(player);
-            
-            
+            newEnemy.setUpEnemy(player);
+
+            print(newEnemy.transform.position);
+            pool.Add(newEnemy);
 
         }
+
 
     } 
 
@@ -40,10 +38,9 @@ public class ObjectPoolSpawner : MonoBehaviour
         foreach (EnemyAI g in pool)
         {
             Vector3 var = g.getPosition();
-            
+
             //hey you G! Make sure to move in accordance with the other entities, Here's the list get it done! 
-
-
+            print(g.getPosition());
             g.seperate(pool); 
 
           
