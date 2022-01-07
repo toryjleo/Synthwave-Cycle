@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Bullet : SelfDespawn
+public abstract class Bullet : SelfDespawn
 {
 
     private Vector3 shootDir;
+    private Vector3 initialVelocity;
 
     // Specific to gun
-    public float muzzleVelocity = 60;
-    private Vector3 initialVelocity;
-    private float mass = 2f;
+    protected float muzzleVelocity = 0;
+    protected float mass = 0;
+
+
+    public float MuzzleVelocity
+    {
+        get => muzzleVelocity;
+    }
 
 
     public float Mass
@@ -19,18 +25,11 @@ public class Bullet : SelfDespawn
         get => mass;
     }
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     public override void Update()
     {
         base.Update();
-        Vector3 distanceThisFrame = ((shootDir.normalized * muzzleVelocity) + initialVelocity) * Time.deltaTime;
+        Vector3 distanceThisFrame = ((shootDir * muzzleVelocity) + initialVelocity) * Time.deltaTime;
         transform.position = transform.position + distanceThisFrame;
     }
 
@@ -38,7 +37,7 @@ public class Bullet : SelfDespawn
     public void Shoot(Vector3 curPosition, Vector3 direction, Vector3 initialVelocity) 
     {
         transform.position = curPosition;
-        shootDir = direction;
+        shootDir = direction.normalized;
         transform.rotation = Quaternion.LookRotation(direction);
         this.initialVelocity = initialVelocity;
     }

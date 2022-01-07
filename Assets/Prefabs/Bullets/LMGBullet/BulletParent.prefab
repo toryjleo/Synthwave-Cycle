@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5749691770675399995}
-  - component: {fileID: 2861396167404656399}
+  - component: {fileID: -8647737283410319699}
   m_Layer: 0
   m_Name: BulletParent
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2861396167404656399
+--- !u!114 &-8647737283410319699
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,10 +41,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 868517562401068993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe92ff41072c28e48addf9ce03785a48, type: 3}
+  m_Script: {fileID: 11500000, guid: a851912fde91df14ca5f83509bd8c9d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mass: 20
+  muzzleVelocity: 180
 --- !u!1001 &36196462093013385
 PrefabInstance:
   m_ObjectHideFlags: 0
