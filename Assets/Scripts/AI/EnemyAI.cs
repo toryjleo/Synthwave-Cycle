@@ -5,8 +5,8 @@ using UnityEngine;
 public class EnemyAI : MonoBehaviour
 {
 
-    public Vector3 targetVec; //this is the vector to their quarry 
-    public Vector3 location; //this is the vector of the entity 
+    private Vector3 targetVec; //this is the vector to their quarry 
+    private Vector3 location; //this is the vector of the entity 
     private Vector3 forward;
     public GameObject target;
     public Rigidbody rb;
@@ -16,24 +16,6 @@ public class EnemyAI : MonoBehaviour
 
     bool alive;
 
-    public EnemyAI(GameObject target, Rigidbody rb)
-    {
-
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //action selection 
-        //movement 
-        //locomotion 
-        targetVec = target.transform.position;
-        location = transform.position;
-        maxSpeed = 100;
-
-       
-        
-    }
 
     private void Awake()
     {
@@ -82,10 +64,11 @@ public class EnemyAI : MonoBehaviour
         return alive;
     }
 
-    public void setTarget(GameObject targ)//sets the target of the entity 
+    public void setUpEnemy(GameObject targ)//sets the target of the entity 
     {
         target = targ;
-        targetVec = target.transform.position;
+        
+
     }
     public Vector3 getPosition()
     {

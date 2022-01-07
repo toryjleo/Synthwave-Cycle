@@ -25,7 +25,7 @@ public class ObjectPoolSpawner : MonoBehaviour
             Vector3 ranPos = new Vector3(Random.Range(-30, 30), 0, Random.Range(-30, 30));
             Instantiate(g, ranPos, Quaternion.identity);
 
-            g.setTarget(player);
+            g.setUpEnemy(player);
             
             
 
