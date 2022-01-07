@@ -22,7 +22,7 @@ public class EnemyAI : MonoBehaviour
         alive = true;
         rb = GetComponent<Rigidbody>();
         location = transform.position;
-        maxSpeed = 100;
+        maxSpeed = 40;
 
     }//we make sure it's alive and get the rigid body 
 
@@ -45,16 +45,38 @@ public class EnemyAI : MonoBehaviour
     {
         float desiredSeperation = 20;
 
+        Vector3 sum = new Vector3(); //the vector that will be used to calculate flee beheavior if a too close interaction happens 
+        int count = 0; //this couunts how many TOOCLOSE interactions an entity has, if it has more than one
+                       //it adds the sum vector  
 
-        foreach(EnemyAI g in pool)
+
+        foreach (EnemyAI g in pool)
         {
             
             float d = Vector3.Distance(g.location, transform.position);
+            
+
 
             if (g.location != location && d < desiredSeperation)
             {
                 desiredSeperation = 20;
                 print("TOO CLOSE");
+                Vector3 diff = location - g.location;
+                diff.Normalize();
+                sum += diff;
+                count++;
+            }
+
+            if (count > 0) 
+            {
+                sum /= count;
+                sum.Normalize();
+                sum *= maxSpeed;
+
+                Vector3 steer = sum - rb.velocity;
+                //steer.limit(maxForce);
+                applyForce(steer);
+
             }
             
         }

@@ -172,8 +172,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6675fd315cbde074a8ff6f7be406ac4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetVec: {x: 0, y: 0, z: 0}
-  location: {x: 0, y: 0, z: 0}
   target: {fileID: 497039799}
   rb: {fileID: 379590733}
   attackRange: 20
@@ -302,8 +300,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6675fd315cbde074a8ff6f7be406ac4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetVec: {x: 0, y: 0, z: 0}
-  location: {x: 0, y: 0, z: 0}
   target: {fileID: 497039799}
   rb: {fileID: 411457818}
   attackRange: 0
@@ -703,8 +699,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6675fd315cbde074a8ff6f7be406ac4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetVec: {x: 0, y: 0, z: 0}
-  location: {x: 0, y: 0, z: 0}
   target: {fileID: 497039799}
   rb: {fileID: 1120889595}
   attackRange: 5
@@ -837,7 +831,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3780906798646803483, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3780906798646803483, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: player
