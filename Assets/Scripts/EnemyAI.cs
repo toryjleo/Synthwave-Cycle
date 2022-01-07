@@ -5,8 +5,9 @@ using UnityEngine;
 public class EnemyAI : MonoBehaviour
 {
 
-    public Vector3 targetVec;
-    public Vector3 location;
+    public Vector3 targetVec; //this is the vector to their quarry 
+    public Vector3 location; //this is the vector of the entity 
+    private Vector3 forward;
     public GameObject target;
     public Rigidbody rb;
 
@@ -14,7 +15,13 @@ public class EnemyAI : MonoBehaviour
     float maxForce;
     public float attackRange; 
 
-    bool alive; 
+    bool alive;
+
+    public EnemyAI(GameObject target, Rigidbody rb)
+    {
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +30,10 @@ public class EnemyAI : MonoBehaviour
         //locomotion 
 
         location = transform.position;
-        maxSpeed = 10;
+        maxSpeed = 100;
+
+        forward = targetVec; // this is tempoary to generate a forward vector. In future you willl have to get the forward vector another way
+                             // DUMBASS
         
     }
 
@@ -31,7 +41,7 @@ public class EnemyAI : MonoBehaviour
     {
         alive = true;
         rb = GetComponent<Rigidbody>();
-    }
+    }//we make sure it's alive and get the rigid body 
 
     
    
@@ -44,6 +54,7 @@ public class EnemyAI : MonoBehaviour
         location = transform.position;
         //seek(targetVec);
         arrive(targetVec);
+        //wander();
            
     }
 
@@ -71,20 +82,20 @@ public class EnemyAI : MonoBehaviour
         desiredVec *= maxSpeed;
 
         Vector3 steer = desiredVec - rb.velocity;
+        
         //steer.limit(maxForce);
-
         applyForce(steer); 
     }
 
     private void arrive(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee. 
     {
 
-        Vector3 desiredVec = target - location; 
-        
-        float dMag = desiredVec.magnitude;
+        Vector3 desiredVec = target - location; //this logic creates the vector between where the entity is and where it wants to be 
+        float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points 
         dMag -= attackRange; // dmag is the distance between the two objects, by subtracking this, I make it so the object doesn't desire to move as far.  
 
-        desiredVec.Normalize();
+        desiredVec.Normalize(); // one the distance is measured this vector can now be used to actually generate movement,
+                                // but that movement has to be constant or at least adaptable, which is what the next part does  
 
         if (dMag < maxSpeed)
         {
@@ -95,10 +106,26 @@ public class EnemyAI : MonoBehaviour
         
         Vector3 steer = desiredVec - rb.velocity;
         //steer.limit(maxForce);
-
+        
         applyForce(steer);
+    } 
+
+    private void wander() //do this later 
+    {
+
+        Vector3 desiredVec = forward;
+
+        float d = desiredVec.magnitude;
+
+
+
 
         
+        Quaternion rot = Quaternion.Euler(0, 0, Random.RandomRange(0,359));
+        //steer = rot * steer;
+
+
+
     }
 
 
