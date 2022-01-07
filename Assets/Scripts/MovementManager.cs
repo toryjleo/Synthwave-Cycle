@@ -31,6 +31,7 @@ public static class WorldBounds
 
 public class MovementManager : MonoBehaviour
 {
+    public ScoreTracker scoreTracker;
     public BikeScript bike;
     public GameObject Cactus;
     public CactusScript cacscrip;
@@ -54,6 +55,7 @@ public class MovementManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        scoreTracker = FindObjectOfType<ScoreTracker>(); // Find the single instance of ScoreTracker in the scene
         InitializeGround();
 
         bike.EquipGun(InitialPlayerGun);

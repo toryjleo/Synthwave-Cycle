@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
+// TODO: Make inherit from Pawn class
 /// <summary>Class <c>BikeScript</c> A Unity Component which holds the logic for the Player movement.</summary>
 ///
 public class BikeScript : MonoBehaviour
@@ -23,17 +23,32 @@ public class BikeScript : MonoBehaviour
     private float maxLean = 40.0f;
 
 
+    private float energy;
+    private const float STARTING_ENERGY = 300.0f;
+
     public Gun currentGun;
 
     private Rigidbody rb;
 
+
+    public float Energy
+    {
+        get => energy;
+    }
+
     // Start is called before the first frame update
     void Awake()
+    {
+        Init();
+    }
+
+    private void Init() 
     {
         // The bike will begin at rest
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 0);
         rb = GetComponent<Rigidbody>();
+        energy = STARTING_ENERGY;
     }
 
     /// <summary>Clears the rotation of the child mesh object.</summary>

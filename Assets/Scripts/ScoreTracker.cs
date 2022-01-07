@@ -9,10 +9,26 @@ public class ScoreTracker : MonoBehaviour
     private const float MAX_TIME = 90;
     private float currentTime;
     private int currentScore;
+    private float _currentEnergy;
     public TextMeshProUGUI timeLeftText;
     public TextMeshProUGUI currentScoreText;
+    public TextMeshProUGUI currentHPText;
+
+    public float Energy
+    {
+        set {
+                _currentEnergy = value;
+            }
+    }
+
+
     // Start is called before the first frame update
     void Awake()
+    {
+        Init();
+    }
+
+    public void Init() 
     {
         currentTime = MAX_TIME;
         currentScore = 0;
