@@ -23,7 +23,7 @@ public class ObjectPoolSpawner : MonoBehaviour
 
             newEnemy.setUpEnemy(player);
 
-            print(newEnemy.transform.position);
+            
             pool.Add(newEnemy);
 
         }
@@ -40,7 +40,7 @@ public class ObjectPoolSpawner : MonoBehaviour
             Vector3 var = g.getPosition();
 
             //hey you G! Make sure to move in accordance with the other entities, Here's the list get it done! 
-            print(g.getPosition());
+            
             g.seperate(pool); 
 
           

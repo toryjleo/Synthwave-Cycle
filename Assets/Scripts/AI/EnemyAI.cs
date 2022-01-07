@@ -54,6 +54,7 @@ public class EnemyAI : MonoBehaviour
             if (g.location != location && d < desiredSeperation)
             {
                 desiredSeperation = 20;
+                print("TOO CLOSE");
             }
             
         }
@@ -134,7 +135,7 @@ public class EnemyAI : MonoBehaviour
 
 
         
-        Quaternion rot = Quaternion.Euler(0, 0, Random.RandomRange(0,359));
+        Quaternion rot = Quaternion.Euler(0, 0, Random.Range(0,359));
         //steer = rot * steer;
 
 
