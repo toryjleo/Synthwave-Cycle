@@ -58,6 +58,21 @@ public class EnemyAI : MonoBehaviour
            
     }
 
+    public void seperate(Vector3 location, List<EnemyAI> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
+    {
+        float desiredSeperation = 20;
+
+        foreach(EnemyAI g in pool)
+        {
+            float d = Vector3.Distance(g.location, location);
+            if (g.location != location && d < desiredSeperation)
+            {
+                desiredSeperation = 20;
+            }
+            
+        }
+    }
+
     public bool isAlive()
     {
         return alive;
@@ -85,7 +100,7 @@ public class EnemyAI : MonoBehaviour
         
         //steer.limit(maxForce);
         applyForce(steer); 
-    }
+    } // simpler function to just chase directly after the player 
 
     private void arrive(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee. 
     {

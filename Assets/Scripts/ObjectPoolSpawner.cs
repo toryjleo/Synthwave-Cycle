@@ -41,9 +41,10 @@ public class ObjectPoolSpawner : MonoBehaviour
     {
         foreach (EnemyAI g in pool)
         {
+
             if (g.isAlive())
             {
-                
+                g.seperate(pool);
             } 
             else
             {

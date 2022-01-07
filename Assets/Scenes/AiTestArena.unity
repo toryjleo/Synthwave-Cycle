@@ -847,6 +847,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3780906798646803483, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3780906798646803483, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: objectToPool
       value: 
       objectReference: {fileID: 82964424}
@@ -873,7 +877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3874834857555224723, guid: 7aa24a1c7c3d07948a29eaa65ccfcd02, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 23.59
       objectReference: {fileID: 0}
     - target: {fileID: 3874834857555224723, guid: 7aa24a1c7c3d07948a29eaa65ccfcd02, type: 3}
       propertyPath: m_LocalPosition.y
@@ -881,7 +885,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3874834857555224723, guid: 7aa24a1c7c3d07948a29eaa65ccfcd02, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 27.72
       objectReference: {fileID: 0}
     - target: {fileID: 3874834857555224723, guid: 7aa24a1c7c3d07948a29eaa65ccfcd02, type: 3}
       propertyPath: m_LocalRotation.w
