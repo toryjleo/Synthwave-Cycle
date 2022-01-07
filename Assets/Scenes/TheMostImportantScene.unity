@@ -409,8 +409,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190325
-  m_fontColor: {r: 0.9622642, g: 0, b: 0, a: 1}
+    rgba: 4285434911
+  m_fontColor: {r: 0.12130651, g: 0.5471698, b: 0.43243894, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -691,7 +691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad5cd4428875ab044b5a6725c924d8e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreTracker: {fileID: 0}
+  scoreTracker: {fileID: 1178305388}
   bike: {fileID: 596284116}
   Cactus: {fileID: 5811562474388505295, guid: 6cdbe3db9f170dd4a8679c9613211708, type: 3}
   cacscrip: {fileID: 0}

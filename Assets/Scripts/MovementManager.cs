@@ -50,12 +50,12 @@ public class MovementManager : MonoBehaviour
 
     private void Awake()
     {
+        UpdateUIEnergy();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        scoreTracker = FindObjectOfType<ScoreTracker>(); // Find the single instance of ScoreTracker in the scene
         InitializeGround();
 
         bike.EquipGun(InitialPlayerGun);
@@ -80,6 +80,13 @@ public class MovementManager : MonoBehaviour
     private void Update()
     {
         CheckUpdateGroundTiles();
+        bike.UpdateRegenEnergy();
+        UpdateUIEnergy();  // Update the UI with the HP
+    }
+
+    private void UpdateUIEnergy() 
+    {
+        scoreTracker.Energy = bike.Energy;
     }
 
     #region ground
