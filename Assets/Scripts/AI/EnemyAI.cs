@@ -12,7 +12,6 @@ public class EnemyAI : MonoBehaviour
     public Rigidbody rb;
 
     float maxSpeed;
-    float maxForce;
     public float attackRange; 
 
     bool alive;
@@ -28,12 +27,11 @@ public class EnemyAI : MonoBehaviour
         //action selection 
         //movement 
         //locomotion 
-
+        targetVec = target.transform.position;
         location = transform.position;
         maxSpeed = 100;
 
-        forward = targetVec; // this is tempoary to generate a forward vector. In future you willl have to get the forward vector another way
-                             // DUMBASS
+       
         
     }
 
@@ -41,6 +39,9 @@ public class EnemyAI : MonoBehaviour
     {
         alive = true;
         rb = GetComponent<Rigidbody>();
+        location = transform.position;
+        maxSpeed = 100;
+
     }//we make sure it's alive and get the rigid body 
 
     
@@ -58,13 +59,16 @@ public class EnemyAI : MonoBehaviour
            
     }
 
-    public void seperate(Vector3 location, List<EnemyAI> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
+    public void seperate(List<EnemyAI> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
     {
         float desiredSeperation = 20;
 
+
         foreach(EnemyAI g in pool)
         {
-            float d = Vector3.Distance(g.location, location);
+            
+            float d = Vector3.Distance(g.location, transform.position);
+
             if (g.location != location && d < desiredSeperation)
             {
                 desiredSeperation = 20;
@@ -76,6 +80,16 @@ public class EnemyAI : MonoBehaviour
     public bool isAlive()
     {
         return alive;
+    }
+
+    public void setTarget(GameObject targ)//sets the target of the entity 
+    {
+        target = targ;
+        targetVec = target.transform.position;
+    }
+    public Vector3 getPosition()
+    {
+        return location;
     }
 
     void applyForce(Vector3 force)
@@ -111,6 +125,7 @@ public class EnemyAI : MonoBehaviour
 
         desiredVec.Normalize(); // one the distance is measured this vector can now be used to actually generate movement,
                                 // but that movement has to be constant or at least adaptable, which is what the next part does  
+        transform.LookAt(target);
 
         if (dMag < maxSpeed)
         {
@@ -142,9 +157,6 @@ public class EnemyAI : MonoBehaviour
 
 
     }
-
-
-
 
 
 }
