@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>Class <c>BulletPool</c> A Unity Component which tracks health.</summary>
+/// <summary>Class <c>Health</c> A Unity Component which tracks health.</summary>
 public class Health : MonoBehaviour
 {
     private float _hitPoints;

@@ -19,6 +19,8 @@ public class DoubleBarrelLMG : Gun
         bulletPool.Init(bulletPrefab);
     }
 
+    /// <summary>Fires a bullet out of either muzzle, alternating each turn.</summary>
+    /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
     public override void Shoot(Vector3 initialVelocity) 
     {
         if (CanShootAgain())

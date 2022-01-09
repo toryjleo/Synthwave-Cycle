@@ -15,6 +15,8 @@ public class BasicRifle : Gun
         bulletPool.Init(bulletPrefab);
     }
 
+    /// <summary>Fires a sequence of 3 bullets.</summary>
+    /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
     public override void Shoot(Vector3 initialVelocity)
     {
         if (CanShootAgain()) 
@@ -28,6 +30,7 @@ public class BasicRifle : Gun
         }
     }
 
+    /// <summary>Will wait some time before firing the next bullet.</summary>
     IEnumerator TripleShot() 
     {
         int numberOfShots = 3;
