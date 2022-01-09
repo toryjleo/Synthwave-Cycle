@@ -174,7 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 497039799}
   rb: {fileID: 379590733}
-  g: {fileID: 0}
+  myGun: {fileID: 0}
   attackRange: 20
 --- !u!65 &379590735
 BoxCollider:
@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 497039799}
   rb: {fileID: 411457818}
-  g: {fileID: 0}
+  myGun: {fileID: 0}
   attackRange: 0
 --- !u!65 &411457820
 BoxCollider:
@@ -703,7 +703,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 497039799}
   rb: {fileID: 1120889595}
-  g: {fileID: 0}
+  myGun: {fileID: 0}
   attackRange: 5
 --- !u!65 &1120889597
 BoxCollider:
@@ -928,7 +928,7 @@ PrefabInstance:
       objectReference: {fileID: 497039799}
     - target: {fileID: 4150817851829107826, guid: 69dd446f4bb1a024ba571016684a89f1, type: 3}
       propertyPath: m_Name
-      value: 'EnemyMid '
+      value: EnemyMid
       objectReference: {fileID: 0}
     - target: {fileID: 4150817851829107828, guid: 69dd446f4bb1a024ba571016684a89f1, type: 3}
       propertyPath: m_RootOrder
