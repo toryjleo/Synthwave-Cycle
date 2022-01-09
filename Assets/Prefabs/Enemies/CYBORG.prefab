@@ -518,7 +518,7 @@ Animator:
   m_GameObject: {fileID: 3874834856194593562}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: d0196a0e0d1ba7147adff8c5bb4e1e14, type: 3}
-  m_Controller: {fileID: 9100000, guid: 6b4229a99e1286f4ebba4e16379a0090, type: 2}
+  m_Controller: {fileID: 9100000, guid: f2f2f872d3f2a034e9725cc7d9a11a65, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1315,6 +1315,7 @@ GameObject:
   - component: {fileID: 3874834857555224722}
   - component: {fileID: 3874834857555224720}
   - component: {fileID: 6301655467082763215}
+  - component: {fileID: 7533777769204511998}
   m_Layer: 0
   m_Name: CYBORG
   m_TagString: Untagged
@@ -1380,6 +1381,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7533777769204511998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3874834857555224733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2310bde105355454ebbf6261f38b20b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3874834857591981425
@@ -1725,7 +1738,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7170651920001017730, guid: f34b39831693cc345b1644047b451e33, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.04
       objectReference: {fileID: 0}
     - target: {fileID: 7170651920001017730, guid: f34b39831693cc345b1644047b451e33, type: 3}
       propertyPath: m_LocalRotation.w
