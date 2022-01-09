@@ -109,30 +109,6 @@ public class EnemyAI : SelfDespawn
 
     #region Movement
     /// <summary>
-    /// These Movement Methods SEEK ARRIVE WANDER are going to evenetually be seperated out into different movement methods 
-    /// for Child classes of EnemyAI, currently SEEK and WANDER are not in use however 
-    /// </summary>
-    /// <param name="target"> target is the vector leading to the player </param>
-    private void seek(Vector3 target)
-    {
-        //steering force = desired velocity - current velocity 
-        //desired velocity = vector to player  
-        //
-        //the enemy moves towards the player at maximum speed
-        //by normailizing the vector we can take into account the speed 
-
-        Vector3 desiredVec = target - transform.position;
-        desiredVec.Normalize();
-        desiredVec *= maxSpeed;
-
-        Vector3 steer = desiredVec - rb.velocity;
-        
-        //steer.limit(maxForce);
-        applyForce(steer); 
-    } // simpler function to just chase directly after the player 
-
-
-    /// <summary>
     /// This method works for ranged Enemies that do not get into direct melee range with the target 
     /// </summary>
     /// <param name="target"> Vector to target </param>
@@ -147,13 +123,22 @@ public class EnemyAI : SelfDespawn
                                 // but that movement has to be constant or at least adaptable, which is what the next part does  
         transform.LookAt(target);
 
+        //Currently Walking twoards the target 
+
         if (dMag < maxSpeed)
         {
-            desiredVec *= dMag;
+            //Slowing down walking speed as AI approaches Target 
+
+            desiredVec *= dMag; 
 
             this.myGun.Shoot(target);
+
+            //TODO: the AI currently doesn't stand still when firing and I'm not sure if they should?
+
         } else { 
             desiredVec *= maxSpeed; 
+
+            //walking speed is normal 
         }
         
         Vector3 steer = desiredVec - rb.velocity;
