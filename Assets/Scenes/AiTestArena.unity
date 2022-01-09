@@ -174,6 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 497039799}
   rb: {fileID: 379590733}
+  g: {fileID: 0}
   attackRange: 20
 --- !u!65 &379590735
 BoxCollider:
@@ -302,6 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 497039799}
   rb: {fileID: 411457818}
+  g: {fileID: 0}
   attackRange: 0
 --- !u!65 &411457820
 BoxCollider:
@@ -701,6 +703,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 497039799}
   rb: {fileID: 1120889595}
+  g: {fileID: 0}
   attackRange: 5
 --- !u!65 &1120889597
 BoxCollider:
@@ -831,7 +834,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3780906798646803483, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: size
-      value: 4
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3780906798646803483, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: player

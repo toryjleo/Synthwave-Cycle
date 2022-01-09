@@ -10,6 +10,7 @@ public class EnemyAI : MonoBehaviour
     private Vector3 forward;
     public GameObject target;
     public Rigidbody rb;
+    public Gun g; 
 
     float maxSpeed;
     public float attackRange; 
