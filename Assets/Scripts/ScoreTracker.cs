@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+/// <summary>Class <c>ScoreTracker</c> Component which manages the UI in the upper left of the game screen.</summary>
 public class ScoreTracker : MonoBehaviour
 {
     private const float MAX_TIME = 90;
@@ -14,6 +15,7 @@ public class ScoreTracker : MonoBehaviour
     public TextMeshProUGUI currentScoreText;
     public TextMeshProUGUI currentHPText;
 
+    // Basically player HP but ~flavored~
     public float Energy
     {
         set {
@@ -62,17 +64,20 @@ public class ScoreTracker : MonoBehaviour
         }
     }
 
+    /// <summary>Adds points to the score for this game session.</summary>
+    /// <param name="points">The number of points to add to the score.</param>
     public void AddToScore(int points) 
     {
         currentScore += points;
     }
 
-
+    /// <summary>Loads the gameover screen.</summary>
     private void EndGame() 
     {
         StartCoroutine(LoadYourAsyncScene());
     }
 
+    /// <summary>Loads the gameover screen asycronously.</summary>
     IEnumerator LoadYourAsyncScene()
     {
         // The Application loads the Scene in the background as the current Scene runs.
