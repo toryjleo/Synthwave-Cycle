@@ -31,7 +31,6 @@ public class ScoreTracker : MonoBehaviour
     {
         Init();
         FindBike();
-        UpdateUIEnergy();
     }
 
     // Update is called once per frame

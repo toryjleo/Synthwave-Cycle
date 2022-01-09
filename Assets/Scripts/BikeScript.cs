@@ -71,6 +71,7 @@ public class BikeScript : MonoBehaviour
     /// <summary>Initialize the gun for the player to start with.</summary>
     private void InitializeStartingGun() 
     {
+        // TODO: Make this better
         DoubleBarrelLMG[] guns = Object.FindObjectsOfType<DoubleBarrelLMG>();
         if (guns.Length <= 0)
         {
