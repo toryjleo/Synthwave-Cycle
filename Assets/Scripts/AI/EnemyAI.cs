@@ -44,7 +44,7 @@ public class EnemyAI : MonoBehaviour
 
     public void seperate(List<EnemyAI> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
     {
-        float desiredSeperation = 20;
+        float desiredSeperation = 5;
 
         Vector3 sum = new Vector3(); //the vector that will be used to calculate flee beheavior if a too close interaction happens 
         int count = 0; //this couunts how many TOOCLOSE interactions an entity has, if it has more than one
@@ -60,7 +60,7 @@ public class EnemyAI : MonoBehaviour
 
             if (g.location != location && d < desiredSeperation)
             {
-                desiredSeperation = 20;
+                
                 print("TOO CLOSE");
                 Vector3 diff = location - g.location;
                 diff.Normalize();
