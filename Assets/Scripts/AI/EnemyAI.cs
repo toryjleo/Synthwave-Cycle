@@ -104,6 +104,12 @@ public class EnemyAI : MonoBehaviour
         
     }
 
+    
+    /// <summary>
+    /// These Movement Methods SEEK ARRIVE WANDER are going to evenetually be seperated out into different movement methods 
+    /// for Child classes of EnemyAI, currently SEEK and WANDER are not in use however 
+    /// </summary>
+    /// <param name="target"> target is the vector leading to the player </param>
     private void seek(Vector3 target)
     {
         //steering force = desired velocity - current velocity 
@@ -122,6 +128,11 @@ public class EnemyAI : MonoBehaviour
         applyForce(steer); 
     } // simpler function to just chase directly after the player 
 
+
+    /// <summary>
+    /// This method works for ranged Enemies that do not get into direct melee range with the target 
+    /// </summary>
+    /// <param name="target"> Vector to target </param>
     private void arrive(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee. 
     {
 
@@ -147,8 +158,12 @@ public class EnemyAI : MonoBehaviour
 
         applyForce(steer);
     } 
-
-    private void wander() //do this later 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="traget"></param>
+    private void wander(Vector3 traget
+        ) //do this later 
     {
 
         Vector3 desiredVec = forward;
