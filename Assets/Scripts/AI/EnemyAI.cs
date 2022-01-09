@@ -13,16 +13,16 @@ public class EnemyAI : MonoBehaviour
     public Gun myGun; 
 
     float maxSpeed;
-    public float attackRange; 
+    public float attackRange; //TODO: This will be set when creating different inherited classes for Monobehavior; 
 
-    bool alive;
+    bool alive; 
 
 
     private void Awake()
     {
         alive = true;
         rb = GetComponent<Rigidbody>();
-        location = transform.position;
+        //location = transform.position;
         maxSpeed = 40;
 
     }//we make sure it's alive and get the rigid body 
@@ -35,7 +35,7 @@ public class EnemyAI : MonoBehaviour
     {
 
         targetVec = target.transform.position;
-        location = transform.position;
+        //location = transform.position;
         //seek(targetVec);
         arrive(targetVec);
         //wander();
@@ -90,15 +90,12 @@ public class EnemyAI : MonoBehaviour
 
     public void setUpEnemy(GameObject targ)//sets the target of the entity 
     {
-
-        
         target = targ;
         //myGun = gunToEquip;
-
     }
     public Vector3 getPosition()
     {
-        return location;
+        return transform.position;
     }
 
     void applyForce(Vector3 force)
@@ -128,7 +125,7 @@ public class EnemyAI : MonoBehaviour
     private void arrive(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee. 
     {
 
-        Vector3 desiredVec = target - location; //this logic creates the vector between where the entity is and where it wants to be 
+        Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
         float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points 
         dMag -= attackRange; // dmag is the distance between the two objects, by subtracking this, I make it so the object doesn't desire to move as far.  
 
