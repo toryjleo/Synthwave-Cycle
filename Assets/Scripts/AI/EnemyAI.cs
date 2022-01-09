@@ -162,12 +162,13 @@ public class EnemyAI : MonoBehaviour
 
         applyForce(steer);
     } 
+
+
     /// <summary>
-    /// 
+    /// The enemy will wander around aimlessly with disregard for the player 
     /// </summary>
-    /// <param name="traget"></param>
-    private void wander(Vector3 traget
-        ) //do this later 
+    /// <param name="target"></param>
+    private void wander(Vector3 target) //TODO: do this later 
     {
 
         Vector3 desiredVec = forward;
