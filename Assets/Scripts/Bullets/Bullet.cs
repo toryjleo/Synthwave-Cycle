@@ -12,6 +12,7 @@ public abstract class Bullet : SelfDespawn
     // Specific to gun
     protected float muzzleVelocity = 0;
     protected float mass = 0;
+    protected float damageDealt = 0;
 
 
     public float MuzzleVelocity

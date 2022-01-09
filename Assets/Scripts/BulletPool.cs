@@ -44,7 +44,7 @@ public class BulletPool : MonoBehaviour
         {
 
             Bullet objectToSpawn = bulletQueue.Dequeue();
-            Debug.Log("Spawned, Size of queue: " + bulletQueue.Count);
+            //Debug.Log("Spawned, Size of queue: " + bulletQueue.Count);
             // Check if object already in world
 
             objectToSpawn.gameObject.SetActive(true);
@@ -58,6 +58,6 @@ public class BulletPool : MonoBehaviour
     {
         bullet.gameObject.SetActive(false);
         bulletQueue.Enqueue(bullet as Bullet); // Make sure this is bullet in the future
-        Debug.Log("Despawned, Size of queue: " + bulletQueue.Count);
+        //Debug.Log("Despawned, Size of queue: " + bulletQueue.Count);
     }
 }

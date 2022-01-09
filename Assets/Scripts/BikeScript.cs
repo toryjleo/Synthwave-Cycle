@@ -23,18 +23,20 @@ public class BikeScript : MonoBehaviour
 
     private float maxLean = 40.0f;
 
-
-    private float energy;
+    // Energy
     private const float STARTING_ENERGY = 300.0f;
+    private float energyRegenPerSec;
+    private float STARTING_REGEN_PER_SEC = 5;
 
     public Gun currentGun;
+    private Health health;
 
     private Rigidbody rb;
 
 
     public float Energy
     {
-        get => energy;
+        get => health.HitPoints;
     }
 
     // Start is called before the first frame update
@@ -49,7 +51,20 @@ public class BikeScript : MonoBehaviour
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 0);
         rb = GetComponent<Rigidbody>();
-        energy = STARTING_ENERGY;
+        energyRegenPerSec = STARTING_REGEN_PER_SEC;
+        health = GetComponentInChildren<Health>();
+        health.Init(STARTING_ENERGY);
+    }
+
+    public void Regen(float regenAmount) 
+    {
+        health.Heal(regenAmount);
+    }
+
+    public void UpdateRegenEnergy() 
+    {
+        float regenAmount = Time.deltaTime * energyRegenPerSec;
+        Regen(regenAmount);
     }
 
     /// <summary>Clears the rotation of the child mesh object.</summary>

@@ -32,7 +32,7 @@ public class BasicRifle : Gun
         int numberOfShots = 3;
         for (int i = 0; i < numberOfShots; i++)
         {
-            Debug.Log("SHOT!");
+            //Debug.Log("SHOT!");
             Bullet bullet = bulletPool.SpawnFromPool();
             Vector3 shotDir = gameObject.transform.forward;
             Vector3 bulletPosition = transform.position;

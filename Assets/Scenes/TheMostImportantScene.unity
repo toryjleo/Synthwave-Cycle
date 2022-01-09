@@ -409,8 +409,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190325
-  m_fontColor: {r: 0.9622642, g: 0, b: 0, a: 1}
+    rgba: 4285434911
+  m_fontColor: {r: 0.12130651, g: 0.5471698, b: 0.43243894, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -477,24 +477,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727603003}
   m_CullTransparentMesh: 1
---- !u!1 &1125370525 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6003041435224026445, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
-  m_PrefabInstance: {fileID: 2451000880934106445}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1125370529
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1125370525}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 6.71, y: 2.11, z: 1.4}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1178305381
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,7 +673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad5cd4428875ab044b5a6725c924d8e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreTracker: {fileID: 0}
+  scoreTracker: {fileID: 1178305388}
   bike: {fileID: 596284116}
   Cactus: {fileID: 5811562474388505295, guid: 6cdbe3db9f170dd4a8679c9613211708, type: 3}
   cacscrip: {fileID: 0}
@@ -1272,8 +1254,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tracer-0-Tracer
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2141739293, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
 --- !u!1001 &4682829269668382599
 PrefabInstance:
@@ -1418,7 +1399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7170651920001017730, guid: f34b39831693cc345b1644047b451e33, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.77
+      value: -1.88
       objectReference: {fileID: 0}
     - target: {fileID: 7170651920001017730, guid: f34b39831693cc345b1644047b451e33, type: 3}
       propertyPath: m_LocalPosition.z

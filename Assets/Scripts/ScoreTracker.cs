@@ -41,6 +41,7 @@ public class ScoreTracker : MonoBehaviour
 
         timeLeftText.text = currentTime.ToString("0.00"); // Formats to 2 decimal points
         currentScoreText.text = currentScore.ToString();
+        currentHPText.text = "Energy: " + _currentEnergy.ToString("0.00");
 
         if (currentTime <= 0) 
         {
@@ -59,6 +60,11 @@ public class ScoreTracker : MonoBehaviour
             PlayerPrefs.SetInt("highScore", currentScore);
             PlayerDataObject.highScore = currentScore;
         }
+    }
+
+    public void AddToScore(int points) 
+    {
+        currentScore += points;
     }
 
 
