@@ -5,7 +5,7 @@ using UnityEngine;
 
 // TODO: Make inherit from Pawn class
 /// <summary>Class <c>BikeScript</c> A Unity Component which holds the logic for the Player movement.</summary>
-///
+/// Expects there to be an LMG spawned in-place on the bike's location
 public class BikeScript : MonoBehaviour
 {
     public GameObject bikeMeshParent; // Parent of the bike mesh. This is used to get the forward vector of the bike. 
@@ -38,9 +38,22 @@ public class BikeScript : MonoBehaviour
         get => energy.HitPoints;
     }
 
-    void Awake()
+    private void Awake()
     {
         Init();
+
+        // TODO: make this less gross. Update gun/equip code
+        InitializeStartingGun();
+    }
+
+    private void FixedUpdate()
+    {
+        ApplyForces();
+    }
+
+    private void Update()
+    {
+        UpdateRegenEnergy();
     }
 
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
@@ -53,6 +66,20 @@ public class BikeScript : MonoBehaviour
         energyRegenPerSec = STARTING_REGEN_PER_SEC;
         energy = GetComponentInChildren<Health>();
         energy.Init(STARTING_ENERGY);
+    }
+
+    /// <summary>Initialize the gun for the player to start with.</summary>
+    private void InitializeStartingGun() 
+    {
+        DoubleBarrelLMG[] guns = Object.FindObjectsOfType<DoubleBarrelLMG>();
+        if (guns.Length <= 0)
+        {
+            Debug.LogError("BikeScript did not find any DoubleBarrelLMGs in scene");
+        }
+        else
+        {
+            EquipGun(guns[0]);
+        }
     }
 
     /// <summary>Heals the bike by regenAmount.</summary>

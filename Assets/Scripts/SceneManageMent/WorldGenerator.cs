@@ -28,7 +28,8 @@ public static class WorldBounds
 
 }
 
-/// <summary>Class <c>WorldGenerator</c> Spawns in the ground, updates ground, updates WorldBounds. Expects there to be an object with BikeScript in the scene.</summary>
+/// <summary>Class <c>WorldGenerator</c> Spawns in the ground, updates ground, updates WorldBounds. 
+/// Expects there to be an object with BikeScript in the scene.</summary>
 public class WorldGenerator : MonoBehaviour
 {
     private BikeScript bike;
