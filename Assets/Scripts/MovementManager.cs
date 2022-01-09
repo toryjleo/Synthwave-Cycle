@@ -28,7 +28,7 @@ public static class WorldBounds
 }
 
 
-
+/// <summary>Class <c>MovementManager</c> A class that needs revising</summary>
 public class MovementManager : MonoBehaviour
 {
     public ScoreTracker scoreTracker;
