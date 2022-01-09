@@ -5,12 +5,12 @@ using UnityEngine;
 /// <summary>Class <c>BulletPool</c> A unity component which acts as the basic enemy 3-shot gun.</summary>
 public class BasicRifle : Gun
 {
-    private float timeBetweenTripleShot = .07f;
+    private float timeBetweenTripleShot = .2f;
 
     public override void Init()
     {
         lastFired = 0;
-        fireRate = .5f; // Every 2 seconds
+        fireRate = .25f; // Every 2 seconds
         bulletPool = gameObject.AddComponent<BulletPool>();
         bulletPool.Init(bulletPrefab);
     }

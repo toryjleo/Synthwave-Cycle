@@ -129,11 +129,14 @@ public class EnemyAI : SelfDespawn
         {
             //Slowing down walking speed as AI approaches Target 
 
-            desiredVec *= dMag; 
+            desiredVec *= dMag;
 
-            this.myGun.Shoot(target);
-
-            //TODO: the AI currently doesn't stand still when firing and I'm not sure if they should?
+            if (myGun.CanShootAgain())
+            {
+                this.myGun.Shoot(target);
+                //TODO: the AI currently doesn't stand still when firing and I'm not sure if they should?
+                animationStateController.Shoot();
+            }
 
         } else { 
             desiredVec *= maxSpeed; 
