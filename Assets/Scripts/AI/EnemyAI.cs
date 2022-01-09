@@ -58,15 +58,15 @@ public class EnemyAI : MonoBehaviour
         foreach (EnemyAI g in pool)
         {
             
-            float d = Vector3.Distance(g.location, transform.position);
+            float d = Vector3.Distance(g.transform.position, transform.position);
             
 
 
-            if (g.location != location && d < desiredSeperation)
+            if (g.transform.position != transform.position && d < desiredSeperation)
             {
                 
                 print("TOO CLOSE");
-                Vector3 diff = location - g.location;
+                Vector3 diff = transform.position - g.transform.position;
                 diff.Normalize();
                 sum += diff;
                 count++;
