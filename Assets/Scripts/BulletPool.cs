@@ -5,10 +5,12 @@ using UnityEngine;
 public class BulletPool : MonoBehaviour
 {
     private Bullet bulletPrefab;
-    private int bulletStartAmnt;
+    private int bulletStartAmnt = 0;
 
     private Queue<Bullet> bulletQueue;
 
+    /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
+    /// <param name="bulletPrefab">The template object for this pool.</param>
     public void Init(Bullet bulletPrefab) 
     {
         this.bulletPrefab = bulletPrefab;
@@ -24,6 +26,20 @@ public class BulletPool : MonoBehaviour
         }
     }
 
+    /// <summary>Basically a destructor. Clears the queue.</summary>
+    public void DeInit()
+    {
+        while(bulletQueue.Count > 0) 
+        {
+            Bullet bullet = bulletQueue.Dequeue();
+            bullet.Despawn -= bl_ProcessCompleted;
+        }
+        bulletStartAmnt = 0;
+        bulletPrefab = null;
+    }
+
+    /// <summary>Should handle all initialization for a new bullet instance.</summary>
+    /// <returns>A new gameObject created from bulletPrefab.</returns>
     private Bullet CreateNewBullet() 
     {
         Bullet newObject = Instantiate(bulletPrefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -33,6 +49,8 @@ public class BulletPool : MonoBehaviour
         return newObject;
     }
 
+    /// <summary>Returns an instance of a bullet from the pool if there is an unused bullet.</summary>
+    /// <returns>A currently unused bullet.</returns>
     public Bullet SpawnFromPool() 
     {
         if (bulletQueue.Count == 0)
@@ -54,6 +72,9 @@ public class BulletPool : MonoBehaviour
         }
     }
 
+    /// <summary>Handles newObject.Despawn. Sets bullet to inactive and adds it to queue.</summary>
+    /// <param name="bullet">The object which called Despawn that passes itself into the Despawn method that needs to 
+    /// be added back to the pool.</param>
     public void bl_ProcessCompleted(SelfDespawn bullet)
     {
         bullet.gameObject.SetActive(false);

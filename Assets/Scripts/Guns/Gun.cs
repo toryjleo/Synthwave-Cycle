@@ -22,8 +22,19 @@ public abstract class Gun : MonoBehaviour
         Init();
     }
 
+    protected virtual void OnDestroy() 
+    {
+        DeInit();
+    }
+
     /// <summary>Initializes veriables. Specifically must initialize lastFired and fireRate variables.</summary>
     public abstract void Init();
+
+    /// <summary>Basically a destructor. Calls bulletPool.DeInit().</summary>
+    public virtual void DeInit() 
+    {
+        bulletPool.DeInit();
+    }
 
     /// <summary>Fires the bullet from the muzzle of the gun. Is responsible for calling OnBulletShot and getting bullet from the object pool.</summary>
     /// <param name="initialDirection">The velocity of the gun when the bullet is shot.</param>
