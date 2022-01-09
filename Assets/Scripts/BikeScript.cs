@@ -24,27 +24,27 @@ public class BikeScript : MonoBehaviour
     private float maxLean = 40.0f;
 
     // Energy
+    private Health energy;
     private const float STARTING_ENERGY = 300.0f;
     private float energyRegenPerSec;
     private float STARTING_REGEN_PER_SEC = 5;
 
     public Gun currentGun;
-    private Health health;
 
     private Rigidbody rb;
 
 
     public float Energy
     {
-        get => health.HitPoints;
+        get => energy.HitPoints;
     }
 
-    // Start is called before the first frame update
     void Awake()
     {
         Init();
     }
 
+    /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
     private void Init() 
     {
         // The bike will begin at rest
@@ -52,15 +52,18 @@ public class BikeScript : MonoBehaviour
         acceleration = new Vector2(0, 0);
         rb = GetComponent<Rigidbody>();
         energyRegenPerSec = STARTING_REGEN_PER_SEC;
-        health = GetComponentInChildren<Health>();
-        health.Init(STARTING_ENERGY);
+        energy = GetComponentInChildren<Health>();
+        energy.Init(STARTING_ENERGY);
     }
 
+    /// <summary>Heals the bike by regenAmount.</summary>
+    /// <param name="regenAmount">The amount of points the bike will heal for</param>
     public void Regen(float regenAmount) 
     {
-        health.Heal(regenAmount);
+        energy.Heal(regenAmount);
     }
 
+    /// <summary>Regenerates the bike's energy by a specified amount. Should be called every frame</summary>
     public void UpdateRegenEnergy() 
     {
         float regenAmount = Time.deltaTime * energyRegenPerSec;
@@ -104,13 +107,15 @@ public class BikeScript : MonoBehaviour
     }
 
     /// <summary>This method gets the direction the bike's mesh is currently facing in world coordinates.</summary>
-    /// <returns>A Vector2 of the bike's forward vector in world coordinates. The ector's x represents the x direction 
+    /// <returns>A Vector3 of the bike's forward vector in world coordinates. The Vector's x represents the x direction 
     /// in world coordinates and the vector's y represents the z direction in world coordinates.</returns>
     private Vector3 ForwardVector()
     {
         return new Vector3(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.y, -bikeMeshParent.transform.right.z);
     }
 
+    /// <summary>This method gets the right direction of the bike's mesh in world coordinates.</summary>
+    /// <returns>A Vector3 of the bike's right vector in world coordinates.</returns>
     private Vector2 RightVector() 
     {
         return new Vector2(-bikeMeshParent.transform.forward.x, bikeMeshParent.transform.forward.z);
@@ -151,6 +156,8 @@ public class BikeScript : MonoBehaviour
         bikeMeshParent.transform.Rotate(0, speedAndDirection, 0, Space.Self);
     }
 
+    /// <summary>Responds to the gun'd NotifyShot event.</summary>
+    /// <param name="forceOfBulletOnBike">The force of the bullet to apply to the bike.</param>
     public void bl_ProcessCompleted(Vector3 forceOfBulletOnBike)
     {
         Rigidbody rb = GetComponent<Rigidbody>();
@@ -161,8 +168,17 @@ public class BikeScript : MonoBehaviour
         //acceleration = new Vector2(0, 0);
     }
 
+    /// <summary>Equips the gun to the bike.</summary>
+    /// <param name="gunToEquip">The gun which will be hooked up to the bike's bl_ProcessCompleted. Will be set as a 
+    /// child of bikeMeshParent.</param>
     public void EquipGun(Gun gunToEquip) 
     {
+        if (currentGun != null) 
+        {
+            // Remove event handled from current gun
+            currentGun.BulletShot -= bl_ProcessCompleted;
+        }
+
         this.currentGun = gunToEquip;
         // Make gun child of TracerMeshParent
         currentGun.transform.parent = bikeMeshParent.transform;

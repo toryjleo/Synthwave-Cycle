@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+/// <summary>Class <c>ScoreScreen</c> A class to manage the UI in the GameOver screen.</summary>
 public class ScoreScreen : MonoBehaviour
 {
 

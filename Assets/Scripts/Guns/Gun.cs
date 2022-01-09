@@ -5,6 +5,7 @@ using UnityEngine;
 
 public delegate void NotifyShot(Vector3 force);  // delegate
 
+/// <summary>Class <c>Bullet</c> A Unity Component which spawns bullets.</summary>
 public abstract class Gun : MonoBehaviour
 {
 
@@ -22,11 +23,22 @@ public abstract class Gun : MonoBehaviour
         Init();
     }
 
+    protected virtual void OnDestroy() 
+    {
+        DeInit();
+    }
+
     /// <summary>Initializes veriables. Specifically must initialize lastFired and fireRate variables.</summary>
     public abstract void Init();
 
+    /// <summary>Basically a destructor. Calls bulletPool.DeInit().</summary>
+    public virtual void DeInit() 
+    {
+        bulletPool.DeInit();
+    }
+
     /// <summary>Fires the bullet from the muzzle of the gun. Is responsible for calling OnBulletShot and getting bullet from the object pool.</summary>
-    /// <param name="initialDirection">The velocity of the gun when the bullet is shot.</param>
+    /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
     public abstract void Shoot(Vector3 initialVelocity);
 
     /// <summary>Notifies listeners that a bullet has been shot.</summary>
@@ -37,6 +49,8 @@ public abstract class Gun : MonoBehaviour
         BulletShot?.Invoke(-forceOfBullet);
     }
 
+    /// <summary>Will return true if the gun's cooldown has happened.</summary>
+    /// <returns>True if the gun can shoot again.</returns>
     protected bool CanShootAgain() 
     {
         return Time.time - lastFired > 1 / fireRate;
