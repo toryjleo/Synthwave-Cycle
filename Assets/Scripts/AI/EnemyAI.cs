@@ -151,6 +151,8 @@ public class EnemyAI : MonoBehaviour
         if (dMag < maxSpeed)
         {
             desiredVec *= dMag;
+
+            this.myGun.Shoot(target);
         } else { 
             desiredVec *= maxSpeed; 
         }
@@ -158,7 +160,7 @@ public class EnemyAI : MonoBehaviour
         Vector3 steer = desiredVec - rb.velocity;
         //steer.limit(maxForce);
 
-        this.myGun.Shoot(target); 
+        
 
         applyForce(steer);
     } 
