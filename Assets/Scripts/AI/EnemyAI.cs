@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : SelfDespawn
 {
 
     private Vector3 targetVec; //this is the vector to their quarry 
-    private Vector3 location; //this is the vector of the entity 
-    private Vector3 forward;
     public GameObject target;
     public Rigidbody rb;
     public Gun myGun; 
@@ -27,20 +25,20 @@ public class EnemyAI : MonoBehaviour
 
     }//we make sure it's alive and get the rigid body 
 
-    
-   
-
-    // Update is called once per frame
-    void Update()
+    public override void Init()
     {
 
-        targetVec = target.transform.position;
-        //location = transform.position;
-        //seek(targetVec);
-        arrive(targetVec);
-        //wander();
-           
     }
+
+    public override void Update()
+    {
+        base.Update();
+        targetVec = target.transform.position;
+
+        arrive(targetVec);
+    }
+
+
 
     /// <summary>
     /// This method requires the entire of AI 
@@ -63,9 +61,7 @@ public class EnemyAI : MonoBehaviour
 
 
             if (g.transform.position != transform.position && d < desiredSeperation)
-            {
-                
-                print("TOO CLOSE");
+            {        
                 Vector3 diff = transform.position - g.transform.position;
                 diff.Normalize();
                 sum += diff;
@@ -97,10 +93,6 @@ public class EnemyAI : MonoBehaviour
         target = targ;
         //myGun = gunToEquip;
     }
-    public Vector3 getPosition()
-    {
-        return transform.position;
-    }
 
     void applyForce(Vector3 force)
     {
@@ -108,7 +100,7 @@ public class EnemyAI : MonoBehaviour
         
     }
 
-    
+    #region Movement
     /// <summary>
     /// These Movement Methods SEEK ARRIVE WANDER are going to evenetually be seperated out into different movement methods 
     /// for Child classes of EnemyAI, currently SEEK and WANDER are not in use however 
@@ -122,7 +114,7 @@ public class EnemyAI : MonoBehaviour
         //the enemy moves towards the player at maximum speed
         //by normailizing the vector we can take into account the speed 
 
-        Vector3 desiredVec = target - location;
+        Vector3 desiredVec = target - transform.position;
         desiredVec.Normalize();
         desiredVec *= maxSpeed;
 
@@ -151,6 +143,8 @@ public class EnemyAI : MonoBehaviour
         if (dMag < maxSpeed)
         {
             desiredVec *= dMag;
+
+            this.myGun.Shoot(target);
         } else { 
             desiredVec *= maxSpeed; 
         }
@@ -158,7 +152,7 @@ public class EnemyAI : MonoBehaviour
         Vector3 steer = desiredVec - rb.velocity;
         //steer.limit(maxForce);
 
-        this.myGun.Shoot(target); 
+        
 
         applyForce(steer);
     } 
@@ -171,9 +165,9 @@ public class EnemyAI : MonoBehaviour
     private void wander(Vector3 target) //TODO: do this later 
     {
 
-        Vector3 desiredVec = forward;
+        //Vector3 desiredVec = forward;
 
-        float d = desiredVec.magnitude;
+        //float d = desiredVec.magnitude;
 
 
 
@@ -186,5 +180,5 @@ public class EnemyAI : MonoBehaviour
 
     }
 
-
+    #endregion
 }
