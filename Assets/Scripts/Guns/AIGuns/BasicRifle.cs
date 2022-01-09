@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>Class <c>BulletPool</c> A unity component which acts as the basic enemy 3-shot gun.</summary>
 public class BasicRifle : Gun
 {
     private float timeBetweenTripleShot = .07f;

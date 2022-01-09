@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>Class <c>BulletPool</c> A Unity Component works as an object pool for bullets.</summary>
 public class BulletPool : MonoBehaviour
 {
     private Bullet bulletPrefab;
