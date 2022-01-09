@@ -24,7 +24,15 @@ public class ObjectPoolSpawner : MonoBehaviour
         for (int i = 0; i < size; i++)
         {
             Vector3 ranPos = new Vector3(Random.Range(-30, 30), 0, Random.Range(-30, 30));
-            EnemyAI newEnemy = Instantiate(objectToPool, ranPos, Quaternion.identity);
+            Quaternion ranRot = Quaternion.Euler(0, 0, Random.Range(0, 359));
+
+            Vector3 spawnVector = new Vector3(player.transform.position.x, player.transform.position.y, 100);
+
+            spawnVector = ranRot * spawnVector;
+            EnemyAI newEnemy = Instantiate(objectToPool, spawnVector, Quaternion.identity);
+
+
+
             newEnemy.setUpEnemy(player);
             pool.Add(newEnemy);
         }
