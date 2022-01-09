@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public delegate void NotifyReadyToDespawn(SelfDespawn bulletToDespawn);  // delegate
+public delegate void NotifyReadyToDespawn(SelfDespawn entity);  // delegate
 
 /// <summary>Class <c>SelfDespawn</c> An abstract class that contains despawn code.</summary>
 public abstract class SelfDespawn : MonoBehaviour
