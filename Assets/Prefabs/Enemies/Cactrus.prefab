@@ -591,14 +591,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5811562474388505295}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e776266a734cfa246a62beb290e5c54f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  rb: {fileID: 0}
+  myGun: {fileID: 0}
+  attackRange: 0
   cPosition: {x: 0, y: 0, z: 0}
   HP: 1
-  alive: 1
 --- !u!1 &6270396065795615396
 GameObject:
   m_ObjectHideFlags: 0

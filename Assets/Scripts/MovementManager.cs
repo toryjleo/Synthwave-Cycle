@@ -60,15 +60,7 @@ public class MovementManager : MonoBehaviour
 
         bike.EquipGun(InitialPlayerGun);
         //Spawn Cactai 
-        cacti = new GameObject[10];
-
-        for (int i = 0; i < 10; i++)
-        {
-            Vector3 spawnP = new Vector3(Random.Range(-80, 80), -2, Random.Range(-80, 80));
-            cacti[i] = Instantiate(Cactus, spawnP, Quaternion.identity);
-            cacti[i].GetComponent<CactusScript>().grow(spawnP);
-
-        }
+     
     }
 
     // Update is called once per frame
