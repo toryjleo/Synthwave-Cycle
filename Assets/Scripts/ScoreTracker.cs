@@ -39,14 +39,15 @@ public class ScoreTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        currentTime -= Time.deltaTime;
-
-        timeLeftText.text = currentTime.ToString("0.00"); // Formats to 2 decimal points
-        currentScoreText.text = currentScore.ToString();
-        currentHPText.text = "Energy: " + _currentEnergy.ToString("0.00");
-
+        UpdateText();
         if (currentTime <= 0) 
         {
+            // Win condition
+            EndGame();
+        }
+        else if (_currentEnergy <=0) 
+        {
+            // Lose Condition
             EndGame();
         }
     }
@@ -62,6 +63,16 @@ public class ScoreTracker : MonoBehaviour
             PlayerPrefs.SetInt("highScore", currentScore);
             PlayerDataObject.highScore = currentScore;
         }
+    }
+
+    /// <summary>Updates the UI displayed on screen.</summary>
+    private void UpdateText() 
+    {
+        currentTime -= Time.deltaTime;
+
+        timeLeftText.text = currentTime.ToString("0.00"); // Formats to 2 decimal points
+        currentScoreText.text = currentScore.ToString();
+        currentHPText.text = "Energy: " + _currentEnergy.ToString("0.00");
     }
 
     /// <summary>Adds points to the score for this game session.</summary>
