@@ -8,10 +8,9 @@ public class ObjectPoolSpawner : MonoBehaviour
     public EnemyAI objectToPool; 
     public Gun gunToPool;
     public GameObject player;
-    public GameObject spawnerArm;
     private List<EnemyAI> pool;
     public float size;
-    private float spawnDistance = 100; //the number of units away from the player that the enemy spawns 
+    public float spawnDistance = 100; //the number of units away from the player that the enemy spawns 
 
     // Start is called before the first frame update
     void Start()

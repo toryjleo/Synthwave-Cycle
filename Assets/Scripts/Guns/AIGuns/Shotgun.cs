@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Shotgun : Gun
 {
-    private float timeBetweenTripleShot = .07f;
+    private float timeBetweenBlastWaves = .02f;
 
     public override void Init()
     {
         lastFired = 0;
-        fireRate = .5f; // Every 2 seconds
+        fireRate = .7f; // Every 2 seconds
         bulletPool = gameObject.AddComponent<BulletPool>();
         bulletPool.Init(bulletPrefab);
     }
@@ -21,24 +21,39 @@ public class Shotgun : Gun
             lastFired = Time.time;
             //Bullet bullet = bulletPool.SpawnFromPool();
 
-            StartCoroutine(TripleShot());
+            StartCoroutine(SpreadShot());
 
             //OnBulletShot(shotDir * bullet.Mass * bullet.muzzleVelocity);
         }
     }
 
-    IEnumerator TripleShot()
+    IEnumerator SpreadShot()
     {
-        int numberOfShots = 3;
+        int numberOfShots = 2;
+        int numberOfPellets = 8;
+
+        int degreeOff = -8;
+
+        Vector3 shotDir = gameObject.transform.forward;
+        Vector3 bulletPosition = transform.position;
+        Vector3 initialVelocity = Vector3.zero;
+
         for (int i = 0; i < numberOfShots; i++)
         {
             //Debug.Log("SHOT!");
-            Bullet bullet = bulletPool.SpawnFromPool();
-            Vector3 shotDir = gameObject.transform.forward;
-            Vector3 bulletPosition = transform.position;
-            Vector3 initialVelocity = Vector3.zero;
-            bullet.Shoot(bulletPosition, shotDir, initialVelocity);
-            yield return new WaitForSeconds(timeBetweenTripleShot);
+
+            for(int p = 0; p < numberOfPellets; p++)
+            {
+                Bullet bullet = bulletPool.SpawnFromPool();               
+                bullet.Shoot(bulletPosition, Quaternion.Euler(0, degreeOff, 0)*shotDir, initialVelocity);
+                degreeOff += 2;
+            }
+            numberOfPellets--;
+
+            degreeOff = -7;
+          
+            
+            yield return new WaitForSeconds(timeBetweenBlastWaves);
         }
         yield return null;
     }
