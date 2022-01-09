@@ -42,6 +42,10 @@ public class EnemyAI : MonoBehaviour
            
     }
 
+    /// <summary>
+    /// This method requires the entire of AI 
+    /// </summary>
+    /// <param name="pool"></param>
     public void seperate(List<EnemyAI> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
     {
         float desiredSeperation = 5;
