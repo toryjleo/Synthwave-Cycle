@@ -10,7 +10,7 @@ public class EnemyAI : MonoBehaviour
     private Vector3 forward;
     public GameObject target;
     public Rigidbody rb;
-    public Gun g; 
+    public Gun myGun; 
 
     float maxSpeed;
     public float attackRange; 
@@ -90,8 +90,10 @@ public class EnemyAI : MonoBehaviour
 
     public void setUpEnemy(GameObject targ)//sets the target of the entity 
     {
-        target = targ;
+
         
+        target = targ;
+        //myGun = gunToEquip;
 
     }
     public Vector3 getPosition()
@@ -143,7 +145,9 @@ public class EnemyAI : MonoBehaviour
         
         Vector3 steer = desiredVec - rb.velocity;
         //steer.limit(maxForce);
-        
+
+        this.myGun.Shoot(target); 
+
         applyForce(steer);
     } 
 

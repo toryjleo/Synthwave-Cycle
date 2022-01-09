@@ -6,6 +6,7 @@ public class ObjectPoolSpawner : MonoBehaviour
 {
 
     public EnemyAI objectToPool;
+    public Gun gunToPool;
     public GameObject player; 
     private List<EnemyAI> pool;
     public float size;
@@ -22,7 +23,7 @@ public class ObjectPoolSpawner : MonoBehaviour
             EnemyAI newEnemy = Instantiate(objectToPool, ranPos, Quaternion.identity);
 
             newEnemy.setUpEnemy(player);
-
+            
             
             pool.Add(newEnemy);
 
