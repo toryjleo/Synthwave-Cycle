@@ -62,6 +62,11 @@ public class ScoreTracker : MonoBehaviour
         }
     }
 
+    public void AddToScore(int points) 
+    {
+        currentScore += points;
+    }
+
 
     private void EndGame() 
     {
