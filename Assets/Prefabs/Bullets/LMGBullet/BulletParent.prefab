@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5749691770675399995}
   - component: {fileID: -8647737283410319699}
+  - component: {fileID: 3259825866201617729}
+  - component: {fileID: 3035618541420728678}
   m_Layer: 0
   m_Name: BulletParent
   m_TagString: Untagged
@@ -44,7 +46,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a851912fde91df14ca5f83509bd8c9d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  muzzleVelocity: 180
+--- !u!136 &3259825866201617729
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868517562401068993}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.2
+  m_Height: 0.81
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &3035618541420728678
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868517562401068993}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &36196462093013385
 PrefabInstance:
   m_ObjectHideFlags: 0
