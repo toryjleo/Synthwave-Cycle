@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 
 /// <summary>Class <c>ScoreTracker</c> Component which manages the UI in the upper left of the game screen.</summary>
+/// Expects there to be an object with BikeScript in the scene.
 public class ScoreTracker : MonoBehaviour
 {
     private const float MAX_TIME = 90;
@@ -15,6 +16,8 @@ public class ScoreTracker : MonoBehaviour
     public TextMeshProUGUI currentScoreText;
     public TextMeshProUGUI currentHPText;
 
+    public BikeScript bike;
+
     // Basically player HP but ~flavored~
     public float Energy
     {
@@ -24,23 +27,18 @@ public class ScoreTracker : MonoBehaviour
     }
 
 
-    // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
         Init();
-    }
-
-    public void Init() 
-    {
-        currentTime = MAX_TIME;
-        currentScore = 0;
+        FindBike();
     }
 
     // Update is called once per frame
     void Update()
     {
+        UpdateUIEnergy();
         UpdateText();
-        if (currentTime <= 0) 
+        if (currentTime <= 0)
         {
             // Win condition
             EndGame();
@@ -49,6 +47,25 @@ public class ScoreTracker : MonoBehaviour
         {
             // Lose Condition
             EndGame();
+        }
+    }
+
+    public void Init() 
+    {
+        currentTime = MAX_TIME;
+        currentScore = 0;
+    }
+
+    private void FindBike() 
+    {
+        BikeScript[] bikeScripts = Object.FindObjectsOfType<BikeScript>();
+        if (bikeScripts.Length <= 0)
+        {
+            Debug.LogError("WorldGenerator did not find any BikeScripts in scene");
+        }
+        else
+        {
+            bike = bikeScripts[0];
         }
     }
 
@@ -80,6 +97,12 @@ public class ScoreTracker : MonoBehaviour
     public void AddToScore(int points) 
     {
         currentScore += points;
+    }
+
+    /// <summary>Updates this class's Energy to the bike's energy.</summary>
+    private void UpdateUIEnergy()
+    {
+        Energy = bike.Energy;
     }
 
     /// <summary>Loads the gameover screen.</summary>

@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>Class <c>WorldBounds</c> A static class which will contain the bounds of the world. Updates every frame</summary>
 ///
@@ -16,9 +17,9 @@ public static class WorldBounds
         get => groundTileSize.x;
     }
     /// <summary></summary>
-    public static float GroundTileHeight 
-    { 
-        get => groundTileSize.z; 
+    public static float GroundTileHeight
+    {
+        get => groundTileSize.z;
     }
 
 
@@ -27,62 +28,43 @@ public static class WorldBounds
 
 }
 
-
-/// <summary>Class <c>MovementManager</c> A class that needs revising</summary>
-public class MovementManager : MonoBehaviour
+/// <summary>Class <c>WorldGenerator</c> Spawns in the ground, updates ground, updates WorldBounds. 
+/// Expects there to be an object with BikeScript in the scene.</summary>
+public class WorldGenerator : MonoBehaviour
 {
-    public ScoreTracker scoreTracker;
-    public BikeScript bike;
-    public GameObject Cactus;
-    public CactusScript cacscrip;
-    public GameObject[] cacti;
-    public Vector3 curVec;
-
-    public Gun InitialPlayerGun;
-
+    private BikeScript bike;
     #region ground
-    public GameObject ground;
+    [SerializeField] private GameObject ground;
     private GameObject[,] groundTiles;
-    private const int GROUND_ARRAY_WIDTH  = 3;
+    private const int GROUND_ARRAY_WIDTH = 3;
     private int GROUND_ARRAY_HEIGHT = 3;
     private float groundTileSpawnHeight = -3.12f;
     #endregion
 
-    private void Awake()
-    {
-        UpdateUIEnergy();
-    }
-
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        InitializeGround();
+        BikeScript[] bikeScripts = Object.FindObjectsOfType<BikeScript>();
+        if (bikeScripts.Length <= 0) 
+        {
+            Debug.LogError("WorldGenerator did not find any BikeScripts in scene");
+        }
+        else 
+        {
+            bike = bikeScripts[0];
+        }
 
-        bike.EquipGun(InitialPlayerGun);
-        //Spawn Cactai 
-     
+        InitializeGround();
     }
 
     // Update is called once per frame
-    void FixedUpdate()
-    {
-        ApplyForces();
-    }
-
-    private void Update()
+    void Update()
     {
         CheckUpdateGroundTiles();
-        bike.UpdateRegenEnergy();
-        UpdateUIEnergy();  // Update the UI with the HP
-    }
-
-    private void UpdateUIEnergy() 
-    {
-        scoreTracker.Energy = bike.Energy;
     }
 
     #region ground
-    private void InitializeGround() 
+    private void InitializeGround()
     {
         WorldBounds.groundTileSize = ground.GetComponent<Renderer>().bounds.size;
         float groundWidth = WorldBounds.GroundTileWidth;
@@ -90,9 +72,9 @@ public class MovementManager : MonoBehaviour
         groundTiles = new GameObject[GROUND_ARRAY_WIDTH, GROUND_ARRAY_HEIGHT];
 
         // Initialize tiles at origin
-        for (int i = 0; i < GROUND_ARRAY_HEIGHT; i++) 
+        for (int i = 0; i < GROUND_ARRAY_HEIGHT; i++)
         {
-            for (int j = 0; j < GROUND_ARRAY_WIDTH; j++) 
+            for (int j = 0; j < GROUND_ARRAY_WIDTH; j++)
             {
                 GameObject goundTile = Instantiate(ground);
                 Vector3 spawnLocation = new Vector3(groundHeight * (i - 1), groundTileSpawnHeight, groundWidth * (j - 1));
@@ -104,24 +86,24 @@ public class MovementManager : MonoBehaviour
         UpdateWorldMinMax();
     }
 
-    private GameObject GetMiddleTile() 
+    private GameObject GetMiddleTile()
     {
         int middleHeightIdx = GetMiddleTileVerticalIdx();
         int middleWidthIdx = GetMiddleTileHorizontalIdx();
         return groundTiles[middleHeightIdx, middleWidthIdx];
     }
-    
+
     private int GetMiddleTileVerticalIdx()
     {
         return (GROUND_ARRAY_HEIGHT - 1) / 2;
     }
 
-    private int GetMiddleTileHorizontalIdx() 
+    private int GetMiddleTileHorizontalIdx()
     {
         return (GROUND_ARRAY_WIDTH - 1) / 2;
     }
 
-    private void UpdateMiddleTileMinMax() 
+    private void UpdateMiddleTileMinMax()
     {
         Vector3 currentTileLocation = GetMiddleTile().transform.position;
         float halfTileWidth = WorldBounds.groundTileSize.x / 2;
@@ -130,13 +112,13 @@ public class MovementManager : MonoBehaviour
         WorldBounds.currentTileVericalMinMax = new Vector2(currentTileLocation.z - halfTileHeight, currentTileLocation.z + halfTileHeight);
     }
 
-    private void UpdateWorldMinMax() 
+    private void UpdateWorldMinMax()
     {
         WorldBounds.worldBoundsHorizontalMinMax = new Vector2(WorldBounds.currentTileHorizontalMinMax.x - WorldBounds.GroundTileWidth, WorldBounds.currentTileHorizontalMinMax.y + WorldBounds.GroundTileWidth);
         WorldBounds.worldBoundsVericalMinMax = new Vector2(WorldBounds.currentTileVericalMinMax.x - WorldBounds.GroundTileHeight, WorldBounds.currentTileVericalMinMax.y + WorldBounds.GroundTileHeight);
     }
 
-    private void CheckUpdateGroundTiles() 
+    private void CheckUpdateGroundTiles()
     {
         Vector3 bikePosition = bike.transform.position;
         float bikeHorizontalPos = bikePosition.x;
@@ -151,7 +133,7 @@ public class MovementManager : MonoBehaviour
         else if (bikeVerticalPos < WorldBounds.currentTileVericalMinMax.x) { MoveGroundTiles(0, -1); } // Lower Quadrant
     }
 
-    private void MoveGroundTiles(int xDiff, int yDiff) 
+    private void MoveGroundTiles(int xDiff, int yDiff)
     {
         for (int i = 0; i < GROUND_ARRAY_HEIGHT; i++)
         {
@@ -165,11 +147,4 @@ public class MovementManager : MonoBehaviour
         UpdateWorldMinMax();
     }
     #endregion
-
-    /// <summary>Applies all forces to the Player bike this frame before position is updated.</summary>
-    private void ApplyForces()
-    {      
-        bike.ApplyForces();       
-    }
-
 }
