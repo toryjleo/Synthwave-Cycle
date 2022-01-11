@@ -8,26 +8,26 @@ public class EnemyAI : SelfDespawn
     private Vector3 targetVec; //this is the vector to their quarry 
     public GameObject target;
     public Rigidbody rb;
-    public Gun myGun; 
+
+    public Gun myGun;
+    private Health hp;
+    
 
     float maxSpeed;
+    float maxForce;
     public float attackRange; //TODO: This will be set when creating different inherited classes for Monobehavior; 
 
     bool alive; 
 
 
-    private void Awake()
+
+    public override void Init()
     {
         alive = true;
         rb = GetComponent<Rigidbody>();
         //location = transform.position;
         maxSpeed = 40;
-
-    }//we make sure it's alive and get the rigid body 
-
-    public override void Init()
-    {
-
+        hp.Init(1); 
     }
 
     public override void Update()

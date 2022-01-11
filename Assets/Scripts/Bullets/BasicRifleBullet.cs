@@ -21,5 +21,10 @@ public class BasicRifleBullet : Bullet
             tracerHealth.TakeDamage(damageDealt);
             //Debug.Log("Hit Player!");
         }
+
+        if (other.gameObject.tag == "Enemy")
+        {
+
+        }
     }
 }

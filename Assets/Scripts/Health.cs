@@ -7,17 +7,22 @@ public class Health : MonoBehaviour
 {
     private float _hitPoints;
 
+
+    //WFT is this? a getter? 
     public float HitPoints
     {
         get => _hitPoints;
     }
 
+
+    //Whem do I call this method and why? Do I have to call it every time? 
     /// <summary>An itialization method.</summary>
     /// <param name="initialHealth">The number of hit points to start with.</param>
     public void Init(float initialHealth) 
     {
         _hitPoints = initialHealth;
     }
+
 
     /// <summary>Subtracts points to _hitPoints.</summary>
     /// <param name="hp">The number of points to subtract from _hitPoints.</param>

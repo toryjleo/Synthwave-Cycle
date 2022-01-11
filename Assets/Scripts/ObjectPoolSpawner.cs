@@ -31,6 +31,8 @@ public class ObjectPoolSpawner : MonoBehaviour
             //TODO:will have to create a general spawn method in the future so as not to doop code HERE&&HERE1
             Vector3 spawnVector = new Vector3(player.transform.position.x, player.transform.position.y, spawnDistance);
             Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
+
+
             spawnVector = ranRot * spawnVector;
 
             EnemyAI newEnemy = Instantiate(objectToPool, spawnVector, Quaternion.identity);
