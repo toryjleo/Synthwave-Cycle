@@ -41,12 +41,12 @@ public class ScoreTracker : MonoBehaviour
         if (currentTime <= 0)
         {
             // Win condition
-            EndGame();
+            EndGame(true);
         }
         else if (_currentEnergy <=0) 
         {
             // Lose Condition
-            EndGame();
+            EndGame(false);
         }
     }
 
@@ -106,8 +106,10 @@ public class ScoreTracker : MonoBehaviour
     }
 
     /// <summary>Loads the gameover screen.</summary>
-    private void EndGame() 
+    /// <param name="survivedEvent">True if the player beat the level.</param>
+    private void EndGame(bool survivedEvent) 
     {
+        PlayerDataObject.survivedEvent = survivedEvent;
         StartCoroutine(LoadYourAsyncScene());
     }
 
