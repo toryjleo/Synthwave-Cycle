@@ -17,9 +17,13 @@ public class EnemyAI : SelfDespawn
     float maxForce;
     public float attackRange; //TODO: This will be set when creating different inherited classes for Monobehavior; 
 
-    bool alive; 
+    bool alive;
 
 
+     void Awake()
+    {
+        Init();
+    }
 
     public override void Init()
     {
@@ -27,7 +31,8 @@ public class EnemyAI : SelfDespawn
         rb = GetComponent<Rigidbody>();
         //location = transform.position;
         maxSpeed = 40;
-        hp.Init(1); 
+        hp = GetComponentInChildren<Health>();
+        hp.Init(40);
     }
 
     public override void Update()
