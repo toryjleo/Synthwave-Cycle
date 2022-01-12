@@ -67,7 +67,8 @@ public class ObjectPoolSpawner : MonoBehaviour
         Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
         spawnVector = ranRot * spawnVector;
 
-        deddude.gameObject.transform.position = spawnVector; 
+        deddude.gameObject.transform.position = spawnVector;
+        deddude.Init();
         deddude.gameObject.SetActive(true);
 
 
@@ -89,6 +90,8 @@ public class ObjectPoolSpawner : MonoBehaviour
                 g.seperate(pool); //
             } else
             {
+                
+
                 print("dead Dude");
                 Respawn(g); 
             }

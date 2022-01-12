@@ -485,6 +485,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3874834856194593566}
   - component: {fileID: 3874834856194593561}
+  - component: {fileID: 8669432795803699916}
   m_Layer: 0
   m_Name: Cyborg_Soldier
   m_TagString: Enemy
@@ -527,6 +528,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8669432795803699916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3874834856194593562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3874834856226785690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1314,7 +1327,6 @@ GameObject:
   - component: {fileID: 3874834857555224723}
   - component: {fileID: 3874834857555224722}
   - component: {fileID: 3874834857555224720}
-  - component: {fileID: 6301655467082763215}
   - component: {fileID: 412237147971708079}
   m_Layer: 0
   m_Name: CYBORG
@@ -1371,18 +1383,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &6301655467082763215
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3874834857555224733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &412237147971708079
 CapsuleCollider:
   m_ObjectHideFlags: 0

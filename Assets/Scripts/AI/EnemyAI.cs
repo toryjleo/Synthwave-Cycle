@@ -11,6 +11,7 @@ public class EnemyAI : SelfDespawn
 
     public Gun myGun;
     private Health hp;
+    public float StartingHP;
     
 
     float maxSpeed;
@@ -20,7 +21,12 @@ public class EnemyAI : SelfDespawn
     bool alive;
 
 
-     void Awake()
+    public float hitpoints
+    {
+        get => hp.HitPoints;
+    }
+
+    void Awake()
     {
         Init();
     }
@@ -28,11 +34,11 @@ public class EnemyAI : SelfDespawn
     public override void Init()
     {
         alive = true;
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>(); 
         //location = transform.position;
         maxSpeed = 40;
         hp = GetComponentInChildren<Health>();
-        hp.Init(40);
+        hp.Init(StartingHP);
     }
 
     public override void Update()
@@ -40,7 +46,16 @@ public class EnemyAI : SelfDespawn
         base.Update();
         targetVec = target.transform.position;
 
-        arrive(targetVec);
+        if (hp.HitPoints <= 0)
+        {
+            myGun.StopAllCoroutines();
+            this.gameObject.SetActive(false);
+        } else
+        {
+            arrive(targetVec);
+        }
+
+        
     }
 
 

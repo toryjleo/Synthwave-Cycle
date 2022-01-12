@@ -27,6 +27,8 @@ public class Shotgun : Gun
         }
     }
 
+    
+
     IEnumerator SpreadShot()
     {
         int numberOfShots = 2;
@@ -56,6 +58,11 @@ public class Shotgun : Gun
             yield return new WaitForSeconds(timeBetweenBlastWaves);
         }
         yield return null;
+    }
+
+    public  void stopFiring()
+    {
+        StopCoroutine("SpreadShot");
     }
 
     public void Update()
