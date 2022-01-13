@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 
 /// <summary>Class <c>ScoreTracker</c> Component which manages the UI in the upper left of the game screen.</summary>
+/// Expects there to be an object with BikeScript in the scene.
 public class ScoreTracker : MonoBehaviour
 {
     private const float MAX_TIME = 90;
@@ -15,6 +16,8 @@ public class ScoreTracker : MonoBehaviour
     public TextMeshProUGUI currentScoreText;
     public TextMeshProUGUI currentHPText;
 
+    public BikeScript bike;
+
     // Basically player HP but ~flavored~
     public float Energy
     {
@@ -24,10 +27,27 @@ public class ScoreTracker : MonoBehaviour
     }
 
 
-    // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
         Init();
+        FindBike();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        UpdateUIEnergy();
+        UpdateText();
+        if (currentTime <= 0)
+        {
+            // Win condition
+            EndGame(true);
+        }
+        else if (_currentEnergy <=0) 
+        {
+            // Lose Condition
+            EndGame(false);
+        }
     }
 
     public void Init() 
@@ -36,18 +56,16 @@ public class ScoreTracker : MonoBehaviour
         currentScore = 0;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FindBike() 
     {
-        currentTime -= Time.deltaTime;
-
-        timeLeftText.text = currentTime.ToString("0.00"); // Formats to 2 decimal points
-        currentScoreText.text = currentScore.ToString();
-        currentHPText.text = "Energy: " + _currentEnergy.ToString("0.00");
-
-        if (currentTime <= 0) 
+        BikeScript[] bikeScripts = Object.FindObjectsOfType<BikeScript>();
+        if (bikeScripts.Length <= 0)
         {
-            EndGame();
+            Debug.LogError("WorldGenerator did not find any BikeScripts in scene");
+        }
+        else
+        {
+            bike = bikeScripts[0];
         }
     }
 
@@ -64,6 +82,16 @@ public class ScoreTracker : MonoBehaviour
         }
     }
 
+    /// <summary>Updates the UI displayed on screen.</summary>
+    private void UpdateText() 
+    {
+        currentTime -= Time.deltaTime;
+
+        timeLeftText.text = currentTime.ToString("0.00"); // Formats to 2 decimal points
+        currentScoreText.text = currentScore.ToString();
+        currentHPText.text = "Energy: " + _currentEnergy.ToString("0.00");
+    }
+
     /// <summary>Adds points to the score for this game session.</summary>
     /// <param name="points">The number of points to add to the score.</param>
     public void AddToScore(int points) 
@@ -71,9 +99,17 @@ public class ScoreTracker : MonoBehaviour
         currentScore += points;
     }
 
-    /// <summary>Loads the gameover screen.</summary>
-    private void EndGame() 
+    /// <summary>Updates this class's Energy to the bike's energy.</summary>
+    private void UpdateUIEnergy()
     {
+        Energy = bike.Energy;
+    }
+
+    /// <summary>Loads the gameover screen.</summary>
+    /// <param name="survivedEvent">True if the player beat the level.</param>
+    private void EndGame(bool survivedEvent) 
+    {
+        PlayerDataObject.survivedEvent = survivedEvent;
         StartCoroutine(LoadYourAsyncScene());
     }
 

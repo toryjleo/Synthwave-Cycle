@@ -47,6 +47,7 @@ public abstract class Bullet : SelfDespawn
     public void Shoot(Vector3 curPosition, Vector3 direction, Vector3 initialVelocity) 
     {
         transform.position = curPosition;
+        direction.y = 0; // Do not travel vertically
         shootDir = direction.normalized;
         transform.rotation = Quaternion.LookRotation(direction);
         this.initialVelocity = initialVelocity;

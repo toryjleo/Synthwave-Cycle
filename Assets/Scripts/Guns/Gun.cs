@@ -51,7 +51,7 @@ public abstract class Gun : MonoBehaviour
 
     /// <summary>Will return true if the gun's cooldown has happened.</summary>
     /// <returns>True if the gun can shoot again.</returns>
-    protected bool CanShootAgain() 
+    public bool CanShootAgain() 
     {
         return Time.time - lastFired > 1 / fireRate;
     }
