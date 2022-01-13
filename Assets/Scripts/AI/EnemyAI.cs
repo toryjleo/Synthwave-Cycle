@@ -26,32 +26,27 @@ public class EnemyAI : SelfDespawn
     {
         get => hp.HitPoints;
     }
-    public void Init()
+    public override void Init()
     {
         alive = true;
         rb = GetComponent<Rigidbody>();
+        //location = transform.position;
+        maxSpeed = 40;
+        hp = GetComponentInChildren<Health>();
+        StartingHP = 40;
+        hp.Init(StartingHP);
+
         animationStateController = GetComponent<CyborgAnimationStateController>();
+
         if (animationStateController == null)
         {
             Debug.LogError("This object needs a CyborgAnimationStateController component");
         }
-        //location = transform.position;
-        maxSpeed = 40;
     }
 
     void Awake()
     {
         Init();
-    }
-
-    public override void Init()
-    {
-        alive = true;
-        rb = GetComponent<Rigidbody>(); 
-        //location = transform.position;
-        maxSpeed = 40;
-        hp = GetComponentInChildren<Health>();
-        hp.Init(StartingHP);
     }
 
     public override void Update()
