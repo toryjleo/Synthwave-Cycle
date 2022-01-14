@@ -8,10 +8,9 @@ public class ObjectPoolSpawner : MonoBehaviour
     public EnemyAI objectToPool; 
     public Gun gunToPool;
     public GameObject player;
-    public GameObject spawnerArm;
     private List<EnemyAI> pool;
     public float size;
-    private float spawnDistance = 100; //the number of units away from the player that the enemy spawns 
+    public float spawnDistance = 100; //the number of units away from the player that the enemy spawns 
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +31,8 @@ public class ObjectPoolSpawner : MonoBehaviour
             //TODO:will have to create a general spawn method in the future so as not to doop code HERE&&HERE1
             Vector3 spawnVector = new Vector3(player.transform.position.x, player.transform.position.y, spawnDistance);
             Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
+
+
             spawnVector = ranRot * spawnVector;
 
             EnemyAI newEnemy = Instantiate(objectToPool, spawnVector, Quaternion.identity);
@@ -66,7 +67,8 @@ public class ObjectPoolSpawner : MonoBehaviour
         Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
         spawnVector = ranRot * spawnVector;
 
-        deddude.gameObject.transform.position = spawnVector; 
+        deddude.gameObject.transform.position = spawnVector;
+        deddude.Init();
         deddude.gameObject.SetActive(true);
 
 
@@ -88,6 +90,8 @@ public class ObjectPoolSpawner : MonoBehaviour
                 g.seperate(pool); //
             } else
             {
+                
+
                 print("dead Dude");
                 Respawn(g); 
             }

@@ -21,5 +21,7 @@ public class BasicRifleBullet : Bullet
             tracerHealth.TakeDamage(damageDealt);
             //Debug.Log("Hit Player!");
         }
+
+    
     }
 }

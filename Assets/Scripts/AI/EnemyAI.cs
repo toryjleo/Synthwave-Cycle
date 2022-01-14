@@ -8,32 +8,45 @@ public class EnemyAI : SelfDespawn
     private Vector3 targetVec; //this is the vector to their quarry 
     public GameObject target;
     public Rigidbody rb;
+
     public Gun myGun;
+    private Health hp;
+    public float StartingHP;
+    
     private CyborgAnimationStateController animationStateController;
 
     float maxSpeed;
+    float maxForce;
     public float attackRange; //TODO: This will be set when creating different inherited classes for Monobehavior; 
 
-    bool alive; 
+    bool alive;
 
 
-    private void Awake()
+    public float hitpoints
+    {
+        get => hp.HitPoints;
+    }
+    public override void Init()
     {
         alive = true;
         rb = GetComponent<Rigidbody>();
+        //location = transform.position;
+        maxSpeed = 40;
+        hp = GetComponentInChildren<Health>();
+        StartingHP = 40;
+        hp.Init(StartingHP);
+
         animationStateController = GetComponent<CyborgAnimationStateController>();
-        if (animationStateController == null) 
+
+        if (animationStateController == null)
         {
             Debug.LogError("This object needs a CyborgAnimationStateController component");
         }
-        //location = transform.position;
-        maxSpeed = 40;
+    }
 
-    }//we make sure it's alive and get the rigid body 
-
-    public override void Init()
+    void Awake()
     {
-
+        Init();
     }
 
     public override void Update()
@@ -41,7 +54,16 @@ public class EnemyAI : SelfDespawn
         base.Update();
         targetVec = target.transform.position;
 
-        arrive(targetVec);
+        if (hp.HitPoints <= 0)
+        {
+            myGun.StopAllCoroutines();
+            this.gameObject.SetActive(false);
+        } else
+        {
+            arrive(targetVec);
+        }
+
+        
         animationStateController.SetSpeed(rb.velocity.magnitude);
     }
 

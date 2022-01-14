@@ -1367,7 +1367,7 @@ MonoBehaviour:
   target: {fileID: 0}
   rb: {fileID: 3874834857555224720}
   myGun: {fileID: 250586739251281370}
-  StartingHP: 0
+  StartingHP: 40
   attackRange: 10
 --- !u!54 &3874834857555224720
 Rigidbody:

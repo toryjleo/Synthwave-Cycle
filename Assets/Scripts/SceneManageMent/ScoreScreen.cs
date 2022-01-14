@@ -39,7 +39,7 @@ public class ScoreScreen : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R)) 
         {
             // Restart the game
-            StartCoroutine(LoadYourAsyncScene("TheMostImportantScene"));
+            StartCoroutine(LoadYourAsyncScene("TestScene"));
         }
     }
 
