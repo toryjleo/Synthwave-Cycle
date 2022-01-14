@@ -22,9 +22,6 @@ public class BasicRifleBullet : Bullet
             //Debug.Log("Hit Player!");
         }
 
-        if (other.gameObject.tag == "Enemy")
-        {
-
-        }
+    
     }
 }

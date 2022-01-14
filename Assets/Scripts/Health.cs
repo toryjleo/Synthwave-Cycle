@@ -8,7 +8,6 @@ public class Health : MonoBehaviour
     private float _hitPoints;
 
 
-    //WFT is this? a getter? 
     public float HitPoints
     {
         get => _hitPoints;
