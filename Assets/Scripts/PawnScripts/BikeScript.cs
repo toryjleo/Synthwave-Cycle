@@ -23,20 +23,15 @@ public class BikeScript : MonoBehaviour
 
     private float maxLean = 40.0f;
 
-    // Energy
-    private Health energy;
-    private const float STARTING_ENERGY = 300.0f;
-    private float energyRegenPerSec;
-    private float STARTING_REGEN_PER_SEC = 5;
-
     public Gun currentGun;
 
     private Rigidbody rb;
 
+    private Health health;
 
     public float Energy
     {
-        get => energy.HitPoints;
+        get => health.HitPoints;
     }
 
     private void Awake()
@@ -54,7 +49,6 @@ public class BikeScript : MonoBehaviour
 
     private void Update()
     {
-        UpdateRegenEnergy();
     }
 
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
@@ -64,9 +58,7 @@ public class BikeScript : MonoBehaviour
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 0);
         rb = GetComponent<Rigidbody>();
-        energyRegenPerSec = STARTING_REGEN_PER_SEC;
-        energy = GetComponentInChildren<Health>();
-        energy.Init(STARTING_ENERGY);
+        health = GetComponentInChildren<Health>();
     }
 
     /// <summary>Initialize the gun for the player to start with.</summary>
@@ -82,20 +74,6 @@ public class BikeScript : MonoBehaviour
         {
             EquipGun(guns[0]);
         }
-    }
-
-    /// <summary>Heals the bike by regenAmount.</summary>
-    /// <param name="regenAmount">The amount of points the bike will heal for</param>
-    public void Regen(float regenAmount) 
-    {
-        energy.Heal(regenAmount);
-    }
-
-    /// <summary>Regenerates the bike's energy by a specified amount. Should be called every frame</summary>
-    public void UpdateRegenEnergy() 
-    {
-        float regenAmount = Time.deltaTime * energyRegenPerSec;
-        Regen(regenAmount);
     }
 
     /// <summary>Clears the rotation of the child mesh object.</summary>

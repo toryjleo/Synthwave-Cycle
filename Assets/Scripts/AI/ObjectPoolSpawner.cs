@@ -8,9 +8,10 @@ public class ObjectPoolSpawner : MonoBehaviour
     public EnemyAI objectToPool; 
     public Gun gunToPool;
     public GameObject player;
+    public ScoreTracker scoreKeeper;
     private List<EnemyAI> pool;
     public float size;
-    public float spawnDistance = 100; //the number of units away from the player that the enemy spawns 
+    public float spawnDistance = 30; //the number of units away from the player that the enemy spawns 
 
     // Start is called before the first frame update
     void Start()
@@ -22,27 +23,21 @@ public class ObjectPoolSpawner : MonoBehaviour
     {
         pool = new List<EnemyAI>();
 
-        
-        
-
         for (int i = 0; i < size; i++)
         {
 
             //TODO:will have to create a general spawn method in the future so as not to doop code HERE&&HERE1
-            Vector3 spawnVector = new Vector3(player.transform.position.x, player.transform.position.y, spawnDistance);
+            Vector3 spawnVector = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z+spawnDistance);
             Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
-
 
             spawnVector = ranRot * spawnVector;
 
+           
             EnemyAI newEnemy = Instantiate(objectToPool, spawnVector, Quaternion.identity);
-
-
             newEnemy.Init();
             newEnemy.setUpEnemy(player);
             newEnemy.Despawn += op_ProcessCompleted; //this line adds the despawn event to this entity 
             newEnemy.gameObject.SetActive(true);
-
 
             pool.Add(newEnemy);
         }
@@ -63,9 +58,11 @@ public class ObjectPoolSpawner : MonoBehaviour
     {
 
         //TODO: Doop code HERE&&HERE1 
-        Vector3 spawnVector = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z+spawnDistance);
+        Vector3 spawnVector = new Vector3(0, player.transform.position.y, spawnDistance);
         Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
         spawnVector = ranRot * spawnVector;
+
+        spawnVector += player.transform.position;
 
         deddude.gameObject.transform.position = spawnVector;
         deddude.Init();
@@ -77,25 +74,22 @@ public class ObjectPoolSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        
+
         foreach (EnemyAI g in pool)
         {
-            
-
-           
 
             if(g.gameObject.activeSelf)
             {
                 g.seperate(pool); //
             } else
             {
-                Respawn(g); 
+                if (g.isAlive() == false) // Checks if Enemy Got shot or if they just got despawned 
+                {
+                    scoreKeeper.AddToScore(((int)g.getScore()));                   
+                }
+                Respawn(g);
             }
 
-            
-
-          
         }
     }
 }
