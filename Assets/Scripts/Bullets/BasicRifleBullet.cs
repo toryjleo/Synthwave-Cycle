@@ -17,7 +17,7 @@ public class BasicRifleBullet : Bullet
         if (other.gameObject.tag == "Player")
         {
             // TracerMesh should have a Health component
-            Health tracerHealth = other.GetComponent<Health>();
+            Health tracerHealth = other.GetComponentInChildren<Health>();
             tracerHealth.TakeDamage(damageDealt);
             //Debug.Log("Hit Player!");
         }
