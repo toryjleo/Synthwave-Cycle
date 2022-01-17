@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>Class <c>PlayerHealthRegen</c> A Unity Component which will update the player health along with how the player regains health.</summary>
+/// Needs to be manually assigned the health in editor
 public class PlayerHealthRegen : MonoBehaviour
 {
     // Energy
     public Health health;
-    private const float STARTING_ENERGY = 300.0f;
+    private const float STARTING_HEALTH = 300.0f;
     private float energyRegenPerSec;
     private float STARTING_REGEN_PER_SEC = 3;
     private float ADDITIONAL_REGEN_MULTIPLIER = 4;
@@ -50,15 +52,19 @@ public class PlayerHealthRegen : MonoBehaviour
     {
         numEnemiesInVolume = 0;
         energyRegenPerSec = STARTING_REGEN_PER_SEC;
-        health.Init(STARTING_ENERGY);
+        health.Init(STARTING_HEALTH);
         SetScale(MAX_SCALE);
     }
 
+    /// <summary>Returns the full length the player's regen can grow or shrink</summary>
+    /// <returns>The difference of MAX_SCALE - MIN_SCALE.</returns>
     private float ScaleMINMAXDifference() 
     {
         return MAX_SCALE - MIN_SCALE;
     }
 
+    /// <summary>Returns the percentage of the regen. Will be at max when curScale == MAX_SCALE</summary>
+    /// <returns>The percentage of the regen.</returns>
     private float PercentRegen() 
     {
         return (curScale - MIN_SCALE) / ScaleMINMAXDifference();
@@ -80,21 +86,30 @@ public class PlayerHealthRegen : MonoBehaviour
         health.Heal(regenAmount);
     }
 
+    /// <summary>Shrinks the regen scale by amnt.</summary>
+    /// <param name="amnt">The amount of points to reduce curScale by.</param>
     private void Shrink(float amnt) 
     {
         SetScale(curScale - amnt);
     }
 
+    /// <summary>Grows the regen scale by amnt.</summary>
+    /// <param name="amnt">The amount of points to increase curScale by.</param>
     private void Grow(float amnt)
     {
         SetScale(curScale + amnt);
     }
 
+    /// <summary>Clamps amnt between MIN_SCALE and MAX_SCALE.</summary>
+    /// <param name="amnt">The unit to be clamped.</param>
+    /// <returns>The clamped amnt.</returns>
     private float ClampScale(float amnt)
     {
         return Mathf.Clamp(amnt, MIN_SCALE, MAX_SCALE);
     }
 
+    /// <summary>Updates the current scale.</summary>
+    /// <param name="scale">The scale at which to set this object to.</param>
     private void SetScale(float scale) 
     {
         curScale = ClampScale(scale);
