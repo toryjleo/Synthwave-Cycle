@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class EnemyAI : SelfDespawn
 {
-
+    //Vars for hunting the player 
     private Vector3 targetVec; //this is the vector to their quarry 
     public GameObject target;
-    public Rigidbody rb;
 
-    public Gun myGun;
-    private Health hp;
-    public float StartingHP;
-    
+    //potential inports 
     private CyborgAnimationStateController animationStateController;
+    public Rigidbody rb;
+    public Gun myGun;
 
+    //stats used in construction 
+    private Health hp;
+    private float score;
+    public float StartingHP;
     float maxSpeed;
     float maxForce;
     public float attackRange; //TODO: This will be set when creating different inherited classes for Monobehavior; 
-
     bool alive;
 
 
@@ -31,9 +32,11 @@ public class EnemyAI : SelfDespawn
         alive = true;
         rb = GetComponent<Rigidbody>();
         //location = transform.position;
-        maxSpeed = 40;
+        maxSpeed = 40; 
+        maxForce = 60;
         hp = GetComponentInChildren<Health>();
         StartingHP = 40;
+        score = 100;
         hp.Init(StartingHP);
 
         animationStateController = GetComponent<CyborgAnimationStateController>();
@@ -54,16 +57,15 @@ public class EnemyAI : SelfDespawn
         base.Update();
         targetVec = target.transform.position;
 
-        if (hp.HitPoints <= 0)
+        if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned 
         {
             myGun.StopAllCoroutines();
+            alive = false;
             this.gameObject.SetActive(false);
         } else
         {
             arrive(targetVec);
         }
-
-        
         animationStateController.SetSpeed(rb.velocity.magnitude);
     }
 
@@ -104,6 +106,11 @@ public class EnemyAI : SelfDespawn
                 sum *= maxSpeed;
 
                 Vector3 steer = sum - rb.velocity;
+                if(steer.magnitude > maxForce)
+                {
+                    steer.Normalize();
+                    steer *= maxForce;
+                }
                 //steer.limit(maxForce);
                 applyForce(steer);
 
@@ -115,6 +122,10 @@ public class EnemyAI : SelfDespawn
     public bool isAlive()
     {
         return alive;
+    } 
+    public float getScore()
+    {
+        return score;
     }
 
     public void setUpEnemy(GameObject targ)//sets the target of the entity 
