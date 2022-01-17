@@ -21,7 +21,6 @@ public class LMGBullet : Bullet
             float z = otherHealth.HitPoints;
             otherHealth.TakeDamage(damageDealt);
             //Debug.Log("Hit Player!");
-            
         }
     }
 }
