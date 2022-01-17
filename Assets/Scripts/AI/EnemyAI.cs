@@ -32,7 +32,7 @@ public class EnemyAI : SelfDespawn
         alive = true;
         rb = GetComponent<Rigidbody>();
         //location = transform.position;
-        maxSpeed = 40;
+        maxSpeed = 40; 
         maxForce = 60;
         hp = GetComponentInChildren<Health>();
         StartingHP = 40;
@@ -57,7 +57,7 @@ public class EnemyAI : SelfDespawn
         base.Update();
         targetVec = target.transform.position;
 
-        if (hp.HitPoints <= 0)
+        if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned 
         {
             myGun.StopAllCoroutines();
             alive = false;
@@ -66,8 +66,6 @@ public class EnemyAI : SelfDespawn
         {
             arrive(targetVec);
         }
-
-        
         animationStateController.SetSpeed(rb.velocity.magnitude);
     }
 
@@ -125,7 +123,6 @@ public class EnemyAI : SelfDespawn
     {
         return alive;
     } 
-
     public float getScore()
     {
         return score;
