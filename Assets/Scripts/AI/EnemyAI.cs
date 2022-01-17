@@ -56,17 +56,18 @@ public class EnemyAI : SelfDespawn
     {
         base.Update();
         targetVec = target.transform.position;
-
+        animationStateController.SetSpeed(rb.velocity.magnitude);
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned 
         {
             myGun.StopAllCoroutines();
+            animationStateController.StopAllCoroutines();
             alive = false;
             this.gameObject.SetActive(false);
         } else
         {
             arrive(targetVec);
         }
-        animationStateController.SetSpeed(rb.velocity.magnitude);
+        
     }
 
 
