@@ -90,9 +90,6 @@ public class ObjectPoolSpawner : MonoBehaviour
                 g.seperate(pool); //
             } else
             {
-                
-
-                print("dead Dude");
                 Respawn(g); 
             }
 
