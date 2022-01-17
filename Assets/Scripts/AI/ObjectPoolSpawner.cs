@@ -8,6 +8,7 @@ public class ObjectPoolSpawner : MonoBehaviour
     public EnemyAI objectToPool; 
     public Gun gunToPool;
     public GameObject player;
+    public ScoreTracker scoreKeeper;
     private List<EnemyAI> pool;
     public float size;
     public float spawnDistance = 30; //the number of units away from the player that the enemy spawns 
@@ -73,25 +74,22 @@ public class ObjectPoolSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        
+
         foreach (EnemyAI g in pool)
         {
-            
-
-           
 
             if(g.gameObject.activeSelf)
             {
                 g.seperate(pool); //
             } else
             {
-                Respawn(g); 
+                if (g.isAlive() == false) // Checks if Enemy Got shot or if they just got despawned 
+                {
+                    scoreKeeper.AddToScore(((int)g.getScore()));                   
+                }
+                Respawn(g);
             }
 
-            
-
-          
         }
     }
 }

@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class EnemyAI : SelfDespawn
 {
-
+    //Vars for hunting the player 
     private Vector3 targetVec; //this is the vector to their quarry 
     public GameObject target;
-    public Rigidbody rb;
 
-    public Gun myGun;
-    private Health hp;
-    public float StartingHP;
-    
+    //potential inports 
     private CyborgAnimationStateController animationStateController;
+    public Rigidbody rb;
+    public Gun myGun;
 
+    //stats used in construction 
+    private Health hp;
+    private float score;
+    public float StartingHP;
     float maxSpeed;
     float maxForce;
     public float attackRange; //TODO: This will be set when creating different inherited classes for Monobehavior; 
-
     bool alive;
 
 
@@ -32,8 +33,10 @@ public class EnemyAI : SelfDespawn
         rb = GetComponent<Rigidbody>();
         //location = transform.position;
         maxSpeed = 40;
+        maxForce = 60;
         hp = GetComponentInChildren<Health>();
         StartingHP = 40;
+        score = 100;
         hp.Init(StartingHP);
 
         animationStateController = GetComponent<CyborgAnimationStateController>();
@@ -57,6 +60,7 @@ public class EnemyAI : SelfDespawn
         if (hp.HitPoints <= 0)
         {
             myGun.StopAllCoroutines();
+            alive = false;
             this.gameObject.SetActive(false);
         } else
         {
@@ -104,6 +108,11 @@ public class EnemyAI : SelfDespawn
                 sum *= maxSpeed;
 
                 Vector3 steer = sum - rb.velocity;
+                if(steer.magnitude > maxForce)
+                {
+                    steer.Normalize();
+                    steer *= maxForce;
+                }
                 //steer.limit(maxForce);
                 applyForce(steer);
 
@@ -115,6 +124,11 @@ public class EnemyAI : SelfDespawn
     public bool isAlive()
     {
         return alive;
+    } 
+
+    public float getScore()
+    {
+        return score;
     }
 
     public void setUpEnemy(GameObject targ)//sets the target of the entity 

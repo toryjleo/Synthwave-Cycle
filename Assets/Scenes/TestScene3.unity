@@ -179,9 +179,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 857266969}
     - target: {fileID: 3780906798646803483, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: scoreKeeper
+      value: 
+      objectReference: {fileID: 2028977148}
+    - target: {fileID: 3780906798646803483, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: objectToPool
       value: 
       objectReference: {fileID: 3874834857555224722, guid: 7aa24a1c7c3d07948a29eaa65ccfcd02, type: 3}
+    - target: {fileID: 3780906798646803483, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: spawnDistance
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 3780906798646803492, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: m_Name
       value: Spawner
@@ -749,3 +757,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc79f88bf5ef6944e9faae38bf026639, type: 3}
+--- !u!114 &2028977148 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1856768569889706826, guid: f6985c8cb3e788345836a4f1e0d8e8a5, type: 3}
+  m_PrefabInstance: {fileID: 1195003561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 114199c072ea0124290c6772ac6e3d4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
