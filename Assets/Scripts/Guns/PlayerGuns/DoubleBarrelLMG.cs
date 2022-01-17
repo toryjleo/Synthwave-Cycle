@@ -9,6 +9,8 @@ public class DoubleBarrelLMG : Gun
     // Very specific to this gun
     public GameObject muzzle1;
     public GameObject muzzle2;
+    public AudioSource muzzle1Audio;
+    public AudioSource muzzle2Audio;
     private bool muzzle1Turn = true;
 
     public override void Init() 
@@ -35,11 +37,13 @@ public class DoubleBarrelLMG : Gun
             {
                 shotDir = muzzle1.transform.forward;
                 bullet.Shoot(muzzle1.transform.position, shotDir, initialVelocity);
+                muzzle1Audio.Play();
             }
             else
             {
                 shotDir = muzzle2.transform.forward;
                 bullet.Shoot(muzzle2.transform.position, shotDir, initialVelocity);
+                muzzle2Audio.Play();
             }
             muzzle1Turn = !muzzle1Turn;
             OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);

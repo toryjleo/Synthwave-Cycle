@@ -18,6 +18,7 @@ public class ScoreTracker : MonoBehaviour
 
     public BikeScript bike;
 
+
     // Basically player HP but ~flavored~
     public float Energy
     {
