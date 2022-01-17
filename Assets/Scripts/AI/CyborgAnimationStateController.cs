@@ -10,7 +10,7 @@ public class CyborgAnimationStateController : MonoBehaviour
     int shootHash;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         animator = GetComponentInChildren<Animator>();
         if (animator == null) 
