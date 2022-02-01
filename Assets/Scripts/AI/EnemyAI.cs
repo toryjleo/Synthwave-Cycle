@@ -37,18 +37,6 @@ public class EnemyAI : AiTemplate
     public override void Update()
     {
         base.Update();
-        animationStateController.SetSpeed(rb.velocity.magnitude);
-        if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned 
-        {
-            myGun.StopAllCoroutines();
-            animationStateController.StopAllCoroutines();
-            alive = false;
-            this.gameObject.SetActive(false);
-        } else
-        {
-            Move(target.transform.position);
-        }
-        
     }
 
 

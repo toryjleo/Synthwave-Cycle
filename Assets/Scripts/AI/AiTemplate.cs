@@ -32,7 +32,23 @@ public abstract class AiTemplate : SelfDespawn
     public override void Update()
     {
         base.Update();
+        animationStateController.SetSpeed(rb.velocity.magnitude);
+
+
+        if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned 
+        {
+            myGun.StopAllCoroutines();
+            animationStateController.StopAllCoroutines();
+            alive = false;
+            this.gameObject.SetActive(false);
+        }
+        else
+        {
+            Move(target.transform.position);
+        }
+
     }
+
 
     public void Attack()
     {
@@ -49,7 +65,7 @@ public abstract class AiTemplate : SelfDespawn
     /// This method works for ranged Enemies that do not get into direct melee range with the target 
     /// </summary>
     /// <param name="target"> Vector to target </param>
-    public void Move(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee. 
+    public virtual void Move(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee. 
     {
 
         Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
