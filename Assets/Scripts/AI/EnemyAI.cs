@@ -2,25 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAI : SelfDespawn
+public class EnemyAI : AiTemplate
 {
     //Vars for hunting the player 
-    private Vector3 targetVec; //this is the vector to their quarry 
+    public Vector3 targetVec; //this is the vector to their quarry 
     public GameObject target;
 
     //potential inports 
-    private CyborgAnimationStateController animationStateController;
+    public CyborgAnimationStateController animationStateController;
     public Rigidbody rb;
     public Gun myGun;
 
     //stats used in construction 
-    private Health hp;
-    private float score;
+    public Health hp;
+    public float score;
     public float StartingHP;
-    float maxSpeed;
-    float maxForce;
+    public float maxSpeed;
+    public float maxForce;
     public float attackRange; //TODO: This will be set when creating different inherited classes for Monobehavior; 
-    bool alive;
+    public bool alive;
 
 
     public float hitpoints
