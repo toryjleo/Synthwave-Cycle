@@ -13,12 +13,10 @@ public abstract class AiTemplate : SelfDespawn
     public Health hp;
 
 
-
-
-    public float score;
     public float StartingHP;
     public float maxSpeed;
     public float maxForce;
+    public float score;
     public float attackRange;
     public bool alive;
 
@@ -81,27 +79,66 @@ public abstract class AiTemplate : SelfDespawn
         if (dMag < maxSpeed)
         {
             desiredVec *= dMag;
-
             Attack();
-
         }
         else
         {
             desiredVec *= maxSpeed;
-
         }
         Vector3 steer = desiredVec - rb.velocity;
-        //steer.limit(maxForce);
         applyForce(steer);
     }
 
     public void applyForce(Vector3 force)
     {
         rb.AddForce(force);
-
     }
 
+    /// <summary>
+    /// This method requires the entire of AI 
+    /// </summary>
+    /// <param name="pool"></param>
+    public void seperate(List<EnemyAI> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
+    {
+        float desiredSeperation = 5;
 
+        Vector3 sum = new Vector3(); //the vector that will be used to calculate flee beheavior if a too close interaction happens 
+        int count = 0; //this couunts how many TOOCLOSE interactions an entity has, if it has more than one
+                       //it adds the sum vector  
+
+
+        foreach (EnemyAI g in pool)
+        {
+
+            float d = Vector3.Distance(g.transform.position, transform.position);
+
+            if (g.transform.position != transform.position && d < desiredSeperation)
+            {
+                Vector3 diff = transform.position - g.transform.position;
+                diff.Normalize();
+                sum += diff;
+                count++;
+            }
+
+            if (count > 0)
+            {
+                sum /= count;
+                sum.Normalize();
+                sum *= maxSpeed;
+
+                Vector3 steer = sum - rb.velocity;
+                if (steer.magnitude > maxForce)
+                {
+                    steer.Normalize();
+                    steer *= maxForce;
+                }
+
+                applyForce(steer);
+
+            }
+
+        }
+    }
     #endregion
 
     #region Getters & Setters
