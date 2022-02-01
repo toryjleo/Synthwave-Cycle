@@ -15,7 +15,7 @@ public class EnemyAI : AiTemplate
         animationStateController = GetComponent<CyborgAnimationStateController>();
         //location = transform.position;
         maxSpeed = 40; 
-        maxForce = 60;
+        maxForce = 1;
         
         StartingHP = 40;
         score = 100;
@@ -93,7 +93,7 @@ public class EnemyAI : AiTemplate
                     steer.Normalize();
                     steer *= maxForce;
                 }
-                //steer.limit(maxForce);
+                
                 applyForce(steer);
 
             }
@@ -102,12 +102,7 @@ public class EnemyAI : AiTemplate
     }
 
 
-
-    public void setUpEnemy(GameObject targ)//sets the target of the entity 
-    {
-        target = targ;
-        //myGun = gunToEquip;
-    }
+    
 
 
 }

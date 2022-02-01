@@ -35,7 +35,7 @@ public class ObjectPoolSpawner : MonoBehaviour
            
             EnemyAI newEnemy = Instantiate(objectToPool, spawnVector, Quaternion.identity);
             newEnemy.Init();
-            newEnemy.setUpEnemy(player);
+            newEnemy.loadout(player);
             newEnemy.Despawn += op_ProcessCompleted; //this line adds the despawn event to this entity 
             newEnemy.gameObject.SetActive(true);
 

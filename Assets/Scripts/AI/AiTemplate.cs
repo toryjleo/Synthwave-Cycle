@@ -22,11 +22,10 @@ public abstract class AiTemplate : SelfDespawn
     public float attackRange;
     public bool alive;
 
-
-    // Start is called before the first frame update
-    public void Start()
+    public void loadout(GameObject targ)//sets the target of the entity 
     {
-        
+        target = targ;
+        //myGun = gunToEquip;
     }
 
     // Update is called once per frame
