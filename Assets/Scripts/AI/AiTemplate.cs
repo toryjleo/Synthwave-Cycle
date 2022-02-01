@@ -35,6 +35,15 @@ public abstract class AiTemplate : SelfDespawn
         base.Update();
     }
 
+    public void Attack()
+    {
+        if (myGun.CanShootAgain())
+        {
+            this.myGun.Shoot(target.transform.position);
+            animationStateController.Shoot();
+        }
+    }
+
 
     #region Movement
     /// <summary>
@@ -56,30 +65,18 @@ public abstract class AiTemplate : SelfDespawn
 
         if (dMag < maxSpeed)
         {
-            //Slowing down walking speed as AI approaches Target 
-
             desiredVec *= dMag;
 
-            if (myGun.CanShootAgain())
-            {
-                this.myGun.Shoot(target);
-                //TODO: the AI currently doesn't stand still when firing and I'm not sure if they should?
-                animationStateController.Shoot();
-            }
+            Attack();
 
         }
         else
         {
             desiredVec *= maxSpeed;
 
-            //walking speed is normal 
         }
-
         Vector3 steer = desiredVec - rb.velocity;
         //steer.limit(maxForce);
-
-
-
         applyForce(steer);
     }
 
