@@ -38,7 +38,6 @@ public class EnemyAI : AiTemplate
     public override void Update()
     {
         base.Update();
-        targetVec = target.transform.position;
         animationStateController.SetSpeed(rb.velocity.magnitude);
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned 
         {
@@ -48,7 +47,7 @@ public class EnemyAI : AiTemplate
             this.gameObject.SetActive(false);
         } else
         {
-            arrive(targetVec);
+            arrive(target.transform.position);
         }
         
     }
