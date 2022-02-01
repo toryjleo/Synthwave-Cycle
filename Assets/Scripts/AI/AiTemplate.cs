@@ -34,4 +34,17 @@ public abstract class AiTemplate : SelfDespawn
     {
         base.Update();
     }
+
+
+    #region Getters & Setters
+    public bool isAlive()
+    {
+        return alive;
+    }
+    public float getScore()
+    {
+        return score;
+    }
+
+    #endregion
 }

@@ -6,23 +6,22 @@ public class EnemyAI : AiTemplate
 {
 
 
-    public float hitpoints
-    {
-        get => hp.HitPoints;
-    }
+ 
     public override void Init()
     {
         alive = true;
+        hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
+        animationStateController = GetComponent<CyborgAnimationStateController>();
         //location = transform.position;
         maxSpeed = 40; 
         maxForce = 60;
-        hp = GetComponentInChildren<Health>();
+        
         StartingHP = 40;
         score = 100;
         hp.Init(StartingHP);
 
-        animationStateController = GetComponent<CyborgAnimationStateController>();
+        
 
         if (animationStateController == null)
         {
@@ -102,14 +101,7 @@ public class EnemyAI : AiTemplate
         }
     }
 
-    public bool isAlive()
-    {
-        return alive;
-    } 
-    public float getScore()
-    {
-        return score;
-    }
+
 
     public void setUpEnemy(GameObject targ)//sets the target of the entity 
     {
@@ -167,29 +159,6 @@ public class EnemyAI : AiTemplate
 
         applyForce(steer);
     } 
-
-
-    /// <summary>
-    /// The enemy will wander around aimlessly with disregard for the player 
-    /// </summary>
-    /// <param name="target"></param>
-    private void wander(Vector3 target) //TODO: do this later 
-    {
-
-        //Vector3 desiredVec = forward;
-
-        //float d = desiredVec.magnitude;
-
-
-
-
-        
-        Quaternion rot = Quaternion.Euler(0, 0, Random.Range(0,359));
-        //steer = rot * steer;
-
-
-
-    }
 
     #endregion
 }
