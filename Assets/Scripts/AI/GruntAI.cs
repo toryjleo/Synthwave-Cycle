@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAI : AiTemplate
+public class GruntAI : AiTemplate
 {
 
 
- 
     public override void Init()
     {
         alive = true;
@@ -14,14 +13,14 @@ public class EnemyAI : AiTemplate
         rb = GetComponent<Rigidbody>();
         animationStateController = GetComponent<CyborgAnimationStateController>();
         //location = transform.position;
-        maxSpeed = 40; 
+        maxSpeed = 20;
         maxForce = 1;
-        
-        StartingHP = 40;
-        score = 100;
+
+        StartingHP = 80;
+        score = 300;
         hp.Init(StartingHP);
 
-        
+        attackRange = 4;
 
         if (animationStateController == null)
         {
@@ -39,7 +38,7 @@ public class EnemyAI : AiTemplate
         {
             Debug.LogError("This object needs a Gun component");
         }
-        
+
     }
 
     void Awake()

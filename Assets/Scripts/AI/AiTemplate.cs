@@ -20,11 +20,7 @@ public abstract class AiTemplate : SelfDespawn
     public float attackRange;
     public bool alive;
 
-    public void loadout(GameObject targ)//sets the target of the entity 
-    {
-        target = targ;
-        //myGun = gunToEquip;
-    }
+
 
     // Update is called once per frame
     public override void Update()
@@ -98,7 +94,7 @@ public abstract class AiTemplate : SelfDespawn
     /// This method requires the entire of AI 
     /// </summary>
     /// <param name="pool"></param>
-    public void seperate(List<EnemyAI> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
+    public void seperate(List<GruntAI> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
     {
         float desiredSeperation = 5;
 
@@ -107,7 +103,7 @@ public abstract class AiTemplate : SelfDespawn
                        //it adds the sum vector  
 
 
-        foreach (EnemyAI g in pool)
+        foreach (GruntAI g in pool)
         {
 
             float d = Vector3.Distance(g.transform.position, transform.position);
@@ -150,6 +146,11 @@ public abstract class AiTemplate : SelfDespawn
     {
         return score;
     }
+    public void loadout(GameObject targ)//sets the target of the entity and equips the gun
+    {
+        target = targ;
+        //myGun = gunToEquip;
+    }
 
-    #endregion
+    #endregion & Setup
 }

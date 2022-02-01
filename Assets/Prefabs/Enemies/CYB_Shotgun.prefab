@@ -1357,7 +1357,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3892049325346874338}
-  - component: {fileID: 8198519020085540812}
+  - component: {fileID: -8418418034295697308}
   - component: {fileID: 2114404339180774918}
   - component: {fileID: 6293195935236756366}
   - component: {fileID: 6128039659088265392}
@@ -1384,7 +1384,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8198519020085540812
+--- !u!114 &-8418418034295697308
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1393,14 +1393,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 7978806473477363408}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6675fd315cbde074a8ff6f7be406ac4a, type: 3}
+  m_Script: {fileID: 11500000, guid: 994fe2be6bbdb0548acd8a8641a19dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  animationStateController: {fileID: 0}
   rb: {fileID: 2114404339180774918}
   myGun: {fileID: 4935205766387807532}
-  StartingHP: 40
-  attackRange: 1
+  hp: {fileID: 0}
+  StartingHP: 0
+  maxSpeed: 0
+  maxForce: 0
+  score: 0
+  attackRange: 0
+  alive: 0
 --- !u!54 &2114404339180774918
 Rigidbody:
   m_ObjectHideFlags: 0

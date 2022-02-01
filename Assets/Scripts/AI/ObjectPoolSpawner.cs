@@ -5,11 +5,11 @@ using UnityEngine;
 public class ObjectPoolSpawner : MonoBehaviour
 {
 
-    public EnemyAI objectToPool; 
+    public GruntAI objectToPool; 
     public Gun gunToPool;
     public GameObject player;
     public ScoreTracker scoreKeeper;
-    private List<EnemyAI> pool;
+    private List<GruntAI> pool;
     public float size;
     public float spawnDistance = 30; //the number of units away from the player that the enemy spawns 
 
@@ -21,7 +21,7 @@ public class ObjectPoolSpawner : MonoBehaviour
 
     private void INIT()
     {
-        pool = new List<EnemyAI>();
+        pool = new List<GruntAI>();
 
         for (int i = 0; i < size; i++)
         {
@@ -33,9 +33,9 @@ public class ObjectPoolSpawner : MonoBehaviour
             spawnVector = ranRot * spawnVector;
 
            
-            EnemyAI newEnemy = Instantiate(objectToPool, spawnVector, Quaternion.identity);
-            newEnemy.Init();
+            GruntAI newEnemy = Instantiate(objectToPool, spawnVector, Quaternion.identity);
             newEnemy.loadout(player);
+            newEnemy.Init();
             newEnemy.Despawn += op_ProcessCompleted; //this line adds the despawn event to this entity 
             newEnemy.gameObject.SetActive(true);
 
@@ -54,7 +54,7 @@ public class ObjectPoolSpawner : MonoBehaviour
     /// Respawns Enemy when they are detected as dead by the update functio
     /// </summary>
     /// <param name="deddude"> is the Enemy Ai that died </param>
-    public void Respawn(EnemyAI deddude)
+    public void Respawn(GruntAI deddude)
     {
 
         //TODO: Doop code HERE&&HERE1 
@@ -75,7 +75,7 @@ public class ObjectPoolSpawner : MonoBehaviour
     void Update()
     {
 
-        foreach (EnemyAI g in pool)
+        foreach (GruntAI g in pool)
         {
 
             if(g.gameObject.activeSelf)
