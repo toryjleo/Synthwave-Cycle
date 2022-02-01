@@ -11,7 +11,7 @@ public class ObjectPoolSpawner : MonoBehaviour
     public ScoreTracker scoreKeeper;
     private List<GruntAI> pool;
     public float size;
-    public float spawnDistance = 30; //the number of units away from the player that the enemy spawns 
+    public float spawnDistance; //the number of units away from the player that the enemy spawns 
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +19,36 @@ public class ObjectPoolSpawner : MonoBehaviour
         INIT(); //TODO: call init somewhere else if warrented. 
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        foreach (GruntAI g in pool)
+        {
+            if (g.gameObject.activeSelf)
+            {
+                g.seperate(pool);
+            }
+            else
+            {
+                if (g.isAlive() == false) // Checks if Enemy Got shot or if they just got despawned 
+                {
+                    scoreKeeper.AddToScore(((int)g.getScore()));
+                }
+                Respawn(g);
+            }
+
+        }
+    }
+
+    public Vector3 generateSpawnVector()
+    {
+        //TODO:will have to create a general spawn method in the future so as not to doop code HERE&&HERE1
+        Vector3 spawnVector = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + spawnDistance);
+        Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
+
+        spawnVector = ranRot * spawnVector;
+        return spawnVector;
+    }
     private void INIT()
     {
         pool = new List<GruntAI>();
@@ -26,14 +56,7 @@ public class ObjectPoolSpawner : MonoBehaviour
         for (int i = 0; i < size; i++)
         {
 
-            //TODO:will have to create a general spawn method in the future so as not to doop code HERE&&HERE1
-            Vector3 spawnVector = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z+spawnDistance);
-            Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
-
-            spawnVector = ranRot * spawnVector;
-
-           
-            GruntAI newEnemy = Instantiate(objectToPool, spawnVector, Quaternion.identity);
+            GruntAI newEnemy = Instantiate(objectToPool, generateSpawnVector(), Quaternion.identity);
             newEnemy.loadout(player);
             newEnemy.Init();
             newEnemy.Despawn += op_ProcessCompleted; //this line adds the despawn event to this entity 
@@ -64,6 +87,7 @@ public class ObjectPoolSpawner : MonoBehaviour
 
         spawnVector += player.transform.position;
 
+
         deddude.gameObject.transform.position = spawnVector;
         deddude.Init();
         deddude.gameObject.SetActive(true);
@@ -71,25 +95,5 @@ public class ObjectPoolSpawner : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-        foreach (GruntAI g in pool)
-        {
-
-            if(g.gameObject.activeSelf)
-            {
-                g.seperate(pool); //
-            } else
-            {
-                if (g.isAlive() == false) // Checks if Enemy Got shot or if they just got despawned 
-                {
-                    scoreKeeper.AddToScore(((int)g.getScore()));                   
-                }
-                Respawn(g);
-            }
-
-        }
-    }
+   
 }
