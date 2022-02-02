@@ -12,6 +12,7 @@ public class EnemyAI : SelfDespawn
     private CyborgAnimationStateController animationStateController;
     public Rigidbody rb;
     public Gun myGun;
+    public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
 
     //stats used in construction 
     private Health hp;
@@ -54,6 +55,12 @@ public class EnemyAI : SelfDespawn
 
     public override void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R)) 
+        {
+            print("Equip");
+
+        }
+
         base.Update();
         targetVec = target.transform.position;
         animationStateController.SetSpeed(rb.velocity.magnitude);
@@ -210,4 +217,17 @@ public class EnemyAI : SelfDespawn
     }
 
     #endregion
+
+    /// <summary>
+    /// Instantiates a gun for this AI. Preferably called at Awake
+    /// </summary>
+    /// <param name="gun">Prefab to instantiate</param>
+    public void EquipGun(Gun gun) 
+    {
+        if (myGun != null) 
+        {
+            GameObject.Destroy(myGun);
+        }
+        myGun = Instantiate<Gun>(gun, muzzleLocation.transform);
+    }
 }

@@ -75,7 +75,7 @@ public class PlayerHealthRegen : MonoBehaviour
     {
         float defaultRegnAmount = Time.deltaTime * energyRegenPerSec;
         float additionalRegenAmount = Time.deltaTime * energyRegenPerSec * PercentRegen() * ADDITIONAL_REGEN_MULTIPLIER;
-        print("Regen: " + (defaultRegnAmount + additionalRegenAmount) / Time.deltaTime); ;
+        //print("Regen: " + (defaultRegnAmount + additionalRegenAmount) / Time.deltaTime); ;
         Regen(defaultRegnAmount + additionalRegenAmount);
     }
 
