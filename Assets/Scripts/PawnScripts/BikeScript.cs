@@ -81,13 +81,20 @@ public class BikeScript : MonoBehaviour
         }
     }
 
+    /// <summary>This method gets the direction the bike's mesh is currently facing in world coordinates.</summary>
+    /// <returns>A Vector3 of the bike's forward vector in world coordinates. The Vector's x represents the x direction 
+    /// in world coordinates and the vector's y represents the z direction in world coordinates.</returns>
     private Vector3 ForwardVector()
     {
         return new Vector3(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.y, -bikeMeshParent.transform.right.z);
     }
 
     #endregion
-    /// <summary>Applies all of the bike's internaly applied forces. Also gets player input.</summary>
+
+
+    /// <summary> Main method for controlling bike 
+    /// Applies forces to Rigid body in relation to player input 
+    /// </summary>
     public void ApplyForces()
     {
         
@@ -98,7 +105,7 @@ public class BikeScript : MonoBehaviour
 
         //Movement Forward and Back and applies velocity 
         velocity += ForwardVector().normalized * MoveSpeed * Input.GetAxis("Vertical") * Time.deltaTime; 
-        rb.AddForce(velocity);
+        
 
         //Steering Takes Horizontal Input and rotates both 
         float steerInupt = Input.GetAxis("Horizontal");
@@ -114,6 +121,8 @@ public class BikeScript : MonoBehaviour
         Debug.DrawRay(rb.transform.position, velocity.normalized * 30, Color.blue);
         velocity = Vector3.Lerp(velocity.normalized, ForwardVector().normalized, Traction * Time.deltaTime) * velocity.magnitude;
 
+
+        rb.AddForce(velocity);
     }
 
     /// <summary>Responds to the gun'd NotifyShot event.</summary>
