@@ -46,7 +46,8 @@ public class DoubleBarrelLMG : Gun
                 muzzle2Audio.Play();
             }
             muzzle1Turn = !muzzle1Turn;
-            OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
+            ApplyRecoil(shotDir, bullet);
+            //OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
         }
     }
 }
