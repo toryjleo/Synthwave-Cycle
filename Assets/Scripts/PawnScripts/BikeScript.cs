@@ -152,7 +152,8 @@ public class BikeScript : MonoBehaviour
 
 
         velocity += ForwardVector().normalized * MoveSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
-        transform.position += velocity * Time.deltaTime;
+        //transform.position += velocity * Time.deltaTime;
+        rb.AddForce(velocity);
 
         float steerInupt = Input.GetAxis("Horizontal");
         bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInupt, 0, 0);
@@ -168,7 +169,7 @@ public class BikeScript : MonoBehaviour
 
         velocity = Vector3.Lerp(velocity.normalized, ForwardVector().normalized, Traction * Time.deltaTime) * velocity.magnitude;
 
-        //rb.AddForce(velocity);
+        
 
 
 
