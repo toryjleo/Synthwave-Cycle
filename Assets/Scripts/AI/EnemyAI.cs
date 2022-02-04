@@ -13,6 +13,8 @@ public class EnemyAI : SelfDespawn
     public Rigidbody rb;
     public Gun myGun;
 
+    public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
+
     //stats used in construction 
     private Health hp;
     private float score;
@@ -210,4 +212,18 @@ public class EnemyAI : SelfDespawn
     }
 
     #endregion
+
+    /// <summary>
+    /// Instantiates a gun for this AI. Preferably called at Awake since Instantiate is expensive.
+    /// </summary>
+    /// <param name="gun">Prefab to instantiate</param>
+    public void EquipGun(Gun gun) 
+    {
+        if (myGun != null) 
+        {
+            GameObject.Destroy(myGun.gameObject);
+        }
+        // This gameObject will be a child of muzzleLocation
+        myGun = Instantiate<Gun>(gun, muzzleLocation.transform);
+    }
 }
