@@ -37,9 +37,18 @@ public abstract class Gun : MonoBehaviour
         bulletPool.DeInit();
     }
 
-    /// <summary>Fires the bullet from the muzzle of the gun. Is responsible for calling OnBulletShot and getting bullet from the object pool.</summary>
+    /// <summary>Fires the bullet from the muzzle of the gun. Is responsible for calling OnBulletShot and getting 
+    /// bullet from the object pool.</summary>
     /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
     public abstract void Shoot(Vector3 initialVelocity);
+
+    /// <summary>Calls OnBulletShot. Will apply variable recoil based on bullet's mass and muzzle velocity</summary>
+    /// <param name="directionOfBullet">Non-normalized direction bullet is travelling.</param>
+    /// <param name="bulletShot">The bullet that is currently being shot.</param>
+    protected void ApplyRecoil(Vector3 directionOfBullet, Bullet bulletShot) 
+    {
+        OnBulletShot(directionOfBullet.normalized * bulletShot.Mass * bulletShot.MuzzleVelocity);
+    }
 
     /// <summary>Notifies listeners that a bullet has been shot.</summary>
     /// <param name="forceOfBullet">The force of the actor on the bullet.</param>
