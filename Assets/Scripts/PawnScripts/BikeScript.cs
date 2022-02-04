@@ -18,16 +18,18 @@ public class BikeScript : MonoBehaviour
 
     //private float mass = 8f; // The mass of the bike
     private float engineForce = 75f; // The force of the engine
-    private float rotationSpeed = 180f; // A linear scale of how fast the bike will turn
+    private float rotationSpeed = 10f; // A linear scale of how fast the bike will turn
     private float MaxSpeed = 100;
     public float MoveSpeed = 50;
-    public float Traction = 1;
+    public float Traction = 10;
+
+    public float SteerAngle = 20;
 
     public Vector3 MoveForce;
 
     private float dragCoefficient = .98f; // A linear scale of how much drag will be applied to the bike
 
-    private float maxLean = 40.0f;
+    private float maxLean = 40.0f; 
 
     public Gun currentGun;
 
@@ -145,18 +147,18 @@ public class BikeScript : MonoBehaviour
         }
 
 
-        velocity += ForwardVector().normalized * engineForce * Input.GetAxis("Vertical") * Time.deltaTime;
+        velocity += ForwardVector().normalized * engineForce * MoveSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
         rb.AddForce(velocity);
 
         float steerInupt = Input.GetAxis("Horizontal");
         bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInupt, 0, 0);
-        bikeMeshParent.transform.Rotate(Vector3.up, steerInupt);
+        bikeMeshParent.transform.Rotate(Vector3.up * steerInupt * velocity.magnitude * Time.deltaTime);
 
 
         velocity *= dragCoefficient;
         velocity = Vector3.ClampMagnitude(velocity, MaxSpeed);
 
-        //velocity = Vector3.Lerp(ForwardVector().normalized, transform.forward, Traction * Time.deltaTime) * velocity.magnitude;
+        velocity = Vector3.Lerp(ForwardVector().normalized, transform.forward, Traction * Time.deltaTime) * velocity.magnitude;
 
 
 
