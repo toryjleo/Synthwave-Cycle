@@ -17,9 +17,7 @@ public class LMGBullet : Bullet
         if (other.gameObject.tag == "Enemy")
         {
             // TracerMesh should have a Health component
-            Health otherHealth = other.GetComponentInChildren<Health>();
-            float z = otherHealth.HitPoints;
-            otherHealth.TakeDamage(damageDealt);
+            DealDamageAndDespawn(other.gameObject);
             //Debug.Log("Hit Player!");
         }
     }
