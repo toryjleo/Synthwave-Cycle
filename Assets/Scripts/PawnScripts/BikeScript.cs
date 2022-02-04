@@ -166,7 +166,7 @@ public class BikeScript : MonoBehaviour
         Debug.DrawRay(rb.transform.position, ForwardVector().normalized * 10, Color.red);
         Debug.DrawRay(rb.transform.position, velocity.normalized * 10, Color.blue);
 
-        //velocity = Vector3.Lerp(velocity.normalized, ForwardVector().normalized, Traction * Time.deltaTime) * velocity.magnitude;
+        velocity = Vector3.Lerp(velocity.normalized, ForwardVector().normalized, Traction * Time.deltaTime) * velocity.magnitude;
 
         //rb.AddForce(velocity);
 
