@@ -19,7 +19,7 @@ public class BikeScript : MonoBehaviour
     //private float mass = 8f; // The mass of the bike
     private float engineForce = 75f; // The force of the engine
     private float rotationSpeed = 180f; // A linear scale of how fast the bike will turn
-    private float MaxSpeed = 80;
+    private float MaxSpeed = 100;
     public float MoveSpeed = 50;
     public float Traction = 1;
 
@@ -91,20 +91,16 @@ public class BikeScript : MonoBehaviour
     /// <summary>Applies a force in the direction of the bike's forward vector.</summary>
     public void MoveForward()
     {
-        Vector3 forward = ForwardVector().normalized;
-        Rigidbody rb = GetComponent<Rigidbody>();
-        rb.AddForce(forward * engineForce);
-        velocity = (forward * engineForce);
-
-        
+        velocity = (ForwardVector().normalized * engineForce);
     }
 
     /// <summary>Applies a force in the opposite direction of the bike's forward vector.</summary>
     public void MoveBackward()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
+        
         Vector3 forward = ForwardVector().normalized;
-        rb.AddForce(-forward * engineForce);
+        velocity = (-forward * engineForce);
+        //rb.AddForce(-forward * engineForce);
     }
 
     /// <summary>Rotates the bike's mesh in a clockwise fashion.</summary>
@@ -140,39 +136,29 @@ public class BikeScript : MonoBehaviour
     public void ApplyForces()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
-        ClearRotation();
 
 
-        // Apply player input
-        if (Input.GetKey(KeyCode.W))
-        {
-            MoveForward();
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            MoveBackward();
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            TurnRight();
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            TurnLeft();
-        }
+
         if (Input.GetKey(KeyCode.Mouse0))
         {
             currentGun.Shoot(rb.velocity);
         }
 
+
+        velocity += ForwardVector().normalized * engineForce * Input.GetAxis("Vertical") * Time.deltaTime;
         rb.AddForce(velocity);
+
+        float steerInupt = Input.GetAxis("Horizontal");
+        bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInupt, 0, 0);
+        bikeMeshParent.transform.Rotate(Vector3.up, steerInupt);
+
 
         velocity *= dragCoefficient;
         velocity = Vector3.ClampMagnitude(velocity, MaxSpeed);
 
-        velocity = Vector3.Lerp(ForwardVector().normalized, transform.forward, Traction * Time.deltaTime) * velocity.magnitude;
+        //velocity = Vector3.Lerp(ForwardVector().normalized, transform.forward, Traction * Time.deltaTime) * velocity.magnitude;
 
-        
+
 
         Debug.DrawRay(rb.transform.position, ForwardVector().normalized * 10, Color.red);
         Debug.DrawRay(rb.transform.position, velocity.normalized * 10, Color.blue);
