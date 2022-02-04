@@ -277,6 +277,18 @@ PrefabInstance:
       propertyPath: m_Drag
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2451000880455329689, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: Traction
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2451000880455329689, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: MoveSpeed
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2451000880455329689, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: SteerAngle
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 2704707542116306734, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -647,7 +659,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1386951459658203378, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
   m_PrefabInstance: {fileID: 1225237414}
   m_PrefabAsset: {fileID: 0}
---- !u!96 &1902561125
+--- !u!96 &1902561126
 TrailRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0

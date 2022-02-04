@@ -19,11 +19,11 @@ public class BikeScript : MonoBehaviour
     //private float mass = 8f; // The mass of the bike
     private float engineForce = 75f; // The force of the engine
     private float rotationSpeed = 10f; // A linear scale of how fast the bike will turn
-    private float MaxSpeed = 100;
-    public float MoveSpeed = 50;
-    public float Traction = 10;
+    private float MaxSpeed = 80;
+    public float MoveSpeed = 100;
+    public float Traction = 3;
 
-    public float SteerAngle = 20;
+    public float SteerAngle = 10;
 
     public Vector3 MoveForce;
 
@@ -37,6 +37,8 @@ public class BikeScript : MonoBehaviour
 
     private Health health;
 
+
+    #region OTHER STUFF
     public float Energy
     {
         get => health.HitPoints;
@@ -134,6 +136,8 @@ public class BikeScript : MonoBehaviour
         return new Vector2(-bikeMeshParent.transform.forward.x, bikeMeshParent.transform.forward.z);
     }
 
+
+    #endregion
     /// <summary>Applies all of the bike's internaly applied forces. Also gets player input.</summary>
     public void ApplyForces()
     {
@@ -147,23 +151,26 @@ public class BikeScript : MonoBehaviour
         }
 
 
-        velocity += ForwardVector().normalized * engineForce * MoveSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
-        rb.AddForce(velocity);
+        velocity += ForwardVector().normalized * MoveSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
+        transform.position += velocity * Time.deltaTime;
 
         float steerInupt = Input.GetAxis("Horizontal");
         bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInupt, 0, 0);
-        bikeMeshParent.transform.Rotate(Vector3.up * steerInupt * velocity.magnitude * Time.deltaTime);
+        bikeMeshParent.transform.Rotate(Vector3.up * steerInupt * (velocity.magnitude + 100) * Time.deltaTime);
 
 
         velocity *= dragCoefficient;
         velocity = Vector3.ClampMagnitude(velocity, MaxSpeed);
 
-        velocity = Vector3.Lerp(ForwardVector().normalized, transform.forward, Traction * Time.deltaTime) * velocity.magnitude;
-
-
 
         Debug.DrawRay(rb.transform.position, ForwardVector().normalized * 10, Color.red);
         Debug.DrawRay(rb.transform.position, velocity.normalized * 10, Color.blue);
+
+        //velocity = Vector3.Lerp(velocity.normalized, ForwardVector().normalized, Traction * Time.deltaTime) * velocity.magnitude;
+
+        //rb.AddForce(velocity);
+
+
 
     }
 
