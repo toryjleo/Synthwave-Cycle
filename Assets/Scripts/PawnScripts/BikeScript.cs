@@ -12,16 +12,20 @@ public class BikeScript : MonoBehaviour
     public GameObject bikeMeshParent; // Parent of the bike mesh. This is used to get the forward vector of the bike. 
     // The forward vector of the bike will change as we alter the rotation of this variable
     public GameObject bikeMeshChild; // The gameObject that holds the bike mesh. This will only be used for animations.
-    public Vector3 deltaPosition; // How far the bike has moved in world coordinates this frame
-    public Vector2 velocity; // The velocity of the bike
-    public Vector2 acceleration; // The acceleration of the bike this frame
+    public Vector3 velocity; // The velocity of the bike
 
     //private float mass = 8f; // The mass of the bike
-    private float engineForce = 75f; // The force of the engine
-    private float rotationSpeed = 120f; // A linear scale of how fast the bike will turn
-    //private float dragCoefficient = 1f; // A linear scale of how much drag will be applied to the bike
+    private float MaxSpeed = 80; //The max speed of the bike 
+    public float MoveSpeed = 100; //The speed of the bike 
+    public float Traction = 3; //How slippy the bike is when turning 
 
-    private float maxLean = 40.0f;
+    public float SteerAngle = 10; //the angle at which the bike turns 
+
+    public Vector3 MoveForce; 
+
+    private float dragCoefficient = .98f; // A linear scale of how much drag will be applied to the bike
+
+    private float maxLean = 40.0f;  
 
     public Gun currentGun;
 
@@ -29,6 +33,8 @@ public class BikeScript : MonoBehaviour
 
     private Health health;
 
+
+    #region OTHER STUFF
     public float Energy
     {
         get => health.HitPoints;
@@ -48,15 +54,14 @@ public class BikeScript : MonoBehaviour
     }
 
     private void Update()
-    {
+    { 
     }
 
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
     private void Init() 
     {
         // The bike will begin at rest
-        velocity = new Vector2(0, 0);
-        acceleration = new Vector2(0, 0);
+        velocity = new Vector3(0, 0,0);
         rb = GetComponent<Rigidbody>();
         health = GetComponentInChildren<Health>();
     }
@@ -76,42 +81,6 @@ public class BikeScript : MonoBehaviour
         }
     }
 
-    /// <summary>Clears the rotation of the child mesh object.</summary>
-    public void ClearRotation()
-    {
-        bikeMeshChild.transform.localRotation = Quaternion.Euler(0, 0, 0);
-    }
-
-    /// <summary>Applies a force in the direction of the bike's forward vector.</summary>
-    public void MoveForward()
-    {
-        Vector3 forward = ForwardVector().normalized;
-        Rigidbody rb = GetComponent<Rigidbody>();
-        rb.AddForce(forward * engineForce);
-    }
-
-    /// <summary>Applies a force in the opposite direction of the bike's forward vector.</summary>
-    public void MoveBackward()
-    {
-        Rigidbody rb = GetComponent<Rigidbody>();
-        Vector3 forward = ForwardVector().normalized;
-        rb.AddForce(-forward * engineForce);
-    }
-
-    /// <summary>Rotates the bike's mesh in a clockwise fashion.</summary>
-    public void TurnRight()
-    {
-        bikeMeshChild.transform.localRotation = Quaternion.Euler(-maxLean, 0, 0);
-        RotateYAxis(-rotationSpeed * Time.fixedDeltaTime); // A simple animation
-    }
-
-    /// <summary>Rotates the bike's mesh in a counter-clockwise fashion.</summary>
-    public void TurnLeft()
-    {
-        bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean, 0, 0);
-        RotateYAxis(rotationSpeed * Time.fixedDeltaTime); // A simple animation
-    }
-
     /// <summary>This method gets the direction the bike's mesh is currently facing in world coordinates.</summary>
     /// <returns>A Vector3 of the bike's forward vector in world coordinates. The Vector's x represents the x direction 
     /// in world coordinates and the vector's y represents the z direction in world coordinates.</returns>
@@ -120,46 +89,40 @@ public class BikeScript : MonoBehaviour
         return new Vector3(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.y, -bikeMeshParent.transform.right.z);
     }
 
-    /// <summary>This method gets the right direction of the bike's mesh in world coordinates.</summary>
-    /// <returns>A Vector3 of the bike's right vector in world coordinates.</returns>
-    private Vector2 RightVector() 
-    {
-        return new Vector2(-bikeMeshParent.transform.forward.x, bikeMeshParent.transform.forward.z);
-    }
+    #endregion
 
-    /// <summary>Applies all of the bike's internaly applied forces. Also gets player input.</summary>
+
+    /// <summary> Main method for controlling bike 
+    /// Applies forces to Rigid body in relation to player input 
+    /// </summary>
     public void ApplyForces()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
-        ClearRotation();
-        // Apply player input
-        if (Input.GetKey(KeyCode.W))
-        {
-            MoveForward();
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            MoveBackward();
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            TurnRight();
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            TurnLeft();
-        }
+        
         if (Input.GetKey(KeyCode.Mouse0))
         {
             currentGun.Shoot(rb.velocity);
         }
-    }
 
-    /// <summary>Sets the bikeMeshParent's local yAngle to the unput float.</summary>
-    /// <param name="speedAndDirection">The yAngle at which to set bikeMeshParent</param>
-    private void RotateYAxis(float speedAndDirection)
-    {
-        bikeMeshParent.transform.Rotate(0, speedAndDirection, 0, Space.Self);
+        //Movement Forward and Back and applies velocity 
+        velocity += ForwardVector().normalized * MoveSpeed * Input.GetAxis("Vertical") * Time.deltaTime; 
+        
+
+        //Steering Takes Horizontal Input and rotates both 
+        float steerInupt = Input.GetAxis("Horizontal");
+        bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInupt, 0, 0);
+        bikeMeshParent.transform.Rotate(Vector3.up * steerInupt * (velocity.magnitude + 100) * Time.deltaTime);
+
+        //Drag and MaxSpeed Limit to prevent infinit velocity  
+        velocity *= dragCoefficient;
+        velocity = Vector3.ClampMagnitude(velocity, MaxSpeed);
+
+
+        Debug.DrawRay(rb.transform.position, ForwardVector().normalized * 30, Color.red);
+        Debug.DrawRay(rb.transform.position, velocity.normalized * 30, Color.blue);
+        velocity = Vector3.Lerp(velocity.normalized, ForwardVector().normalized, Traction * Time.deltaTime) * velocity.magnitude;
+
+
+        rb.AddForce(velocity);
     }
 
     /// <summary>Responds to the gun'd NotifyShot event.</summary>
