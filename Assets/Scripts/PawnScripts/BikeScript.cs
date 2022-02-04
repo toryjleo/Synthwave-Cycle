@@ -13,13 +13,19 @@ public class BikeScript : MonoBehaviour
     // The forward vector of the bike will change as we alter the rotation of this variable
     public GameObject bikeMeshChild; // The gameObject that holds the bike mesh. This will only be used for animations.
     public Vector3 deltaPosition; // How far the bike has moved in world coordinates this frame
-    public Vector2 velocity; // The velocity of the bike
-    public Vector2 acceleration; // The acceleration of the bike this frame
+    public Vector3 velocity; // The velocity of the bike
+    public Vector3 acceleration; // The acceleration of the bike this frame
 
     //private float mass = 8f; // The mass of the bike
     private float engineForce = 75f; // The force of the engine
-    private float rotationSpeed = 120f; // A linear scale of how fast the bike will turn
-    //private float dragCoefficient = 1f; // A linear scale of how much drag will be applied to the bike
+    private float rotationSpeed = 180f; // A linear scale of how fast the bike will turn
+    private float MaxSpeed = 80;
+    public float MoveSpeed = 50;
+    public float Traction = 1;
+
+    public Vector3 MoveForce;
+
+    private float dragCoefficient = .98f; // A linear scale of how much drag will be applied to the bike
 
     private float maxLean = 40.0f;
 
@@ -48,15 +54,15 @@ public class BikeScript : MonoBehaviour
     }
 
     private void Update()
-    {
+    { 
     }
 
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
     private void Init() 
     {
         // The bike will begin at rest
-        velocity = new Vector2(0, 0);
-        acceleration = new Vector2(0, 0);
+        velocity = new Vector3(0, 0,0);
+        acceleration = new Vector3(0,0, 0);
         rb = GetComponent<Rigidbody>();
         health = GetComponentInChildren<Health>();
     }
@@ -88,6 +94,9 @@ public class BikeScript : MonoBehaviour
         Vector3 forward = ForwardVector().normalized;
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.AddForce(forward * engineForce);
+        velocity = (forward * engineForce);
+
+        
     }
 
     /// <summary>Applies a force in the opposite direction of the bike's forward vector.</summary>
@@ -132,6 +141,8 @@ public class BikeScript : MonoBehaviour
     {
         Rigidbody rb = GetComponent<Rigidbody>();
         ClearRotation();
+
+
         // Apply player input
         if (Input.GetKey(KeyCode.W))
         {
@@ -153,6 +164,19 @@ public class BikeScript : MonoBehaviour
         {
             currentGun.Shoot(rb.velocity);
         }
+
+        rb.AddForce(velocity);
+
+        velocity *= dragCoefficient;
+        velocity = Vector3.ClampMagnitude(velocity, MaxSpeed);
+
+        velocity = Vector3.Lerp(ForwardVector().normalized, transform.forward, Traction * Time.deltaTime) * velocity.magnitude;
+
+        
+
+        Debug.DrawRay(rb.transform.position, ForwardVector().normalized * 10, Color.red);
+        Debug.DrawRay(rb.transform.position, velocity.normalized * 10, Color.blue);
+
     }
 
     /// <summary>Sets the bikeMeshParent's local yAngle to the unput float.</summary>
