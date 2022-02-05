@@ -16,11 +16,13 @@ public class MainMenu : MonoBehaviour
         quitButton.onClick.AddListener(QuitOnClick);
     }
 
+    /// <summary>Will load the game.</summary>
     private void StartOnClick() 
     {
         StartCoroutine(LoadYourAsyncScene("TestScene"));
     }
 
+    /// <summary>Will quit the application.</summary>
     private void QuitOnClick() 
     {
         Application.Quit();
