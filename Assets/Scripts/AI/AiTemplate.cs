@@ -36,9 +36,11 @@ public abstract class AiTemplate : SelfDespawn
             alive = false;
             this.gameObject.SetActive(false);
         }
-        else
+        else //Act natural 
         {
             Move(target.transform.position);
+
+
         }
 
     }
@@ -75,7 +77,7 @@ public abstract class AiTemplate : SelfDespawn
         if (dMag < maxSpeed)
         {
             desiredVec *= dMag;
-            Attack();
+            
         }
         else
         {

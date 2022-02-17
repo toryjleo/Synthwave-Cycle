@@ -9,14 +9,6 @@ public class EnemyAI : AiTemplate
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
 
     //stats used in construction
-    private Health hp;
-    private float score;
-    public float StartingHP;
-    float maxSpeed;
-    float maxForce;
-    public float attackRange; //TODO: This will be set when creating different inherited classes for Monobehavior;
-    bool alive;
-
 
     public float hitpoints
     {
@@ -35,8 +27,6 @@ public class EnemyAI : AiTemplate
         StartingHP = 40;
         score = 100;
         hp.Init(StartingHP);
-
-
 
         if (animationStateController == null)
         {
