@@ -67,9 +67,6 @@ public class EnemyAI : AiTemplate
         base.Update();
     }
 
-
-    #endregion
-
     /// <summary>
     /// Instantiates a gun for this AI. Preferably called at Awake since Instantiate is expensive.
     /// </summary>
