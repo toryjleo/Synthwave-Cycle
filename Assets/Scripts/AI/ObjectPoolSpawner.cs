@@ -49,7 +49,7 @@ public class ObjectPoolSpawner : MonoBehaviour
         spawnVector = ranRot * spawnVector;
         return spawnVector;
     }
-    private void INIT()
+    public void INIT()
     {
         pool = new List<GruntAI>();
 

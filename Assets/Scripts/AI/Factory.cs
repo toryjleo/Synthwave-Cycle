@@ -21,21 +21,6 @@ public class Factory : MonoBehaviour
     // Update is called once per frame
     public GameObject createEnemy(int guntype, int enemyType)
     {
-        switch (enemyType)
-        {
-            case 0:
-
-
-
-            case 1:
-
-
-
-
-
-        }
-
-
 
         return null;
     }
