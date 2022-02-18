@@ -13,6 +13,16 @@ public class Wave : MonoBehaviour
         public int size;
     }
 
+
+
+    public static Wave Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+
     public List<Pool> pools;
     public Dictionary<string,Queue<GameObject>> poolDictionary;
 

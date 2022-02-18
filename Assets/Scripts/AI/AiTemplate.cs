@@ -38,7 +38,14 @@ public abstract class AiTemplate : SelfDespawn
         }
         else //Act natural 
         {
-            Move(target.transform.position);
+            if(target == null)
+            {
+                Debug.LogWarning("Target not set");
+            } else
+            {
+                Move(target.transform.position);
+            }
+            
 
 
         }

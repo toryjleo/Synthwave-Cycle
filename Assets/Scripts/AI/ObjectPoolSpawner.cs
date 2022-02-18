@@ -55,9 +55,9 @@ public class ObjectPoolSpawner : MonoBehaviour
 
         for (int i = 0; i < size; i++)
         {
-
+            ;
             GruntAI newEnemy = Instantiate(objectToPool, generateSpawnVector(), Quaternion.identity);
-            newEnemy.loadout(player);
+            newEnemy.loadout(GameObject.Find("Player Bike"));
             newEnemy.Init();
             newEnemy.Despawn += op_ProcessCompleted; //this line adds the despawn event to this entity 
             newEnemy.gameObject.SetActive(true);
