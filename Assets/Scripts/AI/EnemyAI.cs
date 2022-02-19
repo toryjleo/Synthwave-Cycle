@@ -171,7 +171,7 @@ public class EnemyAI : SelfDespawn
             {
                 this.myGun.Shoot(target);
                 //TODO: the AI currently doesn't stand still when firing and I'm not sure if they should?
-                animationStateController.Shoot();
+                animationStateController.ShootTriple();
             }
 
         } else { 
