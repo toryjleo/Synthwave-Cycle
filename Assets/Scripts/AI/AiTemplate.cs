@@ -45,14 +45,9 @@ public abstract class AiTemplate : SelfDespawn
             {
                 Move(target.transform.position);
             }
-            
-
-
         }
 
     }
-
-
     public void Attack()
     {
         if (myGun.CanShootAgain())

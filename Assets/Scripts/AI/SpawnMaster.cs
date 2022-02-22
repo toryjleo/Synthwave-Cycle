@@ -6,13 +6,15 @@ public class SpawnMaster : MonoBehaviour
 {
     // Start is called before the first frame update
     public Wave ops;
+
+    public List<AiTemplate> aiList; 
     public GameObject player;
-    private float spawnDistance; 
+    private float spawnDistance = 40;
+    private int firstWave = 4;
 
     void Start()
     {
         ops = Wave.Instance;
-
     }
 
     public Vector3 generateSpawnVector()
@@ -25,9 +27,18 @@ public class SpawnMaster : MonoBehaviour
         return spawnVector;
     }
 
+    private void Awake()
+    {
+        
+    }
+
     // Update is called once per frame
     void Update()
-    {
-        ops.SpawnFromPool("Grunt", generateSpawnVector(), Quaternion.identity);
+    {   
+
+        
+        
+
+
     }
 }

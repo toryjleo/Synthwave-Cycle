@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ops: {fileID: 609589166}
+  aiList: []
   player: {fileID: 1147356074}
 --- !u!114 &609589166
 MonoBehaviour:
@@ -217,7 +218,7 @@ MonoBehaviour:
     size: 5
   - tag: Grunt
     prefab: {fileID: 7978806473477363408, guid: 96ce3a25c9aa3fb40a86136e9660d45c, type: 3}
-    size: 5
+    size: 1
 --- !u!114 &609589167
 MonoBehaviour:
   m_ObjectHideFlags: 0
