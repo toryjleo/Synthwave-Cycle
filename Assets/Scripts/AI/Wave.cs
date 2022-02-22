@@ -19,6 +19,8 @@ public class Wave : MonoBehaviour
 
     private void Awake()
     {
+
+        print("Wave Awake");
         Instance = this;
     }
 
@@ -30,6 +32,8 @@ public class Wave : MonoBehaviour
     //Creates Pools for each object type 
     void Start()
     {
+
+        print("Wave Start");
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
 
         foreach (Pool pool in pools)
@@ -47,7 +51,7 @@ public class Wave : MonoBehaviour
         }
     }
 
-    public GameObject SpawnFromPool( string tag, Vector3 position, Quaternion rotation, GameObject target)
+    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation, GameObject target)
     {
         if (!poolDictionary.ContainsKey(tag))
         {
@@ -57,10 +61,11 @@ public class Wave : MonoBehaviour
 
         GameObject objectToSpawn = poolDictionary[tag].Dequeue();
 
-        objectToSpawn.SetActive(true);
+        
         objectToSpawn.GetComponent<AiTemplate>().loadout(target);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
+        objectToSpawn.SetActive(true);
 
         poolDictionary[tag].Enqueue(objectToSpawn);
 

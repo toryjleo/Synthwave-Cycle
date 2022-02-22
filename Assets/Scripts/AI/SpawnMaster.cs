@@ -11,10 +11,15 @@ public class SpawnMaster : MonoBehaviour
     public GameObject player;
     private float spawnDistance = 40;
     private int firstWave = 4;
+    private int dangerLevel = 0;
 
     void Start()
     {
         ops = Wave.Instance;
+
+        print("Spawn master Awake");
+
+        
     }
 
     public Vector3 generateSpawnVector()
@@ -29,16 +34,28 @@ public class SpawnMaster : MonoBehaviour
 
     private void Awake()
     {
+        print("SpawnMaster Start");
+
         
     }
 
     // Update is called once per frame
     void Update()
-    {   
+    {
+        if(dangerLevel < firstWave)
+        {
+            SpawnAWave(firstWave);
+            dangerLevel++;
+        }
 
-        
-        
 
 
+    }
+
+    private void SpawnAWave(int firstWave)
+    {
+
+        GameObject enemy = ops.SpawnFromPool("Grunt", generateSpawnVector(), Quaternion.identity, player);
+        enemy = ops.SpawnFromPool("Grunt", generateSpawnVector(), Quaternion.identity, player);
     }
 }

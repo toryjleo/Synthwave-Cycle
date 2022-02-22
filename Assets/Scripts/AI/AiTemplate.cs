@@ -44,6 +44,10 @@ public abstract class AiTemplate : SelfDespawn
             } else
             {
                 Move(target.transform.position);
+                if(target.transform.position.magnitude < attackRange)
+                {
+                    Attack();
+                }
             }
         }
 

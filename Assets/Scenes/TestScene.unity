@@ -218,7 +218,7 @@ MonoBehaviour:
     size: 5
   - tag: Grunt
     prefab: {fileID: 7978806473477363408, guid: 96ce3a25c9aa3fb40a86136e9660d45c, type: 3}
-    size: 1
+    size: 5
 --- !u!114 &609589167
 MonoBehaviour:
   m_ObjectHideFlags: 0
