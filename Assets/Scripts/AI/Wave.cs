@@ -13,14 +13,10 @@ public class Wave : MonoBehaviour
         public int size;
     }
 
-
-
     public static Wave Instance;
 
     private void Awake()
     {
-
-        print("Wave Awake");
         Instance = this;
     }
 
@@ -32,8 +28,6 @@ public class Wave : MonoBehaviour
     //Creates Pools for each object type 
     void Start()
     {
-
-        print("Wave Start");
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
 
         foreach (Pool pool in pools)
