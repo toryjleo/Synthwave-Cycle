@@ -27,16 +27,18 @@ public class Wave : MonoBehaviour
 
     //Creates Pools for each object type 
     void Start()
-    {
+    {   
+        //Create Dictionary of tags for each if the pools
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
 
         foreach (Pool pool in pools)
         {
             Queue<GameObject> objectPool = new Queue<GameObject>();
 
+            //instantiate the objects with 
             for(int i =0; i< pool.size; i++)
-            {
-                GameObject obj = Instantiate(pool.prefab);
+            {   
+                GameObject obj = Instantiate(pool.prefab); 
                 obj.SetActive(false);
                 objectPool.Enqueue(obj);
             }

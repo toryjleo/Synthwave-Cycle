@@ -40,11 +40,10 @@ public abstract class AiTemplate : SelfDespawn
         {
             if(target == null)
             {
-                Debug.LogWarning("Target not set");
+                Wander();
             } else
             {
                 Move(target.transform.position);
-             
             }
         }
 
@@ -66,29 +65,37 @@ public abstract class AiTemplate : SelfDespawn
     /// <param name="target"> Vector to target </param>
     public void Move(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee. 
     {
+            Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
+            float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points 
+            dMag -= attackRange; // dmag is the distance between the two objects, by subtracking this, I make it so the object doesn't desire to move as far.  
 
-        Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
-        float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points 
-        dMag -= attackRange; // dmag is the distance between the two objects, by subtracking this, I make it so the object doesn't desire to move as far.  
+            desiredVec.Normalize(); // one the distance is measured this vector can now be used to actually generate movement,
+                                    // but that movement has to be constant or at least adaptable, which is what the next part does  
+            transform.LookAt(target);
 
-        desiredVec.Normalize(); // one the distance is measured this vector can now be used to actually generate movement,
-                                // but that movement has to be constant or at least adaptable, which is what the next part does  
-        transform.LookAt(target);
+            //Currently Walking twoards the target 
 
-        //Currently Walking twoards the target 
-
-        if (dMag < maxSpeed)
-        {
-            desiredVec *= dMag;
-            Attack();
-        }
-        else
-        {
-            desiredVec *= maxSpeed;
-        }
-        Vector3 steer = desiredVec - rb.velocity;
-        applyForce(steer);
+            if (dMag < maxSpeed)
+            {
+                desiredVec *= dMag;
+                Attack();
+            }
+            else
+            {
+                desiredVec *= maxSpeed;
+            }
+            Vector3 steer = desiredVec - rb.velocity;
+            applyForce(steer);
     }
+
+    public void Wander() //cause the character to wander 
+    {
+
+        Vector3 target = new Vector3(transform.position.x, transform.position.y, transform.position.z + 10);
+        Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
+            float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points 
+    }
+
 
     public void applyForce(Vector3 force)
     {
