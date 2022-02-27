@@ -29,6 +29,8 @@ public class BikeScript : MonoBehaviour
 
     public Gun currentGun;
 
+    public Gun turret; //added to reference bike turret
+
     private Rigidbody rb;
 
     private Health health;
