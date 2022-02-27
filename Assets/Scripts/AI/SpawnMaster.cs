@@ -2,14 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// This class Controlls the rate at which enemies are spawned and knows which enemies are in the scene 
+/// </summary>
 public class SpawnMaster : MonoBehaviour
 {
     // Start is called before the first frame update
     public Wave ops;
     public GameObject player;
+    public ScoreTracker scoreKeeper;
     public List<AiTemplate> currentEnemies;
     private float spawnDistance = 80;
-    private int firstWave = 5;
     private int dangerLevel = 0;
 
     void Start()
@@ -52,13 +56,16 @@ public class SpawnMaster : MonoBehaviour
 
         foreach (AiTemplate a in currentEnemies)
         {
-            if (a.alive)
+            if (a.isAlive())
             {
                 //Do Alive things
+                //a.seperate(currentEnemies);
             }
             else
             {
                 //Do Death Things 
+                scoreKeeper.AddToScore((int)a.getScore());
+                //currentEnemies.Remove(a); //TODO figure out why this causes eneumeration Error and how to fix it 
             }
         } 
     }

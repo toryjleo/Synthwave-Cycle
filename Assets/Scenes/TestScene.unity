@@ -142,6 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ops: {fileID: 609589166}
   player: {fileID: 1147356074}
+  scoreKeeper: {fileID: 2022368761}
   currentEnemies: []
 --- !u!114 &609589166
 MonoBehaviour:
