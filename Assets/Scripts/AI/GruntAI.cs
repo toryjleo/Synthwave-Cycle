@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class GruntAI : AiTemplate
 {
-
+    public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
 
     public override void Init()
     {
         alive = true;
+        StartingHP = 120;
+        score = 300;
+        maxSpeed = 10;
+        attackRange = 2;
+
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
         animationStateController = GetComponent<CyborgAnimationStateController>();
-        //location = transform.position;
-        maxSpeed = 20;
-        maxForce = 1;
 
-        StartingHP = 80;
-        score = 300;
         hp.Init(StartingHP);
 
-        attackRange = 4;
+        #region Error Checkers
 
         if (animationStateController == null)
         {
@@ -38,7 +38,16 @@ public class GruntAI : AiTemplate
         {
             Debug.LogError("This object needs a Gun component");
         }
+        #endregion
+    }
 
+
+
+    //stats used in construction
+
+    public float hitpoints
+    {
+        get => hp.HitPoints;
     }
 
     void Awake()

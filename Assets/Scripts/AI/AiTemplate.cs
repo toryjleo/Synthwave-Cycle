@@ -100,11 +100,11 @@ public abstract class AiTemplate : SelfDespawn
     {
 
         Vector3 forward = rb.transform.forward; //The normaized vector of which direction the RB is facing 
-        Vector3 offset = new Vector3(0,0,1);
+        Vector3 offset = new Vector3(0,0,1); //This is the random change vector that is uses to create natural wandering movement
         Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
         Quaternion right = Quaternion.Euler(0, 90, 0);
         forward *= 10;
-        offset = ranRot * offset;
+        offset = ranRot * offset; 
 
 
 
@@ -112,9 +112,9 @@ public abstract class AiTemplate : SelfDespawn
         Debug.DrawRay(rb.transform.position+forward, offset, Color.red);
         Debug.DrawRay(rb.transform.position, forward + offset, Color.green);
 
-        forward += offset;
+        forward += offset; //adds a small offset to the forward vector. 
 
-        transform.LookAt(forward+transform.position);
+        transform.LookAt(forward+transform.position); //TODO make this look way nicer 
 
         
 

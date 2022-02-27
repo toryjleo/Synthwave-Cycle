@@ -142,6 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ops: {fileID: 609589166}
   player: {fileID: 1147356074}
+  currentEnemies: []
 --- !u!114 &609589166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,7 +158,7 @@ MonoBehaviour:
   pools:
   - tag: RifleMan
     prefab: {fileID: 3874834857555224733, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
-    size: 5
+    size: 10
   - tag: Grunt
     prefab: {fileID: 7978806473477363408, guid: 96ce3a25c9aa3fb40a86136e9660d45c, type: 3}
     size: 10

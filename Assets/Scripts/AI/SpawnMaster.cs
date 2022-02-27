@@ -8,13 +8,16 @@ public class SpawnMaster : MonoBehaviour
     public Wave ops;
     public GameObject player;
     public List<AiTemplate> currentEnemies;
-    private float spawnDistance = 40;
+    private float spawnDistance = 80;
     private int firstWave = 5;
     private int dangerLevel = 0;
 
     void Start()
     {
         ops = Wave.Instance;
+
+        //GameObject enemy = ops.SpawnFromPool("Grunt", generateSpawnVector(), Quaternion.identity, player);
+        //currentEnemies.Add(enemy.GetComponentInChildren<AiTemplate>());
     }
 
     public Vector3 generateSpawnVector()
@@ -30,16 +33,55 @@ public class SpawnMaster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(dangerLevel < firstWave)
-        {
-            SpawnAWave(firstWave);
-            dangerLevel++;
-        }
+        
+        CheckIfEnoughEnemies(dangerLevel);
+
+        
     }
 
-    private void SpawnAWave(int firstWave)
+    /// <summary>
+    /// This Method Checks how many enemies are currently alive in the scene and increases the number of enemies accordingly. 
+    /// </summary>
+    /// <param name="dangerLevel"></param> This is the number of enemies nessicary to be spawned. 
+    private void CheckIfEnoughEnemies(int dangerLevel)
     {
-        GameObject enemy = ops.SpawnFromPool("RifleMan", generateSpawnVector(), Quaternion.identity, player);
+        if(currentEnemies.Count == 0)
+        {
+            SpawnFirstWave();
+        }
+
+        foreach (AiTemplate a in currentEnemies)
+        {
+            if (a.alive)
+            {
+                //Do Alive things
+            }
+            else
+            {
+                //Do Death Things 
+            }
+        } 
+    }
+
+    /// <summary>
+    /// Spawns 5 Riflemen & 2 Shotgunners
+    /// </summary>
+    private void SpawnFirstWave()
+    {
+        
+        GameObject enemy = ops.SpawnFromPool("Grunt", generateSpawnVector(), Quaternion.identity, player);
         currentEnemies.Add(enemy.GetComponentInChildren<AiTemplate>());
+        enemy = ops.SpawnFromPool("Grunt", generateSpawnVector(), Quaternion.identity, player);
+        currentEnemies.Add(enemy.GetComponentInChildren<AiTemplate>());
+
+        enemy = ops.SpawnFromPool("RifleMan", generateSpawnVector(), Quaternion.identity, player);
+        currentEnemies.Add(enemy.GetComponentInChildren<AiTemplate>());
+        enemy = ops.SpawnFromPool("RifleMan", generateSpawnVector(), Quaternion.identity, player);
+        currentEnemies.Add(enemy.GetComponentInChildren<AiTemplate>());
+        enemy = ops.SpawnFromPool("RifleMan", generateSpawnVector(), Quaternion.identity, player);
+        currentEnemies.Add(enemy.GetComponentInChildren<AiTemplate>());
+        enemy = ops.SpawnFromPool("RifleMan", generateSpawnVector(), Quaternion.identity, player);
+        currentEnemies.Add(enemy.GetComponentInChildren<AiTemplate>());
+
     }
 }

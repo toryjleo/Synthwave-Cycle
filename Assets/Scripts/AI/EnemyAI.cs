@@ -4,29 +4,24 @@ using UnityEngine;
 
 public class EnemyAI : AiTemplate
 {
+    public GameObject muzzleLocation; 
 
 
-    public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
-
-    //stats used in construction
-
-    public float hitpoints
-    {
-        get => hp.HitPoints;
-    }
     public override void Init()
     {
         alive = true;
+        StartingHP = 40;
+        score = 100;
+        maxSpeed = 40;
+        attackRange = 30;
+
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
         animationStateController = GetComponent<CyborgAnimationStateController>();
-        maxSpeed = 40;
-        maxForce = 1;
-
-        StartingHP = 40;
-        score = 100;
         hp.Init(StartingHP);
 
+
+        #region Error Checkers
         if (animationStateController == null)
         {
             Debug.LogError("This object needs a CyborgAnimationStateController component");
@@ -43,7 +38,14 @@ public class EnemyAI : AiTemplate
         {
             Debug.LogError("This object needs a Gun component");
         }
+        #endregion
 
+
+    }
+
+    public float hitpoints
+    {
+        get => hp.HitPoints;
     }
 
     void Awake()
