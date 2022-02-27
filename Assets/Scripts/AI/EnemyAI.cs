@@ -20,7 +20,6 @@ public class EnemyAI : AiTemplate
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
         animationStateController = GetComponent<CyborgAnimationStateController>();
-        //location = transform.position;
         maxSpeed = 40;
         maxForce = 1;
 

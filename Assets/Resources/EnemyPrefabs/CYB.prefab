@@ -1365,10 +1365,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  animationStateController: {fileID: 0}
   rb: {fileID: 3874834857555224720}
   myGun: {fileID: 250586739251281370}
+  hp: {fileID: 0}
   StartingHP: 40
-  attackRange: 10
+  maxSpeed: 0
+  maxForce: 0
+  score: 100
+  attackRange: 30
+  alive: 0
+  muzzleLocation: {fileID: 0}
 --- !u!54 &3874834857555224720
 Rigidbody:
   m_ObjectHideFlags: 0
