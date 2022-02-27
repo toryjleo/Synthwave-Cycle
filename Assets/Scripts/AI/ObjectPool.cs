@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wave : MonoBehaviour
+public class ObjectPool : MonoBehaviour
 {
 
     [System.Serializable]
@@ -13,7 +13,7 @@ public class Wave : MonoBehaviour
         public int size;
     }
 
-    public static Wave Instance;
+    public static ObjectPool Instance;
 
     private void Awake()
     {
@@ -40,6 +40,7 @@ public class Wave : MonoBehaviour
             {   
                 GameObject obj = Instantiate(pool.prefab); 
                 obj.SetActive(false);
+                obj.GetComponent<AiTemplate>();
                 objectPool.Enqueue(obj);
             }
 

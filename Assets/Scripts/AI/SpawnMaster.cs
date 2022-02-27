@@ -9,65 +9,71 @@ using UnityEngine;
 public class SpawnMaster : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Wave ops;
+    public ObjectPool ops;
     public GameObject player;
     public ScoreTracker scoreKeeper;
     public List<AiTemplate> currentEnemies;
     private float spawnDistance = 80;
-    private int dangerLevel = 0;
+    private int dangerLevel = 10;
 
     void Start()
     {
-        ops = Wave.Instance;
-
-        //GameObject enemy = ops.SpawnFromPool("Grunt", generateSpawnVector(), Quaternion.identity, player);
-        //currentEnemies.Add(enemy.GetComponentInChildren<AiTemplate>());
+        ops = ObjectPool.Instance;
     }
 
     public Vector3 generateSpawnVector()
     {
         //TODO:will have to create a general spawn method in the future so as not to doop code HERE&&HERE1
-        Vector3 spawnVector = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + spawnDistance);
+        Vector3 spawnVector = new Vector3(0,0, spawnDistance);
         Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
 
         spawnVector = ranRot * spawnVector;
+        spawnVector += player.transform.position;
         return spawnVector;
     }
 
     // Update is called once per frame
     void Update()
-    {
-        
-        CheckIfEnoughEnemies(dangerLevel);
+    {        
+        UpdateEnemyStates();
 
         
     }
 
     /// <summary>
-    /// This Method Checks how many enemies are currently alive in the scene and increases the number of enemies accordingly. 
+    /// This Method Checks how many enemies are currently alive in the scene, if any are dead it adds those to the score and Begins 
+    /// the respawn countdown. Then it removes all dead enemies from the list of currently alive ones. 
     /// </summary>
-    /// <param name="dangerLevel"></param> This is the number of enemies nessicary to be spawned. 
-    private void CheckIfEnoughEnemies(int dangerLevel)
+    private void UpdateEnemyStates()
     {
+
+        //This method sees if this is the first wave of enemies. 
         if(currentEnemies.Count == 0)
         {
             SpawnFirstWave();
-        }
+        } 
 
         foreach (AiTemplate a in currentEnemies)
         {
             if (a.isAlive())
             {
                 //Do Alive things
-                //a.seperate(currentEnemies);
+                a.seperate(currentEnemies);
             }
             else
             {
                 //Do Death Things 
                 scoreKeeper.AddToScore((int)a.getScore());
-                //currentEnemies.Remove(a); //TODO figure out why this causes eneumeration Error and how to fix it 
+                //TODO: ADD Gore and soundeffects here? 
             }
-        } 
+        }
+        currentEnemies.RemoveAll(a => a.alive == false); //UNF this shit is so sexy
+        currentEnemies.RemoveAll(a => a.isActiveAndEnabled == false);
+    }
+
+    private void SpawnNewEnemy(string type)
+    {
+       
     }
 
     /// <summary>

@@ -107,7 +107,6 @@ public abstract class AiTemplate : SelfDespawn
         offset = ranRot * offset; 
 
 
-
         Debug.DrawRay(rb.transform.position, forward, Color.blue);
         Debug.DrawRay(rb.transform.position+forward, offset, Color.red);
         Debug.DrawRay(rb.transform.position, forward + offset, Color.green);
@@ -115,8 +114,6 @@ public abstract class AiTemplate : SelfDespawn
         forward += offset; //adds a small offset to the forward vector. 
 
         transform.LookAt(forward+transform.position); //TODO make this look way nicer 
-
-        
 
         Vector3 steer = forward - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
         applyForce(steer);

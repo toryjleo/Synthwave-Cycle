@@ -17,7 +17,7 @@ public class GruntAI : AiTemplate
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
         animationStateController = GetComponent<CyborgAnimationStateController>();
-
+        this.Despawn += op_ProcessCompleted;
         hp.Init(StartingHP);
 
         #region Error Checkers
