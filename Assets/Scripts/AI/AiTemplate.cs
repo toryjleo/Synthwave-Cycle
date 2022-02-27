@@ -57,6 +57,14 @@ public abstract class AiTemplate : SelfDespawn
         }
     }
 
+    // THis is the method that sets the entity to Deactive and bascially is uesd to kill the entitiy 
+    public void op_ProcessCompleted(SelfDespawn entity)
+    {
+        entity.gameObject.SetActive(false);
+        //TODO: Add Logic here to make sure Entity either remains in the pool or becomes a new entity
+    }
+
+
 
     #region Movement
     /// <summary>
@@ -84,16 +92,35 @@ public abstract class AiTemplate : SelfDespawn
             {
                 desiredVec *= maxSpeed;
             }
-            Vector3 steer = desiredVec - rb.velocity;
+            Vector3 steer = desiredVec - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
             applyForce(steer);
     }
 
     public void Wander() //cause the character to wander 
     {
 
-        Vector3 target = new Vector3(transform.position.x, transform.position.y, transform.position.z + 10);
-        Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
-            float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points 
+        Vector3 forward = rb.transform.forward; //The normaized vector of which direction the RB is facing 
+        Vector3 offset = new Vector3(0,0,1);
+        Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
+        Quaternion right = Quaternion.Euler(0, 90, 0);
+        forward *= 10;
+        offset = ranRot * offset;
+
+
+
+        Debug.DrawRay(rb.transform.position, forward, Color.blue);
+        Debug.DrawRay(rb.transform.position+forward, offset, Color.red);
+        Debug.DrawRay(rb.transform.position, forward + offset, Color.green);
+
+        forward += offset;
+
+        transform.LookAt(forward+transform.position);
+
+        
+
+        Vector3 steer = forward - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
+        applyForce(steer);
+
     }
 
 
@@ -106,7 +133,7 @@ public abstract class AiTemplate : SelfDespawn
     /// This method requires the entire of AI 
     /// </summary>
     /// <param name="pool"></param>
-    public void seperate(List<GruntAI> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
+    public void seperate(List<AiTemplate> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
     {
         float desiredSeperation = 5;
 
@@ -115,7 +142,7 @@ public abstract class AiTemplate : SelfDespawn
                        //it adds the sum vector  
 
 
-        foreach (GruntAI g in pool)
+        foreach (AiTemplate g in pool)
         {
 
             float d = Vector3.Distance(g.transform.position, transform.position);
