@@ -73,6 +73,7 @@ public class BikeScript : MonoBehaviour
     {
         // TODO: Make this better
         DoubleBarrelLMG[] guns = Object.FindObjectsOfType<DoubleBarrelLMG>();
+        TurretScript t = Object.FindObjectOfType<TurretScript>();
         if (guns.Length <= 0)
         {
             Debug.LogError("BikeScript did not find any DoubleBarrelLMGs in scene");
@@ -80,6 +81,7 @@ public class BikeScript : MonoBehaviour
         else
         {
             EquipGun(guns[0]);
+            EquipTurret(t);
         }
     }
 
@@ -103,6 +105,7 @@ public class BikeScript : MonoBehaviour
         if (Input.GetKey(KeyCode.Mouse0))
         {
             currentGun.Shoot(rb.velocity);
+            turret.Shoot(rb.velocity);
         }
 
         //Movement Forward and Back and applies velocity 
@@ -156,6 +159,14 @@ public class BikeScript : MonoBehaviour
 
         // Hook up event
         currentGun.BulletShot += bl_ProcessCompleted;
+    }
+
+    public void EquipTurret(Gun gunToEquip)
+    {
+ 
+
+        this.turret = gunToEquip;
+        turret.BulletShot += bl_ProcessCompleted;
     }
 
 }

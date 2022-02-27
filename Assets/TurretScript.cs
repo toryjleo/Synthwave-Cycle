@@ -4,20 +4,35 @@ using UnityEngine;
 
 public class TurretScript : Gun
 {
-
+    public GameObject muzzle1;
 
     public Vector3 mouse;
-    public Vector3 mouseWorld;
-    public Vector3 forward;
-    int steerRate = 2; //the rate at which turret turns. 
+
+
+
     public override void Init()
     {
-        
+        lastFired = 0;
+        fireRate = 30;
+        bulletPool = gameObject.AddComponent<BulletPool>();
+        bulletPool.Init(bulletPrefab);
     }
 
     public override void Shoot(Vector3 initialVelocity)
     {
-        
+        if (CanShootAgain())
+        {
+            lastFired = Time.time;
+            Bullet bullet = bulletPool.SpawnFromPool();
+
+            Vector3 shotDir = muzzle1.transform.right;
+            bullet.Shoot(muzzle1.transform.position, shotDir, initialVelocity);
+            
+
+            // Gun specific
+            
+            OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
+        }
     }
 
     // Start is called before the first frame update

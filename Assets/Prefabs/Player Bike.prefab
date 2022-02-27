@@ -465,22 +465,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &906527404271602113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5150958214053296705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 930b96dafd0af984d8cf1d8aa87c4232, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 0}
-  mouse: {x: 0, y: 0, z: 0}
-  mouseWorld: {x: 0, y: 0, z: 0}
-  forward: {x: 0, y: 0, z: 0}
 --- !u!1 &6003041435224026445
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,11 +631,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20b553fdc99502f4ab899e54e647d0ee, type: 3}
---- !u!1 &5150958214053296705 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1070765298769853930, guid: 20b553fdc99502f4ab899e54e647d0ee, type: 3}
-  m_PrefabInstance: {fileID: 5307490416553822123}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &185691672456281061 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5419039807034244174, guid: 20b553fdc99502f4ab899e54e647d0ee, type: 3}
