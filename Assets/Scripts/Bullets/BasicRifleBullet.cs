@@ -9,7 +9,7 @@ public class BasicRifleBullet : Bullet
     {
         muzzleVelocity = 60;
         mass = .5f;
-        damageDealt = 25;
+        damageDealt = 60;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -21,7 +21,14 @@ public class BasicRifleBullet : Bullet
             tracerHealth.TakeDamage(damageDealt);
             //Debug.Log("Hit Player!");
         }
+        if (other.gameObject.tag == "Enemy")
+        {
+            // TracerMesh should have a Health component
+            Health otherHealth = other.GetComponentInChildren<Health>();
+            float z = otherHealth.HitPoints;
+            otherHealth.TakeDamage(damageDealt);
 
-    
+        }
+
     }
 }

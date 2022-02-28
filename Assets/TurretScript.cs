@@ -13,7 +13,7 @@ public class TurretScript : Gun
     public override void Init()
     {
         lastFired = 0;
-        fireRate = 30;
+        fireRate = 10;
         bulletPool = gameObject.AddComponent<BulletPool>();
         bulletPool.Init(bulletPrefab);
     }
