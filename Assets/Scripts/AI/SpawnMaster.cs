@@ -36,6 +36,12 @@ public class SpawnMaster : MonoBehaviour
     void Update()
     {        
         UpdateEnemyStates();
+        
+        if(currentEnemies.Count < dangerLevel)
+        {
+            SpawnNewEnemy("Grunt");
+        }
+
 
         
     }
@@ -71,9 +77,28 @@ public class SpawnMaster : MonoBehaviour
         currentEnemies.RemoveAll(a => a.isActiveAndEnabled == false);
     }
 
+    /// <summary>
+    /// This will spawn an enemy of a specifi type 
+    /// </summary>
+    /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enenemy Type, AI type, and Gun loadout
     private void SpawnNewEnemy(string type)
     {
-       
+        GameObject enemy;
+        switch (type)
+        {
+            case "Grunt":
+                 enemy = ops.SpawnFromPool("Grunt", generateSpawnVector(), Quaternion.identity, player);
+                currentEnemies.Add(enemy.GetComponentInChildren<AiTemplate>());
+                break;
+            case "Riflemen":
+                 enemy = ops.SpawnFromPool("RifleMan", generateSpawnVector(), Quaternion.identity, player);
+                currentEnemies.Add(enemy.GetComponentInChildren<AiTemplate>());
+                break;
+            default:
+
+                break;
+            
+        }
     }
 
     /// <summary>
