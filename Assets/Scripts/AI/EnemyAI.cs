@@ -38,6 +38,7 @@ public class EnemyAI : SelfDespawn
         StartingHP = 40;
         score = 100;
         hp.Init(StartingHP);
+        myGun.bulletPrefab.targetTags.Add("Player");
 
         animationStateController = GetComponent<CyborgAnimationStateController>();
 

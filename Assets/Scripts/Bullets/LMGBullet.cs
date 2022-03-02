@@ -9,18 +9,6 @@ public class LMGBullet : Bullet
         muzzleVelocity = 180;
         mass = .5f;
         damageDealt = 20;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-
-        if (other.gameObject.tag == "Enemy")
-        {
-            // TracerMesh should have a Health component
-            Health otherHealth = other.GetComponentInChildren<Health>();
-            float z = otherHealth.HitPoints;
-            otherHealth.TakeDamage(damageDealt);
-            //Debug.Log("Hit Player!");
-        }
+        willPenetrate = true;
     }
 }

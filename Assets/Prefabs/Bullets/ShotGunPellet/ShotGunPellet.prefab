@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5269658009823864107}
   - component: {fileID: 8579180907413031318}
   - component: {fileID: 8610469206652896614}
-  - component: {fileID: 1463605476535994620}
+  - component: {fileID: 368121975487255404}
   - component: {fileID: 876733522086653541}
   m_Layer: 0
   m_Name: ShotGunPellet
@@ -97,7 +97,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1463605476535994620
+--- !u!114 &368121975487255404
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,9 +106,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6709974543186267795}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d9b69e236292f448a7c25520a4b9030, type: 3}
+  m_Script: {fileID: 11500000, guid: 24996a86ed069e44ca8d3fd0e37d59af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetTags:
+  - Enemy
 --- !u!54 &876733522086653541
 Rigidbody:
   m_ObjectHideFlags: 0

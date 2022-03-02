@@ -66,12 +66,14 @@ public class BikeScript : MonoBehaviour
     {
         // TODO: Make this better
         DoubleBarrelLMG[] guns = Object.FindObjectsOfType<DoubleBarrelLMG>();
+        //ShottyGun[] guns = Object.FindObjectsOfType<ShottyGun>();
         if (guns.Length <= 0)
         {
             Debug.LogError("BikeScript did not find any DoubleBarrelLMGs in scene");
         }
         else
         {
+            guns[0].bulletPrefab.targetTags.Add("Enemy");
             EquipGun(guns[0]);
         }
     }

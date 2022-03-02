@@ -13,11 +13,16 @@ public abstract class Bullet : SelfDespawn
     protected float muzzleVelocity = 0;
     protected float mass = 0;
     protected float damageDealt = 0;
+    protected bool willPenetrate = false;
+
+    // Determines who the bullet can effect ("Player", "Enemy", etc.)
+    public List<string> targetTags = new List<string>();
 
     /// <summary>Speed of bullet out of the gun.</summary>
     public float MuzzleVelocity
     {
         get => muzzleVelocity;
+        set => muzzleVelocity = value;
     }
 
     /// <summary>Mass of the bullet.</summary>
@@ -52,5 +57,17 @@ public abstract class Bullet : SelfDespawn
         transform.rotation = Quaternion.LookRotation(direction);
         this.initialVelocity = initialVelocity;
     }
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if (targetTags.Contains(other.gameObject.tag))
+        {
+            // TracerMesh should have a Health component
+            Health otherHealth = other.GetComponentInChildren<Health>();
+            otherHealth.TakeDamage(damageDealt);
+            if(!willPenetrate)
+            {
+                this.OnDespawn();
+            }
+        }
+    }
 }

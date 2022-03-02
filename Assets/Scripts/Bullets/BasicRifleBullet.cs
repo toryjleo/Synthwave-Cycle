@@ -11,17 +11,4 @@ public class BasicRifleBullet : Bullet
         mass = .5f;
         damageDealt = 25;
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            // TracerMesh should have a Health component
-            Health tracerHealth = other.GetComponentInChildren<Health>();
-            tracerHealth.TakeDamage(damageDealt);
-            //Debug.Log("Hit Player!");
-        }
-
-    
-    }
 }
