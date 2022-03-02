@@ -15,8 +15,11 @@ public abstract class Bullet : SelfDespawn
     protected float damageDealt = 0;
     protected bool willPenetrate = false;
 
-    // Determines who the bullet can effect ("Player", "Enemy", etc.)
-    public List<string> targetTags = new List<string>();
+    // Who shot this bullet?
+    public GameObject sender;
+
+    // Determines who the bullet can effect
+    protected static List<string> targetTags = new List<string>(){ "Player", "Enemy" };
 
     /// <summary>Speed of bullet out of the gun.</summary>
     public float MuzzleVelocity
@@ -59,7 +62,8 @@ public abstract class Bullet : SelfDespawn
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (targetTags.Contains(other.gameObject.tag))
+        if (targetTags.Contains(other.gameObject.tag) && 
+            other.gameObject != sender)
         {
             // TracerMesh should have a Health component
             Health otherHealth = other.GetComponentInChildren<Health>();

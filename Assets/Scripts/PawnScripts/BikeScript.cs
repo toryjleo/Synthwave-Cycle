@@ -73,7 +73,6 @@ public class BikeScript : MonoBehaviour
         }
         else
         {
-            guns[0].bulletPrefab.targetTags.Add("Enemy");
             EquipGun(guns[0]);
         }
     }

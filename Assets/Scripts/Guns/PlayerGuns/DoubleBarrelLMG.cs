@@ -17,6 +17,7 @@ public class DoubleBarrelLMG : Gun
     {
         lastFired = 0;
         fireRate = 15;
+        bulletPrefab.sender = this.gameObject.transform.parent.gameObject;
         bulletPool = gameObject.AddComponent<BulletPool>();
         bulletPool.Init(bulletPrefab);
     }

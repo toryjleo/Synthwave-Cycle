@@ -10,6 +10,7 @@ public class Shotgun : Gun
     {
         lastFired = 0;
         fireRate = .7f; // Every 2 seconds
+        bulletPrefab.sender = this.gameObject.transform.parent.gameObject;
         bulletPool = gameObject.AddComponent<BulletPool>();
         bulletPool.Init(bulletPrefab);
     }

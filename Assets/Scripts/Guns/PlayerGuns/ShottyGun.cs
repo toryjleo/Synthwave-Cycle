@@ -12,6 +12,7 @@ public class ShottyGun : Gun
     {
         lastFired = 0;
         fireRate = 2;
+        bulletPrefab.sender = this.gameObject.transform.parent.gameObject;
         bulletPool = gameObject.AddComponent<BulletPool>();
         bulletPool.Init(bulletPrefab);
     }
