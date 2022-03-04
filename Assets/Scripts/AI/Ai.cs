@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AiTemplate : SelfDespawn
+public abstract class Ai : SelfDespawn
 {
 
 
@@ -130,7 +130,7 @@ public abstract class AiTemplate : SelfDespawn
     /// This method requires the entire of AI 
     /// </summary>
     /// <param name="pool"></param>
-    public void seperate(List<AiTemplate> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
+    public void seperate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
     {
         float desiredSeperation = 5;
 
@@ -139,7 +139,7 @@ public abstract class AiTemplate : SelfDespawn
                        //it adds the sum vector  
 
 
-        foreach (AiTemplate g in pool)
+        foreach (Ai g in pool)
         {
 
             float d = Vector3.Distance(g.transform.position, transform.position);

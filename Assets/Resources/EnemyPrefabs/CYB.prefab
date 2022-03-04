@@ -1369,11 +1369,11 @@ MonoBehaviour:
   rb: {fileID: 3874834857555224720}
   myGun: {fileID: 250586739251281370}
   hp: {fileID: 0}
-  StartingHP: 40
+  StartingHP: 0
   maxSpeed: 0
   maxForce: 0
-  score: 100
-  attackRange: 30
+  score: 0
+  attackRange: 0
   alive: 0
   muzzleLocation: {fileID: 0}
 --- !u!54 &3874834857555224720

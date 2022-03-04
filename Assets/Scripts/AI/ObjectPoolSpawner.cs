@@ -9,7 +9,7 @@ public class ObjectPoolSpawner : MonoBehaviour
     public Gun gunToPool;
     public GameObject player;
     public ScoreTracker scoreKeeper;
-    private List<AiTemplate> pool;
+    private List<Ai> pool;
     public float size;
     public float spawnDistance; //the number of units away from the player that the enemy spawns 
 
@@ -22,7 +22,7 @@ public class ObjectPoolSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (AiTemplate g in pool)
+        foreach (Ai g in pool)
         {
             if (g.gameObject.activeSelf)
             {
@@ -51,7 +51,7 @@ public class ObjectPoolSpawner : MonoBehaviour
     }
     public void INIT()
     {
-        pool = new List<AiTemplate>();
+        pool = new List<Ai>();
 
         for (int i = 0; i < size; i++)
         {

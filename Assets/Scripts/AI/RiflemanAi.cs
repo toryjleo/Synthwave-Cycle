@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAI : AiTemplate
+public class RiflemanAi : Ai
 {
     public GameObject muzzleLocation; 
 
@@ -10,7 +10,7 @@ public class EnemyAI : AiTemplate
     public override void Init()
     {
         alive = true;
-        StartingHP = 40;
+        StartingHP = 20;
         score = 100;
         maxSpeed = 40;
         attackRange = 30;

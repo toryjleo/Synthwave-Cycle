@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GruntAI : AiTemplate
+public class GruntAI : Ai
 {
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
 
     public override void Init()
     {
         alive = true;
-        StartingHP = 120;
+        StartingHP = 40;
         score = 300;
         maxSpeed = 10;
         attackRange = 2;

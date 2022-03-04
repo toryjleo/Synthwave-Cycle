@@ -40,7 +40,7 @@ public class ObjectPool : MonoBehaviour
             {   
                 GameObject obj = Instantiate(pool.prefab); 
                 obj.SetActive(false);
-                obj.GetComponent<AiTemplate>();
+                obj.GetComponent<Ai>();
                 objectPool.Enqueue(obj);
             }
 
@@ -59,7 +59,7 @@ public class ObjectPool : MonoBehaviour
         GameObject objectToSpawn = poolDictionary[tag].Dequeue();
 
         
-        objectToSpawn.GetComponent<AiTemplate>().loadout(target);
+        objectToSpawn.GetComponent<Ai>().loadout(target);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
         objectToSpawn.SetActive(true);

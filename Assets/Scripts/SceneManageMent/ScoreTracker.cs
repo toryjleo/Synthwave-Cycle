@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Timers;
 
 /// <summary>Class <c>ScoreTracker</c> Component which manages the UI in the upper left of the game screen.</summary>
 /// Expects there to be an object with BikeScript in the scene.
@@ -111,6 +112,8 @@ public class ScoreTracker : MonoBehaviour
     private void EndGame(bool survivedEvent) 
     {
         PlayerDataObject.survivedEvent = survivedEvent;
+        Object.FindObjectOfType<SpawnMaster>().xTimer.Dispose(); //Dispose of timer for spawning more enemies 
+
         StartCoroutine(LoadYourAsyncScene());
     }
 
