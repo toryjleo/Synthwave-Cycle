@@ -5,7 +5,13 @@ using UnityEngine;
 public abstract class Ai : SelfDespawn
 {
 
-    
+    // THis is the method that sets the entity to Deactive and bascially is uesd to kill the entitiy 
+    public void op_ProcessCompleted(SelfDespawn entity)
+    {
+        entity.gameObject.SetActive(false);
+        //TODO: Add Logic here to make sure Entity either remains in the pool or becomes a new entity
+    }
+
     public GameObject target;
     public CyborgAnimationStateController animationStateController;
     public Rigidbody rb;
@@ -56,16 +62,11 @@ public abstract class Ai : SelfDespawn
         if (myGun.CanShootAgain()&&myGun!=null)
         {
             this.myGun.Shoot(target.transform.position);
-            animationStateController.Shoot();
+            animationStateController.AimWhileWalking(true);
         }
     }
 
-    // THis is the method that sets the entity to Deactive and bascially is uesd to kill the entitiy 
-    public void op_ProcessCompleted(SelfDespawn entity)
-    {
-        entity.gameObject.SetActive(false);
-        //TODO: Add Logic here to make sure Entity either remains in the pool or becomes a new entity
-    }
+
 
 
 

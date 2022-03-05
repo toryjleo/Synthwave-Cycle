@@ -29,6 +29,24 @@ public class SpawnMaster : MonoBehaviour
 
 
 
+    public Vector3 biasSpawnVector(Vector3 bias, int angle, int distance)
+    {
+        if (bias == new Vector3(0, 0, 0))
+        {
+            bias = new Vector3(0, 0, 1);
+        }
+
+        Vector3 spawnVector = bias;
+        Quaternion q = Quaternion.Euler(0, Random.Range(-angle, angle), 0);
+
+        spawnVector = q * spawnVector;
+
+        spawnVector.Normalize();
+        spawnVector *= distance;
+        spawnVector += player.transform.position;
+        return spawnVector;
+    }
+
     public Vector3 generateSpawnVector()
     {
         //TODO: add Spawn Bias 
@@ -105,7 +123,7 @@ public class SpawnMaster : MonoBehaviour
                 currentEnemies.Add(enemy.GetComponentInChildren<Ai>());
                 break;
             case Enemy.Blank:
-                enemy = ops.SpawnFromPool("Blank", generateSpawnVector(), Quaternion.identity, null);
+                enemy = ops.SpawnFromPool("Blank", biasSpawnVector((player.GetComponent<BikeScript>().velocity),20,100), Quaternion.identity, null);
                 currentEnemies.Add(enemy.GetComponentInChildren<Ai>());
                 break;
             default:
@@ -121,12 +139,15 @@ public class SpawnMaster : MonoBehaviour
     private void SpawnFirstWave()
     {
 
-        SpawnNewEnemy(Enemy.Grunt);
-        SpawnNewEnemy(Enemy.Grunt);
-        SpawnNewEnemy(Enemy.Grunt);
-        SpawnNewEnemy(Enemy.Rifelman);
-        SpawnNewEnemy(Enemy.Rifelman);
-        SpawnNewEnemy(Enemy.Rifelman);
+        SpawnNewEnemy(Enemy.Blank);
+        SpawnNewEnemy(Enemy.Blank);
+        SpawnNewEnemy(Enemy.Blank);
+        SpawnNewEnemy(Enemy.Blank);
+        SpawnNewEnemy(Enemy.Blank);
+        SpawnNewEnemy(Enemy.Blank);
+        SpawnNewEnemy(Enemy.Blank);
+        SpawnNewEnemy(Enemy.Blank);
+        SpawnNewEnemy(Enemy.Blank);
         SpawnNewEnemy(Enemy.Blank);
         SpawnNewEnemy(Enemy.Blank);
         SpawnNewEnemy(Enemy.Blank);
