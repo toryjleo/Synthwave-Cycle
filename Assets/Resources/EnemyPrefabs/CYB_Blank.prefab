@@ -1026,7 +1026,7 @@ GameObject:
   - component: {fileID: 8520023899093707183}
   m_Layer: 0
   m_Name: CYB_Blank
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1060,7 +1060,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   animationStateController: {fileID: 0}
-  rb: {fileID: 0}
+  rb: {fileID: 2579800540101835106}
   myGun: {fileID: 0}
   hp: {fileID: 0}
   StartingHP: 0

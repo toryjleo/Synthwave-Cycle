@@ -112,7 +112,8 @@ public class ScoreTracker : MonoBehaviour
     private void EndGame(bool survivedEvent) 
     {
         PlayerDataObject.survivedEvent = survivedEvent;
-        Object.FindObjectOfType<SpawnMaster>().xTimer.Dispose(); //Dispose of timer for spawning more enemies 
+
+        Object.FindObjectOfType<DLevel>().dangerTimer.Dispose(); //Dispose of timer for spawning more enemies 
 
         StartCoroutine(LoadYourAsyncScene());
     }

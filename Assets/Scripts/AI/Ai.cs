@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Ai : SelfDespawn
 {
 
-
+    
     public GameObject target;
     public CyborgAnimationStateController animationStateController;
     public Rigidbody rb;
@@ -31,7 +31,10 @@ public abstract class Ai : SelfDespawn
 
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned 
         {
-            myGun.StopAllCoroutines();
+            if(myGun != null)
+            {
+                myGun.StopAllCoroutines();
+            }
             animationStateController.StopAllCoroutines();
             alive = false;
             this.gameObject.SetActive(false);

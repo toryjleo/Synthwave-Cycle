@@ -4,6 +4,7 @@ using System.Timers;
 using UnityEngine;
 
 
+
 /// <summary>
 /// This class Controlls the rate at which enemies are spawned and knows which enemies are in the scene 
 /// </summary>
@@ -12,36 +13,21 @@ public class SpawnMaster : MonoBehaviour
     // Start is called before the first frame update
     public ObjectPool ops;
     public GameObject player;
+    public DLevel dl;
     public ScoreTracker scoreKeeper;
     public List<Ai> currentEnemies;
 
 
     private float spawnDistance = 80;
-    public static int dangerLevel;
-    public Timer xTimer;
+    
 
     void Start()
     {
         ops = ObjectPool.Instance;
-
-        //This timer increases the danger level and is used for determining the amount and difficulty of enemies being spawned
-        xTimer = new Timer(3000);
-        dangerLevel = 10;
-        xTimer.AutoReset = true;
-        xTimer.Enabled = true;
-        xTimer.Elapsed += XTimer_Elapsed;
-
+        dl = DLevel.Instance;
     }
 
-    /// <summary>
-    /// When xTimer Elapses every 3 seconds, increase the danger level by 1. 
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void XTimer_Elapsed(object sender, ElapsedEventArgs e)
-    {
-        dangerLevel++;
-    }
+
 
     public Vector3 generateSpawnVector()
     {
@@ -58,8 +44,8 @@ public class SpawnMaster : MonoBehaviour
     void Update()
     {        
         UpdateEnemyStates();
-        
-        if(currentEnemies.Count < dangerLevel)
+
+        if (currentEnemies.Count < dl.dangerLevel)
         {
             //This method sees if all enemies have been Killed
             if (currentEnemies.Count == 0)
@@ -69,7 +55,7 @@ public class SpawnMaster : MonoBehaviour
             } else
             {
                 //Slowly Spawn more randos 
-                SpawnNewEnemy("Grunt");
+                SpawnNewEnemy(Enemy.Blank);
             }
             
         }
@@ -105,20 +91,20 @@ public class SpawnMaster : MonoBehaviour
     /// This will spawn an enemy of a specifi type 
     /// </summary>
     /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enenemy Type, AI type, and Gun loadout
-    private void SpawnNewEnemy(string type)
+    private void SpawnNewEnemy(Enemy type)
     {
         GameObject enemy;
         switch (type)
         {
-            case "Grunt":
+            case Enemy.Grunt:
                  enemy = ops.SpawnFromPool("Grunt", generateSpawnVector(), Quaternion.identity, player);
                 currentEnemies.Add(enemy.GetComponentInChildren<Ai>());
                 break;
-            case "Riflemen":
-                 enemy = ops.SpawnFromPool("RifleMan", generateSpawnVector(), Quaternion.identity, player);
+            case Enemy.Rifelman:
+                 enemy = ops.SpawnFromPool("Rifleman", generateSpawnVector(), Quaternion.identity, player);
                 currentEnemies.Add(enemy.GetComponentInChildren<Ai>());
                 break;
-            case "Blank":
+            case Enemy.Blank:
                 enemy = ops.SpawnFromPool("Blank", generateSpawnVector(), Quaternion.identity, null);
                 currentEnemies.Add(enemy.GetComponentInChildren<Ai>());
                 break;
@@ -135,15 +121,15 @@ public class SpawnMaster : MonoBehaviour
     private void SpawnFirstWave()
     {
 
-        SpawnNewEnemy("Grunt");
-        SpawnNewEnemy("Grunt");
-        SpawnNewEnemy("Grunt");
-        SpawnNewEnemy("Rifleman");
-        SpawnNewEnemy("Rifleman");
-        SpawnNewEnemy("Blank");
-        SpawnNewEnemy("Blank");
-        SpawnNewEnemy("Blank");
-        SpawnNewEnemy("Blank");
+        SpawnNewEnemy(Enemy.Grunt);
+        SpawnNewEnemy(Enemy.Grunt);
+        SpawnNewEnemy(Enemy.Grunt);
+        SpawnNewEnemy(Enemy.Rifelman);
+        SpawnNewEnemy(Enemy.Rifelman);
+        SpawnNewEnemy(Enemy.Rifelman);
+        SpawnNewEnemy(Enemy.Blank);
+        SpawnNewEnemy(Enemy.Blank);
+        SpawnNewEnemy(Enemy.Blank);
 
     }
 }

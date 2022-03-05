@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+enum Enemy
+{
+    Grunt,Rifelman,Blank,Sniper,Dog
+}
 public class ObjectPool : MonoBehaviour
 {
 
@@ -11,6 +16,13 @@ public class ObjectPool : MonoBehaviour
         public string tag;
         public GameObject prefab;
         public int size;
+
+        public Pool(string Tag, GameObject Prefab, int Size)
+        {
+            tag = Tag;
+            prefab = Prefab;
+            size = Size;
+        }
     }
 
     public static ObjectPool Instance;
@@ -30,6 +42,8 @@ public class ObjectPool : MonoBehaviour
     {   
         //Create Dictionary of tags for each if the pools
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
+
+        
 
         foreach (Pool pool in pools)
         {
