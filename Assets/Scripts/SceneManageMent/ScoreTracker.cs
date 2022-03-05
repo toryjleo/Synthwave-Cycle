@@ -111,6 +111,7 @@ public class ScoreTracker : MonoBehaviour
     private void EndGame(bool survivedEvent) 
     {
         PlayerDataObject.survivedEvent = survivedEvent;
+        PlayerDataObject.wasJustInGame = true;
         StartCoroutine(LoadYourAsyncScene());
     }
 
