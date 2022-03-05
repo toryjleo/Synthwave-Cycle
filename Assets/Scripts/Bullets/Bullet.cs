@@ -13,6 +13,9 @@ public abstract class Bullet : SelfDespawn
     protected float muzzleVelocity = 0;
     protected float mass = 0;
     protected float damageDealt = 0;
+    protected bool hasFiniteLifetime = false;
+    protected float lifetime = float.MaxValue;
+    protected float timeSinceShot = 0;
 
     /// <summary>Speed of bullet out of the gun.</summary>
     public float MuzzleVelocity
@@ -30,6 +33,7 @@ public abstract class Bullet : SelfDespawn
     public override void Update()
     {
         base.Update();
+        UpdateBulletLifeTime();
         Move();
     }
 
@@ -38,6 +42,20 @@ public abstract class Bullet : SelfDespawn
     {
         Vector3 distanceThisFrame = ((shootDir * muzzleVelocity) + initialVelocity) * Time.deltaTime;
         transform.position = transform.position + distanceThisFrame;
+    }
+
+    /// <summary>Code that applies changes to a bullet over its lifetime.</summary>
+    protected virtual void UpdateBulletLifeTime() 
+    {
+        // Check if the bullet's lifetime is up
+        if (hasFiniteLifetime)
+        {
+            timeSinceShot += Time.deltaTime;
+            if (timeSinceShot >= lifetime) 
+            {
+                OnDespawn();
+            }
+        }
     }
 
     /// <summary>Initializes this bullet to start moving.</summary>
@@ -51,6 +69,7 @@ public abstract class Bullet : SelfDespawn
         shootDir = direction.normalized;
         transform.rotation = Quaternion.LookRotation(direction);
         this.initialVelocity = initialVelocity;
+        this.timeSinceShot = 0;
     }
 
     /// <summary>Deals damage to other and despawns this bullet.</summary>
