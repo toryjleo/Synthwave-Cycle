@@ -8,7 +8,6 @@ public class Factory : MonoBehaviour
     public GameObject[] aiTemplates;
     public GameObject[] guns;
 
-    public static ObjectPoolSpawner spawner;
 
 
     // Start is called before the first frame update

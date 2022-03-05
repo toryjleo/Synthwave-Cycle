@@ -77,17 +77,12 @@ public class SpawnMaster : MonoBehaviour
 
         
     }
-
-
     /// <summary>
     /// This Method Checks how many enemies are currently alive in the scene, if any are dead it adds those to the score and Begins 
     /// the respawn countdown. Then it removes all dead enemies from the list of currently alive ones. 
     /// </summary>
     private void UpdateEnemyStates()
     {
-
-        
-
         foreach (Ai a in currentEnemies)
         {
             if (a.isAlive())
