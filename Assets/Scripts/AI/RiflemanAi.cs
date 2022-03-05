@@ -35,10 +35,6 @@ public class RiflemanAi : Ai
         {
             Debug.LogError("This object needs a health component");
         }
-        if (myGun == null)
-        {
-            Debug.LogError("This object needs a Gun component");
-        }
         #endregion
 
 

@@ -50,7 +50,7 @@ public abstract class Ai : SelfDespawn
     }
     public void Attack()
     {
-        if (myGun.CanShootAgain())
+        if (myGun.CanShootAgain()&&myGun!=null)
         {
             this.myGun.Shoot(target.transform.position);
             animationStateController.Shoot();

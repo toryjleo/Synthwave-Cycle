@@ -123,6 +123,10 @@ public class SpawnMaster : MonoBehaviour
                  enemy = ops.SpawnFromPool("RifleMan", generateSpawnVector(), Quaternion.identity, player);
                 currentEnemies.Add(enemy.GetComponentInChildren<Ai>());
                 break;
+            case "Blank":
+                enemy = ops.SpawnFromPool("Blank", generateSpawnVector(), Quaternion.identity, null);
+                currentEnemies.Add(enemy.GetComponentInChildren<Ai>());
+                break;
             default:
 
                 break;
@@ -135,20 +139,16 @@ public class SpawnMaster : MonoBehaviour
     /// </summary>
     private void SpawnFirstWave()
     {
-        
-        GameObject enemy = ops.SpawnFromPool("Grunt", generateSpawnVector(), Quaternion.identity, player);
-        currentEnemies.Add(enemy.GetComponentInChildren<Ai>());
-        enemy = ops.SpawnFromPool("Grunt", generateSpawnVector(), Quaternion.identity, player);
-        currentEnemies.Add(enemy.GetComponentInChildren<Ai>());
 
-        enemy = ops.SpawnFromPool("RifleMan", generateSpawnVector(), Quaternion.identity, player);
-        currentEnemies.Add(enemy.GetComponentInChildren<Ai>());
-        enemy = ops.SpawnFromPool("RifleMan", generateSpawnVector(), Quaternion.identity, player);
-        currentEnemies.Add(enemy.GetComponentInChildren<Ai>());
-        enemy = ops.SpawnFromPool("RifleMan", generateSpawnVector(), Quaternion.identity, player);
-        currentEnemies.Add(enemy.GetComponentInChildren<Ai>());
-        enemy = ops.SpawnFromPool("RifleMan", generateSpawnVector(), Quaternion.identity, player);
-        currentEnemies.Add(enemy.GetComponentInChildren<Ai>());
+        SpawnNewEnemy("Grunt");
+        SpawnNewEnemy("Grunt");
+        SpawnNewEnemy("Grunt");
+        SpawnNewEnemy("Rifleman");
+        SpawnNewEnemy("Rifleman");
+        SpawnNewEnemy("Blank");
+        SpawnNewEnemy("Blank");
+        SpawnNewEnemy("Blank");
+        SpawnNewEnemy("Blank");
 
     }
 }
