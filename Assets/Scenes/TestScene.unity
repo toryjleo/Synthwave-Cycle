@@ -140,9 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2db30df14ef96db418a30065b01a00fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ops: {fileID: 609589166}
-  player: {fileID: 1147356074}
-  dl: {fileID: 0}
+  enemySpawner: {fileID: 609589169}
+  dl: {fileID: 609589168}
   scoreKeeper: {fileID: 2022368761}
   currentEnemies: []
 --- !u!114 &609589166
@@ -194,6 +193,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dangerLevel: 0
+--- !u!114 &609589169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609589160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 555c781b633785644aeffaf92227ac55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ops: {fileID: 609589166}
+  player: {fileID: 1147356074}
+  spawnDistance: 100
+  spawnBiasAngle: 20
 --- !u!1001 &840130558
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -416,6 +431,10 @@ PrefabInstance:
     - target: {fileID: 3369499019353642388, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
       propertyPath: m_Name
       value: Player Bike
+      objectReference: {fileID: 0}
+    - target: {fileID: 3369499019353642388, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57bbfb70c9b995348b2cc29f31ea326b, type: 3}

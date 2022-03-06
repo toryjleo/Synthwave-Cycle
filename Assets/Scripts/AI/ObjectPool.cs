@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-enum Enemy
+public enum Enemy
 {
     Grunt,Rifelman,Blank,Sniper,Dog
 }
+
+
 public class ObjectPool : MonoBehaviour
 {
 
@@ -62,7 +64,7 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation, GameObject target)
+    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
     {
         if (!poolDictionary.ContainsKey(tag))
         {
@@ -73,7 +75,6 @@ public class ObjectPool : MonoBehaviour
         GameObject objectToSpawn = poolDictionary[tag].Dequeue();
 
         
-        objectToSpawn.GetComponent<Ai>().loadout(target);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
         objectToSpawn.SetActive(true);
