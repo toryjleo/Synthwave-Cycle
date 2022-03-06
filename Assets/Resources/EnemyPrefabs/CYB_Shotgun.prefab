@@ -1199,7 +1199,6 @@ GameObject:
   - component: {fileID: 5276614991530184179}
   - component: {fileID: 6282319408286663122}
   - component: {fileID: 7222477486093324486}
-  - component: {fileID: 6479777536478336870}
   m_Layer: 0
   m_Name: Cyborg_Soldier
   m_TagString: Enemy
@@ -1233,7 +1232,7 @@ Animator:
   m_GameObject: {fileID: 7561190380694266683}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: d0196a0e0d1ba7147adff8c5bb4e1e14, type: 3}
-  m_Controller: {fileID: 9100000, guid: 6b4229a99e1286f4ebba4e16379a0090, type: 2}
+  m_Controller: {fileID: 9100000, guid: f2f2f872d3f2a034e9725cc7d9a11a65, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1254,20 +1253,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!136 &6479777536478336870
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7561190380694266683}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 1
-  m_Height: 4
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7830052354036537715
 GameObject:
   m_ObjectHideFlags: 0
@@ -1372,10 +1357,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3892049325346874338}
-  - component: {fileID: 8198519020085540812}
+  - component: {fileID: 8118981365188568940}
   - component: {fileID: 2114404339180774918}
+  - component: {fileID: 6293195935236756366}
+  - component: {fileID: 6128039659088265392}
   m_Layer: 0
-  m_Name: CYBORG_Shotgun
+  m_Name: CYB_Shotgun
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1397,7 +1384,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8198519020085540812
+--- !u!114 &8118981365188568940
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1406,14 +1393,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 7978806473477363408}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6675fd315cbde074a8ff6f7be406ac4a, type: 3}
+  m_Script: {fileID: 11500000, guid: ab3a7d0d9bf612a4c86530f01f5718d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  animationStateController: {fileID: 6128039659088265392}
   rb: {fileID: 2114404339180774918}
   myGun: {fileID: 4935205766387807532}
-  StartingHP: 40
-  attackRange: 1
+  hp: {fileID: 0}
+  StartingHP: 0
+  maxSpeed: 0
+  maxForce: 0
+  score: 0
+  attackRange: 0
+  alive: 0
+  muzzleLocation: {fileID: 0}
 --- !u!54 &2114404339180774918
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1430,6 +1424,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!136 &6293195935236756366
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7978806473477363408}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 2
+  m_Height: 5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6128039659088265392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7978806473477363408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2310bde105355454ebbf6261f38b20b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8018095293634881705
 GameObject:
   m_ObjectHideFlags: 0

@@ -1330,7 +1330,7 @@ GameObject:
   - component: {fileID: 412237147971708079}
   - component: {fileID: 3940266983991501729}
   m_Layer: 0
-  m_Name: CYBORG
+  m_Name: CYB
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1365,10 +1365,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  animationStateController: {fileID: 0}
   rb: {fileID: 3874834857555224720}
   myGun: {fileID: 250586739251281370}
+  hp: {fileID: 0}
   StartingHP: 0
-  attackRange: 10
+  maxSpeed: 0
+  maxForce: 0
+  score: 0
+  attackRange: 0
+  alive: 0
+  muzzleLocation: {fileID: 0}
 --- !u!54 &3874834857555224720
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1395,8 +1402,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1
-  m_Height: 4
+  m_Radius: 2
+  m_Height: 5
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3940266983991501729
