@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
+/// <summary>Class <c>CinematicCamera</c> A Unity Component that controls the camera.</summary>
+/// Requires BikeScript in scene
 public class CinematicCamera : MonoBehaviour
 {
 
@@ -20,9 +22,10 @@ public class CinematicCamera : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Testing feature
+        /*
         if (Input.GetKeyDown(KeyCode.I)) 
         {
             playerBike.FollowerHeight = BODY_MAX_Y_OFFSET;
@@ -31,22 +34,35 @@ public class CinematicCamera : MonoBehaviour
         {
             playerBike.FollowerHeight = BODY_MIN_Y_OFFSET;
         }
+        */
     }
 
 
     public void Init() 
     {
         // Find object to follow
+        bool playerBikeFound = GetPlayerBike();
+        if (playerBikeFound)
+        {
+            InitTopCam();
+        }
+    }
+
+
+    /// <summary>Gets the player bike from the scene.</summary>
+    /// <returns>True if a player bike has been found in the scene.</returns>
+    private bool GetPlayerBike() 
+    {
         playerBike = FindObjectOfType<BikeScript>();
         if (playerBike == null)
         {
             Debug.LogError("Cannot find an object with 'BikeScript' component in scene!");
+            return false;
         }
-
-        InitTopCam();
+        return true;
     }
 
-
+    /// <summary>Initializes variables for the top camera.</summary>
     private void InitTopCam() 
     {
         topTransposer = virtualCameraTop.GetCinemachineComponent<CinemachineTransposer>();

@@ -33,8 +33,6 @@ public class BikeScript : MonoBehaviour
 
     private Health health;
 
-    public GameObject cameraFollower;
-
 
     #region OTHER STUFF
     public float Energy
@@ -42,6 +40,11 @@ public class BikeScript : MonoBehaviour
         get => health.HitPoints;
     }
 
+    #region Camera
+    // The empty object the camera follows
+    public GameObject cameraFollower;
+
+    // Height of the empty object the camera follows
     public float FollowerHeight 
     {
         get 
@@ -54,6 +57,7 @@ public class BikeScript : MonoBehaviour
         }
     }
 
+    // Returns the transform of the empty object the camera follows
     public Transform CameraFollower 
     {
         get 
@@ -61,6 +65,7 @@ public class BikeScript : MonoBehaviour
             return cameraFollower.transform;
         }
     }
+    #endregion
 
     private void Awake()
     {
