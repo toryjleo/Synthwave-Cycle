@@ -33,11 +33,33 @@ public class BikeScript : MonoBehaviour
 
     private Health health;
 
+    public GameObject cameraFollower;
+
 
     #region OTHER STUFF
     public float Energy
     {
         get => health.HitPoints;
+    }
+
+    public float FollowerHeight 
+    {
+        get 
+        {
+            return cameraFollower.transform.position.y;
+        }
+        set 
+        {
+            cameraFollower.transform.position = new Vector3(cameraFollower.transform.position.x, value, cameraFollower.transform.position.z);
+        }
+    }
+
+    public Transform CameraFollower 
+    {
+        get 
+        {
+            return cameraFollower.transform;
+        }
     }
 
     private void Awake()
