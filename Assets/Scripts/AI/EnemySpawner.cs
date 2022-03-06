@@ -27,7 +27,7 @@ public class EnemySpawner : MonoBehaviour
         
     }
     /// <summary>
-    /// This will spawn an enemy of a specifi type 
+    /// This will spawn an enemy of a specific type and then returns that enemy 
     /// </summary>
     /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enenemy Type, AI type, and Gun loadout
     public GameObject SpawnNewEnemy(Enemy type)
@@ -66,7 +66,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns 5 Riflemen & 2 Shotgunners
+    /// This Method is called at the beginning of the game to spawn in the first wave. 
     /// </summary>
     public List<Ai> SpawnFirstWave(List<Ai> currentEnemies)
     {
@@ -74,7 +74,7 @@ public class EnemySpawner : MonoBehaviour
         Ai enemyAI;
         for(int i = 0; i< 10; i++)
         {
-            enemy = ops.SpawnFromPool("Rifleman", biasSpawnVector(), Quaternion.identity);
+            enemy = ops.SpawnFromPool("Rifleman", generateSpawnVector(), Quaternion.identity);
             enemyAI = enemy.GetComponent<Ai>();
             enemyAI.loadout(player);
             enemyAI.alive = true;
