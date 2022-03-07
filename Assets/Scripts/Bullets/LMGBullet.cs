@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LMGBullet : Bullet
 {
-    public override void Init() 
+    public override void Init()
     {
         muzzleVelocity = 180;
         mass = .5f;
@@ -20,7 +20,7 @@ public class LMGBullet : Bullet
             Health otherHealth = other.GetComponentInChildren<Health>();
             float z = otherHealth.HitPoints;
             otherHealth.TakeDamage(damageDealt);
-            
+
         }
     }
 }

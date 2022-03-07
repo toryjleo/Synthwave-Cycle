@@ -37,7 +37,7 @@ public class PlayerHealthRegen : MonoBehaviour
         //print("Number ofenemies in volume: " + numEnemiesInVolume);
 
         // Manage PlayerHealthRegen object
-        if (numEnemiesInVolume > 0) 
+        if (numEnemiesInVolume > 0)
         {
             Shrink(SCALE_SHRINK_PER_SECOND * Time.deltaTime * numEnemiesInVolume);
         }
@@ -48,7 +48,7 @@ public class PlayerHealthRegen : MonoBehaviour
     }
 
 
-    private void Init() 
+    private void Init()
     {
         numEnemiesInVolume = 0;
         energyRegenPerSec = STARTING_REGEN_PER_SEC;
@@ -58,14 +58,14 @@ public class PlayerHealthRegen : MonoBehaviour
 
     /// <summary>Returns the full length the player's regen can grow or shrink</summary>
     /// <returns>The difference of MAX_SCALE - MIN_SCALE.</returns>
-    private float ScaleMINMAXDifference() 
+    private float ScaleMINMAXDifference()
     {
         return MAX_SCALE - MIN_SCALE;
     }
 
     /// <summary>Returns the percentage of the regen. Will be at max when curScale == MAX_SCALE</summary>
     /// <returns>The percentage of the regen.</returns>
-    private float PercentRegen() 
+    private float PercentRegen()
     {
         return (curScale - MIN_SCALE) / ScaleMINMAXDifference();
     }
@@ -87,7 +87,7 @@ public class PlayerHealthRegen : MonoBehaviour
 
     /// <summary>Shrinks the regen scale by amnt.</summary>
     /// <param name="amnt">The amount of points to reduce curScale by.</param>
-    private void Shrink(float amnt) 
+    private void Shrink(float amnt)
     {
         SetScale(curScale - amnt);
     }
@@ -109,7 +109,7 @@ public class PlayerHealthRegen : MonoBehaviour
 
     /// <summary>Updates the current scale.</summary>
     /// <param name="scale">The scale at which to set this object to.</param>
-    private void SetScale(float scale) 
+    private void SetScale(float scale)
     {
         curScale = ClampScale(scale);
         Vector3 objScale = new Vector3(curScale, 1, curScale);
@@ -120,7 +120,7 @@ public class PlayerHealthRegen : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Enemy") 
+        if (other.tag == "Enemy")
         {
             numEnemiesInVolume++;
         }
