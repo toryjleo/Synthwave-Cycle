@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Timers;
 
 /// <summary>Class <c>ScoreTracker</c> Component which manages the UI in the upper left of the game screen.</summary>
 /// Expects there to be an object with BikeScript in the scene.
@@ -44,20 +45,20 @@ public class ScoreTracker : MonoBehaviour
             // Win condition
             EndGame(true);
         }
-        else if (_currentEnergy <=0) 
+        else if (_currentEnergy <=0)
         {
             // Lose Condition
             EndGame(false);
         }
     }
 
-    public void Init() 
+    public void Init()
     {
         currentTime = MAX_TIME;
         currentScore = 0;
     }
 
-    private void FindBike() 
+    private void FindBike()
     {
         BikeScript[] bikeScripts = Object.FindObjectsOfType<BikeScript>();
         if (bikeScripts.Length <= 0)
@@ -70,13 +71,13 @@ public class ScoreTracker : MonoBehaviour
         }
     }
 
-    void OnDisable() 
+    void OnDisable()
     {
         // Update Score for next scene
         PlayerDataObject.lastGameScore = currentScore;
 
         // Update highschore if a new one is achieved
-        if (currentScore > PlayerDataObject.highScore) 
+        if (currentScore > PlayerDataObject.highScore)
         {
             PlayerPrefs.SetInt("highScore", currentScore);
             PlayerDataObject.highScore = currentScore;
@@ -84,7 +85,7 @@ public class ScoreTracker : MonoBehaviour
     }
 
     /// <summary>Updates the UI displayed on screen.</summary>
-    private void UpdateText() 
+    private void UpdateText()
     {
         currentTime -= Time.deltaTime;
 
@@ -95,7 +96,7 @@ public class ScoreTracker : MonoBehaviour
 
     /// <summary>Adds points to the score for this game session.</summary>
     /// <param name="points">The number of points to add to the score.</param>
-    public void AddToScore(int points) 
+    public void AddToScore(int points)
     {
         currentScore += points;
     }
@@ -108,10 +109,12 @@ public class ScoreTracker : MonoBehaviour
 
     /// <summary>Loads the gameover screen.</summary>
     /// <param name="survivedEvent">True if the player beat the level.</param>
-    private void EndGame(bool survivedEvent) 
+    private void EndGame(bool survivedEvent)
     {
         PlayerDataObject.survivedEvent = survivedEvent;
-        PlayerDataObject.wasJustInGame = true;
+
+        Object.FindObjectOfType<DLevel>().dangerTimer.Dispose(); //Dispose of timer for spawning more enemies
+
         StartCoroutine(LoadYourAsyncScene());
     }
 
