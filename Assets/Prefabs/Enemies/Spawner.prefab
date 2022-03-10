@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3780906798646803481}
   - component: {fileID: 3780906798646803494}
   - component: {fileID: 3780906798646803495}
-  - component: {fileID: 3780906798646803483}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -96,18 +95,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3780906798646803483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3780906798646803492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eaa3d102789380942a9029773bc13db9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToPool: {fileID: 0}
-  player: {fileID: 0}
-  size: 10
