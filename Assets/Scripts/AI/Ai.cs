@@ -43,7 +43,10 @@ public abstract class Ai : SelfDespawn
             }
             animationStateController.StopAllCoroutines();
             alive = false;
+
+            
             this.gameObject.SetActive(false);
+            
         }
         else //Act natural 
         {
@@ -59,16 +62,12 @@ public abstract class Ai : SelfDespawn
     }
     public void Attack()
     {
-        if (myGun.CanShootAgain()&&myGun!=null)
+        if (myGun != null&&myGun.CanShootAgain())
         {
             this.myGun.Shoot(target.transform.position);
             animationStateController.AimWhileWalking(true);
         }
     }
-
-
-
-
 
     #region Movement
     /// <summary>
@@ -136,7 +135,7 @@ public abstract class Ai : SelfDespawn
     /// <param name="pool"></param>
     public void seperate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
     {
-        float desiredSeperation = 5;
+        float desiredSeperation = 10;
 
         Vector3 sum = new Vector3(); //the vector that will be used to calculate flee beheavior if a too close interaction happens 
         int count = 0; //this couunts how many TOOCLOSE interactions an entity has, if it has more than one
@@ -153,6 +152,7 @@ public abstract class Ai : SelfDespawn
                 Vector3 diff = transform.position - g.transform.position;
                 diff.Normalize();
                 sum += diff;
+                count++;
                 count++;
             }
 
@@ -186,11 +186,16 @@ public abstract class Ai : SelfDespawn
     {
         return score;
     }
-    public void loadout(GameObject targ)//sets the target of the entity and equips the gun
+    public void Loadout(GameObject targ)//sets the target of the entity and equips the gun
     {
         target = targ;
         //myGun = gunToEquip;
     }
 
+    public void NewLife()
+    {
+        alive = true;
+        hp.Init(StartingHP);
+    }// this restets the enemies HP and sets them to alive;
     #endregion & Setup
 }

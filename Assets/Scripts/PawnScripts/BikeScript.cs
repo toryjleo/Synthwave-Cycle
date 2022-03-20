@@ -40,6 +40,33 @@ public class BikeScript : MonoBehaviour
         get => health.HitPoints;
     }
 
+    #region Camera
+    // The empty object the camera follows
+    public GameObject cameraFollower;
+
+    // Height of the empty object the camera follows
+    public float FollowerHeight 
+    {
+        get 
+        {
+            return cameraFollower.transform.position.y;
+        }
+        set 
+        {
+            cameraFollower.transform.position = new Vector3(cameraFollower.transform.position.x, value, cameraFollower.transform.position.z);
+        }
+    }
+
+    // Returns the transform of the empty object the camera follows
+    public Transform CameraFollower 
+    {
+        get 
+        {
+            return cameraFollower.transform;
+        }
+    }
+    #endregion
+
     private void Awake()
     {
         Init();

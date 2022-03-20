@@ -5,28 +5,25 @@ using UnityEngine;
 
 
 
+
 /// <summary>
 /// This class Controlls the rate at which enemies are spawned and knows which enemies are in the scene 
 /// </summary>
 public class EnemyManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public EnemySpawner enemySpawner;
-    
-    public DLevel dl;
+    public EnemySpawner enemySpawner; //Reference to Script in charge of spawning Enemies    
+    public DLevel dl; //Danger Level Timer 
     public ScoreTracker scoreKeeper;
-    public List<Ai> currentEnemies;
+
+
+    public List<Ai> currentEnemies; //This is a list of Ai that are currently active in the scene. 
+    
 
     void Start()
     {
-
         dl = DLevel.Instance;
     }
 
-
-
-
-    // Update is called once per frame
     void Update()
     {
         UpdateEnemyStates();
@@ -38,18 +35,18 @@ public class EnemyManager : MonoBehaviour
             {
                 //Refill the screen with Enemies 
                 currentEnemies = enemySpawner.SpawnFirstWave(currentEnemies);
-                
             }
             else
             {
-                //Slowly Spawn more randos 
-                currentEnemies.Add(enemySpawner.SpawnNewEnemy(Enemy.Rifelman).GetComponent<Ai>());
+                //Slowly Spawn more riflemen as the Danger Level increases 
+                //TODO spawn a random Enemy 
+                
+                int i = Random.Range(0, 2);
+                
+                currentEnemies.Add(enemySpawner.SpawnNewEnemy(Enemy.Cactus).GetComponent<Ai>());
             }
 
         }
-
-
-
     }
     /// <summary>
     /// This Method Checks how many enemies are currently alive in the scene, if any are dead it adds those to the score and Begins 
@@ -73,7 +70,11 @@ public class EnemyManager : MonoBehaviour
         }
         currentEnemies.RemoveAll(a => a.alive == false); //UNF this shit is so sexy
         currentEnemies.RemoveAll(a => a.isActiveAndEnabled == false);
+        
+        
     }
+
+
 }
 
 
