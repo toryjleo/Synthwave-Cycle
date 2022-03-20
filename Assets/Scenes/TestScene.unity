@@ -166,6 +166,9 @@ MonoBehaviour:
   - tag: Blank
     prefab: {fileID: 6749199786922221708, guid: 7577d168a208c5445a7f8ec18fb2eadf, type: 3}
     size: 30
+  - tag: Cactus
+    prefab: {fileID: 5811562474388505295, guid: 6cdbe3db9f170dd4a8679c9613211708, type: 3}
+    size: 30
 --- !u!114 &609589167
 MonoBehaviour:
   m_ObjectHideFlags: 0

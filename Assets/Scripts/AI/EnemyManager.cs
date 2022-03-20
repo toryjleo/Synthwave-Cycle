@@ -43,7 +43,7 @@ public class EnemyManager : MonoBehaviour
                 
                 int i = Random.Range(0, 2);
                 
-                currentEnemies.Add(enemySpawner.SpawnNewEnemy(Enemy.Blank).GetComponent<Ai>());
+                currentEnemies.Add(enemySpawner.SpawnNewEnemy(Enemy.Cactus).GetComponent<Ai>());
             }
 
         }

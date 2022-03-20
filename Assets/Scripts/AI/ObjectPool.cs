@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum Enemy
 {
-    Grunt,Rifelman,Blank,Sniper,Dog
+    Grunt,Rifelman,Blank,Sniper,Dog,Cactus
 }
 public enum Guns
 {
