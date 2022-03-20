@@ -33,6 +33,9 @@ public static class WorldBounds
 public class WorldGenerator : MonoBehaviour
 {
     private BikeScript bike;
+
+    // Various procedural objects in the world
+    public List<IWorldGenerationObject> worldSystems;
     #region ground
     [SerializeField] private GameObject ground;
     private GameObject[,] groundTiles;
@@ -55,6 +58,12 @@ public class WorldGenerator : MonoBehaviour
         }
 
         InitializeGround();
+
+        // Initialize world systems
+        foreach(IWorldGenerationObject wgo in worldSystems) 
+        {
+            wgo.Init();
+        }
     }
 
     // Update is called once per frame
