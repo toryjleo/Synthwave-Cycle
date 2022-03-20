@@ -56,12 +56,22 @@ public class ObjectPool : MonoBehaviour
             {   
                 GameObject obj = Instantiate(pool.prefab); 
                 obj.SetActive(false);
-                obj.GetComponent<Ai>();
+                Ai objAi = obj.GetComponent<Ai>();
+                objAi.Despawn += ObjAi_Despawn;
                 objectPool.Enqueue(obj);
             }
 
             poolDictionary.Add(pool.tag, objectPool);
         }
+    }
+
+    //This Method is called When the Entity dies 
+    private void ObjAi_Despawn(SelfDespawn entity)
+    {
+        //TODO fuuuuck, figure out how to use the enum to fix all of this shiiiit 
+        entity.gameObject.SetActive(false);
+        //poolDictionary.Enqueue(entity as Ai); // Make sure this is bullet in the future
+        //Debug.Log("Despawned, Size of queue: " + bulletQueue.Count);
     }
 
     public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
@@ -83,4 +93,5 @@ public class ObjectPool : MonoBehaviour
 
         return objectToSpawn;
     }
+
 }

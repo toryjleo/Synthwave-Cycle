@@ -15,16 +15,12 @@ public class EnemyManager : MonoBehaviour
     
     public DLevel dl;
     public ScoreTracker scoreKeeper;
-    public List<Ai> currentEnemies;
+    public List<Ai> currentEnemies; //This is a list of Ai that are currently active in the scene. 
 
     void Start()
     {
-
         dl = DLevel.Instance;
     }
-
-
-
 
     // Update is called once per frame
     void Update()
@@ -38,7 +34,6 @@ public class EnemyManager : MonoBehaviour
             {
                 //Refill the screen with Enemies 
                 currentEnemies = enemySpawner.SpawnFirstWave(currentEnemies);
-                
             }
             else
             {
@@ -47,9 +42,6 @@ public class EnemyManager : MonoBehaviour
             }
 
         }
-
-
-
     }
     /// <summary>
     /// This Method Checks how many enemies are currently alive in the scene, if any are dead it adds those to the score and Begins 
@@ -73,7 +65,11 @@ public class EnemyManager : MonoBehaviour
         }
         currentEnemies.RemoveAll(a => a.alive == false); //UNF this shit is so sexy
         currentEnemies.RemoveAll(a => a.isActiveAndEnabled == false);
+        
+        
     }
+
+
 }
 
 

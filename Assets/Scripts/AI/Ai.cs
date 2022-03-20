@@ -43,7 +43,10 @@ public abstract class Ai : SelfDespawn
             }
             animationStateController.StopAllCoroutines();
             alive = false;
+
+            
             this.gameObject.SetActive(false);
+            
         }
         else //Act natural 
         {
@@ -65,10 +68,6 @@ public abstract class Ai : SelfDespawn
             animationStateController.AimWhileWalking(true);
         }
     }
-
-
-
-
 
     #region Movement
     /// <summary>
@@ -154,6 +153,7 @@ public abstract class Ai : SelfDespawn
                 diff.Normalize();
                 sum += diff;
                 count++;
+                count++;
             }
 
             if (count > 0)
@@ -186,11 +186,16 @@ public abstract class Ai : SelfDespawn
     {
         return score;
     }
-    public void loadout(GameObject targ)//sets the target of the entity and equips the gun
+    public void Loadout(GameObject targ)//sets the target of the entity and equips the gun
     {
         target = targ;
         //myGun = gunToEquip;
     }
 
+    public void NewLife()
+    {
+        alive = true;
+        hp.Init(StartingHP);
+    }// this restets the enemies HP and sets them to alive;
     #endregion & Setup
 }

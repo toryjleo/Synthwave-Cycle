@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+/// <summary>
+/// This class is in charge of spawning enemies into the scene. 
+/// </summary>
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -53,15 +56,12 @@ public class EnemySpawner : MonoBehaviour
                 enemy = null;
                 Debug.LogError("SpawnNew Enemy Returning Null");
                 break;
-
-                
-
         }
 
+        //Init Enemy 
         enemyAI = enemy.GetComponent<Ai>();
-        enemyAI.loadout(player);
-        enemyAI.alive = true;
-
+        enemyAI.Loadout(player);
+        enemyAI.NewLife();
         return enemy;
     }
 
@@ -75,16 +75,20 @@ public class EnemySpawner : MonoBehaviour
         for(int i = 0; i< 10; i++)
         {
             enemy = ops.SpawnFromPool("Rifleman", generateSpawnVector(), Quaternion.identity);
+
+
             enemyAI = enemy.GetComponent<Ai>();
-            enemyAI.loadout(player);
-            enemyAI.alive = true;
+            enemyAI.Loadout(player);
+            enemyAI.NewLife();
             currentEnemies.Add(enemyAI);
         }
 
         return currentEnemies;
     }
 
-    
+
+    //These methods generate spawn vectors 
+    #region Spawning Vector Maths 
     public Vector3 biasSpawnVector()
     {
         return biasSpawnVector(player.GetComponent<BikeScript>().velocity, spawnBiasAngle, spawnDistance);
@@ -119,6 +123,7 @@ public class EnemySpawner : MonoBehaviour
         return spawnVector;
     }
 
+#endregion 
 
 }
 
