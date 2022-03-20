@@ -5,6 +5,12 @@ using UnityEngine;
 
 /// <summary>
 /// This class is in charge of spawning enemies into the scene. 
+/// 
+/// Needs reference to Player to spawn objects in relation to player 
+/// 
+/// Needs reference to ObjectPool to spawn in pooled objects. 
+/// 
+/// You can Change spawn Distance and Angle to edit spawning. 
 /// </summary>
 
 public class EnemySpawner : MonoBehaviour
@@ -17,11 +23,12 @@ public class EnemySpawner : MonoBehaviour
     //Spawning Variables 
     public int spawnDistance;
     public int spawnBiasAngle;
-    // Start is called before the first frame update
+
+
+
     void Start()
     {
         ops = ObjectPool.Instance;
-
     }
 
     // Update is called once per frame
@@ -37,26 +44,9 @@ public class EnemySpawner : MonoBehaviour
     {
         GameObject enemy;
         Ai enemyAI;
-        switch (type)
-        {
-            case Enemy.Grunt:
-                enemy = ops.SpawnFromPool("Grunt", biasSpawnVector(), Quaternion.identity);
-                
-                break;
-            case Enemy.Rifelman:
-                enemy = ops.SpawnFromPool("Rifleman", biasSpawnVector(), Quaternion.identity);
-                
-                break;
-            case Enemy.Blank:
-                enemy = ops.SpawnFromPool("Blank", biasSpawnVector(), Quaternion.identity);
-                
-                break;
-            default:
 
-                enemy = null;
-                Debug.LogError("SpawnNew Enemy Returning Null");
-                break;
-        }
+        enemy = ops.SpawnFromPool(type.ToString(), biasSpawnVector(), Quaternion.identity);
+
 
         //Init Enemy 
         enemyAI = enemy.GetComponent<Ai>();
@@ -64,6 +54,7 @@ public class EnemySpawner : MonoBehaviour
         enemyAI.NewLife();
         return enemy;
     }
+
 
     /// <summary>
     /// This Method is called at the beginning of the game to spawn in the first wave. 

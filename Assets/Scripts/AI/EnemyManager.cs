@@ -5,24 +5,25 @@ using UnityEngine;
 
 
 
+
 /// <summary>
 /// This class Controlls the rate at which enemies are spawned and knows which enemies are in the scene 
 /// </summary>
 public class EnemyManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public EnemySpawner enemySpawner;
-    
-    public DLevel dl;
+    public EnemySpawner enemySpawner; //Reference to Script in charge of spawning Enemies    
+    public DLevel dl; //Danger Level Timer 
     public ScoreTracker scoreKeeper;
+
+
     public List<Ai> currentEnemies; //This is a list of Ai that are currently active in the scene. 
+    
 
     void Start()
     {
         dl = DLevel.Instance;
     }
 
-    // Update is called once per frame
     void Update()
     {
         UpdateEnemyStates();
@@ -37,8 +38,12 @@ public class EnemyManager : MonoBehaviour
             }
             else
             {
-                //Slowly Spawn more randos 
-                currentEnemies.Add(enemySpawner.SpawnNewEnemy(Enemy.Rifelman).GetComponent<Ai>());
+                //Slowly Spawn more riflemen as the Danger Level increases 
+                //TODO spawn a random Enemy 
+                
+                int i = Random.Range(0, 2);
+                
+                currentEnemies.Add(enemySpawner.SpawnNewEnemy(Enemy.Blank).GetComponent<Ai>());
             }
 
         }

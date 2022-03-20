@@ -7,6 +7,10 @@ public enum Enemy
 {
     Grunt,Rifelman,Blank,Sniper,Dog
 }
+public enum Guns
+{
+    Rifle,Shotgun,PulseRifle,Rangers,Barrett
+}
 
 
 public class ObjectPool : MonoBehaviour

@@ -62,7 +62,7 @@ public abstract class Ai : SelfDespawn
     }
     public void Attack()
     {
-        if (myGun.CanShootAgain()&&myGun!=null)
+        if (myGun != null&&myGun.CanShootAgain())
         {
             this.myGun.Shoot(target.transform.position);
             animationStateController.AimWhileWalking(true);
@@ -135,7 +135,7 @@ public abstract class Ai : SelfDespawn
     /// <param name="pool"></param>
     public void seperate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
     {
-        float desiredSeperation = 5;
+        float desiredSeperation = 10;
 
         Vector3 sum = new Vector3(); //the vector that will be used to calculate flee beheavior if a too close interaction happens 
         int count = 0; //this couunts how many TOOCLOSE interactions an entity has, if it has more than one
