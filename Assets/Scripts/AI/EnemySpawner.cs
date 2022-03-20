@@ -55,6 +55,39 @@ public class EnemySpawner : MonoBehaviour
         return enemy;
     }
 
+    /// <summary>
+    /// This will spawn an enemy of a Random type with hard code specifications located in this method. 
+    /// TODO: Potentially rework this method someday. 
+    /// </summary>
+    /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enenemy Type, AI type, and Gun loadout
+    public Ai SpawnNewEnemy()
+    {
+        GameObject enemy;
+        Ai enemyAI;
+        int rand = Random.Range(0, 2);
+        switch (rand)
+        {
+            case 0:
+                enemy = ops.SpawnFromPool(Enemy.Grunt.ToString(), biasSpawnVector(), Quaternion.identity);
+                break;
+            case 1:
+                enemy = ops.SpawnFromPool(Enemy.Rifleman.ToString(), biasSpawnVector(), Quaternion.identity);
+                break;
+            case 2:
+                enemy = ops.SpawnFromPool(Enemy.Blank.ToString(), biasSpawnVector(), Quaternion.identity);
+                break;
+            default:
+                enemy = ops.SpawnFromPool(Enemy.Blank.ToString(), biasSpawnVector(), Quaternion.identity);
+                break;
+        }
+
+        //Init Enemy 
+        enemyAI = enemy.GetComponent<Ai>();
+        enemyAI.Loadout(player);
+        enemyAI.NewLife();
+        return enemyAI;
+    }
+
 
     /// <summary>
     /// This Method is called at the beginning of the game to spawn in the first wave. 

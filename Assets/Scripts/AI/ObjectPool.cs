@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum Enemy
 {
-    Grunt,Rifelman,Blank,Sniper,Dog,Cactus
+    Grunt,Rifleman,Blank,Sniper,Dog,Cactus
 }
 public enum Guns
 {
@@ -97,5 +97,8 @@ public class ObjectPool : MonoBehaviour
 
         return objectToSpawn;
     }
+
+   
+
 
 }
