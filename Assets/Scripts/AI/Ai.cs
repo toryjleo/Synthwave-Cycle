@@ -43,7 +43,10 @@ public abstract class Ai : SelfDespawn
             }
             animationStateController.StopAllCoroutines();
             alive = false;
+
+            
             this.gameObject.SetActive(false);
+            
         }
         else //Act natural 
         {
@@ -57,18 +60,17 @@ public abstract class Ai : SelfDespawn
         }
 
     }
+    /// <summary>
+    /// This method is called when the entitiy wants to attack. Checks if it has a gun 
+    /// </summary>
     public void Attack()
     {
-        if (myGun.CanShootAgain()&&myGun!=null)
+        if (myGun != null&&myGun.CanShootAgain())
         {
             this.myGun.Shoot(target.transform.position);
             animationStateController.AimWhileWalking(true);
         }
     }
-
-
-
-
 
     #region Movement
     /// <summary>
@@ -106,7 +108,6 @@ public abstract class Ai : SelfDespawn
         Vector3 forward = rb.transform.forward; //The normaized vector of which direction the RB is facing 
         Vector3 offset = new Vector3(0,0,1); //This is the random change vector that is uses to create natural wandering movement
         Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
-        Quaternion right = Quaternion.Euler(0, 90, 0);
         forward *= 10;
         offset = ranRot * offset; 
 
@@ -136,7 +137,7 @@ public abstract class Ai : SelfDespawn
     /// <param name="pool"></param>
     public void seperate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
     {
-        float desiredSeperation = 5;
+        float desiredSeperation = 30;
 
         Vector3 sum = new Vector3(); //the vector that will be used to calculate flee beheavior if a too close interaction happens 
         int count = 0; //this couunts how many TOOCLOSE interactions an entity has, if it has more than one
@@ -148,11 +149,11 @@ public abstract class Ai : SelfDespawn
 
             float d = Vector3.Distance(g.transform.position, transform.position);
 
-            if (g.transform.position != transform.position && d < desiredSeperation)
+            if (g.transform.position != transform.position && d < desiredSeperation) 
             {
-                Vector3 diff = transform.position - g.transform.position;
+                Vector3 diff = transform.position - g.transform.position; // creats vec between two objects 
                 diff.Normalize();
-                sum += diff;
+                sum += diff; // sum is the flee direction added together 
                 count++;
             }
 
@@ -186,11 +187,22 @@ public abstract class Ai : SelfDespawn
     {
         return score;
     }
-    public void loadout(GameObject targ)//sets the target of the entity and equips the gun
+    /// <summary>
+    /// This method sets the target of the entity TODO: Will eventually equip a gun?
+    /// </summary>
+    /// <param name="targ"></param>
+    public void Loadout(GameObject targ)//sets the target of the entity and equips the gun
     {
         target = targ;
         //myGun = gunToEquip;
     }
-
+    /// <summary>
+    /// This method is called to reset the entity's health and alive status. Use every time they spawn. 
+    /// </summary>
+    public void NewLife()
+    {
+        alive = true;
+        hp.Init(StartingHP);
+    }// this restets the enemies HP and sets them to alive;
     #endregion & Setup
 }

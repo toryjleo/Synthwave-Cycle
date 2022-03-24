@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+/// <summary>
+/// This class is in charge of spawning enemies into the scene. 
+/// 
+/// Needs reference to Player to spawn objects in relation to player 
+/// 
+/// Needs reference to ObjectPool to spawn in pooled objects. 
+/// 
+/// You can Change spawn Distance and Angle to edit spawning. 
+/// </summary>
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -14,11 +23,12 @@ public class EnemySpawner : MonoBehaviour
     //Spawning Variables 
     public int spawnDistance;
     public int spawnBiasAngle;
-    // Start is called before the first frame update
+
+
+
     void Start()
     {
         ops = ObjectPool.Instance;
-
     }
 
     // Update is called once per frame
@@ -34,36 +44,50 @@ public class EnemySpawner : MonoBehaviour
     {
         GameObject enemy;
         Ai enemyAI;
-        switch (type)
-        {
-            case Enemy.Grunt:
-                enemy = ops.SpawnFromPool("Grunt", biasSpawnVector(), Quaternion.identity);
-                
-                break;
-            case Enemy.Rifelman:
-                enemy = ops.SpawnFromPool("Rifleman", biasSpawnVector(), Quaternion.identity);
-                
-                break;
-            case Enemy.Blank:
-                enemy = ops.SpawnFromPool("Blank", biasSpawnVector(), Quaternion.identity);
-                
-                break;
-            default:
 
-                enemy = null;
-                Debug.LogError("SpawnNew Enemy Returning Null");
-                break;
+        enemy = ops.SpawnFromPool(type.ToString(), biasSpawnVector(), Quaternion.identity);
 
-                
 
-        }
-
+        //Init Enemy 
         enemyAI = enemy.GetComponent<Ai>();
-        enemyAI.loadout(player);
-        enemyAI.alive = true;
-
+        enemyAI.Loadout(player);
+        enemyAI.NewLife();
         return enemy;
     }
+
+    /// <summary>
+    /// This will spawn an enemy of a Random type with hard code specifications located in this method. 
+    /// TODO: Potentially rework this method someday. 
+    /// </summary>
+    /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enenemy Type, AI type, and Gun loadout
+    public Ai SpawnNewEnemy()
+    {
+        GameObject enemy;
+        Ai enemyAI;
+        int rand = Random.Range(0, 2);
+        switch (rand)
+        {
+            case 0:
+                enemy = ops.SpawnFromPool(Enemy.Grunt.ToString(), biasSpawnVector(), Quaternion.identity);
+                break;
+            case 1:
+                enemy = ops.SpawnFromPool(Enemy.Rifleman.ToString(), biasSpawnVector(), Quaternion.identity);
+                break;
+            case 2:
+                enemy = ops.SpawnFromPool(Enemy.Blank.ToString(), biasSpawnVector(), Quaternion.identity);
+                break;
+            default:
+                enemy = ops.SpawnFromPool(Enemy.Blank.ToString(), biasSpawnVector(), Quaternion.identity);
+                break;
+        }
+
+        //Init Enemy 
+        enemyAI = enemy.GetComponent<Ai>();
+        enemyAI.Loadout(player);
+        enemyAI.NewLife();
+        return enemyAI;
+    }
+
 
     /// <summary>
     /// This Method is called at the beginning of the game to spawn in the first wave. 
@@ -75,24 +99,40 @@ public class EnemySpawner : MonoBehaviour
         for(int i = 0; i< 10; i++)
         {
             enemy = ops.SpawnFromPool("Rifleman", generateSpawnVector(), Quaternion.identity);
+
+
             enemyAI = enemy.GetComponent<Ai>();
-            enemyAI.loadout(player);
-            enemyAI.alive = true;
+            enemyAI.Loadout(player);
+            enemyAI.NewLife();
             currentEnemies.Add(enemyAI);
         }
 
         return currentEnemies;
     }
 
-    
+
+    //These methods generate spawn vectors 
+    #region Spawning Vector Maths 
+
+    /// <summary>
+    /// This method returns a vector a set dinstance away from the player in an arc. With conditions specified in this class 
+    /// </summary>
+    /// <returns></returns>
     public Vector3 biasSpawnVector()
     {
         return biasSpawnVector(player.GetComponent<BikeScript>().velocity, spawnBiasAngle, spawnDistance);
     }
 
+    /// <summary>
+    /// This method returns a vector 
+    /// </summary>
+    /// <param name="bias"> this is the direction that the bike is already moving </param>
+    /// <param name="angle"> the range of degrees that the vector can be rotated to ( 0 to 180 ) </param>
+    /// <param name="distance"> the desired lenght of the spawn vector </param>
+    /// <returns></returns>
     public Vector3 biasSpawnVector(Vector3 bias, int angle, int distance)
     {
-        if (bias == new Vector3(0, 0, 0))
+        if (bias == new Vector3(0, 0, 0))// defaut case if bike isn't moving 
         {
             bias = new Vector3(0, 0, 1);
         }
@@ -107,7 +147,10 @@ public class EnemySpawner : MonoBehaviour
         spawnVector += player.transform.position;
         return spawnVector;
     }
-
+    /// <summary>
+    /// creates vector of Spawn distance lenght in a random 360 degree rotation. 
+    /// </summary>
+    /// <returns></returns>
     public Vector3 generateSpawnVector()
     {
         //TODO: add Spawn Bias 
@@ -119,6 +162,7 @@ public class EnemySpawner : MonoBehaviour
         return spawnVector;
     }
 
+#endregion 
 
 }
 
