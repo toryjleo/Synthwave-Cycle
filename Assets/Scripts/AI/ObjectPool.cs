@@ -5,11 +5,20 @@ using UnityEngine;
 
 public enum Enemy
 {
-    Grunt,Rifleman,Blank,Sniper,Dog,Cactus
+    Grunt,
+    Rifleman,
+    Blank,
+    Sniper,
+    Dog,
+    Cactus
 }
 public enum Guns
 {
-    Rifle,Shotgun,PulseRifle,Rangers,Barrett
+    Rifle,
+    Shotgun,
+    PulseRifle,
+    Rangers,
+    Barrett
 }
 
 
