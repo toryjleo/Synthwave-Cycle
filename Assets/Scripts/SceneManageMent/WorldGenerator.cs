@@ -33,7 +33,6 @@ public static class WorldBounds
 public class WorldGenerator : MonoBehaviour
 {
     private BikeScript bike;
-
     #region ground
     [SerializeField] private GameObject ground;
     private GameObject[,] groundTiles;
