@@ -21,13 +21,26 @@ public class HealthPool : MonoBehaviour
         get { return playerHealthRef != null; }
     }
 
+    /// <summary>The percentage of how "complete" this pool is.</summary>
+    public float PercentFull 
+    {
+        get 
+        {
+            float scaleFromBottom = curScale - MIN_SCALE;
+            float maxDiff = MAX_SCALE - MIN_SCALE;
+            return scaleFromBottom / maxDiff;
+        }
+    }
+
 
     private void Update()
     {
-        if (curScale <= MIN_SCALE) 
+        // Set this gameObject to inactive if the scale has been decreased to the minimum
+        if (curScale <= MIN_SCALE)
         {
             this.gameObject.SetActive(false);
         }
+        // Shrink if player is in the pool
         if (PlayerIsInThisPool)
         {
             Shrink(SCALE_SHRINK_PER_SECOND * Time.deltaTime);
