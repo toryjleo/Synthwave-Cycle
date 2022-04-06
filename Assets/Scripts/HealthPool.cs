@@ -2,58 +2,66 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPool : MonoBehaviour
+public class HealthPool : SelfDespawn
 {
-    Health playerHealthRef;
-    private bool playerInThisPool;
-
     // Visuals
-    private const float MIN_SCALE = 150;
-    private const float MAX_SCALE = 300.0f;
-    private const float SCALE_SHRINK_PER_SECOND = 3f;
-    private const float PLAYER_LINEAR_HEALTH_INCREASE_PER_SECOND = 3f;
+    private const float DEFAULT_MIN_SCALE = 50.0f;
+    private const float DEFAULT_MAX_SCALE = 300.0f;
+    private const float DEFULAT_SCALE_SHRINK_PER_SECOND = 20f;
+    private const float PLAYER_HEAL_AMNT = 100f;
 
+    private float minScale;
+    private float maxScale;
+    private float shrinkPerSecond;
     private float curScale;
-
-
-    public bool PlayerIsInThisPool 
-    {
-        get { return playerHealthRef != null; }
-    }
 
     /// <summary>The percentage of how "complete" this pool is.</summary>
     public float PercentFull 
     {
         get 
         {
-            float scaleFromBottom = curScale - MIN_SCALE;
-            float maxDiff = MAX_SCALE - MIN_SCALE;
+            float scaleFromBottom = curScale - minScale;
+            float maxDiff = maxScale - minScale;
             return scaleFromBottom / maxDiff;
         }
     }
 
 
-    private void Update()
+    public override void Update()
     {
-        // Set this gameObject to inactive if the scale has been decreased to the minimum
-        if (curScale <= MIN_SCALE)
+        if (curScale <= minScale)
         {
+            // Set this gameObject to inactive if the scale has been decreased to the minimum
             this.gameObject.SetActive(false);
+            OnDespawn();
         }
-        // Shrink if player is in the pool
-        if (PlayerIsInThisPool)
+        else
         {
-            Shrink(SCALE_SHRINK_PER_SECOND * Time.deltaTime);
-            playerHealthRef.Heal(PLAYER_LINEAR_HEALTH_INCREASE_PER_SECOND * Time.deltaTime);
+            // Shrink if player is in the pool
+            Shrink(shrinkPerSecond * Time.deltaTime);
         }
     }
 
-
-    public void Init() 
+    /// <summary>Reinitializes and turns on this HealthPool gameObject.</summary>
+    /// <param name="shrinkPerSecond">The amount at which the scale is reduced per second.</param>
+    /// <param name="startScale">The scale at which this healthpool starts at.</param>
+    /// <param name="minScale">The minimum scale which the healthpool can shrink to before it is despawned.</param>
+    public void Init(float shrinkPerSecond = DEFULAT_SCALE_SHRINK_PER_SECOND, float startScale = DEFAULT_MAX_SCALE, float minScale = DEFAULT_MIN_SCALE) 
     {
-        playerInThisPool = false;
-        SetScale(MAX_SCALE);
-        playerHealthRef = null;
+        this.maxScale = startScale;
+        this.minScale = minScale;
+        this.shrinkPerSecond = shrinkPerSecond;
+
+        SetScale(startScale);
+        this.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Should call the default Init method.
+    /// </summary>
+    public override void Init()
+    {
+        this.Init();
     }
 
 
@@ -79,26 +87,17 @@ public class HealthPool : MonoBehaviour
     /// <returns>The clamped amnt.</returns>
     private float ClampScale(float amnt)
     {
-        return Mathf.Clamp(amnt, MIN_SCALE, MAX_SCALE);
+        return Mathf.Clamp(amnt, minScale, maxScale);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
-            playerInThisPool = true;
-            playerHealthRef = other.GetComponentInChildren<Health>();
+            Health playerHealthRef = other.GetComponentInChildren<Health>();
+            playerHealthRef.Heal(PLAYER_HEAL_AMNT);
+            OnDespawn();
             //Debug.Log("Player entered region!");
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            playerInThisPool = false;
-            playerHealthRef = null;
-            //Debug.Log("Player exited region!");
         }
     }
 }
