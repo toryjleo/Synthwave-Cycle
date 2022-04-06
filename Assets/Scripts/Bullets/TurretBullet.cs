@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>Class <c>BasicRifleBullet</c> Basic enemy bullet.</summary>
-public class BasicRifleBullet : Bullet
+public class TurretBullet : Bullet
 {
     public override void Init()
     {
@@ -14,10 +14,15 @@ public class BasicRifleBullet : Bullet
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+       
+        if (other.gameObject.tag == "Enemy")
         {
-            DealDamageAndDespawn(other.gameObject);
+            // TracerMesh should have a Health component
+            Health otherHealth = other.GetComponentInChildren<Health>();
+            float z = otherHealth.HitPoints;
+            otherHealth.TakeDamage(damageDealt);
+
         }
- 
+
     }
 }

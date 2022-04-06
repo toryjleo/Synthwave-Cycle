@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 930b96dafd0af984d8cf1d8aa87c4232, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1463605476535994620, guid: fe41a6c58344d5f4e9c070825c6717cc, type: 3}
+  bulletPrefab: {fileID: 4431748016058038940, guid: e72d1b6888ac2f44da9c8e4b6a2ffd48, type: 3}
   muzzle1: {fileID: 8409156827372390507}
   mouse: {x: 0, y: 0, z: 0}
 --- !u!1 &3158323252628134619
