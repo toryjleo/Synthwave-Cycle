@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>Class <c>Bullet</c> A Unity Component which moves a gameobject foreward.</summary>
-public abstract class Bullet : SelfDespawn
+public abstract class Bullet : SelfWorldBoundsDespawn
 {
 
     private Vector3 shootDir;

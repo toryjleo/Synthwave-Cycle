@@ -6,7 +6,7 @@ public class HealthPool : SelfDespawn
 {
     // Visuals
     private const float DEFAULT_MIN_SCALE = 50.0f;
-    private const float DEFAULT_MAX_SCALE = 300.0f;
+    private const float DEFAULT_MAX_SCALE = 200.0f;
     private const float DEFULAT_SCALE_SHRINK_PER_SECOND = 20f;
     private const float PLAYER_HEAL_AMNT = 100f;
 
@@ -27,12 +27,12 @@ public class HealthPool : SelfDespawn
     }
 
 
-    public override void Update()
+    private void Update()
     {
         if (curScale <= minScale)
         {
             // Set this gameObject to inactive if the scale has been decreased to the minimum
-            this.gameObject.SetActive(false);
+            
             OnDespawn();
         }
         else
@@ -54,6 +54,12 @@ public class HealthPool : SelfDespawn
 
         SetScale(startScale);
         this.gameObject.SetActive(true);
+    }
+
+    protected override void OnDespawn() 
+    {
+        this.gameObject.SetActive(false);
+        base.OnDespawn();
     }
 
     /// <summary>
