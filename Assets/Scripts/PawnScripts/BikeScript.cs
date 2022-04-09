@@ -33,6 +33,9 @@ public class BikeScript : MonoBehaviour
 
     private Health health;
 
+    private int healthPoolLayer = 6;
+    private int healthPoolLayerMask; // A mask that that represents the HealthPool layer
+
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
     private void Init()
     {
@@ -40,6 +43,7 @@ public class BikeScript : MonoBehaviour
         velocity = new Vector3(0, 0, 0);
         rb = GetComponent<Rigidbody>();
         health = GetComponentInChildren<Health>();
+        healthPoolLayerMask = (1 << healthPoolLayer);
     }
 
     #region Accessors
@@ -100,7 +104,7 @@ public class BikeScript : MonoBehaviour
     }
 
     private void Update()
-    { 
+    {
     }
     #endregion
     #region Forces
@@ -182,6 +186,24 @@ public class BikeScript : MonoBehaviour
         else
         {
             EquipGun(guns[0]);
+        }
+    }
+    #endregion
+    #region Health Related
+    /// <summary>Checks to see if a HealthPool is in front of the bike.</summary>
+    /// <returns>True when a HealthPool is in front of the bike.</returns>
+    private bool HealthPoolCheck()
+    {
+        Ray ray = new Ray(transform.position, ForwardVector());
+        RaycastHit hitData;
+        if (Physics.Raycast(ray, out hitData, Mathf.Infinity,  healthPoolLayerMask))
+        {
+            //Debug.Log("Hit something: " + hitData.collider.gameObject.name);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
     #endregion

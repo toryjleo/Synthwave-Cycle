@@ -26,6 +26,12 @@ public class HealthPool : SelfDespawn
         }
     }
 
+    private void Start() 
+    {
+        // For debug purposes
+        //Init();
+    }
+
 
     private void Update()
     {
