@@ -33,14 +33,32 @@ public class BikeScript : MonoBehaviour
 
     private Health health;
 
+    /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
+    private void Init()
+    {
+        // The bike will begin at rest
+        velocity = new Vector3(0, 0, 0);
+        rb = GetComponent<Rigidbody>();
+        health = GetComponentInChildren<Health>();
+    }
 
-    #region OTHER STUFF
+    #region Accessors
     public float Energy
     {
         get => health.HitPoints;
     }
 
+    // TODO: see if we can make attribute
+    /// <summary>This method gets the direction the bike's mesh is currently facing in world coordinates.</summary>
+    /// <returns>A Vector3 of the bike's forward vector in world coordinates. The Vector's x represents the x direction 
+    /// in world coordinates and the vector's y represents the z direction in world coordinates.</returns>
+    private Vector3 ForwardVector()
+    {
+        return new Vector3(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.y, -bikeMeshParent.transform.right.z);
+    }
+
     #region Camera
+
     // The empty object the camera follows
     public GameObject cameraFollower;
 
@@ -66,7 +84,8 @@ public class BikeScript : MonoBehaviour
         }
     }
     #endregion
-
+    #endregion
+    #region Monobehavior
     private void Awake()
     {
         Init();
@@ -83,42 +102,8 @@ public class BikeScript : MonoBehaviour
     private void Update()
     { 
     }
-
-    /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
-    private void Init() 
-    {
-        // The bike will begin at rest
-        velocity = new Vector3(0, 0,0);
-        rb = GetComponent<Rigidbody>();
-        health = GetComponentInChildren<Health>();
-    }
-
-    /// <summary>Initialize the gun for the player to start with.</summary>
-    private void InitializeStartingGun() 
-    {
-        // TODO: Make this better
-        DoubleBarrelLMG[] guns = Object.FindObjectsOfType<DoubleBarrelLMG>();
-        if (guns.Length <= 0)
-        {
-            Debug.LogError("BikeScript did not find any DoubleBarrelLMGs in scene");
-        }
-        else
-        {
-            EquipGun(guns[0]);
-        }
-    }
-
-    /// <summary>This method gets the direction the bike's mesh is currently facing in world coordinates.</summary>
-    /// <returns>A Vector3 of the bike's forward vector in world coordinates. The Vector's x represents the x direction 
-    /// in world coordinates and the vector's y represents the z direction in world coordinates.</returns>
-    private Vector3 ForwardVector()
-    {
-        return new Vector3(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.y, -bikeMeshParent.transform.right.z);
-    }
-
     #endregion
-
-
+    #region Forces
     /// <summary> Main method for controlling bike 
     /// Applies forces to Rigid body in relation to player input 
     /// </summary>
@@ -164,6 +149,8 @@ public class BikeScript : MonoBehaviour
         //acceleration = new Vector2(0, 0);
     }
 
+    #endregion
+    #region GunCode
     /// <summary>Equips the gun to the bike.</summary>
     /// <param name="gunToEquip">The gun which will be hooked up to the bike's bl_ProcessCompleted. Will be set as a 
     /// child of bikeMeshParent.</param>
@@ -183,4 +170,19 @@ public class BikeScript : MonoBehaviour
         currentGun.BulletShot += bl_ProcessCompleted;
     }
 
+    /// <summary>Initialize the gun for the player to start with.</summary>
+    private void InitializeStartingGun()
+    {
+        // TODO: Make this better
+        DoubleBarrelLMG[] guns = Object.FindObjectsOfType<DoubleBarrelLMG>();
+        if (guns.Length <= 0)
+        {
+            Debug.LogError("BikeScript did not find any DoubleBarrelLMGs in scene");
+        }
+        else
+        {
+            EquipGun(guns[0]);
+        }
+    }
+    #endregion
 }
