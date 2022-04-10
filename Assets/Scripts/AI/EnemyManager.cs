@@ -40,10 +40,7 @@ public class EnemyManager : MonoBehaviour
             {
                 //Slowly Spawn more riflemen as the Danger Level increases 
                 //TODO spawn a random Enemy 
-                
-                int i = Random.Range(0, 2);
-                
-                currentEnemies.Add(enemySpawner.SpawnNewEnemy(Enemy.Cactus).GetComponent<Ai>());
+                currentEnemies.Add(enemySpawner.SpawnNewEnemy());
             }
 
         }
