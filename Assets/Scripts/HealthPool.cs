@@ -14,6 +14,7 @@ public class HealthPool : SelfDespawn
     private float maxScale;
     private float shrinkPerSecond;
     private float curScale;
+    public GameObject player;
 
     /// <summary>The percentage of how "complete" this pool is.</summary>
     public float PercentFull 
@@ -26,6 +27,11 @@ public class HealthPool : SelfDespawn
         }
     }
 
+    private void Start()
+    {
+        Init();
+    }
+
 
     private void Update()
     {
@@ -34,6 +40,8 @@ public class HealthPool : SelfDespawn
             // Set this gameObject to inactive if the scale has been decreased to the minimum
             
             OnDespawn();
+
+            Init();
         }
         else
         {
@@ -53,6 +61,9 @@ public class HealthPool : SelfDespawn
         this.shrinkPerSecond = shrinkPerSecond;
 
         SetScale(startScale);
+
+        this.transform.position = SpawnVector(player.transform.right,60,400);
+
         this.gameObject.SetActive(true);
     }
 
@@ -103,7 +114,33 @@ public class HealthPool : SelfDespawn
             Health playerHealthRef = other.GetComponentInChildren<Health>();
             playerHealthRef.Heal(PLAYER_HEAL_AMNT);
             OnDespawn();
-            //Debug.Log("Player entered region!");
+            Init();
         }
     }
+
+    /// <summary>
+    /// This method returns a vector 
+    /// </summary>
+    /// <param name="bias"> this is the direction that the bike is already moving </param>
+    /// <param name="angle"> the range of degrees that the vector can be rotated to ( 0 to 180 ) </param>
+    /// <param name="distance"> the desired lenght of the spawn vector </param>
+    /// <returns></returns>
+    public Vector3 SpawnVector(Vector3 bias, int angle, int distance)
+    {
+        if (bias == new Vector3(0, 0, 0))// defaut case if bike isn't moving 
+        {
+            bias = new Vector3(0, 0, 1);
+        }
+
+        Vector3 spawnVector = bias;
+        Quaternion q = Quaternion.Euler(0, Random.Range(-angle, angle), 0);
+
+        spawnVector = q * spawnVector;
+
+        spawnVector.Normalize();
+        spawnVector *= distance;
+        spawnVector += player.transform.position;
+        return spawnVector;
+    }
+
 }
