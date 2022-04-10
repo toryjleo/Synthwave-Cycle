@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Ai : SelfDespawn
+public abstract class Ai : SelfWorldBoundsDespawn
 {
 
     // THis is the method that sets the entity to Deactive and bascially is uesd to kill the entitiy 
