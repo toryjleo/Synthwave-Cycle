@@ -12,7 +12,7 @@ public class BikeScript : MonoBehaviour
     public GameObject bikeMeshParent; // Parent of the bike mesh. This is used to get the forward vector of the bike. 
     // The forward vector of the bike will change as we alter the rotation of this variable
     public GameObject bikeMeshChild; // The gameObject that holds the bike mesh. This will only be used for animations.
-    public Vector3 velocity; // The velocity of the bike
+    public Vector3 appliedForce; // The force being applied to the bike
 
     //private float mass = 8f; // The mass of the bike
     private float MaxSpeed = 80; //The max speed of the bike 
@@ -88,7 +88,7 @@ public class BikeScript : MonoBehaviour
     private void Init() 
     {
         // The bike will begin at rest
-        velocity = new Vector3(0, 0,0);
+        appliedForce = new Vector3(0, 0,0);
         rb = GetComponent<Rigidbody>();
         health = GetComponentInChildren<Health>();
     }
@@ -131,25 +131,26 @@ public class BikeScript : MonoBehaviour
         }
 
         //Movement Forward and Back and applies velocity 
-        velocity += ForwardVector().normalized * MoveSpeed * Input.GetAxis("Vertical") * Time.deltaTime; 
+        appliedForce += ForwardVector().normalized * MoveSpeed * Input.GetAxis("Vertical") * Time.fixedDeltaTime; 
         
 
         //Steering Takes Horizontal Input and rotates both 
         float steerInupt = Input.GetAxis("Horizontal");
         bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInupt, 0, 0);
-        bikeMeshParent.transform.Rotate(Vector3.up * steerInupt * (velocity.magnitude + 100) * Time.deltaTime);
+        bikeMeshParent.transform.Rotate(Vector3.up * steerInupt * (appliedForce.magnitude + 100) * Time.fixedDeltaTime);
 
         //Drag and MaxSpeed Limit to prevent infinit velocity  
-        velocity *= dragCoefficient;
-        velocity = Vector3.ClampMagnitude(velocity, MaxSpeed);
+        appliedForce *= dragCoefficient;
+        //appliedForce = Vector3.ClampMagnitude(appliedForce, MaxSpeed);
 
-
+        // Debug lines
         Debug.DrawRay(rb.transform.position, ForwardVector().normalized * 30, Color.red);
-        Debug.DrawRay(rb.transform.position, velocity.normalized * 30, Color.blue);
-        velocity = Vector3.Lerp(velocity.normalized, ForwardVector().normalized, Traction * Time.deltaTime) * velocity.magnitude;
+        Debug.DrawRay(rb.transform.position, appliedForce.normalized * 30, Color.blue);
+
+        appliedForce = Vector3.Lerp(appliedForce.normalized, ForwardVector().normalized, Traction * Time.fixedDeltaTime) * appliedForce.magnitude;
 
 
-        rb.AddForce(velocity);
+        rb.AddForce(appliedForce);
     }
 
     /// <summary>Responds to the gun'd NotifyShot event.</summary>
