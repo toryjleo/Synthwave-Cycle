@@ -5,8 +5,13 @@ using UnityEngine;
 public class HealthPool : SelfDespawn
 {
     // Visuals
+    private GameObject player;
+    public int Spawndistance = 800;
+    public int SpawnAngleRandomNess = 60;
+    public float SizeofCylinder = 400;
+    public float RateOfDecay = 20f;
     private const float DEFAULT_MIN_SCALE = 50.0f;
-    private const float DEFAULT_MAX_SCALE = 200.0f;
+    private const float DEFAULT_MAX_SCALE = 400.0f;
     private const float DEFULAT_SCALE_SHRINK_PER_SECOND = 20f;
     private const float PLAYER_HEAL_AMNT = 100f;
 
@@ -14,7 +19,10 @@ public class HealthPool : SelfDespawn
     private float maxScale;
     private float shrinkPerSecond;
     private float curScale;
-    public GameObject player;
+
+
+    
+    
 
     /// <summary>The percentage of how "complete" this pool is.</summary>
     public float PercentFull 
@@ -29,7 +37,11 @@ public class HealthPool : SelfDespawn
 
     private void Start()
     {
+
+        player = GameObject.Find("Player Bike");
         Init();
+
+
     }
 
 
@@ -37,11 +49,7 @@ public class HealthPool : SelfDespawn
     {
         if (curScale <= minScale)
         {
-            // Set this gameObject to inactive if the scale has been decreased to the minimum
-            
             OnDespawn();
-
-            Init();
         }
         else
         {
@@ -62,7 +70,7 @@ public class HealthPool : SelfDespawn
 
         SetScale(startScale);
 
-        this.transform.position = SpawnVector(player.transform.right,60,400);
+        this.transform.position = SpawnVector(player.transform.right,SpawnAngleRandomNess,Spawndistance);
 
         this.gameObject.SetActive(true);
     }
@@ -71,6 +79,7 @@ public class HealthPool : SelfDespawn
     {
         this.gameObject.SetActive(false);
         base.OnDespawn();
+        Init(RateOfDecay,SizeofCylinder);
     }
 
     /// <summary>
@@ -114,11 +123,10 @@ public class HealthPool : SelfDespawn
             Health playerHealthRef = other.GetComponentInChildren<Health>();
             playerHealthRef.Heal(PLAYER_HEAL_AMNT);
             OnDespawn();
-            Init();
         }
     }
 
-    /// <summary>
+    /// <summary> //TODO Make this part of static utill class
     /// This method returns a vector 
     /// </summary>
     /// <param name="bias"> this is the direction that the bike is already moving </param>

@@ -182,6 +182,18 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1147356074}
+    - target: {fileID: 6311500061181353777, guid: 4d0fbf0374c466046a73630acd8fd30e, type: 3}
+      propertyPath: RateOfDecay
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311500061181353777, guid: 4d0fbf0374c466046a73630acd8fd30e, type: 3}
+      propertyPath: spawndistance
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311500061181353777, guid: 4d0fbf0374c466046a73630acd8fd30e, type: 3}
+      propertyPath: SpawnAngleRandomNess
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d0fbf0374c466046a73630acd8fd30e, type: 3}
 --- !u!1 &609589160 stripped
