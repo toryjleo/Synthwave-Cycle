@@ -64,6 +64,9 @@ public class WorldGenerator : MonoBehaviour
     }
 
     #region ground
+    /// <summary>
+    /// Spawns in ground gameObjects into groundTiles array and initializes the WorldBounds class
+    /// </summary>
     private void InitializeGround()
     {
         WorldBounds.groundTileSize = ground.GetComponent<Renderer>().bounds.size;
@@ -86,6 +89,9 @@ public class WorldGenerator : MonoBehaviour
         UpdateWorldMinMax();
     }
 
+    /// <summary>
+    /// Returns the center tile (the one the player is on)
+    /// </summary>
     private GameObject GetMiddleTile()
     {
         int middleHeightIdx = GetMiddleTileVerticalIdx();
@@ -93,16 +99,25 @@ public class WorldGenerator : MonoBehaviour
         return groundTiles[middleHeightIdx, middleWidthIdx];
     }
 
+    /// <summary>
+    /// Returns the vertical index of the middle tile inside the groundTiles array
+    /// </summary>
     private int GetMiddleTileVerticalIdx()
     {
         return (GROUND_ARRAY_HEIGHT - 1) / 2;
     }
 
+    /// <summary>
+    /// Returns the horizontal index of the middle tile inside the groundTiles array
+    /// </summary>
     private int GetMiddleTileHorizontalIdx()
     {
         return (GROUND_ARRAY_WIDTH - 1) / 2;
     }
 
+    /// <summary>
+    /// Caches the Min/Max of the tile the player is currently on inside WorldBounds
+    /// </summary>
     private void UpdateMiddleTileMinMax()
     {
         Vector3 currentTileLocation = GetMiddleTile().transform.position;
@@ -112,12 +127,18 @@ public class WorldGenerator : MonoBehaviour
         WorldBounds.currentTileVericalMinMax = new Vector2(currentTileLocation.z - halfTileHeight, currentTileLocation.z + halfTileHeight);
     }
 
+    /// <summary>
+    /// Caches the Min/Max of the world (all of the tiles) on inside WorldBounds
+    /// </summary>
     private void UpdateWorldMinMax()
     {
         WorldBounds.worldBoundsHorizontalMinMax = new Vector2(WorldBounds.currentTileHorizontalMinMax.x - WorldBounds.GroundTileWidth, WorldBounds.currentTileHorizontalMinMax.y + WorldBounds.GroundTileWidth);
         WorldBounds.worldBoundsVericalMinMax = new Vector2(WorldBounds.currentTileVericalMinMax.x - WorldBounds.GroundTileHeight, WorldBounds.currentTileVericalMinMax.y + WorldBounds.GroundTileHeight);
     }
 
+    /// <summary>
+    /// Checks if the groundTiles array needs to be updated and updates it if needed
+    /// </summary>
     private void CheckUpdateGroundTiles()
     {
         Vector3 bikePosition = bike.transform.position;
@@ -133,6 +154,11 @@ public class WorldGenerator : MonoBehaviour
         else if (bikeVerticalPos < WorldBounds.currentTileVericalMinMax.x) { MoveGroundTiles(0, -1); } // Lower Quadrant
     }
 
+    /// <summary>
+    /// Adjusts the location of the ground tiles in the x and y directions
+    /// </summary>
+    /// <param name="xDiff">A value representing the direction and quantity of ground tile widths the grid must be shifted in the x direction.</param>
+    /// <param name="yDiff">A value representing the direction and quantity of ground tile widths the grid must be shifted in the y direction.</param>
     private void MoveGroundTiles(int xDiff, int yDiff)
     {
         for (int i = 0; i < GROUND_ARRAY_HEIGHT; i++)
@@ -143,6 +169,7 @@ public class WorldGenerator : MonoBehaviour
                 groundTiles[i, j].transform.position = newPosition;
             }
         }
+        // Update WorldBounds object
         UpdateMiddleTileMinMax();
         UpdateWorldMinMax();
     }
