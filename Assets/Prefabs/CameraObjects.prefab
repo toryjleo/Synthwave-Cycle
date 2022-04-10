@@ -64,13 +64,13 @@ MonoBehaviour:
   m_HorizontalDamping: 0.5
   m_VerticalDamping: 0.5
   m_ScreenX: 0.5
-  m_ScreenY: 0.5
-  m_DeadZoneWidth: 0.081
-  m_DeadZoneHeight: 0.109
+  m_ScreenY: 0.54
+  m_DeadZoneWidth: 0.051
+  m_DeadZoneHeight: 0.094
   m_SoftZoneWidth: 0.8
   m_SoftZoneHeight: 0.8
-  m_BiasX: 0.00000033159748
-  m_BiasY: 0.0000007763268
+  m_BiasX: 0.0000002387369
+  m_BiasY: 0.0000007630751
   m_CenterOnActivate: 1
 --- !u!114 &646927013748110094
 MonoBehaviour:
