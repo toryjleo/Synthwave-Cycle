@@ -95,7 +95,8 @@ public class BikeScript : MonoBehaviour
     }
 
     private void Update()
-    { 
+    {
+        HealthPoolCheck();
     }
 
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
@@ -105,6 +106,7 @@ public class BikeScript : MonoBehaviour
         appliedForce = new Vector3(0, 0, 0);
         rb = GetComponent<Rigidbody>();
         health = GetComponentInChildren<Health>();
+        healthPoolLayerMask = (1 << healthPoolLayer);
     }
 
     #endregion
@@ -200,7 +202,7 @@ public class BikeScript : MonoBehaviour
         RaycastHit hitData;
         if (Physics.Raycast(ray, out hitData, Mathf.Infinity,  healthPoolLayerMask))
         {
-            //Debug.Log("Hit something: " + hitData.collider.gameObject.name);
+            Debug.Log("Hit something: " + hitData.collider.gameObject.name);
             return true;
         }
         else
