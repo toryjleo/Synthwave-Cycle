@@ -43,6 +43,12 @@ public class MainMenuManager : MonoBehaviour
         scoreScreen.SetActive(true);
     }
 
+    private void TurnOffAllScreens()
+    {
+        mainMenu.SetActive(false);
+        scoreScreen.SetActive(false);
+    }
+
     /// <summary>Will return true if the player presses a key that will return to the main nmenu.</summary>
     /// <returns>True or false.</returns>
     private bool PlayerInputsToMainMenu() 
