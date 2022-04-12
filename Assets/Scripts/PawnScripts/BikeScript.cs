@@ -32,6 +32,7 @@ public class BikeScript : MonoBehaviour
     private Rigidbody rb;
 
     private Health health;
+    private EmmissiveBikeScript emissiveBike;
 
     private int healthPoolLayer = 6;
     private int healthPoolLayerMask; // A mask that that represents the HealthPool layer
@@ -96,7 +97,7 @@ public class BikeScript : MonoBehaviour
 
     private void Update()
     {
-        HealthPoolCheck();
+        UpdateBikeEmission();
     }
 
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
@@ -106,6 +107,7 @@ public class BikeScript : MonoBehaviour
         appliedForce = new Vector3(0, 0, 0);
         rb = GetComponent<Rigidbody>();
         health = GetComponentInChildren<Health>();
+        emissiveBike = GetComponentInChildren<EmmissiveBikeScript>();
         healthPoolLayerMask = (1 << healthPoolLayer);
     }
 
@@ -208,6 +210,18 @@ public class BikeScript : MonoBehaviour
         else
         {
             return false;
+        }
+    }
+
+    private void UpdateBikeEmission()
+    {
+        if (HealthPoolCheck()) 
+        {
+            emissiveBike.SetDeadAheadColor();
+        }
+        else 
+        {
+            emissiveBike.SetNotAheadColor();
         }
     }
     #endregion

@@ -9,9 +9,9 @@ public class EmmissiveBikeScript : MonoBehaviour
     [SerializeField] private Renderer objectToChange;
     // Start is called before the first frame update
 
-    public List<BikeLight> Lights;
+    //public List<BikeLight> Lights;
 
-    [System.Serializable]
+    /*[System.Serializable]
     public class BikeLight
     {
         public GameObject Light;
@@ -23,17 +23,50 @@ public class EmmissiveBikeScript : MonoBehaviour
             g = Light;
         }
 
-    }
-    
+    }*/
+
+
+    Color notAheadColor;
+    float notAheadColorIntensity = .01f;
+
+    Color deadAheadColor;
+    float deadAheadColorIntensity = .01f;
 
     void Start()
     {
-        emissiveMaterial = objectToChange.GetComponent<Renderer>().material;
+        deadAheadColor = new Color(25, 214, 162) * deadAheadColorIntensity;
+        notAheadColor = new Color(191, 175, 7) * notAheadColorIntensity;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Y)) 
+        {
+            emissiveMaterial.SetColor("_EmissionColor", Color.red);
+        }
         
+    }
+
+    private void SetEmissiveColor(Color color)
+    {
+        emissiveMaterial.SetColor("_EmissionColor", color);
+    }
+
+    private void SetAlbedoColor(Color color)
+    {
+        emissiveMaterial.SetColor("_Color", color);
+    }
+
+    public void SetDeadAheadColor() 
+    {
+        SetEmissiveColor(deadAheadColor);
+        SetAlbedoColor(deadAheadColor);
+    }
+
+    public void SetNotAheadColor()
+    {
+        SetEmissiveColor(notAheadColor);
+        SetAlbedoColor(notAheadColor);
     }
 }
