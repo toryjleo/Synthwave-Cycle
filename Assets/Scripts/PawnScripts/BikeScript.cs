@@ -123,6 +123,7 @@ public class BikeScript : MonoBehaviour
         {
             currentGun.Shoot(rb.velocity);
         }
+        
 
         //Movement Forward and Back and applies velocity 
         appliedForce += ForwardVector().normalized * MoveSpeed * Input.GetAxis("Vertical") * Time.fixedDeltaTime; 
@@ -213,6 +214,8 @@ public class BikeScript : MonoBehaviour
         }
     }
 
+
+    
     private void UpdateBikeEmission()
     {
         if (HealthPoolCheck()) 

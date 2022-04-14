@@ -7,6 +7,8 @@ public class EmmissiveBikeScript : MonoBehaviour
 
     [SerializeField] private Material emissiveMaterial;
     [SerializeField] private Renderer objectToChange;
+    public Light light; 
+
     // Start is called before the first frame update
 
     //public List<BikeLight> Lights;
@@ -36,6 +38,7 @@ public class EmmissiveBikeScript : MonoBehaviour
     {
         deadAheadColor = new Color(25, 214, 162) * deadAheadColorIntensity;
         notAheadColor = new Color(191, 175, 7) * notAheadColorIntensity;
+        light = GetComponentInChildren<Light>();
     }
 
     // Update is called once per frame
@@ -62,11 +65,15 @@ public class EmmissiveBikeScript : MonoBehaviour
     {
         SetEmissiveColor(deadAheadColor);
         SetAlbedoColor(deadAheadColor);
+        light.color = deadAheadColor;
+        light.intensity = 1.3f;
     }
 
     public void SetNotAheadColor()
     {
         SetEmissiveColor(notAheadColor);
         SetAlbedoColor(notAheadColor);
+        light.color = notAheadColor;
+        light.intensity = .8f;
     }
 }
