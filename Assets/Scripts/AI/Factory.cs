@@ -5,16 +5,16 @@ using UnityEngine;
 public class Factory : MonoBehaviour
 {
 
-    public GameObject[] aiTemplates;
     public GameObject[] guns;
+    public GameObject[] enemyPrefabs;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        aiTemplates = Resources.LoadAll<GameObject>("EnemyPrefabs");
         guns = Resources.LoadAll<GameObject>("Guns");
+        enemyPrefabs = Resources.LoadAll<GameObject>("EnemyPrefabs");
     }
 
     // Update is called once per frame

@@ -64,7 +64,7 @@ public class EnemySpawner : MonoBehaviour
     {
         GameObject enemy;
         Ai enemyAI;
-        int rand = Random.Range(0, 1);
+        int rand = Random.Range(0, 2);
         switch (rand)
         {
             case 0:

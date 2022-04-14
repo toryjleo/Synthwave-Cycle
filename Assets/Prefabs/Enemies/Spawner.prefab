@@ -12,6 +12,11 @@ GameObject:
   - component: {fileID: 3780906798646803481}
   - component: {fileID: 3780906798646803494}
   - component: {fileID: 3780906798646803495}
+  - component: {fileID: 609589161}
+  - component: {fileID: 609589166}
+  - component: {fileID: 609589167}
+  - component: {fileID: 609589168}
+  - component: {fileID: 609589169}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -95,3 +100,87 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &609589161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3780906798646803492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2db30df14ef96db418a30065b01a00fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemySpawner: {fileID: 609589169}
+  dl: {fileID: 609589168}
+  scoreKeeper: {fileID: 0}
+  currentEnemies: []
+--- !u!114 &609589166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3780906798646803492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d23823ba437049428de7b09ff75cd9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools:
+  - tag: Rifleman
+    prefab: {fileID: 3874834857555224733, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
+    size: 30
+  - tag: Grunt
+    prefab: {fileID: 7978806473477363408, guid: 96ce3a25c9aa3fb40a86136e9660d45c, type: 3}
+    size: 30
+  - tag: Blank
+    prefab: {fileID: 6749199786922221708, guid: 7577d168a208c5445a7f8ec18fb2eadf, type: 3}
+    size: 30
+  - tag: Cactus
+    prefab: {fileID: 5811562474388505295, guid: 6cdbe3db9f170dd4a8679c9613211708, type: 3}
+    size: 30
+--- !u!114 &609589167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3780906798646803492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 805e732bce560f74ca43a7a8f5ac0bef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aiTemplates: []
+  guns: []
+--- !u!114 &609589168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3780906798646803492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1f3ac1d6b9da654a83819e6638f0b19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dangerLevel: 0
+--- !u!114 &609589169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3780906798646803492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 555c781b633785644aeffaf92227ac55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ops: {fileID: 609589166}
+  player: {fileID: 0}
+  spawnDistance: 100
+  spawnBiasAngle: 60

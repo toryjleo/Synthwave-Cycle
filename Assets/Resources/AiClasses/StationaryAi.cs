@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CactusScript : Ai
+public class StationaryAi : Ai
 {
-
+    public GameObject muzzleLocation;
     public override void Init()
     {
         alive = true;
