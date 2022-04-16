@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,8 @@ public class EmmissiveBikeScript : MonoBehaviour
 
     [SerializeField] private Material emissiveMaterial;
     [SerializeField] private Renderer objectToChange;
-    public Light light; 
+    public Light light;
+    public Light spotlight;
 
     // Start is called before the first frame update
 
@@ -66,6 +68,8 @@ public class EmmissiveBikeScript : MonoBehaviour
         SetEmissiveColor(deadAheadColor);
         SetAlbedoColor(deadAheadColor);
         light.color = deadAheadColor;
+        spotlight.color = deadAheadColor;
+        spotlight.intensity = 20;
         light.intensity = 1.3f;
     }
 
@@ -74,6 +78,30 @@ public class EmmissiveBikeScript : MonoBehaviour
         SetEmissiveColor(notAheadColor);
         SetAlbedoColor(notAheadColor);
         light.color = notAheadColor;
+        spotlight.color = notAheadColor;
+        spotlight.spotAngle = 50;
         light.intensity = .8f;
+    }
+
+    internal void SetHPDistance(float distanceToHP)
+    {
+        int minA = 30;
+        int maxA = 100;
+        float useAngle = 2000/distanceToHP;
+
+
+        if (useAngle < minA)
+        {
+            spotlight.spotAngle = minA;
+        } else if(useAngle > maxA) {
+            spotlight.spotAngle = maxA; 
+        } else
+        {
+            spotlight.spotAngle = useAngle;
+        }
+
+        
+
+
     }
 }

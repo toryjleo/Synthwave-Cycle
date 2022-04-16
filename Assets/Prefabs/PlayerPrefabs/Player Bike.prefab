@@ -262,6 +262,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4467864045780246486}
     m_Modifications:
+    - target: {fileID: 894637136689397090, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 894637136689397090, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 894637136689397090, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1546176323357348353, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
       propertyPath: m_Name
       value: Bike_Main1
@@ -285,6 +297,14 @@ PrefabInstance:
     - target: {fileID: 2983667107480805344, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
       propertyPath: m_Intensity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4693198637873122414, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+      propertyPath: m_Range
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4693198637873122414, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+      propertyPath: m_SpotAngle
+      value: 45.6
       objectReference: {fileID: 0}
     - target: {fileID: 5631806350563682059, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
       propertyPath: m_LocalScale.x
@@ -318,6 +338,10 @@ PrefabInstance:
       propertyPath: light
       value: 
       objectReference: {fileID: 2983667107798486405}
+    - target: {fileID: 8775821855001049414, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+      propertyPath: spotlight
+      value: 
+      objectReference: {fileID: 4693198637691821579}
     - target: {fileID: 8778939078055539862, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -397,5 +421,10 @@ Transform:
 --- !u!108 &2983667107798486405 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 2983667107480805344, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+  m_PrefabInstance: {fileID: 1026658917}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &4693198637691821579 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 4693198637873122414, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
   m_PrefabInstance: {fileID: 1026658917}
   m_PrefabAsset: {fileID: 0}

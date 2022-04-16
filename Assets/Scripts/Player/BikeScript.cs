@@ -25,7 +25,9 @@ public class BikeScript : MonoBehaviour
 
     private float dragCoefficient = .98f; // A linear scale of how much drag will be applied to the bike
 
-    private float maxLean = 40.0f;  
+    private float maxLean = 40.0f;
+
+    private float distanceToHP;
 
     public Gun currentGun;
 
@@ -206,6 +208,7 @@ public class BikeScript : MonoBehaviour
         if (Physics.Raycast(ray, out hitData, Mathf.Infinity,  healthPoolLayerMask))
         {
             Debug.Log("Hit something: " + hitData.collider.gameObject.name);
+            distanceToHP = hitData.distance;
             return true;
         }
         else
@@ -221,6 +224,7 @@ public class BikeScript : MonoBehaviour
         if (HealthPoolCheck()) 
         {
             emissiveBike.SetDeadAheadColor();
+            emissiveBike.SetHPDistance(distanceToHP);
         }
         else 
         {
