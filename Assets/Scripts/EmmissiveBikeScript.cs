@@ -9,24 +9,6 @@ public class EmmissiveBikeScript : MonoBehaviour
     [SerializeField] private Renderer objectToChange;
     public Light light; 
 
-    // Start is called before the first frame update
-
-    //public List<BikeLight> Lights;
-
-    /*[System.Serializable]
-    public class BikeLight
-    {
-        public GameObject Light;
-        public Color color;
-
-        public BikeLight(Color c, GameObject g)
-        {
-            c = color;
-            g = Light;
-        }
-
-    }*/
-
 
     Color notAheadColor;
     float notAheadColorIntensity = .01f;
@@ -51,16 +33,27 @@ public class EmmissiveBikeScript : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Sets the emissive color of the material
+    /// </summary>
+    /// <param name="color">Color to set the emissive property to.</param>
     private void SetEmissiveColor(Color color)
     {
         emissiveMaterial.SetColor("_EmissionColor", color);
     }
 
+    /// <summary>
+    /// Sets the albedo color of the materail
+    /// </summary>
+    /// <param name="color">Color to set the albedo to.</param>
     private void SetAlbedoColor(Color color)
     {
         emissiveMaterial.SetColor("_Color", color);
     }
 
+    /// <summary>
+    /// Sets the material colors for when the bike is pointing at a healthpool.
+    /// </summary>
     public void SetDeadAheadColor() 
     {
         SetEmissiveColor(deadAheadColor);
@@ -69,6 +62,9 @@ public class EmmissiveBikeScript : MonoBehaviour
         light.intensity = 1.3f;
     }
 
+    /// <summary>
+    /// Sets the material colors for when the bike is NOT pointing at a healthpool.
+    /// </summary>
     public void SetNotAheadColor()
     {
         SetEmissiveColor(notAheadColor);
