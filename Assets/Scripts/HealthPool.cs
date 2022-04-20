@@ -40,8 +40,6 @@ public class HealthPool : SelfDespawn
 
         player = GameObject.Find("Player Bike");
         Init();
-
-
     }
 
 
