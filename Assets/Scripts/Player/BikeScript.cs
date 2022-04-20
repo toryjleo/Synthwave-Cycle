@@ -218,7 +218,8 @@ public class BikeScript : MonoBehaviour
     }
 
 
-    
+    /// <summary>Sets the bike's emission material color to a specific color if the bike is or is not pointing at a 
+    /// healthpool.</summary>
     private void UpdateBikeEmission()
     {
         if (HealthPoolCheck()) 
