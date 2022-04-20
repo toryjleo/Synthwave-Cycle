@@ -492,11 +492,11 @@ GameObject:
   - component: {fileID: 1183939800517801601}
   - component: {fileID: 3846661697261210032}
   - component: {fileID: 415200021287175039}
-  - component: {fileID: 6185426600550870861}
   - component: {fileID: -6997746321493783745}
   - component: {fileID: -3707628295845311395}
+  - component: {fileID: 6138281761630567242}
   m_Layer: 0
-  m_Name: Cactrus
+  m_Name: Cactus
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -586,29 +586,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6185426600550870861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5811562474388505295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e776266a734cfa246a62beb290e5c54f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  animationStateController: {fileID: 0}
-  rb: {fileID: -3707628295845311395}
-  myGun: {fileID: 0}
-  hp: {fileID: 0}
-  StartingHP: 0
-  maxSpeed: 0
-  maxForce: 0
-  score: 0
-  attackRange: 0
-  alive: 0
 --- !u!114 &-6997746321493783745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -637,6 +614,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6138281761630567242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5811562474388505295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e776266a734cfa246a62beb290e5c54f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  animationStateController: {fileID: 0}
+  rb: {fileID: 0}
+  myGun: {fileID: 0}
+  hp: {fileID: 0}
+  StartingHP: 0
+  maxSpeed: 0
+  maxForce: 0
+  score: 0
+  attackRange: 0
+  alive: 0
+  muzzleLocation: {fileID: 0}
 --- !u!1 &6270396065795615396
 GameObject:
   m_ObjectHideFlags: 0

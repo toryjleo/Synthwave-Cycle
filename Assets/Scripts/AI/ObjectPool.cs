@@ -7,7 +7,7 @@ public enum Enemy
 {
     Grunt,
     Rifleman,
-    Blank,
+    Ranger,
     Sniper,
     Dog,
     Cactus

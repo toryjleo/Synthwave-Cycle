@@ -11,7 +11,7 @@ public class GruntAI : Ai
         alive = true;
         StartingHP = 40;
         score = 300;
-        maxSpeed = 15;
+        maxSpeed = 10;
         attackRange = 5;
 
         hp = GetComponentInChildren<Health>();

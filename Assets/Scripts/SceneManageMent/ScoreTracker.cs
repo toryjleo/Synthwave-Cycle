@@ -50,6 +50,10 @@ public class ScoreTracker : MonoBehaviour
             // Lose Condition
             EndGame(false);
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     public void Init()
@@ -114,8 +118,8 @@ public class ScoreTracker : MonoBehaviour
         PlayerDataObject.survivedEvent = survivedEvent;
 
         Object.FindObjectOfType<DLevel>().dangerTimer.Dispose(); //Dispose of timer for spawning more enemies
-
-        StartCoroutine(LoadYourAsyncScene());
+        SceneManager.LoadScene("TestScene");
+        //StartCoroutine(LoadYourAsyncScene());
     }
 
     /// <summary>Loads the gameover screen asycronously.</summary>
