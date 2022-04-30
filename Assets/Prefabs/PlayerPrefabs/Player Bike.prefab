@@ -84,7 +84,7 @@ MonoBehaviour:
   bikeMeshChild: {fileID: 1546176323811278948}
   appliedForce: {x: 0, y: 0, z: 0}
   MoveSpeed: 100
-  Traction: 3
+  Traction: 6
   SteerAngle: 10
   MoveForce: {x: 0, y: 0, z: 0}
   currentGun: {fileID: 0}
