@@ -34,7 +34,11 @@ public class Health : MonoBehaviour
     /// <param name="hp">The number of points to add to _hitPoints.</param>
     public void Heal(float hp) 
     {
-        // TODO: Make sure this does not go over max float
+        // Ensure we do not overflow
+        if (_hitPoints+hp < _hitPoints) 
+        {
+            _hitPoints = float.MaxValue;
+        }
         _hitPoints += hp;
     }
 }

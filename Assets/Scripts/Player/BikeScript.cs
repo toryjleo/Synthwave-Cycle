@@ -15,13 +15,10 @@ public class BikeScript : MonoBehaviour
     public Vector3 appliedForce; // The force being applied to the bike
 
     //private float mass = 8f; // The mass of the bike
-    private float MaxSpeed = 80; //The max speed of the bike 
-    public float MoveSpeed = 100; //The speed of the bike 
+    public float engineForce = 100; //The speed of the bike 
     public float Traction = 3; //How slippy the bike is when turning 
 
     public float SteerAngle = 10; //the angle at which the bike turns 
-
-    public Vector3 MoveForce; 
 
     private float dragCoefficient = .98f; // A linear scale of how much drag will be applied to the bike
 
@@ -128,7 +125,7 @@ public class BikeScript : MonoBehaviour
         
 
         //Movement Forward and Back and applies velocity 
-        appliedForce += ForwardVector().normalized * MoveSpeed * Input.GetAxis("Vertical") * Time.fixedDeltaTime; 
+        appliedForce += ForwardVector().normalized * engineForce * Input.GetAxis("Vertical") * Time.fixedDeltaTime; 
         
 
         //Steering Takes Horizontal Input and rotates both 
@@ -148,6 +145,20 @@ public class BikeScript : MonoBehaviour
 
 
         rb.AddForce(appliedForce);
+    }
+
+    public void IncreaseEngineForce(float amnt) 
+    {
+        // Check for overflow
+        if(engineForce + amnt < engineForce && amnt > 0) 
+        {
+            engineForce = float.MaxValue;
+        }
+        else 
+        {
+            engineForce += amnt;
+        }
+    
     }
 
     /// <summary>Responds to the gun'd NotifyShot event.</summary>
