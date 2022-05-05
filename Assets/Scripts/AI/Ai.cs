@@ -32,9 +32,9 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public override void Update()
     {
         base.Update();
-        animationStateController.SetSpeed(rb.velocity.magnitude);
+        
 
-
+        //Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned 
         {
             if(myGun != null)
@@ -48,15 +48,32 @@ public abstract class Ai : SelfWorldBoundsDespawn
             this.gameObject.SetActive(false);
             
         }
-        else //Act natural 
+        else //Alive
         {
             if(target == null)
             {
                 Wander();
             } else
             {
-                Move(target.transform.position);
+                Vector3 desiredVec = target.transform.position - transform.position;
+                if(desiredVec.magnitude < attackRange)
+                {
+                    Attack();
+
+
+                } else
+                {
+                    Move(target.transform.position);
+                    animationStateController.SetSpeed(rb.velocity.magnitude / 40); //this devides them by a constant to allow for slower enemies to walk slower. 
+
+                }
+
             }
+
+            //Handle Animations Here 
+
+            
+
         }
 
     }
@@ -92,8 +109,9 @@ public abstract class Ai : SelfWorldBoundsDespawn
             if (dMag < maxSpeed)
             {
                 desiredVec *= dMag;
-                Attack();
-            }
+            
+            //Attack();
+        }
             else
             {
                 desiredVec *= maxSpeed;
@@ -129,6 +147,8 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public void applyForce(Vector3 force)
     {
         rb.AddForce(force);
+        
+        
     }
 
     /// <summary>

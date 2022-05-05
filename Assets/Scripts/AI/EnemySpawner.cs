@@ -100,6 +100,7 @@ public class EnemySpawner : MonoBehaviour
         {
             enemy = ops.SpawnFromPool("Rifleman", generateSpawnVector(), Quaternion.identity);
 
+            
 
             enemyAI = enemy.GetComponent<Ai>();
             enemyAI.Loadout(player);
