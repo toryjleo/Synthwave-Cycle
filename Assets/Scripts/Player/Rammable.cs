@@ -7,7 +7,7 @@ using UnityEngine;
 public class Rammable : MonoBehaviour
 {
     Health health;
-    private const float STARTING_HEALTH = 300.0f;
+    private const float STARTING_HEALTH = 3000000.0f;
     private const float DAMAGE_DONE_WHEN_RAMMING = 100.0f;
     private const float REQUIRED_RAMMING_SPEED = 45.0f;
     private Rigidbody rb;
