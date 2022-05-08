@@ -44,14 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d7913e2c9c1494f9672456a04a22b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playList:
-  - {fileID: 8300000, guid: d26daf4f7ad04b1499918422fa81cb0b, type: 3}
-  - {fileID: 8300000, guid: afbc90cb8d071d945b9f862b18d2e7c7, type: 3}
-  - {fileID: 8300000, guid: 1c439045f439ee44393756b57030f07b, type: 3}
-  - {fileID: 8300000, guid: 86b309672d0f47d4a985c4b4bbbb8c24, type: 3}
-  - {fileID: 8300000, guid: 5547dd3512cb10a4a8f2b53d63510ccd, type: 3}
-  - {fileID: 8300000, guid: 8a3b9565e348c13499a77ebab10a95c2, type: 3}
-  - {fileID: 8300000, guid: dc6b80480560049488fbd1df4282ae23, type: 3}
+  track: {fileID: 11400000, guid: 55816fd2f98885a4e8f2d666cef4a647, type: 2}
   audioSource: {fileID: 0}
 --- !u!82 &3820667865579537719
 AudioSource:

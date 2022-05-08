@@ -1,30 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+// TODO: look at https://johnleonardfrench.com/ultimate-guide-to-playscheduled-in-unity/
+
 
 /// <summary>
 /// A class that plays a random track on start.
 /// </summary>
 public class Jukebox : MonoBehaviour
 {
-    public AudioClip[] playList;
+    private bool started;
+    public Track track;
     public AudioSource audioSource;
 
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
+        started = false;
         audioSource = GetComponent<AudioSource>();
-        int length = playList.Length;
-        if (length == 0)
+        TrackVariation tv = track.variations[0];
+        audioSource.clip = tv.variation;
+
+
+        // Calculate a Clip’s exact duration
+    }
+
+    private void Update()
+    {
+        if (!started) 
         {
-            Debug.LogError("Jukebox has 0 songs to play!");
-        }
-        else
-        {
-            int indexToPlay = Random.Range(0, length);
-            ChangeTrack(playList[indexToPlay]);
+            started = true;
+            // The first time the track is called, there is a delay after the first play
+            Invoke("CheckTrack", .05f);
         }
     }
+
+    private void CheckTrack() 
+    {
+        audioSource.Play();
+        Invoke("CheckTrack", audioSource.clip.length);
+    }
+
+
 
     /// <summary>
     /// Plays a specified track.
