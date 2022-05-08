@@ -37,16 +37,15 @@ public abstract class Ai : SelfWorldBoundsDespawn
         //Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned 
         {
-            if(myGun != null)
+            Move(this.transform.position);
+
+            if (myGun != null)
             {
                 myGun.StopAllCoroutines();
             }
-            animationStateController.StopAllCoroutines();
-            alive = false;
 
-            
-            this.gameObject.SetActive(false);
-            
+            die();
+      
         }
         else //Alive
         {
@@ -58,24 +57,48 @@ public abstract class Ai : SelfWorldBoundsDespawn
                 Vector3 desiredVec = target.transform.position - transform.position;
                 if(desiredVec.magnitude < attackRange)
                 {
-                    Attack();
 
+                    Attack();
+                    Move(transform.position);
+                    animationStateController.SetSpeed(rb.velocity.magnitude); // 
 
                 } else
                 {
                     Move(target.transform.position);
                     animationStateController.SetSpeed(rb.velocity.magnitude / 40); //this devides them by a constant to allow for slower enemies to walk slower. 
-
                 }
-
             }
-
-            //Handle Animations Here 
-
-            
-
         }
 
+    }
+
+    /// <summary>
+    /// This method plays a death animation and the deactivates the enemy
+    /// </summary>
+    public void die()
+    {
+        if (alive)
+        {
+            animationStateController.TriggerDeathA();
+        }
+        
+
+        alive = false;
+        animationStateController.SetAlive(alive);
+
+        rb.detectCollisions = false;
+        
+
+        if (animationStateController.IsIdle())
+        {
+            animationStateController.StopAllCoroutines();
+            this.gameObject.SetActive(false);
+        }
+        
+
+
+
+        
     }
     /// <summary>
     /// This method is called when the entitiy wants to attack. Checks if it has a gun 
@@ -86,6 +109,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         {
             this.myGun.Shoot(target.transform.position);
             animationStateController.AimWhileWalking(true);
+            
         }
     }
 
