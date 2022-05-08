@@ -12,7 +12,7 @@ public class GruntAI : Ai
         StartingHP = 40;
         score = 300;
         maxSpeed = 10;
-        attackRange = 5;
+        attackRange = 10;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();

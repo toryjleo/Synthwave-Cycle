@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Shotgun : Gun
 {
-    private float timeBetweenBlastWaves = .02f;
+    private float timeBetweenBlastWaves = .06f;
 
     public override void Init()
     {
