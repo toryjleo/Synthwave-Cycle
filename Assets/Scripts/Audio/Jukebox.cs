@@ -9,36 +9,62 @@ using UnityEngine;
 /// </summary>
 public class Jukebox : MonoBehaviour
 {
-    private bool started;
+    private bool scheduleas1;
     public Track track;
-    public AudioSource audioSource;
+    public AudioSource[] audioSourceArray;
+    int toggle;
+
+    double nextStartTime;
 
 
-    void Awake()
+    void Start()
     {
-        started = false;
-        audioSource = GetComponent<AudioSource>();
+        toggle = 0;
         TrackVariation tv = track.variations[0];
-        audioSource.clip = tv.variation;
 
+        audioSourceArray[toggle].clip = tv.variation;
 
-        // Calculate a Clip’s exact duration
+        double startTime  = AudioSettings.dspTime + 0.2;
+        double introDuration = GetClipDuration(tv.variation);
+        nextStartTime = startTime + introDuration;
+
+        audioSourceArray[toggle].PlayScheduled(startTime);
+        toggle = 1 - toggle;
+
     }
 
     private void Update()
     {
-        if (!started) 
+        
+        if (AudioSettings.dspTime > nextStartTime - 1) 
         {
-            started = true;
-            // The first time the track is called, there is a delay after the first play
-            Invoke("CheckTrack", .05f);
+            // TODO: Make dynamic
+            AudioClip clipToPlay = track.variations[0].variation;
+
+            // Loads the next Clip to play and schedules when it will start
+            audioSourceArray[toggle].clip = clipToPlay;
+            audioSourceArray[toggle].PlayScheduled(nextStartTime);
+            // Checks how long the Clip will last and updates the Next Start Time with a new value
+            double duration = (double)clipToPlay.samples / clipToPlay.frequency;
+            nextStartTime = nextStartTime + duration;
+            // Switches the toggle to use the other Audio Source next
+            toggle = 1 - toggle;
         }
+        
     }
 
-    private void CheckTrack() 
+
+    private double GetClipDuration(AudioClip clip)
     {
-        audioSource.Play();
-        Invoke("CheckTrack", audioSource.clip.length);
+        double duration = (double)clip.samples / clip.frequency;
+        return duration;
+    }
+
+
+    /*private void CheckTrack() 
+    {
+        audioSourceArray[toggle].Play();
+        Invoke("CheckTrack", audioSourceArray[toggle].clip.length);
     }
 
 
@@ -49,8 +75,8 @@ public class Jukebox : MonoBehaviour
     /// <param name="newClip">The new track to switch to.</param>
     private void ChangeTrack(AudioClip newClip) 
     {
-        audioSource.Stop();
-        audioSource.clip = newClip;
-        audioSource.Play();
-    }
+        audioSourceArray[toggle].Stop();
+        audioSourceArray[toggle].clip = newClip;
+        audioSourceArray[toggle].Play();
+    }*/
 }
