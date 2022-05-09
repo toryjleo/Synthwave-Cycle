@@ -5,7 +5,7 @@ using UnityEngine;
 public class HealthPool : SelfDespawn
 {
     // Visuals
-    private GameObject player;
+    private BikeScript player;
     public int Spawndistance = 800;
     public int SpawnAngleRandomNess = 60;
     public float SizeofCylinder = 400;
@@ -38,7 +38,8 @@ public class HealthPool : SelfDespawn
     private void Start()
     {
 
-        player = GameObject.Find("Player Bike");
+        GameObject playerObject = GameObject.Find("Player Bike");
+        player = playerObject.GetComponent<BikeScript>();
         Init();
     }
 
@@ -68,7 +69,7 @@ public class HealthPool : SelfDespawn
 
         SetScale(startScale);
 
-        this.transform.position = SpawnVector(player.transform.right,SpawnAngleRandomNess,Spawndistance);
+        this.transform.position = SpawnVector(player.ForwardVector(), SpawnAngleRandomNess, Spawndistance);
 
         this.gameObject.SetActive(true);
     }
