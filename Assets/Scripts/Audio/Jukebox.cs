@@ -11,6 +11,7 @@ public class Jukebox : MonoBehaviour
 {
     private bool scheduleas1;
     public Track track;
+    // An audiosource array with 2 members to switch between with "toggle"
     public AudioSource[] audioSourceArray;
     int toggle;
 
@@ -21,7 +22,7 @@ public class Jukebox : MonoBehaviour
     {
         toggle = 0;
         TrackVariation tv = track.variations[0];
-
+        // Schedule the first track
         audioSourceArray[toggle].clip = tv.variation;
 
         double startTime  = AudioSettings.dspTime + 0.2;
@@ -35,7 +36,7 @@ public class Jukebox : MonoBehaviour
 
     private void Update()
     {
-        
+        // Schedule next track
         if (AudioSettings.dspTime > nextStartTime - 1) 
         {
             // TODO: Make dynamic
