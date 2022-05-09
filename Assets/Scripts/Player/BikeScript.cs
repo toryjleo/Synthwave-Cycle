@@ -47,7 +47,7 @@ public class BikeScript : MonoBehaviour
     /// <summary>This method gets the direction the bike's mesh is currently facing in world coordinates.</summary>
     /// <returns>A Vector3 of the bike's forward vector in world coordinates. The Vector's x represents the x direction 
     /// in world coordinates and the vector's y represents the z direction in world coordinates.</returns>
-    private Vector3 ForwardVector()
+    public Vector3 ForwardVector()
     {
         return new Vector3(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.y, -bikeMeshParent.transform.right.z);
     }
