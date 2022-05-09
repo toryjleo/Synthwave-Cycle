@@ -218,7 +218,7 @@ public class BikeScript : MonoBehaviour
         RaycastHit hitData;
         if (Physics.Raycast(ray, out hitData, Mathf.Infinity,  healthPoolLayerMask))
         {
-            Debug.Log("Hit something: " + hitData.collider.gameObject.name);
+            //Debug.Log("Hit something: " + hitData.collider.gameObject.name);
             distanceToHP = hitData.distance;
             return true;
         }
