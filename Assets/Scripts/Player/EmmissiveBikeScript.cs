@@ -62,7 +62,6 @@ public class EmmissiveBikeScript : MonoBehaviour
         SetAlbedoColor(deadAheadColor);
         light.color = deadAheadColor;
         spotlight.color = deadAheadColor;
-        spotlight.intensity = 20;
         light.intensity = 1.3f;
     }
 
@@ -75,29 +74,49 @@ public class EmmissiveBikeScript : MonoBehaviour
         SetAlbedoColor(notAheadColor);
         light.color = notAheadColor;
         spotlight.color = notAheadColor;
-        spotlight.spotAngle = 50;
+        spotlight.intensity = 0;
         light.intensity = .8f;
     }
 
-    internal void SetHPDistance(float distanceToHP)
+    /// <summary>
+    /// Updates the spotlight to reflect "closing in" on the healthpool
+    /// </summary>
+    /// <param name="distanceToHP">The current player distance to the healthpool</param>
+    /// <param name="consecutiveDistanceToHP">The distance to the heathpool, updated whenever the player points back at
+    /// the healthpool.</param>
+    internal void SetHPDistance(float distanceToHP, float consecutiveDistanceToHP)
     {
-        int minA = 30;
-        int maxA = 100;
-        float useAngle = 2000/distanceToHP;
+        float t = PercentToHP(distanceToHP, consecutiveDistanceToHP);
+        float minA = 30;
+        float maxA = 80;
+        float useAngle = Mathf.Lerp(maxA, minA, t);
 
+        spotlight.intensity = 5 * (t + .1f);
 
         if (useAngle < minA)
         {
             spotlight.spotAngle = minA;
-        } else if(useAngle > maxA) {
+        } 
+        else if (useAngle > maxA) 
+        {
             spotlight.spotAngle = maxA; 
         } else
         {
             spotlight.spotAngle = useAngle;
         }
 
-        
+    }
 
-
+    /// <summary>
+    /// Returns the percentage of the way the player is between the healthpool and from where they started looking at
+    /// the healthpool
+    /// </summary>
+    /// <param name="distanceToHP">The current player distance to the healthpool</param>
+    /// <param name="consecutiveDistanceToHP">The distance to the heathpool, updated whenever the player points back at
+    /// the healthpool.</param>
+    /// <returns>A float between 0 and 1</returns>
+    private float PercentToHP(float distanceToHP, float consecutiveDistanceToHP) 
+    {
+        return 1.0f - (distanceToHP / consecutiveDistanceToHP);
     }
 }

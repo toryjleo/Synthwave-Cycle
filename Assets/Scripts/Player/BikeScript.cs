@@ -9,7 +9,8 @@ using UnityEngine;
 /// Expects there to be an LMG spawned in-place on the bike's location
 public class BikeScript : MonoBehaviour
 {
-    private float distanceToHP;
+    private float distanceToHP; // The current distance to the healthpool.
+    private float consecutiveDistanceToHP; // The distance to the healthpool the first time we raycast hit it.
 
     public Gun currentGun;
 
@@ -94,6 +95,7 @@ public class BikeScript : MonoBehaviour
         movementComponent = GetComponent<BikeMovementComponent>();
 
         healthPoolLayerMask = (1 << healthPoolLayer);
+        consecutiveDistanceToHP = 0;
     }
 
     #endregion
@@ -145,10 +147,15 @@ public class BikeScript : MonoBehaviour
         {
             //Debug.Log("Hit something: " + hitData.collider.gameObject.name);
             distanceToHP = hitData.distance;
+            if (consecutiveDistanceToHP == 0) 
+            {
+                consecutiveDistanceToHP = hitData.distance;
+            }
             return true;
         }
         else
         {
+            consecutiveDistanceToHP = 0;
             return false;
         }
     }
@@ -161,7 +168,7 @@ public class BikeScript : MonoBehaviour
         if (HealthPoolCheck()) 
         {
             emissiveBike.SetDeadAheadColor();
-            emissiveBike.SetHPDistance(distanceToHP);
+            emissiveBike.SetHPDistance(distanceToHP, consecutiveDistanceToHP);
         }
         else 
         {
