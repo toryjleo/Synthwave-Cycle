@@ -16,6 +16,9 @@ public class BikeMovementComponent : MonoBehaviour
     public Vector3 appliedForce; // The force being applied to the bike
     public Rigidbody rb;
 
+    // Dictates movement speed
+    private Health health;
+
 
     public float MoveSpeed = 100; //The speed of the bike 
     public float Traction = 3; //How slippy the bike is when turning 
@@ -26,7 +29,31 @@ public class BikeMovementComponent : MonoBehaviour
 
     private float maxLean = 40.0f;
 
-    public Vector3 MoveForce;
+    private const float ACCELERATION_SCALE = 5.0f;
+
+    private const float STARTING_HEALTH = 200.0f;
+
+    private const float MAX_ACCELERATION = 1000.0f;
+
+    /// <summary>
+    /// The current acceleration of the bike. Is dependant on health
+    /// </summary>
+    private float Acceleration 
+    {
+        get 
+        {
+            return Mathf.Clamp( HitPoints / ACCELERATION_SCALE, STARTING_HEALTH / ACCELERATION_SCALE, MAX_ACCELERATION);
+        }
+    }
+
+    // Number of player hit points
+    public float HitPoints 
+    {
+        get 
+        {
+            return health.HitPoints;
+        }
+    }
 
     private void Awake()
     {
@@ -45,6 +72,10 @@ public class BikeMovementComponent : MonoBehaviour
         // The bike will begin at rest
         appliedForce = new Vector3(0, 0, 0);
         rb = GetComponent<Rigidbody>();
+        health = GetComponentInChildren<Health>();
+
+
+        health.Init(STARTING_HEALTH);
     }
 
     public Vector3 ForwardVector()
@@ -61,7 +92,7 @@ public class BikeMovementComponent : MonoBehaviour
 
 
         //Movement Forward and Back and applies velocity 
-        appliedForce += ForwardVector().normalized * MoveSpeed * Input.GetAxis("Vertical") * Time.fixedDeltaTime;
+        appliedForce += ForwardVector().normalized * Acceleration * Input.GetAxis("Vertical") * Time.fixedDeltaTime;
 
 
         //Steering Takes Horizontal Input and rotates both 

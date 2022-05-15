@@ -6,8 +6,6 @@ using UnityEngine;
 /// Expects same gameObject to have a Rigidbody
 public class Rammable : MonoBehaviour
 {
-    Health health;
-    private const float STARTING_HEALTH = 3000000.0f;
     private const float DAMAGE_DONE_WHEN_RAMMING = 100.0f;
     private const float REQUIRED_RAMMING_SPEED = 45.0f;
     private Rigidbody rb;
@@ -15,8 +13,6 @@ public class Rammable : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        health = GetComponentInChildren<Health>();
-        health.Init(STARTING_HEALTH);
     }
 
     private void OnCollisionEnter(Collision collision)

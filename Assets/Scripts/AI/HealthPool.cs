@@ -10,15 +10,24 @@ public class HealthPool : SelfDespawn
     public int SpawnAngleRandomNess = 60;
     public float SizeofCylinder = 400;
     public float RateOfDecay = 20f;
+    private const int INITIAL_SPAWN_DISTANCE = 275;
     private const float DEFAULT_MIN_SCALE = 50.0f;
     private const float DEFAULT_MAX_SCALE = 400.0f;
     private const float DEFULAT_SCALE_SHRINK_PER_SECOND = 20f;
-    private const float PLAYER_HEAL_AMNT = 100f;
+    private const float INITIAL_PLAYER_HEAL_AMNT = 30f;
+
+    private const int SPAWN_DISTANCE_INCREASE = 100;
+    private const float PLAYER_HEAL_AMNT_INCREASE = 10f;
 
     private float minScale;
     private float maxScale;
     private float shrinkPerSecond;
     private float curScale;
+
+
+    // Values that get updated as game progresses
+    private int currentSpawnDistance;
+    private float currentPlayerHealAmount;
 
 
     
@@ -37,9 +46,11 @@ public class HealthPool : SelfDespawn
 
     private void Start()
     {
-
         GameObject playerObject = GameObject.Find("Player Bike");
         player = playerObject.GetComponent<BikeScript>();
+        currentSpawnDistance = INITIAL_SPAWN_DISTANCE;
+        currentPlayerHealAmount = INITIAL_PLAYER_HEAL_AMNT;
+        Init(RateOfDecay, SizeofCylinder);
         Init();
     }
 
@@ -69,7 +80,7 @@ public class HealthPool : SelfDespawn
 
         SetScale(startScale);
 
-        this.transform.position = SpawnVector(player.ForwardVector(), SpawnAngleRandomNess, Spawndistance);
+        this.transform.position = SpawnVector(player.ForwardVector(), SpawnAngleRandomNess, currentSpawnDistance);
 
         this.gameObject.SetActive(true);
     }
@@ -78,7 +89,8 @@ public class HealthPool : SelfDespawn
     {
         this.gameObject.SetActive(false);
         base.OnDespawn();
-        Init(RateOfDecay,SizeofCylinder);
+        IcreaseSpawnDistance();
+        Init(RateOfDecay, SizeofCylinder);
     }
 
     /// <summary>
@@ -89,7 +101,23 @@ public class HealthPool : SelfDespawn
         this.Init();
     }
 
+    /// <summary>
+    /// This code should be called to increase the healthpool spawn distance every respawn, whether the player hits the
+    /// spawnpool or not.
+    /// </summary>
+    private void IcreaseSpawnDistance()
+    {
+        if (currentSpawnDistance + SPAWN_DISTANCE_INCREASE < currentSpawnDistance)
+        {
+            currentSpawnDistance = int.MaxValue;
+        }
+        else
+        {
+            currentSpawnDistance += SPAWN_DISTANCE_INCREASE;
+        }
+    }
 
+    #region ScaleCode
     /// <summary>Updates the current scale.</summary>
     /// <param name="scale">The scale at which to set this object to.</param>
     private void SetScale(float scale)
@@ -114,17 +142,9 @@ public class HealthPool : SelfDespawn
     {
         return Mathf.Clamp(amnt, minScale, maxScale);
     }
+    #endregion
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            Health playerHealthRef = other.GetComponentInChildren<Health>();
-            playerHealthRef.Heal(PLAYER_HEAL_AMNT);
-            OnDespawn();
-        }
-    }
-
+    #region SpawnCode
     /// <summary> //TODO Make this part of static utill class
     /// This method returns a vector 
     /// </summary>
@@ -149,5 +169,19 @@ public class HealthPool : SelfDespawn
         spawnVector += player.transform.position;
         return spawnVector;
     }
+    #endregion
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            Health playerHealthRef = other.GetComponentInChildren<Health>();
+            playerHealthRef.Heal(currentPlayerHealAmount);
+            BikeScript playerBikeRef = player.GetComponent<BikeScript>();
+            //playerBikeRef.movementComponent.IncreaseEngineForce(currentSpeedIncrease);
+            // TODO: Make this method
+            currentPlayerHealAmount += PLAYER_HEAL_AMNT_INCREASE;
+            OnDespawn();
+        }
+    }
 }
