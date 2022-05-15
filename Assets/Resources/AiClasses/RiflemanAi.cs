@@ -13,7 +13,7 @@ public class RiflemanAi : Ai
         StartingHP = 20;
         score = 100;
         maxSpeed = 40;
-        attackRange = 30;
+        attackRange = 80;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
