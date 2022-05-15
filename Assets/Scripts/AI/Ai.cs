@@ -184,7 +184,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// <param name="pool"></param>
     public void Seperate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI
     {
-        float desiredSeperation = 50;
+        float desiredSeperation = 110;
 
         Vector3 sum = new Vector3(); //the vector that will be used to calculate flee beheavior if a too close interaction happens
         int count = 0; //this couunts how many TOOCLOSE interactions an entity has, if it has more than one
@@ -196,7 +196,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
             float d = Vector3.Distance(g.transform.position, transform.position);
 
-            if (g.transform.position != transform.position && d < desiredSeperation)
+             if (g.transform.position != transform.position && d < desiredSeperation)
             {
                 Vector3 diff = transform.position - g.transform.position; // creats vec between two objects
                 diff.Normalize();

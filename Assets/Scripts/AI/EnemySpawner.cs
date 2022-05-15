@@ -18,7 +18,10 @@ public class EnemySpawner : MonoBehaviour
 
     public ObjectPool ops;
     public GameObject player;
+    private Vector3 playerForwardVector;
 
+
+    private BikeMovementComponent bs;
 
     //Spawning Variables 
     public int spawnDistance;
@@ -29,12 +32,15 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         ops = ObjectPool.Instance;
+
+        bs = player.GetComponent<BikeMovementComponent>();
+        playerForwardVector = bs.ForwardVector();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        playerForwardVector = bs.ForwardVector();
     }
     /// <summary>
     /// This will spawn an enemy of a specific type and then returns that enemy 
@@ -64,7 +70,7 @@ public class EnemySpawner : MonoBehaviour
     {
         GameObject enemy;
         Ai enemyAI;
-        int rand = Random.Range(2, 4);
+        int rand = Random.Range(3, 4);
         switch (rand)
         {
             case 0:
@@ -166,7 +172,8 @@ public class EnemySpawner : MonoBehaviour
         return spawnVector;
     }
 
-#endregion 
+
+    #endregion
 
 }
 

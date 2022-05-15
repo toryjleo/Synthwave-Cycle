@@ -61,9 +61,10 @@ GameObject:
   - component: {fileID: 7687546664584516296}
   - component: {fileID: 8834009788676699863}
   - component: {fileID: 2456476443549810091}
+  - component: {fileID: 4501976426107825021}
   m_Layer: 0
   m_Name: EnemyBike
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,7 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   animationStateController: {fileID: 0}
-  rb: {fileID: 0}
+  rb: {fileID: 2456476443549810091}
   myGun: {fileID: 0}
   hp: {fileID: 0}
   StartingHP: 0
@@ -127,6 +128,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!114 &4501976426107825021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629564524486408536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54bcd5d5e131bf34c9f131e9e58b986c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bikeMeshParent: {fileID: 7300618848364138018}
+  bikeMeshChild: {fileID: 7300618848364138018}
+  appliedForce: {x: 0, y: 0, z: 0}
+  rb: {fileID: 0}
+  MoveSpeed: 100
+  Traction: 3
+  SteerAngle: 10
+  MoveForce: {x: 0, y: 0, z: 0}
 --- !u!1 &7300618848364138018
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,14 +176,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7300618848364138018}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2268765672606537245}
   m_Father: {fileID: 7687546664584516296}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &8197640111709357162
 BoxCollider:
   m_ObjectHideFlags: 0

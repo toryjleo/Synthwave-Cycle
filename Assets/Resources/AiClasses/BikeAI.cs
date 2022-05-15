@@ -16,7 +16,7 @@ public class BikeAI : Ai
         StartingHP = 40;
         score = 300;
         maxSpeed = 100;
-        attackRange = 3;
+        attackRange = 5;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
