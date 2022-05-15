@@ -31,8 +31,6 @@ public class BikeMovementComponent : MonoBehaviour
 
     private const float STARTING_HEALTH = 200.0f;
 
-    public Vector3 MoveForce;
-
     // Number of player hit points
     public float HitPoints 
     {
