@@ -31,6 +31,15 @@ public class BikeMovementComponent : MonoBehaviour
 
     private const float STARTING_HEALTH = 200.0f;
 
+
+    private float Acceleration 
+    {
+        get 
+        {
+            return HitPoints / 5.0f;
+        }
+    }
+
     // Number of player hit points
     public float HitPoints 
     {
@@ -77,7 +86,7 @@ public class BikeMovementComponent : MonoBehaviour
 
 
         //Movement Forward and Back and applies velocity 
-        appliedForce += ForwardVector().normalized * MoveSpeed * Input.GetAxis("Vertical") * Time.fixedDeltaTime;
+        appliedForce += ForwardVector().normalized * Acceleration * Input.GetAxis("Vertical") * Time.fixedDeltaTime;
 
 
         //Steering Takes Horizontal Input and rotates both 

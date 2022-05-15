@@ -10,14 +10,14 @@ public class HealthPool : SelfDespawn
     public int SpawnAngleRandomNess = 60;
     public float SizeofCylinder = 400;
     public float RateOfDecay = 20f;
-    private const int INITIAL_SPAWN_DISTANCE = 400;
+    private const int INITIAL_SPAWN_DISTANCE = 275;
     private const float DEFAULT_MIN_SCALE = 50.0f;
     private const float DEFAULT_MAX_SCALE = 400.0f;
     private const float DEFULAT_SCALE_SHRINK_PER_SECOND = 20f;
-    private const float INITIAL_PLAYER_HEAL_AMNT = 100f;
+    private const float INITIAL_PLAYER_HEAL_AMNT = 30f;
 
-    private const int SPAWN_DISTANCE_INCREASE = 20;
-    private const float PLAYER_HEAL_AMNT_INCREASE = 33.33f;
+    private const int SPAWN_DISTANCE_INCREASE = 100;
+    private const float PLAYER_HEAL_AMNT_INCREASE = 10f;
 
     private float minScale;
     private float maxScale;
@@ -28,7 +28,6 @@ public class HealthPool : SelfDespawn
     // Values that get updated as game progresses
     private int currentSpawnDistance;
     private float currentPlayerHealAmount;
-    private float currentSpeedIncrease;
 
 
     
