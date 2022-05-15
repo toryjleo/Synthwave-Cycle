@@ -120,7 +120,7 @@ public class EnemySpawner : MonoBehaviour
     /// <returns></returns>
     public Vector3 biasSpawnVector()
     {
-        return biasSpawnVector(player.GetComponent<BikeScript>().appliedForce, spawnBiasAngle, spawnDistance);
+        return biasSpawnVector(player.GetComponent<BikeScript>().ForwardVector(), spawnBiasAngle, spawnDistance);
     }
 
     /// <summary>
