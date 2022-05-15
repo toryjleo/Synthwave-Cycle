@@ -64,7 +64,7 @@ public class EnemySpawner : MonoBehaviour
     {
         GameObject enemy;
         Ai enemyAI;
-        int rand = Random.Range(0, 3);
+        int rand = Random.Range(2, 4);
         switch (rand)
         {
             case 0:
@@ -75,6 +75,9 @@ public class EnemySpawner : MonoBehaviour
                 break;
             case 2:
                 enemy = ops.SpawnFromPool(Enemy.Ranger.ToString(), biasSpawnVector(), Quaternion.identity);
+                break;
+            case 3:
+                enemy = ops.SpawnFromPool(Enemy.Bike.ToString(), biasSpawnVector(), Quaternion.identity);
                 break;
             default:
                 enemy = ops.SpawnFromPool(Enemy.Cactus.ToString(), biasSpawnVector(), Quaternion.identity);

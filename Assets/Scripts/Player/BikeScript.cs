@@ -15,8 +15,7 @@ public class BikeScript : MonoBehaviour
     public Vector3 appliedForce; // The force being applied to the bike
 
     //private float mass = 8f; // The mass of the bike
-    private float MaxSpeed = 80; //The max speed of the bike 
-    public float MoveSpeed = 100; //The speed of the bike 
+    public float MoveSpeed = 110; //The speed of the bike 
     public float Traction = 3; //How slippy the bike is when turning 
 
     public float SteerAngle = 10; //the angle at which the bike turns 
@@ -53,6 +52,11 @@ public class BikeScript : MonoBehaviour
     private Vector3 ForwardVector()
     {
         return new Vector3(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.y, -bikeMeshParent.transform.right.z);
+    }
+
+    public Vector3 GetForwardVector()
+    {
+        return ForwardVector();
     }
 
     #region Camera
@@ -146,7 +150,7 @@ public class BikeScript : MonoBehaviour
 
         appliedForce = Vector3.Lerp(appliedForce.normalized, ForwardVector().normalized, Traction * Time.fixedDeltaTime) * appliedForce.magnitude;
 
-
+        MoveForce = appliedForce; //forinspector
         rb.AddForce(appliedForce);
     }
 

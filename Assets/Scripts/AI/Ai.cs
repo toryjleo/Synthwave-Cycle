@@ -32,6 +32,8 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public override void Update()
     {
         base.Update();
+
+
         animationStateController.SetSpeed(rb.velocity.magnitude);
 
 
@@ -77,7 +79,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// This method works for ranged Enemies that do not get into direct melee range with the target 
     /// </summary>
     /// <param name="target"> Vector to target </param>
-    public void Move(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee. 
+    public virtual void Move(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee. 
     {
             Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
             float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points 
@@ -135,9 +137,9 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// This method requires the entire of AI 
     /// </summary>
     /// <param name="pool"></param>
-    public void seperate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
+    public void Seperate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
     {
-        float desiredSeperation = 30;
+        float desiredSeperation = 50;
 
         Vector3 sum = new Vector3(); //the vector that will be used to calculate flee beheavior if a too close interaction happens 
         int count = 0; //this couunts how many TOOCLOSE interactions an entity has, if it has more than one
