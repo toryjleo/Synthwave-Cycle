@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Contains the movement behavior our bike uses
+/// </summary>
 public class BikeMovementComponent : MonoBehaviour
 {
     // Parent of the bike mesh. This is used to get the forward vector of the bike. 
