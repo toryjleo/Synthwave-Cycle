@@ -18,7 +18,6 @@ public class HealthPool : SelfDespawn
 
     private const int SPAWN_DISTANCE_INCREASE = 20;
     private const float PLAYER_HEAL_AMNT_INCREASE = 33.33f;
-    private const float PLAYER_SPEED_INCREASE = 20.0f;
 
     private float minScale;
     private float maxScale;
@@ -52,7 +51,6 @@ public class HealthPool : SelfDespawn
         player = playerObject.GetComponent<BikeScript>();
         currentSpawnDistance = INITIAL_SPAWN_DISTANCE;
         currentPlayerHealAmount = INITIAL_PLAYER_HEAL_AMNT;
-        currentSpeedIncrease = PLAYER_SPEED_INCREASE;
         Init(RateOfDecay, SizeofCylinder);
         Init();
     }
@@ -139,7 +137,7 @@ public class HealthPool : SelfDespawn
             Health playerHealthRef = other.GetComponentInChildren<Health>();
             playerHealthRef.Heal(currentPlayerHealAmount);
             BikeScript playerBikeRef = player.GetComponent<BikeScript>();
-            playerBikeRef.IncreaseEngineForce(currentSpeedIncrease);
+            //playerBikeRef.movementComponent.IncreaseEngineForce(currentSpeedIncrease);
             // TODO: Make this method
             currentPlayerHealAmount += PLAYER_HEAL_AMNT_INCREASE;
             OnDespawn();
