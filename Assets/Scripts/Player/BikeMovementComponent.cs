@@ -35,7 +35,9 @@ public class BikeMovementComponent : MonoBehaviour
 
     private const float MAX_ACCELERATION = 1000.0f;
 
-
+    /// <summary>
+    /// The current acceleration of the bike. Is dependant on health
+    /// </summary>
     private float Acceleration 
     {
         get 

@@ -89,8 +89,7 @@ public class HealthPool : SelfDespawn
     {
         this.gameObject.SetActive(false);
         base.OnDespawn();
-        // TODO: Make this method
-        currentSpawnDistance += SPAWN_DISTANCE_INCREASE; // Increase the spawn distance every respawn
+        IcreaseSpawnDistance();
         Init(RateOfDecay, SizeofCylinder);
     }
 
@@ -100,6 +99,22 @@ public class HealthPool : SelfDespawn
     public override void Init()
     {
         this.Init();
+    }
+
+    /// <summary>
+    /// This code should be called to increase the healthpool spawn distance every respawn, whether the player hits the
+    /// spawnpool or not.
+    /// </summary>
+    private void IcreaseSpawnDistance()
+    {
+        if (currentSpawnDistance + SPAWN_DISTANCE_INCREASE < currentSpawnDistance)
+        {
+            currentSpawnDistance = int.MaxValue;
+        }
+        else
+        {
+            currentSpawnDistance += SPAWN_DISTANCE_INCREASE;
+        }
     }
 
     #region ScaleCode
@@ -129,20 +144,7 @@ public class HealthPool : SelfDespawn
     }
     #endregion
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            Health playerHealthRef = other.GetComponentInChildren<Health>();
-            playerHealthRef.Heal(currentPlayerHealAmount);
-            BikeScript playerBikeRef = player.GetComponent<BikeScript>();
-            //playerBikeRef.movementComponent.IncreaseEngineForce(currentSpeedIncrease);
-            // TODO: Make this method
-            currentPlayerHealAmount += PLAYER_HEAL_AMNT_INCREASE;
-            OnDespawn();
-        }
-    }
-
+    #region SpawnCode
     /// <summary> //TODO Make this part of static utill class
     /// This method returns a vector 
     /// </summary>
@@ -167,5 +169,19 @@ public class HealthPool : SelfDespawn
         spawnVector += player.transform.position;
         return spawnVector;
     }
+    #endregion
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            Health playerHealthRef = other.GetComponentInChildren<Health>();
+            playerHealthRef.Heal(currentPlayerHealAmount);
+            BikeScript playerBikeRef = player.GetComponent<BikeScript>();
+            //playerBikeRef.movementComponent.IncreaseEngineForce(currentSpeedIncrease);
+            // TODO: Make this method
+            currentPlayerHealAmount += PLAYER_HEAL_AMNT_INCREASE;
+            OnDespawn();
+        }
+    }
 }
