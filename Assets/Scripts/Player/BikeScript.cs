@@ -9,12 +9,10 @@ using UnityEngine;
 /// Expects there to be an LMG spawned in-place on the bike's location
 public class BikeScript : MonoBehaviour
 {
-    private const float STARTING_HEALTH = 200.0f;
     private float distanceToHP;
 
     public Gun currentGun;
 
-    private Health health;
     public BikeMovementComponent movementComponent;
     private EmmissiveBikeScript emissiveBike;
 
@@ -25,7 +23,7 @@ public class BikeScript : MonoBehaviour
     #region Accessors
     public float Energy
     {
-        get => health.HitPoints;
+        get => movementComponent.HitPoints;
     }
 
     // TODO: see if we can make attribute
@@ -92,11 +90,8 @@ public class BikeScript : MonoBehaviour
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
     private void Init()
     {
-        health = GetComponentInChildren<Health>();
         emissiveBike = GetComponentInChildren<EmmissiveBikeScript>();
         movementComponent = GetComponent<BikeMovementComponent>();
-
-        health.Init(STARTING_HEALTH);
 
         healthPoolLayerMask = (1 << healthPoolLayer);
     }
