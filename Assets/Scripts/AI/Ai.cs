@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Ai : SelfWorldBoundsDespawn
 {
 
-    // THis is the method that sets the entity to Deactive and bascially is uesd to kill the entitiy 
+    // THis is the method that sets the entity to Deactive and bascially is uesd to kill the entitiy
     public void op_ProcessCompleted(SelfDespawn entity)
     {
         entity.gameObject.SetActive(false);
@@ -37,33 +37,74 @@ public abstract class Ai : SelfWorldBoundsDespawn
         animationStateController.SetSpeed(rb.velocity.magnitude);
 
 
-        if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned 
+        //Dead
+        if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
-            if(myGun != null)
+            Move(this.transform.position);
+
+            if (myGun != null)
             {
                 myGun.StopAllCoroutines();
             }
-            animationStateController.StopAllCoroutines();
-            alive = false;
 
-            
-            this.gameObject.SetActive(false);
-            
+            die();
+
         }
-        else //Act natural 
+        else //Alive
         {
             if(target == null)
             {
                 Wander();
             } else
             {
-                Move(target.transform.position);
+                Vector3 desiredVec = target.transform.position - transform.position;
+                if(desiredVec.magnitude < attackRange)
+                {
+
+                    Attack();
+                    Move(transform.position);
+                    animationStateController.SetSpeed(rb.velocity.magnitude); //
+
+                } else
+                {
+                    Move(target.transform.position);
+                    animationStateController.SetSpeed(rb.velocity.magnitude / 40); //this devides them by a constant to allow for slower enemies to walk slower.
+                }
             }
         }
 
     }
+
     /// <summary>
-    /// This method is called when the entitiy wants to attack. Checks if it has a gun 
+    /// This method plays a death animation and the deactivates the enemy
+    /// </summary>
+    public void die()
+    {
+        if (alive)
+        {
+            animationStateController.TriggerDeathA();
+        }
+
+
+        alive = false;
+        animationStateController.SetAlive(alive);
+
+        rb.detectCollisions = false;
+
+
+        if (animationStateController.IsIdle())
+        {
+            animationStateController.StopAllCoroutines();
+            this.gameObject.SetActive(false);
+        }
+
+
+
+
+
+    }
+    /// <summary>
+    /// This method is called when the entitiy wants to attack. Checks if it has a gun
     /// </summary>
     public void Attack()
     {
@@ -71,31 +112,33 @@ public abstract class Ai : SelfWorldBoundsDespawn
         {
             this.myGun.Shoot(target.transform.position);
             animationStateController.AimWhileWalking(true);
+
         }
     }
 
     #region Movement
     /// <summary>
-    /// This method works for ranged Enemies that do not get into direct melee range with the target 
+    /// This method works for ranged Enemies that do not get into direct melee range with the target
     /// </summary>
     /// <param name="target"> Vector to target </param>
-    public virtual void Move(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee. 
+    public virtual void Move(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee.
     {
-            Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
-            float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points 
-            dMag -= attackRange; // dmag is the distance between the two objects, by subtracking this, I make it so the object doesn't desire to move as far.  
+            Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be
+            float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points
+            dMag -= attackRange; // dmag is the distance between the two objects, by subtracking this, I make it so the object doesn't desire to move as far.
 
             desiredVec.Normalize(); // one the distance is measured this vector can now be used to actually generate movement,
-                                    // but that movement has to be constant or at least adaptable, which is what the next part does  
+                                    // but that movement has to be constant or at least adaptable, which is what the next part does
             transform.LookAt(target);
 
-            //Currently Walking twoards the target 
+            //Currently Walking twoards the target
 
             if (dMag < maxSpeed)
             {
                 desiredVec *= dMag;
-                Attack();
-            }
+
+            //Attack();
+        }
             else
             {
                 desiredVec *= maxSpeed;
@@ -104,23 +147,23 @@ public abstract class Ai : SelfWorldBoundsDespawn
             applyForce(steer);
     }
 
-    public void Wander() //cause the character to wander 
+    public void Wander() //cause the character to wander
     {
 
-        Vector3 forward = rb.transform.forward; //The normaized vector of which direction the RB is facing 
+        Vector3 forward = rb.transform.forward; //The normaized vector of which direction the RB is facing
         Vector3 offset = new Vector3(0,0,1); //This is the random change vector that is uses to create natural wandering movement
         Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
         forward *= 10;
-        offset = ranRot * offset; 
+        offset = ranRot * offset;
 
 
         Debug.DrawRay(rb.transform.position, forward, Color.blue);
         Debug.DrawRay(rb.transform.position+forward, offset, Color.red);
         Debug.DrawRay(rb.transform.position, forward + offset, Color.green);
 
-        forward += offset; //adds a small offset to the forward vector. 
+        forward += offset; //adds a small offset to the forward vector.
 
-        transform.LookAt(forward+transform.position); //TODO make this look way nicer 
+        transform.LookAt(forward+transform.position); //TODO make this look way nicer
 
         Vector3 steer = forward - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
         applyForce(steer);
@@ -131,19 +174,21 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public void applyForce(Vector3 force)
     {
         rb.AddForce(force);
+
+
     }
 
     /// <summary>
-    /// This method requires the entire of AI 
+    /// This method requires the entire of AI
     /// </summary>
     /// <param name="pool"></param>
-    public void Seperate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI 
+    public void Seperate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI
     {
         float desiredSeperation = 50;
 
-        Vector3 sum = new Vector3(); //the vector that will be used to calculate flee beheavior if a too close interaction happens 
+        Vector3 sum = new Vector3(); //the vector that will be used to calculate flee beheavior if a too close interaction happens
         int count = 0; //this couunts how many TOOCLOSE interactions an entity has, if it has more than one
-                       //it adds the sum vector  
+                       //it adds the sum vector
 
 
         foreach (Ai g in pool)
@@ -151,11 +196,11 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
             float d = Vector3.Distance(g.transform.position, transform.position);
 
-            if (g.transform.position != transform.position && d < desiredSeperation) 
+            if (g.transform.position != transform.position && d < desiredSeperation)
             {
-                Vector3 diff = transform.position - g.transform.position; // creats vec between two objects 
+                Vector3 diff = transform.position - g.transform.position; // creats vec between two objects
                 diff.Normalize();
-                sum += diff; // sum is the flee direction added together 
+                sum += diff; // sum is the flee direction added together
                 count++;
             }
 
@@ -199,7 +244,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         //myGun = gunToEquip;
     }
     /// <summary>
-    /// This method is called to reset the entity's health and alive status. Use every time they spawn. 
+    /// This method is called to reset the entity's health and alive status. Use every time they spawn.
     /// </summary>
     public void NewLife()
     {
