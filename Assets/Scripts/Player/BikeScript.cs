@@ -9,7 +9,7 @@ using UnityEngine;
 /// Expects there to be an LMG spawned in-place on the bike's location
 public class BikeScript : MonoBehaviour
 {
-
+    private const float STARTING_HEALTH = 200.0f;
     private float distanceToHP;
 
     public Gun currentGun;
@@ -95,6 +95,9 @@ public class BikeScript : MonoBehaviour
         health = GetComponentInChildren<Health>();
         emissiveBike = GetComponentInChildren<EmmissiveBikeScript>();
         movementComponent = GetComponent<BikeMovementComponent>();
+
+        health.Init(STARTING_HEALTH);
+
         healthPoolLayerMask = (1 << healthPoolLayer);
     }
 
