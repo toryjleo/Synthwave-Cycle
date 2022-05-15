@@ -167,7 +167,6 @@ public class BikeScript : MonoBehaviour
     {
         if (HealthPoolCheck()) 
         {
-            emissiveBike.SetDeadAheadColor();
             emissiveBike.SetHPDistance(distanceToHP, consecutiveDistanceToHP);
         }
         else 

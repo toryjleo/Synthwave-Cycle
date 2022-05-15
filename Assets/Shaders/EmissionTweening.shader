@@ -2,13 +2,9 @@ Shader "Custom/EmissionTweening"
 {
     Properties
     {
-        _Color ("Color", Color) = (1,1,1,1)
         _EmissionColor1("_EmissionColor1", Color) = (1,1,1,1)
         _EmissionColor2("_EmissionColor2", Color) = (1,1,1,1)
         _EmissionSlider("EmissionSlider", Range(0,1)) = 0.0
-        _MainTex ("Albedo (RGB)", 2D) = "white" {}
-        _Glossiness ("Smoothness", Range(0,1)) = 0.5
-        _Metallic ("Metallic", Range(0,1)) = 0.0
     }
     SubShader
     {
@@ -22,16 +18,11 @@ Shader "Custom/EmissionTweening"
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
 
-        sampler2D _MainTex;
-
         struct Input
         {
-            float2 uv_MainTex;
+        int placeholder; // "IN" needs to hold *something*
         };
 
-        half _Glossiness;
-        half _Metallic;
-        fixed4 _Color;
         fixed4 _EmissionColor1;
         fixed4 _EmissionColor2;
         half _EmissionSlider;
@@ -48,9 +39,6 @@ Shader "Custom/EmissionTweening"
             // Albedo comes from a texture tinted by color
             fixed4 c = lerp(_EmissionColor1.rgba, _EmissionColor2.rgba, _EmissionSlider).rgba;;
             o.Albedo = c.rgb;
-            // Metallic and smoothness come from slider variables
-            o.Metallic = _Metallic;
-            o.Smoothness = _Glossiness;
             o.Alpha = c.a;
             o.Emission = lerp(_EmissionColor1.rgb, _EmissionColor2.rgb, _EmissionSlider).rgb;
         }
