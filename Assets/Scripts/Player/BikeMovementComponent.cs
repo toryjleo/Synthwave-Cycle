@@ -25,6 +25,11 @@ public class BikeMovementComponent : MonoBehaviour
 
     public Vector3 MoveForce;
 
+    private void Awake()
+    {
+        Init();
+    }
+
     private void FixedUpdate()
     {
         ApplyForces();

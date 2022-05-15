@@ -45,8 +45,9 @@ GameObject:
   - component: {fileID: 1147356078}
   - component: {fileID: 5712463959268904266}
   - component: {fileID: 7422861475599651841}
+  - component: {fileID: 990085328645293825}
   m_Layer: 0
-  m_Name: Player Bike
+  m_Name: PlayerBike1
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,13 +81,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b6ce2be33d48b04fb435a0364435e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bikeMeshParent: {fileID: 1386951459658203378}
-  bikeMeshChild: {fileID: 1546176323811278948}
-  appliedForce: {x: 0, y: 0, z: 0}
-  MoveSpeed: 100
-  Traction: 3
-  SteerAngle: 10
-  MoveForce: {x: 0, y: 0, z: 0}
   currentGun: {fileID: 0}
   cameraFollower: {fileID: 8096175468203405583}
 --- !u!54 &2141739292
@@ -225,6 +219,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0315671d46a302d4288bc70a2780ad2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &990085328645293825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3369499019353642388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54bcd5d5e131bf34c9f131e9e58b986c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bikeMeshParent: {fileID: 1386951459658203378}
+  bikeMeshChild: {fileID: 1546176323811278948}
+  appliedForce: {x: 0, y: 0, z: 0}
+  rb: {fileID: 0}
+  MoveSpeed: 100
+  Traction: 3
+  SteerAngle: 10
+  MoveForce: {x: 0, y: 0, z: 0}
 --- !u!1 &8096175468203405583
 GameObject:
   m_ObjectHideFlags: 0
