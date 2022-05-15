@@ -30,7 +30,7 @@ public class EmmissiveBikeScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Y)) 
         {
-            emissiveMaterial.SetColor("_EmissionColor", Color.red);
+            emissiveMaterial.SetColor("_EmissionColor1", Color.red);
         }
         
     }
@@ -41,7 +41,7 @@ public class EmmissiveBikeScript : MonoBehaviour
     /// <param name="color">Color to set the emissive property to.</param>
     private void SetEmissiveColor(Color color)
     {
-        emissiveMaterial.SetColor("_EmissionColor", color);
+        emissiveMaterial.SetColor("_EmissionColor1", color);
     }
 
     /// <summary>
