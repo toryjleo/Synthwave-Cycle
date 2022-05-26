@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9de5b54d6fb124941b4b571d0952f2d9, type: 3}
-  m_Name: DarkSynthLoop4
+  m_Name: TruckBossLoop3
   m_EditorClassIdentifier: 
-  variation: {fileID: 8300000, guid: 5bb484c9ce5c1364ea8e807097f3043a, type: 3}
-  dangerLevelStart: 40
+  variation: {fileID: 8300000, guid: 262ba5a4ca7c77149a14fff942e7386f, type: 3}
+  dangerLevelStart: 30

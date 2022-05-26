@@ -10,6 +10,8 @@ using UnityEngine;
 public class Jukebox : MonoBehaviour
 {
     public Track track;
+    //Used to queue up a new track
+    private Track nextTrack = null;
     // An audiosource array with 2 members to switch between with "toggle"
     public AudioSource[] audioSourceArray;
     int toggle;
@@ -48,9 +50,28 @@ public class Jukebox : MonoBehaviour
     /// </summary>
     private void QueueNextSong() 
     {
-        // TODO: Make dynamic
-        // TODO: Schedule the next track based on the current danger level
-        AudioClip clipToPlay = track.variations[0].variation;
+        AudioClip clipToPlay = null;
+        if (nextTrack != null)
+        {
+            track = nextTrack;
+            nextTrack = null;
+            clipToPlay = track.intro;
+        }
+        else
+        {
+            // TODO: Make dynamic
+            int dl = DLevel.Instance.GetDangerLevel();
+            int variationIndex = 0;
+            for (; variationIndex < track.variations.Count; variationIndex++)
+            {
+                if (track.variations[variationIndex].dangerLevelStart >= dl)
+                {
+                    break;
+                }
+            }
+            Debug.unityLogger.Log("Danger level: " + dl + ". Queueing variation: " + variationIndex);
+            clipToPlay = track.variations[variationIndex].variation;
+        }
 
         // Loads the next Clip to play and schedules when it will start
         audioSourceArray[toggle].clip = clipToPlay;
@@ -67,5 +88,13 @@ public class Jukebox : MonoBehaviour
     {
         double duration = (double)clip.samples / clip.frequency;
         return duration;
+    }
+
+    /// <summary>
+    /// Sets the next track to play after the current loop
+    /// </summary>
+    public void SetNextTrack(Track newTrack)
+    {
+        nextTrack = newTrack;
     }
 }

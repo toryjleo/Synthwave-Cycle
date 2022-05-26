@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: DarkSynthLoop2
   m_EditorClassIdentifier: 
   variation: {fileID: 8300000, guid: 0146fe21e1b29a342be68b995f16d273, type: 3}
-  dangerLevelStart: 0
+  dangerLevelStart: 20
