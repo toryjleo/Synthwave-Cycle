@@ -10,6 +10,6 @@ public class TrackVariation : ScriptableObject
 {
     // The given clip associated with this variation
     public AudioClip variation;
-    // The heat level at which this track should start playing
+    // The danger level at which this track should start playing
     public int dangerLevelStart = 0;
 }
