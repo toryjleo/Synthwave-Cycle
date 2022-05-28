@@ -29,6 +29,7 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         ops = ObjectPool.Instance;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
