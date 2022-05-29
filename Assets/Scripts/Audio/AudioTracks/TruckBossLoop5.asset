@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9de5b54d6fb124941b4b571d0952f2d9, type: 3}
   m_Name: TruckBossLoop5
   m_EditorClassIdentifier: 
-  variation: {fileID: 8300000, guid: eba38ef5acd49804cb8c5b07d0bf615e, type: 3}
+  variation: {fileID: 8300000, guid: a69d32ba1ef193c4aabb0af368be588f, type: 3}
   dangerLevelStart: 50
