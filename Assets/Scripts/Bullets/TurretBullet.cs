@@ -8,7 +8,7 @@ public class TurretBullet : Bullet
     public override void Init()
     {
         muzzleVelocity = 60;
-        mass = .5f;
+        mass = 2f;
         damageDealt = 60;
     }
 
