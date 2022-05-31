@@ -13,6 +13,8 @@ public abstract class Gun : MonoBehaviour
     protected BulletPool bulletPool;
     protected float lastFired = 0;
     protected float fireRate = 0;  // The number of bullets fired per second
+    protected int ammunition;
+    public bool infiniteAmmo = false;
 
 
     public event NotifyShot BulletShot; // event
@@ -50,12 +52,23 @@ public abstract class Gun : MonoBehaviour
         OnBulletShot(directionOfBullet.normalized * bulletShot.Mass * bulletShot.MuzzleVelocity);
     }
 
+
     /// <summary>Notifies listeners that a bullet has been shot.</summary>
     /// <param name="forceOfBullet">The force of the actor on the bullet.</param>
     protected virtual void OnBulletShot(Vector3 forceOfBullet) //protected virtual method
     {
         //if BulletShot is not null then call delegate
         BulletShot?.Invoke(-forceOfBullet);
+        ammunition--;
+        //Debug.Log("Ammo Remaining: " + ammunition);
+        if(!infiniteAmmo && ammunition <= 0)
+        {
+            BikeScript playerBikeScript = (BikeScript)FindObjectOfType(typeof(BikeScript));
+            if(playerBikeScript)
+            {
+                playerBikeScript.EquipBikeGun();
+            }
+        }
     }
 
     /// <summary>Will return true if the gun's cooldown has happened.</summary>

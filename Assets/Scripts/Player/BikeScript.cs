@@ -14,6 +14,8 @@ public class BikeScript : MonoBehaviour
 
     public Gun currentGun;
 
+    public Gun bikeGun;
+
     public BikeMovementComponent movementComponent;
     private EmmissiveBikeScript emissiveBike;
 
@@ -115,6 +117,9 @@ public class BikeScript : MonoBehaviour
         this.currentGun = gunToEquip;
         // Make gun child of TracerMeshParent
         currentGun.transform.parent = movementComponent.bikeMeshParent.transform;
+        currentGun.transform.rotation = movementComponent.bikeMeshParent.transform.rotation;
+        currentGun.transform.position = movementComponent.bikeMeshParent.transform.position;
+        currentGun.transform.RotateAround(currentGun.transform.position, currentGun.transform.up, 180f);
 
         // Hook up event
         currentGun.BulletShot += movementComponent.bl_ProcessCompleted;
@@ -123,16 +128,13 @@ public class BikeScript : MonoBehaviour
     /// <summary>Initialize the gun for the player to start with.</summary>
     private void InitializeStartingGun()
     {
-        // TODO: Make this better
-        DoubleBarrelLMG[] guns = Object.FindObjectsOfType<DoubleBarrelLMG>();
-        if (guns.Length <= 0)
-        {
-            Debug.LogError("BikeScript did not find any DoubleBarrelLMGs in scene");
-        }
-        else
-        {
-            EquipGun(guns[0]);
-        }
+        EquipGun(bikeGun);
+    }
+
+    /// <summary>Set current gun back to the bike's default weapon</summary>
+    public void EquipBikeGun()
+    {
+        EquipGun(bikeGun);
     }
     #endregion
 
