@@ -17,8 +17,11 @@ public class ScoreTracker : MonoBehaviour
     public TextMeshProUGUI currentScoreText;
     public TextMeshProUGUI currentHPText;
 
+    public List<Gun> weaponPool;
+
     public BikeScript bike;
 
+    private const int SCORE_TILL_WEAPON_DROP = 1500;
 
     // Basically player HP but ~flavored~
     public float Energy
@@ -102,6 +105,14 @@ public class ScoreTracker : MonoBehaviour
     /// <param name="points">The number of points to add to the score.</param>
     public void AddToScore(int points)
     {
+        if((currentScore % SCORE_TILL_WEAPON_DROP) + points >= SCORE_TILL_WEAPON_DROP)
+        {
+            if(weaponPool != null && weaponPool.Count > 0)
+            {
+                Gun gun = weaponPool[Random.Range(0, weaponPool.Count)];
+                bike.EquipGun(Instantiate(gun, new Vector3(0, 0, 0), Quaternion.identity));
+            }
+        }
         currentScore += points;
     }
 
