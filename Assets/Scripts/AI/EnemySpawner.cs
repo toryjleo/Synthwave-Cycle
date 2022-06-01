@@ -24,7 +24,7 @@ public class EnemySpawner : MonoBehaviour
     public int spawnDistance;
     public int spawnBiasAngle;
 
-
+    private int firstWaveSize = 1;
 
     void Start()
     {
@@ -97,7 +97,7 @@ public class EnemySpawner : MonoBehaviour
     {
         GameObject enemy;
         Ai enemyAI;
-        for(int i = 0; i< 10; i++)
+        for(int i = 0; i< firstWaveSize; i++)
         {
             enemy = ops.SpawnFromPool("Rifleman", generateSpawnVector(), Quaternion.identity);
 
