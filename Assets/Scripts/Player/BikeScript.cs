@@ -86,7 +86,11 @@ public class BikeScript : MonoBehaviour
         if (Input.GetKey(KeyCode.Mouse0))
         {
             currentGun.Shoot(movementComponent.rb.velocity);
-            turret.Shoot(movementComponent.rb.velocity);
+            if(turret!= null)
+            {
+                turret.Shoot(movementComponent.rb.velocity);
+            }
+            
         }
     }
 
@@ -95,8 +99,12 @@ public class BikeScript : MonoBehaviour
     {
         emissiveBike = GetComponentInChildren<EmmissiveBikeScript>();
         movementComponent = GetComponent<BikeMovementComponent>();
-        turret = GetComponentInChildren<TurretScript>();
-        turret.Init();
+
+        if(GetComponentInChildren<TurretScript>() != null) { 
+            turret = GetComponentInChildren<TurretScript>();
+            turret.Init();
+        }
+        
         healthPoolLayerMask = (1 << healthPoolLayer);
         consecutiveDistanceToHP = 0;
     }
