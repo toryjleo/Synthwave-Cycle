@@ -100,9 +100,12 @@ public class BikeScript : MonoBehaviour
         emissiveBike = GetComponentInChildren<EmmissiveBikeScript>();
         movementComponent = GetComponent<BikeMovementComponent>();
 
+
+        //Initializes Turret 
         if(GetComponentInChildren<TurretScript>() != null) { 
             turret = GetComponentInChildren<TurretScript>();
             turret.Init();
+            turret.BulletShot += movementComponent.bl_ProcessCompleted;
         }
         
         healthPoolLayerMask = (1 << healthPoolLayer);

@@ -35,7 +35,10 @@ public class TurretScript : Gun
             // Gun specific
             
             OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
+            ApplyRecoil(shotDir, bullet);
         }
+
+
     }
 
     // Start is called before the first frame update
