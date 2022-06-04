@@ -6,6 +6,7 @@ public class BloodSplatter : MonoBehaviour
 {
     // Set in editor
     public MeshRenderer bloodImage;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,5 +17,16 @@ public class BloodSplatter : MonoBehaviour
     void Update()
     {
         
+    }
+
+
+    public void Init() 
+    {
+        bloodImage.enabled = false;
+    }
+
+    public void DisplayBlood() 
+    {
+        bloodImage.enabled = true;
     }
 }

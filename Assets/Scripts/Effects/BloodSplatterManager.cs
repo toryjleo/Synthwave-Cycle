@@ -12,6 +12,13 @@ public class BloodSplatterManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (ai != null) 
+        { 
+            ai.DeadEvent += ShowBlood;
+            // Make sure that the blood splatters get turned off when the enemy despawns
+            ai.Despawn += Init;
+        }
+        
         Init();
     }
 
@@ -20,22 +27,28 @@ public class BloodSplatterManager : MonoBehaviour
         DeInit();
     }
 
+    public void Init(SelfDespawn entity) 
+    {
+        Init();
+    }
+
     public virtual void Init() 
     {
-        if (ai != null) { ai.DeadEvent += SplatterBlood; }
+        bloodSplatter.Init();
     }
 
     public virtual void DeInit()
     {
         if (ai != null)
         {
-            ai.DeadEvent -= SplatterBlood;
+            ai.DeadEvent -= ShowBlood;
         }
     }
 
 
-    private void SplatterBlood() 
+    private void ShowBlood() 
     {
         Debug.Log("Blood sprays everywhere!");
+        bloodSplatter.DisplayBlood();
     }
 }
