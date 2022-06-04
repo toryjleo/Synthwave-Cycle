@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void NotifyDeath();  // delegate
+
+
 public abstract class Ai : SelfWorldBoundsDespawn
 {
 
@@ -11,6 +14,8 @@ public abstract class Ai : SelfWorldBoundsDespawn
         entity.gameObject.SetActive(false);
         //TODO: Add Logic here to make sure Entity either remains in the pool or becomes a new entity
     }
+
+
 
     public GameObject target;
     public CyborgAnimationStateController animationStateController;
@@ -26,6 +31,8 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public float attackRange;
     public bool alive;
 
+    public event NotifyDeath DeadEvent; // event
+
 
 
     // Update is called once per frame
@@ -35,7 +42,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         
 
         //Dead
-        if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned 
+        if (hp.HitPoints <= 0 && alive) //this signifies that the enemy Died and wasn't merely Despawned
         {
             Move(this.transform.position);
 
@@ -77,6 +84,9 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// </summary>
     public void die()
     {
+        // Notify all listeners that this AI has died
+        DeadEvent?.Invoke();
+
         if (alive)
         {
             animationStateController.TriggerDeathA();
@@ -105,7 +115,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// </summary>
     public void Attack()
     {
-        if (myGun != null&&myGun.CanShootAgain())
+        if (myGun != null && myGun.CanShootAgain() && alive)
         {
             this.myGun.Shoot(target.transform.position);
             animationStateController.AimWhileWalking(true);
