@@ -29,7 +29,9 @@ public class EmmissiveBikeScript : MonoBehaviour
         
     }
 
-
+    /// <summary>
+    /// Gets emissiveMaterial and makes a copy that all of the assigned emissiveObjects will use.
+    /// </summary>
     private void GetSingleInstanceOfMat() 
     {
         newInstance = new Material(emissiveMaterial);
