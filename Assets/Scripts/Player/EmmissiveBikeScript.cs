@@ -19,16 +19,6 @@ public class EmmissiveBikeScript : MonoBehaviour
         GetSingleInstanceOfMat();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Y)) 
-        {
-            emissiveMaterial.SetColor("_EmissionColor1", Color.red);
-        }
-        
-    }
-
     /// <summary>
     /// Gets emissiveMaterial and makes a copy that all of the assigned emissiveObjects will use.
     /// </summary>
