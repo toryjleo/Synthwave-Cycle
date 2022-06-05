@@ -82,6 +82,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: {fileID: 0}
+  turret: {fileID: 0}
   movementComponent: {fileID: 0}
   cameraFollower: {fileID: 8096175468203405583}
 --- !u!54 &2141739292
@@ -291,6 +292,14 @@ PrefabInstance:
     - target: {fileID: 1546176323357348353, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
       propertyPath: m_Name
       value: Bike_Main1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1546176323357348353, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 1835853794555105272, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 2983667107480805344, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
       propertyPath: m_Type

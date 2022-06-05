@@ -173,8 +173,9 @@ public class HealthPool : SelfDespawn
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "PlayerHealth")
         {
+            Debug.Log("Player encountered!");
             Health playerHealthRef = other.GetComponentInChildren<Health>();
             playerHealthRef.Heal(currentPlayerHealAmount);
             BikeScript playerBikeRef = player.GetComponent<BikeScript>();

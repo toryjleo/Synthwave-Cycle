@@ -82,6 +82,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: {fileID: 0}
+  turret: {fileID: 0}
+  movementComponent: {fileID: 0}
   cameraFollower: {fileID: 8096175468203405583}
 --- !u!54 &2141739292
 Rigidbody:
@@ -238,7 +240,6 @@ MonoBehaviour:
   MoveSpeed: 100
   Traction: 3
   SteerAngle: 10
-  MoveForce: {x: 0, y: 0, z: 0}
 --- !u!1 &8096175468203405583
 GameObject:
   m_ObjectHideFlags: 0
