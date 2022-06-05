@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Script that manages the materials and renderers associated with a material
+/// </summary>
 public class BloodSplatter : MonoBehaviour
 {
     // Set in editor
@@ -25,6 +28,9 @@ public class BloodSplatter : MonoBehaviour
         bloodImage.enabled = false;
     }
 
+    /// <summary>
+    /// Occludes the image
+    /// </summary>
     public void DisplayBlood() 
     {
         bloodImage.enabled = true;
