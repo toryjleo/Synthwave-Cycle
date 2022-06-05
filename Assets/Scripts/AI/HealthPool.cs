@@ -175,7 +175,6 @@ public class HealthPool : SelfDespawn
     {
         if (other.tag == "PlayerHealth")
         {
-            Debug.Log("Player encountered!");
             Health playerHealthRef = other.GetComponentInChildren<Health>();
             playerHealthRef.Heal(currentPlayerHealAmount);
             BikeScript playerBikeRef = player.GetComponent<BikeScript>();

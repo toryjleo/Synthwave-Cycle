@@ -24,7 +24,7 @@ public class EnemySpawner : MonoBehaviour
     public int spawnDistance;
     public int spawnBiasAngle;
 
-    private int firstWaveSize = 1;
+    private int firstWaveSize = 5;
 
     void Start()
     {

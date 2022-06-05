@@ -38,16 +38,9 @@ public abstract class Ai : SelfWorldBoundsDespawn
         //Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned 
         {
-
-            Move(this.transform.position);
-
-            if (myGun != null)
-            {
-                myGun.StopAllCoroutines();
-            }
-
+            
             die();
-      
+           
         }
         else //Alive
         {
@@ -90,23 +83,33 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// </summary>
     public void die()
     {
+        //Trigger Death Animation
+        rb.constraints = RigidbodyConstraints.FreezePosition;
+      
 
-
-        if (alive)
+        if (alive == true)
         {
             animationStateController.TriggerDeathA();
-        }
-        alive = false;
-        animationStateController.SetAlive(alive);
+            rb.detectCollisions = false;
+            animationStateController.SetAlive(false);
+            alive = false;
 
-        rb.detectCollisions = false;
+
+            if (myGun != null)
+            {
+                myGun.StopAllCoroutines();
+            }
+
+        }
+        
         
 
-        if (animationStateController.IsIdle())
-        {
-            animationStateController.StopAllCoroutines();
-            this.gameObject.SetActive(false);
-        }
+
+
+        
+        
+
+       
 
     }
     /// <summary>
