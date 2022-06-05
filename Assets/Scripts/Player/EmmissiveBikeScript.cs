@@ -8,7 +8,7 @@ public class EmmissiveBikeScript : MonoBehaviour
 
     [SerializeField] private Material emissiveMaterial;
     [SerializeField] private Renderer[] emissiveObjects;
-    private Material newInstance;
+    private Material newSharedInstance;
     public Light light;
     public Light spotlight;
 
@@ -24,10 +24,10 @@ public class EmmissiveBikeScript : MonoBehaviour
     /// </summary>
     private void GetSingleInstanceOfMat() 
     {
-        newInstance = new Material(emissiveMaterial);
+        newSharedInstance = new Material(emissiveMaterial);
         foreach (Renderer emissiveObject in emissiveObjects) 
         {
-            emissiveObject.sharedMaterial = newInstance;
+            emissiveObject.sharedMaterial = newSharedInstance;
         }
         
     }
@@ -39,7 +39,7 @@ public class EmmissiveBikeScript : MonoBehaviour
     {
         spotlight.intensity = 0;
         light.intensity = .8f;
-        newInstance.SetFloat("_EmissionSlider", 0);
+        newSharedInstance.SetFloat("_EmissionSlider", 0);
     }
 
     /// <summary>
@@ -52,11 +52,11 @@ public class EmmissiveBikeScript : MonoBehaviour
     {
         float t = PercentToHP(distanceToHP, consecutiveDistanceToHP);
         float minA = 30;
-        float maxA = 80;
+        float maxA = 120;
         float useAngle = Mathf.Lerp(maxA, minA, t);
 
         light.intensity = 1.3f;
-        newInstance.SetFloat("_EmissionSlider", (t + .1f));
+        newSharedInstance.SetFloat("_EmissionSlider", (1)); // Will just set to blue when pool is directly ahead
 
         spotlight.intensity = 5 * (t + .1f);
 
