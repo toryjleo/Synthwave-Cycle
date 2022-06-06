@@ -7,7 +7,8 @@ public class EmmissiveBikeScript : MonoBehaviour
 {
 
     [SerializeField] private Material emissiveMaterial;
-    [SerializeField] private Renderer objectToChange;
+    [SerializeField] private Renderer[] emissiveObjects;
+    private Material newInstance;
     public Light light;
     public Light spotlight;
 
@@ -15,6 +16,7 @@ public class EmmissiveBikeScript : MonoBehaviour
     void Start()
     {
         light = GetComponentInChildren<Light>();
+        GetSingleInstanceOfMat();
     }
 
     // Update is called once per frame
@@ -28,13 +30,26 @@ public class EmmissiveBikeScript : MonoBehaviour
     }
 
     /// <summary>
+    /// Gets emissiveMaterial and makes a copy that all of the assigned emissiveObjects will use.
+    /// </summary>
+    private void GetSingleInstanceOfMat() 
+    {
+        newInstance = new Material(emissiveMaterial);
+        foreach (Renderer emissiveObject in emissiveObjects) 
+        {
+            emissiveObject.sharedMaterial = newInstance;
+        }
+        
+    }
+
+    /// <summary>
     /// Sets the material colors for when the bike is NOT pointing at a healthpool.
     /// </summary>
     public void SetNotAheadColor()
     {
         spotlight.intensity = 0;
         light.intensity = .8f;
-        emissiveMaterial.SetFloat("_EmissionSlider", 0);
+        newInstance.SetFloat("_EmissionSlider", 0);
     }
 
     /// <summary>
@@ -51,7 +66,7 @@ public class EmmissiveBikeScript : MonoBehaviour
         float useAngle = Mathf.Lerp(maxA, minA, t);
 
         light.intensity = 1.3f;
-        emissiveMaterial.SetFloat("_EmissionSlider", (t + .1f));
+        newInstance.SetFloat("_EmissionSlider", (t + .1f));
 
         spotlight.intensity = 5 * (t + .1f);
 

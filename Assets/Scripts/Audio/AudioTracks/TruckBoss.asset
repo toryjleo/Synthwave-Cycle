@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: decaec76ddbeb2a4eb558575f3dce31e, type: 3}
+  m_Name: TruckBoss
+  m_EditorClassIdentifier: 
+  intro: {fileID: 8300000, guid: 7c7565562901cf441b81197c7c4f1f00, type: 3}
+  variations:
+  - {fileID: 11400000, guid: 10d7bdec93c6e214cb05ef9ea1cef382, type: 2}
+  - {fileID: 11400000, guid: 54f9a34cc55b3a841a949f1e5dfe34ba, type: 2}
+  - {fileID: 11400000, guid: 355c2f5d9c7632640b5d09461f5fe16c, type: 2}
+  - {fileID: 11400000, guid: 463b65f492e259240a5d71c6f36e9d26, type: 2}
+  - {fileID: 11400000, guid: e3a341e751c45f147ae39cd8934741e4, type: 2}

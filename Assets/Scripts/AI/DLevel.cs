@@ -34,4 +34,12 @@ public class DLevel : MonoBehaviour
     {
         dangerLevel++;
     }
+
+    /// <summary>
+    /// Returns the current danger level 
+    /// </summary>
+    public int GetDangerLevel()
+    {
+        return dangerLevel;
+    }
 }
