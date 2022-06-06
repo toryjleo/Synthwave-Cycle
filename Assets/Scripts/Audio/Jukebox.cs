@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 public class Jukebox : MonoBehaviour
 {
-    public Track track;
+    private Track track;
     //A list of all the tracks to play
     public List<Track> trackList;
     //Used to queue up a new track
