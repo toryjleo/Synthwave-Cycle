@@ -963,17 +963,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3783286427056148062, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 3820667865579537716, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
       propertyPath: m_Name
       value: JukeBox
-      objectReference: {fileID: 0}
-    - target: {fileID: 3820667865579537718, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
-      propertyPath: trackList.Array.size
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3820667865579537721, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
       propertyPath: m_RootOrder
