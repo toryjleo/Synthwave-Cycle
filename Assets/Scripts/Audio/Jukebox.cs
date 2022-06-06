@@ -23,7 +23,6 @@ public class Jukebox : MonoBehaviour
 
     void Start()
     {
-        track = trackList[Random.Range(0, trackList.Count)];
         toggle = 0;
         TrackVariation tv = track.variations[0];
         // Schedule the first track
