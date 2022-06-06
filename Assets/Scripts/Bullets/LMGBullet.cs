@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class LMGBullet : Bullet
 {
-    public override void Init() 
+    public override void Init()
     {
         muzzleVelocity = 180;
-        mass = .5f;
+        mass = .1f; //The Mass controlls how slowed down the bike is by recoil
         damageDealt = 20;
     }
 
@@ -17,8 +17,10 @@ public class LMGBullet : Bullet
         if (other.gameObject.tag == "Enemy")
         {
             // TracerMesh should have a Health component
-            DealDamageAndDespawn(other.gameObject);
-            //Debug.Log("Hit Player!");
+            Health otherHealth = other.GetComponentInChildren<Health>();
+            float z = otherHealth.HitPoints;
+            otherHealth.TakeDamage(damageDealt);
+
         }
     }
 }
