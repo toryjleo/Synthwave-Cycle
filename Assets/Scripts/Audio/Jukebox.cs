@@ -9,7 +9,9 @@ using UnityEngine;
 /// </summary>
 public class Jukebox : MonoBehaviour
 {
-    public Track track;
+    private Track track;
+    //A list of all the tracks to play
+    public List<Track> trackList;
     //Used to queue up a new track
     private Track nextTrack = null;
     // An audiosource array with 2 members to switch between with "toggle"
@@ -21,6 +23,8 @@ public class Jukebox : MonoBehaviour
 
     void Start()
     {
+        track = trackList[Random.Range(0, trackList.Count)];
+
         toggle = 0;
         TrackVariation tv = track.variations[0];
         // Schedule the first track
