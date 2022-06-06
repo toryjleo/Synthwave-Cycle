@@ -60,7 +60,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _EmissionSlider: 0.006
+    - _EmissionSlider: -0.0955235
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1

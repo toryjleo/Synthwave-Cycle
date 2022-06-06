@@ -173,7 +173,7 @@ public class HealthPool : SelfDespawn
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "PlayerHealth")
         {
             Health playerHealthRef = other.GetComponentInChildren<Health>();
             playerHealthRef.Heal(currentPlayerHealAmount);

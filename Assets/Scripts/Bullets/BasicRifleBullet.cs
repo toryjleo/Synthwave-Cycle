@@ -14,7 +14,7 @@ public class BasicRifleBullet : Bullet
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "PlayerHealth")
         {
             DealDamageAndDespawn(other.gameObject);
         }
