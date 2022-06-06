@@ -46,7 +46,7 @@ public class HealthPool : SelfDespawn
 
     private void Start()
     {
-        GameObject playerObject = GameObject.Find("Player Bike");
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         player = playerObject.GetComponent<BikeScript>();
         currentSpawnDistance = INITIAL_SPAWN_DISTANCE;
         currentPlayerHealAmount = INITIAL_PLAYER_HEAL_AMNT;
@@ -173,7 +173,7 @@ public class HealthPool : SelfDespawn
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "PlayerHealth")
         {
             Health playerHealthRef = other.GetComponentInChildren<Health>();
             playerHealthRef.Heal(currentPlayerHealAmount);

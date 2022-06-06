@@ -41,18 +41,13 @@ public abstract class Ai : SelfWorldBoundsDespawn
         base.Update();
         
 
+
         //Dead
-        if (hp.HitPoints <= 0 && alive) //this signifies that the enemy Died and wasn't merely Despawned
+        if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
-            Move(this.transform.position);
-
-            if (myGun != null)
-            {
-                myGun.StopAllCoroutines();
-            }
-
+            
             die();
-      
+           
         }
         else //Alive
         {
@@ -65,9 +60,15 @@ public abstract class Ai : SelfWorldBoundsDespawn
                 if(desiredVec.magnitude < attackRange)
                 {
 
+                    Move(this.transform.position);
+                    
+
+                    Aim(target.transform.position);
+
                     Attack();
-                    Move(transform.position);
-                    animationStateController.SetSpeed(rb.velocity.magnitude); // 
+                    
+                    
+                    animationStateController.SetSpeed(0); 
 
                 } else
                 {
@@ -79,36 +80,47 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
     }
 
+    public void Aim(Vector3 aimAt)
+    {
+        transform.LookAt(aimAt);
+    }
+
     /// <summary>
     /// This method plays a death animation and the deactivates the enemy
     /// </summary>
     public void die()
     {
-        // Notify all listeners that this AI has died
-        DeadEvent?.Invoke();
+        rb.constraints = RigidbodyConstraints.FreezePosition;
+      
 
-        if (alive)
+        if (alive == true)
         {
+            // Notify all listeners that this AI has died
+            DeadEvent?.Invoke();
+
+
             animationStateController.TriggerDeathA();
+            rb.detectCollisions = false;
+            animationStateController.SetAlive(false);
+            alive = false;
+
+
+            if (myGun != null)
+            {
+                myGun.StopAllCoroutines();
+            }
+
         }
         
-
-        alive = false;
-        animationStateController.SetAlive(alive);
-
-        rb.detectCollisions = false;
-        
-
-        if (animationStateController.IsIdle())
-        {
-            animationStateController.StopAllCoroutines();
-            this.gameObject.SetActive(false);
-        }
         
 
 
 
         
+        
+
+       
+
     }
     /// <summary>
     /// This method is called when the entitiy wants to attack. Checks if it has a gun 
@@ -117,6 +129,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     {
         if (myGun != null && myGun.CanShootAgain() && alive)
         {
+            
             this.myGun.Shoot(target.transform.position);
             animationStateController.AimWhileWalking(true);
             
