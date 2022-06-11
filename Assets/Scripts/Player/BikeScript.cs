@@ -13,6 +13,7 @@ public class BikeScript : MonoBehaviour
     private float consecutiveDistanceToHP; // The distance to the healthpool the first time we raycast hit it.
 
     public Gun currentGun;
+    public TurretScript turret;
 
     public Gun bikeGun;
 
@@ -87,6 +88,11 @@ public class BikeScript : MonoBehaviour
         if (Input.GetKey(KeyCode.Mouse0))
         {
             currentGun.Shoot(movementComponent.rb.velocity);
+            if(turret!= null)
+            {
+                turret.Shoot(movementComponent.rb.velocity);
+            }
+            
         }
     }
 
@@ -96,6 +102,14 @@ public class BikeScript : MonoBehaviour
         emissiveBike = GetComponentInChildren<EmmissiveBikeScript>();
         movementComponent = GetComponent<BikeMovementComponent>();
 
+
+        //Initializes Turret 
+        if(GetComponentInChildren<TurretScript>() != null) { 
+            turret = GetComponentInChildren<TurretScript>();
+            turret.Init();
+            turret.BulletShot += movementComponent.bl_ProcessCompleted;
+        }
+        
         healthPoolLayerMask = (1 << healthPoolLayer);
         consecutiveDistanceToHP = 0;
     }
