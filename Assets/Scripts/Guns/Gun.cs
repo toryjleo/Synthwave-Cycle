@@ -49,7 +49,7 @@ public abstract class Gun : MonoBehaviour
     /// <param name="bulletShot">The bullet that is currently being shot.</param>
     protected void ApplyRecoil(Vector3 directionOfBullet, Bullet bulletShot) 
     {
-        OnBulletShot(directionOfBullet.normalized * bulletShot.Mass * bulletShot.MuzzleVelocity);
+        OnBulletShot(directionOfBullet.normalized * bulletShot.Mass * bulletShot.MuzzleVelocity * bulletShot.Boost);
     }
 
 
