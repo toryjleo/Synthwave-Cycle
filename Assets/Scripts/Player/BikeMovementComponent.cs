@@ -29,11 +29,13 @@ public class BikeMovementComponent : MonoBehaviour
 
     private float maxLean = 40.0f;
 
-    private const float ACCELERATION_SCALE = 5.0f;
+    private const float ACCELERATION_SCALE = 10.0f;
 
     private const float STARTING_HEALTH = 200.0f;
 
     private const float MAX_ACCELERATION = 1000.0f;
+
+    private const float MIN_ACCELERATION = 40.0f;
 
     /// <summary>
     /// The current acceleration of the bike. Is dependant on health
@@ -42,7 +44,7 @@ public class BikeMovementComponent : MonoBehaviour
     {
         get 
         {
-            return Mathf.Clamp( HitPoints / ACCELERATION_SCALE, STARTING_HEALTH / ACCELERATION_SCALE, MAX_ACCELERATION);
+            return Mathf.Clamp( (HitPoints / ACCELERATION_SCALE) + MIN_ACCELERATION, MIN_ACCELERATION, MAX_ACCELERATION);
         }
     }
 
