@@ -33,6 +33,7 @@ public class EnemySpawner : MonoBehaviour
     {
         ops = ObjectPool.Instance;
         player = GameObject.FindGameObjectWithTag("Player");
+        bs = player.GetComponent<BikeMovementComponent>();
     }
 
     // Update is called once per frame
