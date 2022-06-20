@@ -24,7 +24,7 @@ public class EnemyManager : MonoBehaviour
         dl = DLevel.Instance;
     }
 
-    void Update()
+    void Update() //TODO add new spawning behavior 
     {
         UpdateEnemyStates();
 

@@ -26,6 +26,7 @@ public class BikeAI : Ai
 
         
 
+
         #region Error Checkers
 
 
@@ -42,9 +43,17 @@ public class BikeAI : Ai
 
     public override void Move(Vector3 t)
     {
-        Vector3 desiredVec = t - transform.position + offset; //this logic creates the vector between where the entity is and where it wants to be 
+        target.GetComponent<BikeMovementComponent>();
 
+        Vector3 desiredVec = t - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
+
+        //transform.Rotate(new Vector3(0, 3, 0));
+
+        this.transform.LookAt(target.transform.position);
+
+        //transform.LookAt(desiredVec);
         
+
 
         float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points 
         
@@ -52,19 +61,13 @@ public class BikeAI : Ai
 
         desiredVec.Normalize(); // one the distance is measured this vector can now be used to actually generate movement,
                                 // but that movement has to be constant or at least adaptable, which is what the next part does  
-        transform.LookAt(desiredVec);
+        //transform.LookAt(desiredVec);
+        
 
         //Currently Walking twoards the target 
-
-        
             desiredVec *= maxSpeed;
-            Attack();
         
         Vector3 steer = desiredVec - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
-
-        velocity = rb.velocity;
-        STR = steer;
-        TRG = desiredVec;
         
         applyForce(steer);
     }
@@ -85,8 +88,8 @@ public class BikeAI : Ai
 
     public override void Update()
     {
-        //base.Update();
-        Move(target.transform.position);
+        base.Update();
+        //Move(target.transform.position);
     }
 
 

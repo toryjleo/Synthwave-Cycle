@@ -15,7 +15,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         //TODO: Add Logic here to make sure Entity either remains in the pool or becomes a new entity
     }
 
-
+    #region Variables for Setup. 
 
     public GameObject target;
     public CyborgAnimationStateController animationStateController;
@@ -33,24 +33,17 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
     public event NotifyDeath DeadEvent; // event
 
-
+    #endregion
 
     // Update is called once per frame
     public override void Update()
     {
         base.Update();
-
-
-        animationStateController.SetSpeed(rb.velocity.magnitude);
-
-
-
+        SetAnimationSpeed(rb.velocity.magnitude);
         //Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
-
-            die();
-
+            Die();
         }
         else //Alive
         {
@@ -64,19 +57,13 @@ public abstract class Ai : SelfWorldBoundsDespawn
                 {
 
                     Move(this.transform.position);
-
-
                     Aim(target.transform.position);
-
                     Attack();
-
-
-                    animationStateController.SetSpeed(0);
-
+                    SetAnimationSpeed(0);
                 } else
                 {
                     Move(target.transform.position);
-                    animationStateController.SetSpeed(rb.velocity.magnitude / 40); //this devides them by a constant to allow for slower enemies to walk slower.
+                    SetAnimationSpeed(rb.velocity.magnitude / 40); //this devides them by a constant to allow for slower enemies to walk slower.
                 }
             }
         }
@@ -91,7 +78,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// <summary>
     /// This method plays a death animation and the deactivates the enemy
     /// </summary>
-    public void die()
+    public void Die()
     {
         rb.constraints = RigidbodyConstraints.FreezePosition;
 
@@ -115,15 +102,6 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
         }
 
-
-
-
-
-
-
-
-
-
     }
     /// <summary>
     /// This method is called when the entitiy wants to attack. Checks if it has a gun
@@ -139,7 +117,20 @@ public abstract class Ai : SelfWorldBoundsDespawn
         }
     }
 
-    #region Movement
+
+    /// <summary>
+    /// This Metod is used to set the animation speed without causing errors or Ai that do not have an animation state controller. 
+    /// </summary>
+    /// <param name="animationSpeed"></param>
+    public virtual void SetAnimationSpeed(float animationSpeed)
+    {
+        if (animationStateController != null)
+        {
+            animationStateController.SetSpeed(animationSpeed);
+        }
+    }
+
+    #region MOVEMENT 
     /// <summary>
     /// This method works for ranged Enemies that do not get into direct melee range with the target
     /// </summary>
@@ -193,13 +184,14 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
     }
 
-
     public void applyForce(Vector3 force)
     {
         rb.AddForce(force);
-
-
     }
+
+    #endregion
+
+    #region SEPERATE
 
     /// <summary>
     /// This method requires the entire of AI

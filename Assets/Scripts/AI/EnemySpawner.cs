@@ -106,7 +106,7 @@ public class EnemySpawner : MonoBehaviour
         Ai enemyAI;
         for(int i = 0; i< firstWaveSize; i++)
         {
-            enemy = ops.SpawnFromPool("Rifleman", generateSpawnVector(), Quaternion.identity);
+            enemy = ops.SpawnFromPool("Bike", generateSpawnVector(), Quaternion.identity);
 
 
 
