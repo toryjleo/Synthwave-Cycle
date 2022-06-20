@@ -20,7 +20,14 @@ public class BikeScript : MonoBehaviour
     private int healthPoolLayer = 6;
     private int healthPoolLayerMask; // A mask that that represents the HealthPool layer
 
-
+    #region Resets
+    public void resetBikeHealth(){
+        movementComponent.resetHealth();
+    }
+    public void resetBikeMotion(){
+        movementComponent.resetMotion();
+    }
+    #endregion
     #region Accessors
     public float Energy
     {
@@ -89,7 +96,7 @@ public class BikeScript : MonoBehaviour
     }
 
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
-    private void Init()
+    public void Init()
     {
         emissiveBike = GetComponentInChildren<EmmissiveBikeScript>();
         movementComponent = GetComponent<BikeMovementComponent>();

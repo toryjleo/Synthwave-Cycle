@@ -38,6 +38,7 @@ public class ScoreTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GetInput();
         UpdateUIEnergy();
         UpdateText();
         if (currentTime <= 0)
@@ -121,7 +122,34 @@ public class ScoreTracker : MonoBehaviour
         SceneManager.LoadScene("TestScene");
         //StartCoroutine(LoadYourAsyncScene());
     }
-
+    public void resetGame(){
+// Restart the game
+            //kill all enemies
+            EnemyManager enemyControlPanel=Object.FindObjectOfType<EnemyManager>();
+            enemyControlPanel.killAllEnemies();
+            //Remove all currently flying bullets, this may cause issues with null pointers so I need to make sure that the pools aren't emptied too quickly
+            Bullet[] AllBulletsManager=Object.FindObjectsOfType<Bullet>();
+            foreach(Bullet bulletToDespawn in AllBulletsManager){
+                bulletToDespawn.gameObject.SetActive(false);
+            }
+            //reset score, set bike movement to 0, health to starting health. First the values are reset and then the UI is updated
+            ScoreTracker scoreControlPanel=Object.FindObjectOfType<ScoreTracker>();
+            scoreControlPanel.Init();
+            bike.resetBikeHealth();
+            bike.resetBikeMotion();
+            UpdateUIEnergy();
+            UpdateText();
+            //Rather than update the location or camera these values are just reset
+            //TODO either reset location or do something to ensure that they don't end up going over the edge
+    }
+    //This seems to exist only to reset the scene
+private void GetInput() 
+    {
+        if (Input.GetKeyDown(KeyCode.R)) 
+        {
+            resetGame();
+        }
+    }
     /// <summary>Loads the gameover screen asycronously.</summary>
     IEnumerator LoadYourAsyncScene()
     {

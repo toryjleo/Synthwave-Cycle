@@ -67,17 +67,27 @@ public class BikeMovementComponent : MonoBehaviour
 
 
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
-    private void Init()
+    public void Init()
     {
         // The bike will begin at rest
         appliedForce = new Vector3(0, 0, 0);
         rb = GetComponent<Rigidbody>();
         health = GetComponentInChildren<Health>();
 
-
+        
         health.Init(STARTING_HEALTH);
     }
-
+    /// <summary>Reset the health of the bike component to initial value.</summary>
+    public void resetHealth(){
+        health = GetComponentInChildren<Health>();
+        health.Init(STARTING_HEALTH);
+    }
+    /// <summary>Reset the motion of the bike component to initial value.</summary>
+    public void resetMotion(){
+        // The bike will be reset at rest
+        appliedForce = new Vector3(0, 0, 0);
+        rb = GetComponent<Rigidbody>();
+    }
     public Vector3 ForwardVector()
     {
         return new Vector3(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.y, -bikeMeshParent.transform.right.z);

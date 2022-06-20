@@ -23,7 +23,10 @@ public class EnemyManager : MonoBehaviour
     {
         dl = DLevel.Instance;
     }
-
+    public void Init(){
+    
+        dl.Start();
+    }
     void Update()
     {
         UpdateEnemyStates();
@@ -69,6 +72,28 @@ public class EnemyManager : MonoBehaviour
         currentEnemies.RemoveAll(a => a.isActiveAndEnabled == false);
         
         
+    }
+    public void killAllEnemies(){
+        //first kill everyone
+        foreach (Ai a in currentEnemies)
+        {   
+
+            //This prevents the gun from sticking around between the die and the update
+            if(a.myGun!=null){
+                a.myGun.StopAllCoroutines();
+            }
+            a.die();
+            //We remove all of the enemies so that nothing sticks around WHILE their convential die scripts get around to disposing of them properly(removing child/attached objects)
+            a.gameObject.SetActive(false);
+            a.alive=false;
+        }
+
+        //The current array is cleared of all enemies dead or alive
+        currentEnemies.Clear();
+        //time and score are reset here, it is a little odd to have the scoreKeeper here rather than the ScoreScreen, but it works just fine
+        scoreKeeper.Init();
+        //The danger level is reset to 10
+        dl.Init();
     }
 
 

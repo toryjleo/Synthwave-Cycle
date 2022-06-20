@@ -33,13 +33,32 @@ public class ScoreScreen : MonoBehaviour
     {
         GetInput();
     }
-
+    //To be honest this method doesn't do a whole lot atm
     private void GetInput() 
     {
         if (Input.GetKeyDown(KeyCode.R)) 
         {
             // Restart the game
-            StartCoroutine(LoadYourAsyncScene("TestScene"));
+            // StartCoroutine(LoadYourAsyncScene("TestScene")); 
+            ScoreTracker scoreControlPanel=Object.FindObjectOfType<ScoreTracker>();
+            scoreControlPanel.resetGame();
+            //TODO-kill all enemies, also reseet time and score
+                // EnemyManager enemyControlPanel=Object.FindObjectOfType<EnemyManager>();
+                // enemyControlPanel.killAllEnemies();
+                // enemyControlPanel.Init();
+                // BulletPool BulletControlPanel=Object.FindObjectOfType<BulletPool>();
+                // BulletControlPanel.DeInit();
+                // // BulletControlPanel.Init();
+                // BikeMovementComponent BikeMovementControlPanel=Object.FindObjectOfType<BikeMovementComponent>();
+                // BikeMovementControlPanel.Init();
+                // print(BikeMovementControlPanel.HitPoints);
+
+            //TODO-reset score
+                // ScoreTracker scoreControlPanel=Object.FindObjectOfType<ScoreTracker>();
+                // scoreControlPanel.Init();
+                //reset player health and vectors
+            //TODO-location update
+            //TODO-camera update
         }
     }
 
