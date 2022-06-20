@@ -299,7 +299,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d7913e2c9c1494f9672456a04a22b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  track: {fileID: 11400000, guid: 55816fd2f98885a4e8f2d666cef4a647, type: 2}
+  trackList:
+  - {fileID: 11400000, guid: 185152a77e0fbd641974e04df0d1f4b3, type: 2}
+  - {fileID: 11400000, guid: 55816fd2f98885a4e8f2d666cef4a647, type: 2}
   audioSourceArray:
   - {fileID: 281125569}
   - {fileID: 1805576751}

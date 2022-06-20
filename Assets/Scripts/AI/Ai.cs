@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void NotifyDeath();  // delegate
+
+
 public abstract class Ai : SelfWorldBoundsDespawn
 {
 
@@ -11,6 +14,8 @@ public abstract class Ai : SelfWorldBoundsDespawn
         entity.gameObject.SetActive(false);
         //TODO: Add Logic here to make sure Entity either remains in the pool or becomes a new entity
     }
+
+
 
     public GameObject target;
     public CyborgAnimationStateController animationStateController;
@@ -26,6 +31,8 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public float attackRange;
     public bool alive;
 
+    public event NotifyDeath DeadEvent; // event
+
 
 
     // Update is called once per frame
@@ -34,18 +41,13 @@ public abstract class Ai : SelfWorldBoundsDespawn
         base.Update();
         
 
+
         //Dead
-        if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned 
+        if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
-            Move(this.transform.position);
-
-            if (myGun != null)
-            {
-                myGun.StopAllCoroutines();
-            }
-
+            
             die();
-      
+           
         }
         else //Alive
         {
@@ -58,9 +60,15 @@ public abstract class Ai : SelfWorldBoundsDespawn
                 if(desiredVec.magnitude < attackRange)
                 {
 
+                    Move(this.transform.position);
+                    
+
+                    Aim(target.transform.position);
+
                     Attack();
-                    Move(transform.position);
-                    animationStateController.SetSpeed(rb.velocity.magnitude); // 
+                    
+                    
+                    animationStateController.SetSpeed(0); 
 
                 } else
                 {
@@ -72,41 +80,56 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
     }
 
+    public void Aim(Vector3 aimAt)
+    {
+        transform.LookAt(aimAt);
+    }
+
     /// <summary>
     /// This method plays a death animation and the deactivates the enemy
     /// </summary>
     public void die()
     {
-        if (alive)
+        rb.constraints = RigidbodyConstraints.FreezePosition;
+      
+
+        if (alive == true)
         {
+            // Notify all listeners that this AI has died
+            DeadEvent?.Invoke();
+
+
             animationStateController.TriggerDeathA();
+            rb.detectCollisions = false;
+            animationStateController.SetAlive(false);
+            alive = false;
+
+
+            if (myGun != null)
+            {
+                myGun.StopAllCoroutines();
+            }
+
         }
         
-
-        alive = false;
-        animationStateController.SetAlive(alive);
-
-        rb.detectCollisions = false;
-        
-
-        if (animationStateController.IsIdle())
-        {
-            animationStateController.StopAllCoroutines();
-            this.gameObject.SetActive(false);
-        }
         
 
 
 
         
+        
+
+       
+
     }
     /// <summary>
     /// This method is called when the entitiy wants to attack. Checks if it has a gun 
     /// </summary>
     public void Attack()
     {
-        if (myGun != null&&myGun.CanShootAgain())
+        if (myGun != null && myGun.CanShootAgain() && alive)
         {
+            
             this.myGun.Shoot(target.transform.position);
             animationStateController.AimWhileWalking(true);
             
