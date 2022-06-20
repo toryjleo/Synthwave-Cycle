@@ -56,7 +56,7 @@ public class EnemyManager : MonoBehaviour
             if (a.isAlive())
             {
                 //Do Alive things
-                a.seperate(currentEnemies);
+                a.Seperate(currentEnemies);
             }
             else
             {
