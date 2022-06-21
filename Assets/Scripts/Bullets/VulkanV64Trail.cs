@@ -16,7 +16,7 @@ public class VulkanV64Trail : Bullet
 
 public override void Shoot(Vector3 curPosition, Vector3 direction, Vector3 initialVelocity)
     {
-        Debug.Log("VULKAN FIRE!");
+        //Debug.Log("VULKAN FIRE!");
         transform.position = curPosition;
         direction.y = 0; // Do not travel vertically
         shootDir = direction.normalized;
@@ -37,6 +37,8 @@ public override void Shoot(Vector3 curPosition, Vector3 direction, Vector3 initi
         SpawnTrail(trail, shotRay.GetPoint(SHOT_RANGE));
     }
 
+    /// <summary>Spawns in a trail from the position of the gun to an endpoint. 
+    /// Trail rins through animation and deletes itself</summary>
     private IEnumerator SpawnTrail(TrailRenderer trail, Vector3 endLoc)
     {
         float time = 0;

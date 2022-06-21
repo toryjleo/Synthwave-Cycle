@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>Raycast alternative primary weapons</summary>
 public class VulcanV64AutoCannons : Gun
 {
     // Very specific to this gun

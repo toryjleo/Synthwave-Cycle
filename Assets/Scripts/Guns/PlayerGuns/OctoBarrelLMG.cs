@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>A big ass rip-off of the double barrel LMG</summary>
 public class OctoBarrelLMG : Gun
 {
 
