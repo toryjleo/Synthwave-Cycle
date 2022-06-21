@@ -6,8 +6,8 @@ using UnityEngine;
 public abstract class Bullet : SelfWorldBoundsDespawn
 {
 
-    private Vector3 shootDir;
-    private Vector3 initialVelocity;
+    protected Vector3 shootDir;
+    protected Vector3 initialVelocity;
 
     // Specific to gun
     protected float muzzleVelocity = 0;
@@ -72,7 +72,7 @@ public abstract class Bullet : SelfWorldBoundsDespawn
     /// <param name="curPosition">Location to start being shot from.</param>
     /// <param name="direction">Direction in which bullet will move.</param>
     /// <param name="initialVelocity">Velocity of the object shooting.</param>
-    public void Shoot(Vector3 curPosition, Vector3 direction, Vector3 initialVelocity)
+    public virtual void Shoot(Vector3 curPosition, Vector3 direction, Vector3 initialVelocity)
     {
         transform.position = curPosition;
         direction.y = 0; // Do not travel vertically

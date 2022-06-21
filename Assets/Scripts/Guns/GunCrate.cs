@@ -7,7 +7,6 @@ public class GunCrate : MonoBehaviour
     public Gun crateWeapon;
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Bonked with: " + collision);
         if(collision.gameObject.tag == "Player")
         {
             BikeScript playerBikeScript = (BikeScript)FindObjectOfType(typeof(BikeScript));
