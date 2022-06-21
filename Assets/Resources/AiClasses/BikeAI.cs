@@ -43,32 +43,35 @@ public class BikeAI : Ai
 
     public override void Move(Vector3 t)
     {
-        target.GetComponent<BikeMovementComponent>();
+        BikeMovementComponent bmc = target.GetComponent<BikeMovementComponent>();
 
         Vector3 desiredVec = t - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
 
-        //transform.Rotate(new Vector3(0, 3, 0));
+
+        Vector3 BikeForward = bmc.ForwardVector();
+        
+        Debug.DrawRay(rb.transform.position, BikeForward.normalized * 30, Color.red);
+
 
         this.transform.LookAt(target.transform.position);
 
-        //transform.LookAt(desiredVec);
+        float dMag = desiredVec.magnitude; 
         
+        dMag -= attackRange; 
 
+        desiredVec.Normalize();
 
-        float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points 
-        
-        dMag -= attackRange; // dmag is the distance between the two objects, by subtracking this, I make it so the object doesn't desire to move as far.  
+        if (dMag < 20)
+        {
+            desiredVec *= dMag;
 
-        desiredVec.Normalize(); // one the distance is measured this vector can now be used to actually generate movement,
-                                // but that movement has to be constant or at least adaptable, which is what the next part does  
-        //transform.LookAt(desiredVec);
-        
-
-        //Currently Walking twoards the target 
+            //Attack();
+        }
+        else
+        {
             desiredVec *= maxSpeed;
-        
+        }
         Vector3 steer = desiredVec - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
-        
         applyForce(steer);
     }
 
