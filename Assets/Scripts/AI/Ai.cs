@@ -161,6 +161,9 @@ public abstract class Ai : SelfWorldBoundsDespawn
             applyForce(steer);
     }
 
+    /// <summary>
+    /// This method is used for when an AI has no target and will move around in a Boid fashoion
+    /// </summary>
     public void Wander() //cause the character to wander
     {
 
@@ -196,7 +199,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// <summary>
     /// This method requires the entire of AI
     /// </summary>
-    /// <param name="pool"></param>
+    /// <param name="pool"></param> Pool is the grouping of all of the AI controlled entities in the boid that need to be seperateed from one another 
     public void Seperate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI
     {
         float desiredSeperation = 110;

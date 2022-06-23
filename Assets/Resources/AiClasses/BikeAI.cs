@@ -2,9 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// This Class is the AI for the Enemy Bikers 
 public class BikeAI : Ai
 {
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
+
+    public float Hitpoints
+    {
+        get => hp.HitPoints;
+    }
+
+
+    void Awake()
+    {
+        Init();
+    }
 
     public Vector3 velocity;
     public Vector3 STR;
@@ -40,7 +52,10 @@ public class BikeAI : Ai
         }
         #endregion
     }
-
+    /// <summary>
+    /// This is a custom move method for the bikes since they will move vastly differently from other AI
+    /// </summary>
+    /// <param name="t"></param>
     public override void Move(Vector3 t)
     {
         BikeMovementComponent bmc = target.GetComponent<BikeMovementComponent>();
@@ -79,15 +94,8 @@ public class BikeAI : Ai
 
     //stats used in construction
 
-    public float hitpoints
-    {
-        get => hp.HitPoints;
-    }
 
-    void Awake()
-    {
-        Init();
-    }
+
 
     public override void Update()
     {
