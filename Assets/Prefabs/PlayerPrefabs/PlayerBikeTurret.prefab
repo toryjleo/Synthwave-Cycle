@@ -235,6 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 4431748016058038940, guid: e72d1b6888ac2f44da9c8e4b6a2ffd48, type: 3}
+  infiniteAmmo: 1
   muzzle1: {fileID: 8409156827372390507}
   mouse: {x: 0, y: 0, z: 0}
 --- !u!1 &3158323252628134619

@@ -19,7 +19,7 @@ public class OctoBarrelLMG : Gun
         fireRate = 60;
         bulletPool = gameObject.AddComponent<BulletPool>();
         bulletPool.Init(bulletPrefab);
-        ammunition = 500;
+        ammunition = 100;
     }
 
     /// <summary>Fires a bullet out of either muzzle, alternating each turn.</summary>

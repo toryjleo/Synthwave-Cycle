@@ -128,11 +128,11 @@ public class BikeScript : MonoBehaviour
             currentGun.BulletShot -= movementComponent.bl_ProcessCompleted;
         }
 
-        this.currentGun = gunToEquip;
+        this.currentGun = Instantiate(gunToEquip, movementComponent.bikeMeshParent.transform.position, Quaternion.identity);
         // Make gun child of TracerMeshParent
         currentGun.transform.parent = movementComponent.bikeMeshParent.transform;
         currentGun.transform.rotation = movementComponent.bikeMeshParent.transform.rotation;
-        currentGun.transform.position = movementComponent.bikeMeshParent.transform.position;
+        //currentGun.transform.position = movementComponent.bikeMeshParent.transform.position;
         currentGun.transform.RotateAround(currentGun.transform.position, currentGun.transform.up, 180f);
 
         // Hook up event

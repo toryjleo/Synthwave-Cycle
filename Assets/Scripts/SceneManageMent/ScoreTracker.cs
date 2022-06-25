@@ -21,7 +21,7 @@ public class ScoreTracker : MonoBehaviour
 
     public BikeScript bike;
 
-    private const int SCORE_TILL_WEAPON_DROP = 1500;
+    public int SCORE_TILL_WEAPON_DROP = 1500;
 
     // Basically player HP but ~flavored~
     public float Energy

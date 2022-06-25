@@ -59,8 +59,10 @@ public abstract class Gun : MonoBehaviour
     {
         //if BulletShot is not null then call delegate
         BulletShot?.Invoke(-forceOfBullet);
-        ammunition--;
-        //Debug.Log("Ammo Remaining: " + ammunition);
+        if (!infiniteAmmo)
+        {
+            ammunition--;
+        }
         if(!infiniteAmmo && ammunition <= 0)
         {
             BikeScript playerBikeScript = (BikeScript)FindObjectOfType(typeof(BikeScript));

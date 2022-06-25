@@ -200,74 +200,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d0fbf0374c466046a73630acd8fd30e, type: 3}
---- !u!1001 &364146960
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 8303222819854359605, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
-      propertyPath: m_Name
-      value: VulkanV64AutoCannons
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303222819854359607, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303222819854359607, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.1525793
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303222819854359607, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303222819854359607, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.12046981
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303222819854359607, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303222819854359607, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303222819854359607, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303222819854359607, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303222819854359607, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303222819854359607, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8303222819854359607, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
---- !u!114 &364146961 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8303222819854359604, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
-  m_PrefabInstance: {fileID: 364146960}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc4b2283fa04f0489193d7541186d54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &840130558
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -581,7 +513,7 @@ PrefabInstance:
     - target: {fileID: 2451000880455329689, guid: a8b26bd453659d24c82fcb6aba829898, type: 3}
       propertyPath: bikeGun
       value: 
-      objectReference: {fileID: 364146961}
+      objectReference: {fileID: 8303222819854359604, guid: 1d17923d9c255f24f83a1e7a7c3836c9, type: 3}
     - target: {fileID: 2704707542116306734, guid: a8b26bd453659d24c82fcb6aba829898, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -687,6 +619,18 @@ PrefabInstance:
       propertyPath: bike
       value: 
       objectReference: {fileID: 1333026027}
+    - target: {fileID: 1856768569889706826, guid: f6985c8cb3e788345836a4f1e0d8e8a5, type: 3}
+      propertyPath: weaponPool.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856768569889706826, guid: f6985c8cb3e788345836a4f1e0d8e8a5, type: 3}
+      propertyPath: SCORE_TILL_WEAPON_DROP
+      value: 1500
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856768569889706826, guid: f6985c8cb3e788345836a4f1e0d8e8a5, type: 3}
+      propertyPath: weaponPool.Array.data[0]
+      value: 
+      objectReference: {fileID: 7942487576101075648, guid: a150aa7a565a61341ac429d02e3ccd71, type: 3}
     - target: {fileID: 1856768570236012314, guid: f6985c8cb3e788345836a4f1e0d8e8a5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

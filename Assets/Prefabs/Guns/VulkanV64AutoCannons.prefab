@@ -24,8 +24,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8303222819854359605}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.1525793, y: 0.85, z: -0.12046981}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: -1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8303222821773514690}
@@ -49,8 +49,8 @@ MonoBehaviour:
   infiniteAmmo: 1
   muzzle1: {fileID: 8303222821773514719}
   muzzle2: {fileID: 8303222819895225781}
-  muzzle1Audio: {fileID: 0}
-  muzzle2Audio: {fileID: 0}
+  muzzle1Audio: {fileID: 8303222821773514718}
+  muzzle2Audio: {fileID: 8303222819895225780}
 --- !u!1 &8303222819895225781
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,7 +154,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8303222819895225781}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d9d775b93e77fb74c97246d39e7b3210, type: 3}
@@ -346,7 +346,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8303222821773514719}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d9d775b93e77fb74c97246d39e7b3210, type: 3}
