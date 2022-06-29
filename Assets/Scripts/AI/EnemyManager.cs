@@ -73,7 +73,10 @@ public class EnemyManager : MonoBehaviour
         
         
     }
-    public void killAllEnemies(){
+    /// <summary>
+    /// This Method goes through all enemies currently alive in the scene and removes them
+    /// </summary>
+    public void KillAllEnemies(){
         //first kill everyone
         foreach (Ai a in currentEnemies)
         {   

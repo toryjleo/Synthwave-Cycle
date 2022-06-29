@@ -22,10 +22,12 @@ public class BikeScript : MonoBehaviour
     private int healthPoolLayerMask; // A mask that that represents the HealthPool layer
 
     #region Resets
-    public void resetBikeHealth(){
+    /// <summary>This method resets bike health to starting health</summary>
+    public void ResetBikeHealth(){
         movementComponent.resetHealth();
     }
-    public void resetBikeMotion(){
+    /// <summary>This method resets bike motion to starting motion</summary>
+    public void ResetBikeMotion(){
         movementComponent.resetMotion();
     }
     #endregion

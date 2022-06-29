@@ -122,7 +122,8 @@ public class ScoreTracker : MonoBehaviour
         SceneManager.LoadScene("TestScene");
         //StartCoroutine(LoadYourAsyncScene());
     }
-    public void resetGame(){
+    /// <summary>This resets the game, first killing all enemies, then removing all bullets, then reseting the scoreTracker, bike health, and bike motion, then updating the scoreTrackers ui</summary>
+    public void ResetGame(){
 // Restart the game
             //kill all enemies
             EnemyManager enemyControlPanel=Object.FindObjectOfType<EnemyManager>();

@@ -80,12 +80,12 @@ public class BikeMovementComponent : MonoBehaviour
         health.Init(STARTING_HEALTH);
     }
     /// <summary>Reset the health of the bike component to initial value.</summary>
-    public void resetHealth(){
+    public void ResetHealth(){
         health = GetComponentInChildren<Health>();
         health.Init(STARTING_HEALTH);
     }
     /// <summary>Reset the motion of the bike component to initial value.</summary>
-    public void resetMotion(){
+    public void ResetMotion(){
         // The bike will be reset at rest
         appliedForce = new Vector3(0, 0, 0);
         rb = GetComponent<Rigidbody>();
