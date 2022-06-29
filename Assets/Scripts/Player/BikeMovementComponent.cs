@@ -71,7 +71,9 @@ public class BikeMovementComponent : MonoBehaviour
     {
         // The bike will begin at rest
         appliedForce = new Vector3(0, 0, 0);
+
         rb = GetComponent<Rigidbody>();
+        rb.velocity=appliedForce;
         health = GetComponentInChildren<Health>();
 
         
@@ -87,6 +89,8 @@ public class BikeMovementComponent : MonoBehaviour
         // The bike will be reset at rest
         appliedForce = new Vector3(0, 0, 0);
         rb = GetComponent<Rigidbody>();
+        rb.velocity=new Vector3(0, 0, 0);
+        
     }
     public Vector3 ForwardVector()
     {
