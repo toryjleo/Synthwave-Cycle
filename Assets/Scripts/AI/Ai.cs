@@ -4,7 +4,9 @@ using UnityEngine;
 
 public delegate void NotifyDeath();  // delegate
 
-
+/// <summary>
+/// This is the base AI class for all enemies. 
+/// </summary>
 public abstract class Ai : SelfWorldBoundsDespawn
 {
 

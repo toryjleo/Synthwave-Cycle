@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// This Class is the AI for the Enemy Bikers 
+/// <summary>
+/// This is the Ai component used by the bikes. It has a unique movement component and TODO: Will be adding a ramming feature and gun on these bikes
+/// </summary>
 public class BikeAI : Ai
 {
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
@@ -17,7 +19,7 @@ public class BikeAI : Ai
     {
         Init();
     }
-
+    
     public Vector3 velocity;
     public Vector3 STR;
     public Vector3 TRG;
@@ -27,8 +29,8 @@ public class BikeAI : Ai
         alive = true;
         StartingHP = 40;
         score = 300;
-        maxSpeed = 100;
-        attackRange = 5;
+        maxSpeed = 80;
+        attackRange = 1;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
@@ -62,21 +64,16 @@ public class BikeAI : Ai
 
         Vector3 desiredVec = t - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
 
-
+        desiredVec.Normalize();
         Vector3 BikeForward = bmc.ForwardVector();
         
         Debug.DrawRay(rb.transform.position, BikeForward.normalized * 30, Color.red);
 
 
-        this.transform.LookAt(target.transform.position);
+        transform.LookAt(t);
 
-        float dMag = desiredVec.magnitude; 
-        
-        dMag -= attackRange; 
 
-        desiredVec.Normalize();
-
-        if (dMag < 20)
+        if (dMag < maxSpeed)
         {
             desiredVec *= dMag;
 

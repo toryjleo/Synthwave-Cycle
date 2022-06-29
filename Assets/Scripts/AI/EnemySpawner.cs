@@ -69,7 +69,7 @@ public class EnemySpawner : MonoBehaviour
     {
         GameObject enemy;
         Ai enemyAI;
-        int rand = Random.Range(3, 4);
+        int rand = Random.Range(0, 3);
         switch (rand)
         {
             case 0:
@@ -106,7 +106,7 @@ public class EnemySpawner : MonoBehaviour
         Ai enemyAI;
         for(int i = 0; i< firstWaveSize; i++)
         {
-            enemy = ops.SpawnFromPool("Bike", generateSpawnVector(), Quaternion.identity);
+            enemy = ops.SpawnFromPool("Ranger", generateSpawnVector(), Quaternion.identity);
 
 
 
