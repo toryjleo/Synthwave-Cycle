@@ -68,6 +68,16 @@ public class BloodSplatter : MonoBehaviour
 
     }
 
+    public void SetMainTexture(Texture texture) 
+    {
+        material.SetTexture(_MainTex, texture);
+    }
+
+    public void SetAlphaMask(Texture texture)
+    {
+        material.SetTexture(_AlphaMask, texture);
+    }
+
     /// <summary>
     /// Slowly grow the pool of blood once it has been placed
     /// </summary>

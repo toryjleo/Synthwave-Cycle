@@ -10,6 +10,7 @@ public class BloodSplatterManager : MonoBehaviour
     // Need to manually assign AI
     [SerializeField] private Ai ai;
     [SerializeField] private BloodSplatter bloodSplatter;
+    [SerializeField] private Texture[] splatterTextures;
 
 
     // Start is called before the first frame update
@@ -28,11 +29,11 @@ public class BloodSplatterManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        /*if (Input.GetKeyDown(KeyCode.Space))
         {
             Init();
-            bloodSplatter.DisplayBlood();
-        }
+            ShowBlood();
+        }*/
     }
 
     protected virtual void OnDestroy()
@@ -66,10 +67,23 @@ public class BloodSplatterManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Returns a random texture.
+    /// </summary>
+    /// <returns>A random texture.</returns>
+    private Texture GetRandomTexture() 
+    {
+        return splatterTextures[Random.Range(0, splatterTextures.Length - 1)];
+    }
+
+    /// <summary>
     /// Displays blood upon enemy death.
     /// </summary>
     private void ShowBlood() 
     {
+        Texture alphaTex = GetRandomTexture();
+        Texture albedoTex = GetRandomTexture();
+        bloodSplatter.SetAlphaMask(alphaTex);
+        bloodSplatter.SetMainTexture(albedoTex);
         bloodSplatter.DisplayBlood();
     }
 }
