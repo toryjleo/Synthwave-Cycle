@@ -26,6 +26,15 @@ public class BloodSplatterManager : MonoBehaviour
         Init();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Init();
+            bloodSplatter.DisplayBlood();
+        }
+    }
+
     protected virtual void OnDestroy()
     {
         DeInit();
