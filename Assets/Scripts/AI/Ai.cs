@@ -50,9 +50,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         //Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
-            
-            die();
-           
+            Die();
         }
         else //Alive
         {
@@ -93,9 +91,9 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// <summary>
     /// This method plays a death animation and the deactivates the enemy
     /// </summary>
-    public void die()
+    public void Die()
     {
-        rb.constraints = RigidbodyConstraints.FreezePosition;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
       
 
         if (alive == true)
@@ -116,15 +114,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
             }
 
         }
-        
-        
-
-
-
-        
-        
-
-       
+ 
 
     }
     /// <summary>
@@ -251,11 +241,11 @@ public abstract class Ai : SelfWorldBoundsDespawn
     #endregion
 
     #region Getters & Setters
-    public bool isAlive()
+    public bool IsAlive()
     {
         return alive;
     }
-    public float getScore()
+    public float GetScore()
     {
         return score;
     }
@@ -263,7 +253,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// This method sets the target of the entity TODO: Will eventually equip a gun?
     /// </summary>
     /// <param name="targ"></param>
-    public void Loadout(GameObject targ)//sets the target of the entity and equips the gun
+    public void SetTarget(GameObject targ)//sets the target of the entity and equips the gun
     {
         target = targ;
         //myGun = gunToEquip;
@@ -275,6 +265,9 @@ public abstract class Ai : SelfWorldBoundsDespawn
     {
         alive = true;
         hp.Init(StartingHP);
+        animationStateController.SetAlive(true);
+        rb.detectCollisions = true;
+        rb.constraints = RigidbodyConstraints.None;
     }// this restets the enemies HP and sets them to alive;
 
     /// <summary>
