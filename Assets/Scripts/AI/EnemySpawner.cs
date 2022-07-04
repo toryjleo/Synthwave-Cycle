@@ -18,6 +18,7 @@ public class EnemySpawner : MonoBehaviour
 
     public ObjectPool ops;
     public GameObject player;
+    public Waves waves;
 
 
     //Spawning Variables 
@@ -29,19 +30,20 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         ops = ObjectPool.Instance;
+        waves = Waves.Instance;
         player = GameObject.FindGameObjectWithTag("Player");
+
+        if (waves == null)
+        {
+            Debug.LogError("No Wave Object is Assigned to Spawner");
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     /// <summary>
     /// This will spawn an enemy of a specific type and then returns that enemy 
     /// </summary>
     /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enenemy Type, AI type, and Gun loadout
-    public GameObject SpawnNewEnemy(Enemy type)
+    public Ai SpawnNewEnemy(Enemy type)
     {
         GameObject enemy;
         Ai enemyAI;
@@ -53,7 +55,7 @@ public class EnemySpawner : MonoBehaviour
         enemyAI = enemy.GetComponent<Ai>();
         enemyAI.SetTarget(player);
         enemyAI.NewLife();
-        return enemy;
+        return enemyAI;
     }
 
     /// <summary>
@@ -97,6 +99,9 @@ public class EnemySpawner : MonoBehaviour
     {
         GameObject enemy;
         Ai enemyAI;
+
+        
+
         for(int i = 0; i< firstWaveSize; i++)
         {
             enemy = ops.SpawnFromPool(Enemy.Rifleman, generateSpawnVector(), Quaternion.identity);
@@ -104,6 +109,22 @@ public class EnemySpawner : MonoBehaviour
             enemyAI.SetTarget(player);
             enemyAI.NewLife();
             currentEnemies.Add(enemyAI);
+        }
+
+        return currentEnemies;
+    }
+
+    public List<Ai> SpawnWave(List<Ai> currentEnemies, int WaveIndex)
+    {
+        Wave w = waves.GetWave(WaveIndex);
+        foreach (Unit unit in w.Units)
+        {
+            for(int i = 0; i< unit.Quantity; i++)
+            {
+                currentEnemies.Add(SpawnNewEnemy(unit.UnitType));
+               
+            }
+            
         }
 
         return currentEnemies;

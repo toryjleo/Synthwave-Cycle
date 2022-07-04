@@ -118,6 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ops: {fileID: 609589166}
   player: {fileID: 0}
+  waves: {fileID: 0}
   spawnDistance: 200
   spawnBiasAngle: 30
 --- !u!114 &7334479611325427085
@@ -134,13 +135,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves:
   - WaveNumber: 1
-    UnitNames:
-    - 
+    Units: []
     SpawningDelay: 3
   units:
-  - NameOfUnit: 0
-    NumberOfUnits: 4
-  - NameOfUnit: 1
-    NumberOfUnits: 3
-  - NameOfUnit: 1
-    NumberOfUnits: 3
+  - UnitName: 
+    UnitType: 0
+    Quantity: 0
+  - UnitName: 
+    UnitType: 0
+    Quantity: 0
+  - UnitName: 
+    UnitType: 0
+    Quantity: 0
