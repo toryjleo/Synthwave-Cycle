@@ -46,7 +46,7 @@ public class EnemySpawner : MonoBehaviour
         GameObject enemy;
         Ai enemyAI;
 
-        enemy = ops.SpawnFromPool(type.ToString(), biasSpawnVector(), Quaternion.identity);
+        enemy = ops.SpawnFromPool(type, biasSpawnVector(), Quaternion.identity);
 
 
         //Init Enemy 
@@ -69,16 +69,16 @@ public class EnemySpawner : MonoBehaviour
         switch (rand)
         {
             case 0:
-                enemy = ops.SpawnFromPool(Enemy.Grunt.ToString(), biasSpawnVector(), Quaternion.identity);
+                enemy = ops.SpawnFromPool(Enemy.Grunt, biasSpawnVector(), Quaternion.identity);
                 break;
             case 1:
-                enemy = ops.SpawnFromPool(Enemy.Rifleman.ToString(), biasSpawnVector(), Quaternion.identity);
+                enemy = ops.SpawnFromPool(Enemy.Rifleman, biasSpawnVector(), Quaternion.identity);
                 break;
             case 2:
-                enemy = ops.SpawnFromPool(Enemy.Ranger.ToString(), biasSpawnVector(), Quaternion.identity);
+                enemy = ops.SpawnFromPool(Enemy.Ranger, biasSpawnVector(), Quaternion.identity);
                 break;
             default:
-                enemy = ops.SpawnFromPool(Enemy.Cactus.ToString(), biasSpawnVector(), Quaternion.identity);
+                enemy = ops.SpawnFromPool(Enemy.Cactus, biasSpawnVector(), Quaternion.identity);
                 break;
         }
 
@@ -99,7 +99,7 @@ public class EnemySpawner : MonoBehaviour
         Ai enemyAI;
         for(int i = 0; i< firstWaveSize; i++)
         {
-            enemy = ops.SpawnFromPool("Rifleman", generateSpawnVector(), Quaternion.identity);
+            enemy = ops.SpawnFromPool(Enemy.Rifleman, generateSpawnVector(), Quaternion.identity);
             enemyAI = enemy.GetComponent<Ai>();
             enemyAI.SetTarget(player);
             enemyAI.NewLife();

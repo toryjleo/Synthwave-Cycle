@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 609589167}
   - component: {fileID: 609589168}
   - component: {fileID: 609589169}
+  - component: {fileID: 7334479611325427085}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -64,16 +65,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
-  - tag: Rifleman
+  - tag: 1
     prefab: {fileID: 3874834857555224733, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
     size: 30
-  - tag: Grunt
+  - tag: 0
     prefab: {fileID: 7978806473477363408, guid: 96ce3a25c9aa3fb40a86136e9660d45c, type: 3}
     size: 30
-  - tag: Ranger
+  - tag: 2
     prefab: {fileID: 6749199786922221708, guid: 7577d168a208c5445a7f8ec18fb2eadf, type: 3}
     size: 30
-  - tag: Cactus
+  - tag: 5
     prefab: {fileID: 5811562474388505295, guid: 6cdbe3db9f170dd4a8679c9613211708, type: 3}
     size: 30
 --- !u!114 &609589167
@@ -119,3 +120,27 @@ MonoBehaviour:
   player: {fileID: 0}
   spawnDistance: 200
   spawnBiasAngle: 30
+--- !u!114 &7334479611325427085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3780906798646803492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1654d42ae441177459b8b1682f5d25d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waves:
+  - WaveNumber: 1
+    UnitNames:
+    - 
+    SpawningDelay: 3
+  units:
+  - NameOfUnit: 0
+    NumberOfUnits: 4
+  - NameOfUnit: 1
+    NumberOfUnits: 3
+  - NameOfUnit: 1
+    NumberOfUnits: 3
