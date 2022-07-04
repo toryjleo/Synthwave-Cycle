@@ -21,6 +21,7 @@ public class BloodSplatterManager : MonoBehaviour
             ai.DeadEvent += ShowBlood;
             // Make sure that the blood splatters get turned off when the enemy despawns
             ai.Despawn += Init;
+            ai.RespawnEvent += Init;
         }
         
         Init();
@@ -42,7 +43,7 @@ public class BloodSplatterManager : MonoBehaviour
 
     public virtual void Init() 
     {
-        bloodSplatter.Init();
+        bloodSplatter.HideBlood();
     }
 
     /// <summary>
@@ -62,5 +63,6 @@ public class BloodSplatterManager : MonoBehaviour
     private void ShowBlood() 
     {
         bloodSplatter.DisplayBlood();
+  
     }
 }

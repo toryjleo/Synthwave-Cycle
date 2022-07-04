@@ -23,7 +23,7 @@ public class BloodSplatter : MonoBehaviour
     }
 
 
-    public void Init() 
+    public void HideBlood() 
     {
         bloodImage.enabled = false;
     }

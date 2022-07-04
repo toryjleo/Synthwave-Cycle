@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public delegate void NotifyDeath();  // delegate
-
+public delegate void NotifyRespawn();
 
 public abstract class Ai : SelfWorldBoundsDespawn
 {
@@ -32,6 +32,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public bool alive;
 
     public event NotifyDeath DeadEvent; // event
+    public event NotifyRespawn RespawnEvent; // event
 
 
 
@@ -275,6 +276,8 @@ public abstract class Ai : SelfWorldBoundsDespawn
     {
         alive = true;
         hp.Init(StartingHP);
+        RespawnEvent?.Invoke();
+
     }// this restets the enemies HP and sets them to alive;
 
     /// <summary>
