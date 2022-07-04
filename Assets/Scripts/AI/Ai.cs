@@ -15,16 +15,15 @@ public abstract class Ai : SelfWorldBoundsDespawn
         //TODO: Add Logic here to make sure Entity either remains in the pool or becomes a new entity
     }
 
-
-
     public GameObject target;
     public CyborgAnimationStateController animationStateController;
     public Rigidbody rb;
     public Gun myGun;
-    public Health hp;
+    public Health hp; 
     public List<Condition> activeConditions = new List<Condition>();
 
     public float StartingHP;
+    public float CurrentHP;
     public float maxSpeed;
     public float maxForce;
     public float score;
@@ -32,7 +31,6 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public bool alive;
 
     public event NotifyDeath DeadEvent; // event
-
 
 
     // Update is called once per frame
@@ -54,6 +52,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         }
         else //Alive
         {
+            CurrentHP = hp.HitPoints;
             if(target == null)
             {
                 Wander();
