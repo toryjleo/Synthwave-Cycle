@@ -54,27 +54,24 @@ public class Waves : MonoBehaviour
 
 
     public List<Wave> waves;
+    public Dictionary<int, Wave> waveDictionary; //These are the keys 
     public List<Unit> units;
-    public Dictionary<string, Queue<GameObject>> unitDictionary; //These are the keys 
-    public Dictionary<int, Queue<GameObject>> waveDictionary; //These are the keys 
+    public Dictionary<string, List<Unit>> unitDictionary; //These are the keys 
+
 
     // Start is called before the first frame update
     void Start()
     {
-        waveDictionary = new Dictionary<int, Queue<GameObject>>();
-        unitDictionary = new Dictionary<string, Queue<GameObject>>();
+        waveDictionary = new Dictionary<int, Wave>();
+        unitDictionary = new Dictionary<string, List<Unit>>();
 
         foreach (Wave wave in waves)
         {
-
+            waveDictionary.Add(wave.WaveNumber, wave);
         }
 
-        foreach(Unit unit in units)
-        {
-
-        }
     }
 
-    //public Wave GetWave(int number) => waves.IndexOf(0);
+    public Wave GetWave(int number) => waveDictionary[number];
 
 }
