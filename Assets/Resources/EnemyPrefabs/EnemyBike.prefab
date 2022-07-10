@@ -110,10 +110,6 @@ MonoBehaviour:
   alive: 0
   muzzleLocation: {fileID: 0}
   trackingPoints: []
-  velocity: {x: 0, y: 0, z: 0}
-  STR: {x: 0, y: 0, z: 0}
-  TRG: {x: 0, y: 0, z: 0}
-  offset: {x: 50, y: 0, z: -10}
 --- !u!54 &2456476443549810091
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -7,11 +7,6 @@ public class BikeAI : Ai
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
 
     public GameObject[] trackingPoints;
-
-    public Vector3 velocity;
-    public Vector3 STR;
-    public Vector3 TRG;
-    public Vector3 offset;
     public override void Init()
     {
         alive = true;
@@ -22,7 +17,6 @@ public class BikeAI : Ai
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
-        animationStateController = GetComponent<CyborgAnimationStateController>();
         this.Despawn += op_ProcessCompleted;
         hp.Init(StartingHP);
 
@@ -67,43 +61,11 @@ public class BikeAI : Ai
         return nearestTrackingPoint;
     }
 
-    public override void Move(Vector3 t)
+
+    public override void Move(Vector3 target)
     {
-        t = findNearestTrackingPoint().transform.position;
-
-        BikeMovementComponent bmc = target.GetComponent<BikeMovementComponent>();
-
-        Vector3 desiredVec = t - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
-
-
-        Vector3 BikeForward = bmc.ForwardVector();
-        
-        Debug.DrawRay(rb.transform.position, BikeForward.normalized * 30, Color.red);
-
-
-        //this.transform.LookAt(target.transform.position);
-        this.transform.LookAt(t);
-
-        float dMag = desiredVec.magnitude; 
-        
-        dMag -= attackRange; 
-
-        desiredVec.Normalize();
-
-        if (dMag < 5)
-        {
-            desiredVec *= dMag;
-
-            //Attack();
-        }
-        else
-        {
-            desiredVec *= maxSpeed;
-        }
-        Vector3 steer = desiredVec - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
-        applyForce(steer);
+        base.Move(findNearestTrackingPoint().transform.position);
     }
-
 
     //stats used in construction
 
@@ -120,7 +82,6 @@ public class BikeAI : Ai
     public override void Update()
     {
         base.Update();
-        //Move(target.transform.position);
     }
 
 
