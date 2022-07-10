@@ -24,7 +24,9 @@ public enum Guns
 
 public class ObjectPool : MonoBehaviour
 {
-
+    /// <summary>
+    /// Creates a single Pool of objects for Enemies, each with their own Enemy Tag, prefab, and predetermined size.
+    /// </summary>
     [System.Serializable]
     public class Pool //One individual pool of objects that has a tag, a prefab, and a size 
     {

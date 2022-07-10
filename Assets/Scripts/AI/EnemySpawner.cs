@@ -113,8 +113,13 @@ public class EnemySpawner : MonoBehaviour
 
         return currentEnemies;
     }
-
-    public List<Ai> SpawnWave(List<Ai> currentEnemies, int WaveIndex)
+    /// <summary>
+    /// Spawns a Wave of enemies given an input of Wave index and returns them as List of Ai Components CurrentEnemies 
+    /// </summary>
+    /// <param name="currentEnemies">The List of Enemies that are in the scene.</param>
+    /// <param name="WaveIndex">The Number associated with the wave that will be spawned</param>
+    /// <returns></returns>
+    public List<Ai> SpawnWave(List<Ai> currentEnemies, int WaveIndex) //TODO: This may take into account other factors in the future to create more dynamic wave spawning behavior
     {
         Wave w = waves.GetWave(WaveIndex);
         foreach (Unit unit in w.Units)

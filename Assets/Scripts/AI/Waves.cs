@@ -51,7 +51,9 @@ public class Wave
 }
 #endregion
 
-
+/// <summary>
+/// This class stores customizable waves and units of enemies to be spawned by the Enemy Spawner.
+/// </summary>
 public class Waves : MonoBehaviour
 {
 

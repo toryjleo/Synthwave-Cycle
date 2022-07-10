@@ -23,7 +23,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public List<Condition> activeConditions = new List<Condition>();
 
     public float StartingHP;
-    public float CurrentHP;
+    public float CurrentHP; //TODO: Wrap with HP?
     public float maxSpeed;
     public float maxForce;
     public float score;
@@ -45,6 +45,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         }
 
 
+
         //Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
@@ -52,7 +53,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         }
         else //Alive
         {
-            CurrentHP = hp.HitPoints;
+            CurrentHP = hp.HitPoints; // TODO: Wrap with HP 
             if(target == null)
             {
                 Wander();
