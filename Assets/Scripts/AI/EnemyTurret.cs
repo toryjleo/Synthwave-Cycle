@@ -10,7 +10,7 @@ public class EnemyTurret : Gun
 {
     public GameObject muzzle1;
 
-    public Vector3 mouse;
+    public GameObject target;
 
 
     public override void Init()
@@ -19,6 +19,7 @@ public class EnemyTurret : Gun
         fireRate = 10;
         bulletPool = gameObject.AddComponent<BulletPool>();
         bulletPool.Init(bulletPrefab);
+        target = GameObject.FindGameObjectWithTag("Player");
     }
 
     public override void Shoot(Vector3 initialVelocity)
@@ -42,9 +43,9 @@ public class EnemyTurret : Gun
     }
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-
+        target = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
@@ -52,19 +53,12 @@ public class EnemyTurret : Gun
     {
 
         // Logic for Having turret track the Mouse. 
-        Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(r, out RaycastHit raycastHit))
-        {
-            mouse = raycastHit.point;
 
-            //Debug.Log(mouse +"   "+this.transform.position);
-
-            mouse -= this.transform.position;
-        }
         //mouse = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
-        var angle = Mathf.Atan2(mouse.x, mouse.z) * Mathf.Rad2Deg;
+        //var angle = Mathf.Atan2(target.transform.position.x, target.transform.position.z) * Mathf.Rad2Deg;
 
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+        transform.LookAt(target.transform.position, Vector3.up);
+        //transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         //transform.Rotate(Vector3.up, steerRate);
 
     }
