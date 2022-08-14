@@ -63,7 +63,7 @@ public class BikeAI : Ai
         BikeMovementComponent bmc = target.GetComponent<BikeMovementComponent>();
 
         Vector3 desiredVec = t - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
-
+        float dMag = desiredVec.magnitude;
         desiredVec.Normalize();
         Vector3 BikeForward = bmc.ForwardVector();
         
