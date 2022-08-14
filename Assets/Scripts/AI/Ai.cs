@@ -118,14 +118,6 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
         }
         
-        
-
-
-
-        
-        
-
-       
 
     }
     /// <summary>
