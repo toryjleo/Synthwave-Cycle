@@ -96,6 +96,9 @@ public class BikeMovementComponent : MonoBehaviour
         //Movement Forward and Back and applies velocity 
         appliedForce += ForwardVector().normalized * Acceleration * Input.GetAxis("Vertical") * Time.fixedDeltaTime;
 
+        Quaternion ranRot = Quaternion.Euler(0, 90, 0);
+
+        
 
         //Steering Takes Horizontal Input and rotates both 
         float steerInupt = Input.GetAxis("Horizontal");
@@ -110,8 +113,14 @@ public class BikeMovementComponent : MonoBehaviour
         Debug.DrawRay(rb.transform.position, ForwardVector().normalized * 30, Color.red);
         Debug.DrawRay(rb.transform.position, appliedForce.normalized * 30, Color.blue);
 
-        appliedForce = Vector3.Lerp(appliedForce.normalized, ForwardVector().normalized, Traction * Time.fixedDeltaTime) * appliedForce.magnitude;
 
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            appliedForce = ranRot * appliedForce * Time.fixedDeltaTime;
+        }
+
+
+        appliedForce = Vector3.Lerp(appliedForce.normalized, ForwardVector().normalized, Traction * Time.fixedDeltaTime) * appliedForce.magnitude;
 
         rb.AddForce(appliedForce);
     }
