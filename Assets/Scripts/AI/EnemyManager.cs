@@ -40,7 +40,7 @@ public class EnemyManager : MonoBehaviour
             {
                 //Slowly Spawn more riflemen as the Danger Level increases 
                 //TODO spawn a random Enemy 
-                currentEnemies.Add(enemySpawner.SpawnNewEnemy());
+                //currentEnemies.Add(enemySpawner.SpawnNewEnemy());
             }
 
         }
@@ -53,7 +53,7 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (Ai a in currentEnemies)
         {
-            if (a.isAlive())
+            if (a.IsAlive())
             {
                 //Do Alive things
                 a.Seperate(currentEnemies);
@@ -61,7 +61,7 @@ public class EnemyManager : MonoBehaviour
             else
             {
                 //Do Death Things 
-                scoreKeeper.AddToScore((int)a.getScore());
+                scoreKeeper.AddToScore((int)a.GetScore());
                 //TODO: ADD Gore and soundeffects here? 
             }
         }

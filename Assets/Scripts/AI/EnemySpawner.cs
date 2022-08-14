@@ -55,7 +55,7 @@ public class EnemySpawner : MonoBehaviour
 
         //Init Enemy
         enemyAI = enemy.GetComponent<Ai>();
-        enemyAI.Loadout(player);
+        enemyAI.SetTarget(player);
         enemyAI.NewLife();
         return enemy;
     }
@@ -91,7 +91,7 @@ public class EnemySpawner : MonoBehaviour
 
         //Init Enemy
         enemyAI = enemy.GetComponent<Ai>();
-        enemyAI.Loadout(player);
+        enemyAI.SetTarget(player);
         enemyAI.NewLife();
         return enemyAI;
     }
@@ -106,12 +106,9 @@ public class EnemySpawner : MonoBehaviour
         Ai enemyAI;
         for(int i = 0; i< firstWaveSize; i++)
         {
-            enemy = ops.SpawnFromPool("Ranger", generateSpawnVector(), Quaternion.identity);
-
-
-
+            enemy = ops.SpawnFromPool("Rifleman", generateSpawnVector(), Quaternion.identity);
             enemyAI = enemy.GetComponent<Ai>();
-            enemyAI.Loadout(player);
+            enemyAI.SetTarget(player);
             enemyAI.NewLife();
             currentEnemies.Add(enemyAI);
         }

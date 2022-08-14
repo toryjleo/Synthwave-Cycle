@@ -5,7 +5,7 @@ using UnityEngine;
 public delegate void NotifyDeath();  // delegate
 
 /// <summary>
-/// This is the base AI class for all enemies. 
+/// This is the base AI class for all enemies.
 /// </summary>
 public abstract class Ai : SelfWorldBoundsDespawn
 {
@@ -17,7 +17,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         //TODO: Add Logic here to make sure Entity either remains in the pool or becomes a new entity
     }
 
-    #region Variables for Setup. 
+    #region Variables for Setup.
 
     public GameObject target;
     public CyborgAnimationStateController animationStateController;
@@ -27,6 +27,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public List<Condition> activeConditions = new List<Condition>();
 
     public float StartingHP;
+    public float CurrentHP; //For Debugging TODO: Add tool implementation
     public float maxSpeed;
     public float maxForce;
     public float score;
@@ -44,7 +45,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
         SetAnimationSpeed(rb.velocity.magnitude);
 
-        
+
         //update conditions
         foreach(Condition cond in activeConditions)
         {
@@ -59,6 +60,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         }
         else //Alive
         {
+            CurrentHP = hp.HitPoints;
             if(target == null)
             {
                 Wander();
@@ -92,7 +94,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// </summary>
     public void Die()
     {
-        rb.constraints = RigidbodyConstraints.FreezePosition;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
 
 
         if (alive == true)
@@ -131,7 +133,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
 
     /// <summary>
-    /// This Metod is used to set the animation speed without causing errors or Ai that do not have an animation state controller. 
+    /// This Metod is used to set the animation speed without causing errors or Ai that do not have an animation state controller.
     /// </summary>
     /// <param name="animationSpeed"></param>
     public virtual void SetAnimationSpeed(float animationSpeed)
@@ -142,7 +144,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         }
     }
 
-    #region MOVEMENT 
+    #region MOVEMENT
     /// <summary>
     /// This method works for ranged Enemies that do not get into direct melee range with the target
     /// </summary>
@@ -211,7 +213,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// <summary>
     /// This method requires the entire of AI
     /// </summary>
-    /// <param name="pool"></param> Pool is the grouping of all of the AI controlled entities in the boid that need to be seperateed from one another 
+    /// <param name="pool"></param> Pool is the grouping of all of the AI controlled entities in the boid that need to be seperateed from one another
     public void Seperate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI
     {
         float desiredSeperation = 110;
@@ -256,11 +258,11 @@ public abstract class Ai : SelfWorldBoundsDespawn
     #endregion
 
     #region Getters & Setters
-    public bool isAlive()
+    public bool IsAlive()
     {
         return alive;
     }
-    public float getScore()
+    public float GetScore()
     {
         return score;
     }
@@ -268,7 +270,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// This method sets the target of the entity TODO: Will eventually equip a gun?
     /// </summary>
     /// <param name="targ"></param>
-    public void Loadout(GameObject targ)//sets the target of the entity and equips the gun
+    public void SetTarget(GameObject targ)//sets the target of the entity and equips the gun
     {
         target = targ;
         //myGun = gunToEquip;
@@ -280,6 +282,9 @@ public abstract class Ai : SelfWorldBoundsDespawn
     {
         alive = true;
         hp.Init(StartingHP);
+        animationStateController.SetAlive(true);
+        rb.detectCollisions = true;
+        rb.constraints = RigidbodyConstraints.None;
     }// this restets the enemies HP and sets them to alive;
 
     /// <summary>

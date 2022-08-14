@@ -49,8 +49,8 @@ public class ObjectPool : MonoBehaviour
     }
 
 
-    public List<Pool> pools;
-    public Dictionary<string,Queue<GameObject>> poolDictionary;
+    public List<Pool> pools; //Pools
+    public Dictionary<string,Queue<GameObject>> poolDictionary; //These are the keys 
 
 
     //Creates Pools for each object type 
