@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 167973125505603527}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 3.6227427, y: -1.8471261, z: -1.8492906}
-  m_LocalScale: {x: 10, y: 10, z: 1}
+  m_LocalScale: {x: 14, y: 14, z: 1}
   m_Children: []
   m_Father: {fileID: 8661839680055520689}
   m_RootOrder: 0
@@ -94,7 +94,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8bba192548af8f4eb1a23f2b9eaeeac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodImage: {fileID: 167973125505603525}
 --- !u!1 &3891193660230361857
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,3 +140,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ai: {fileID: 0}
   bloodSplatter: {fileID: 5165711370930780777}
+  splatterTextures:
+  - {fileID: 2800000, guid: ee81e2112fc0fb44da5cb6332407be42, type: 3}
+  - {fileID: 2800000, guid: c30bfc1c1811fdb429b8d098ee864ad5, type: 3}
+  - {fileID: 2800000, guid: 8d6e854c4bf62d645b6f65a044a742b7, type: 3}
+  - {fileID: 2800000, guid: 3ba4914895141244c9301e77800658e9, type: 3}

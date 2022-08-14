@@ -19,10 +19,12 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public CyborgAnimationStateController animationStateController;
     public Rigidbody rb;
     public Gun myGun;
-    public Health hp; 
+    public Health hp;
     public List<Condition> activeConditions = new List<Condition>();
 
     public float StartingHP;
+    public float CurrentHP; //For Debugging TODO: Add tool implementation
+
     public float maxSpeed;
     public float maxForce;
     public float score;
