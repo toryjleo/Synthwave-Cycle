@@ -23,7 +23,6 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public List<Condition> activeConditions = new List<Condition>();
 
     public float StartingHP;
-    public float CurrentHP; //TODO: Wrap with HP?
     public float maxSpeed;
     public float maxForce;
     public float score;
@@ -53,7 +52,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         }
         else //Alive
         {
-            CurrentHP = hp.HitPoints; // TODO: Wrap with HP 
+            
             if(target == null)
             {
                 Wander();
@@ -280,6 +279,11 @@ public abstract class Ai : SelfWorldBoundsDespawn
             cond.SetHostAi(this);
             activeConditions.Add(cond);
         }
+    }
+
+    public Health CurrentHP()
+    {
+        return hp;
     }
     #endregion & Setup
 }
