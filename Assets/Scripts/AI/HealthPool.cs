@@ -6,6 +6,8 @@ public class HealthPool : SelfDespawn
 {
     // Visuals
     private BikeScript player;
+    [SerializeField]
+    private CircleRendererScript circleRenderer;
     public int Spawndistance = 800;
     public int SpawnAngleRandomNess = 60;
     public float SizeofCylinder = 400;
@@ -65,6 +67,8 @@ public class HealthPool : SelfDespawn
         {
             // Shrink if player is in the pool
             Shrink(shrinkPerSecond * Time.deltaTime);
+            float leeway = 1.5f; // Make the circle a little larger than the hitbox
+            circleRenderer.DrawCircle(transform.position, 80, (transform.localScale.x / 2) + leeway);
         }
     }
 

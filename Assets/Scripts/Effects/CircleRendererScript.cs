@@ -15,16 +15,10 @@ public class CircleRendererScript : MonoBehaviour
         {
             Debug.LogError("CircleRendererScript cannot get reference to LineRenderer component!");
         }
-        DrawCircle(40, 1);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         
     }
 
-    void DrawCircle(int steps, float radius) 
+    public void DrawCircle(Vector3 center, int steps, float radius) 
     {
         lineRenderer.positionCount = steps + 1;
 
@@ -35,12 +29,12 @@ public class CircleRendererScript : MonoBehaviour
             float currentRadian = progressAroundPerimeter * 2 * Mathf.PI;
 
             float xScaled = Mathf.Cos(currentRadian);
-            float yScaled = Mathf.Sin(currentRadian);
+            float zScaled = Mathf.Sin(currentRadian);
 
             float x = xScaled * radius;
-            float y = yScaled * radius;
+            float z = zScaled * radius;
 
-            Vector3 currentPosition = new Vector3(x, y, 0);
+            Vector3 currentPosition = new Vector3(x, 0, z) + center;
 
             lineRenderer.SetPosition(currentStep, currentPosition);
         }
