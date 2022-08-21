@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Renders a circle. Expects a connected lineRenderer.
+/// </summary>
 public class CircleRendererScript : MonoBehaviour
 {
     private LineRenderer lineRenderer;
@@ -18,6 +21,12 @@ public class CircleRendererScript : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Draws a circle using a lineRenderer
+    /// </summary>
+    /// <param name="center"> The center of the circle to be drawn. </param>
+    /// <param name="steps"> How many sections the circle will be broken up in to. </param>
+    /// <param name="radius"> The radius of the circle to be drawn. </param>
     public void DrawCircle(Vector3 center, int steps, float radius) 
     {
         lineRenderer.positionCount = steps + 1;
