@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public delegate void NotifyDeath();  // delegate
@@ -20,7 +21,6 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public Rigidbody rb;
     public Gun myGun;
     public Health hp;
-    public List<Condition> activeConditions = new List<Condition>();
 
     public float StartingHP;
     public float CurrentHP; //For Debugging TODO: Add tool implementation
@@ -32,6 +32,9 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
     public event NotifyDeath DeadEvent; // event
 
+    private List<Action<Ai>> tickConditions = new List<Action<Ai>>();
+    private List<Action<Ai, float>> hitConditions = new List<Action<Ai, float>>();
+
 
     // Update is called once per frame
     public override void Update()
@@ -39,9 +42,9 @@ public abstract class Ai : SelfWorldBoundsDespawn
         base.Update();
         
         //update conditions
-        foreach(Condition cond in activeConditions)
+        foreach(Action<Ai> act in tickConditions)
         {
-            cond.Tick();
+            act(this);
         }
 
 
@@ -80,6 +83,17 @@ public abstract class Ai : SelfWorldBoundsDespawn
             }
         }
 
+    }
+
+    public void Hit(float damage)
+    {
+        Debug.Log("Ai Hit, hitConditions: " + hitConditions.Count);
+        foreach (Action<Ai, float> act in hitConditions)
+        {
+            act(this, damage);
+        }
+
+        hp.TakeDamage(damage);
     }
 
     public void Aim(Vector3 aimAt)
@@ -166,7 +180,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
         Vector3 forward = rb.transform.forward; //The normaized vector of which direction the RB is facing 
         Vector3 offset = new Vector3(0,0,1); //This is the random change vector that is uses to create natural wandering movement
-        Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
+        Quaternion ranRot = Quaternion.Euler(0, UnityEngine.Random.Range(0, 359), 0);
         forward *= 10;
         offset = ranRot * offset; 
 
@@ -270,15 +284,27 @@ public abstract class Ai : SelfWorldBoundsDespawn
     }// this restets the enemies HP and sets them to alive;
 
     /// <summary>
-    /// This method applies a condition to the AI (assuming it doesn't already have the condition)
+    /// This method applies a tick condition to the AI (assuming it doesn't already have the condition)
     /// </summary>
-    public void ApplyCondition(Condition cond)
+    public void AddTickCondition(TickCondition cond)
     {
-        if(!activeConditions.Contains(cond))
+        if(!tickConditions.Contains(cond.InflictEffect))
         {
-            cond.SetHostAi(this);
-            activeConditions.Add(cond);
+            tickConditions.Add(cond.InflictEffect);
         }
     }
+
+    /// <summary>
+    /// This method applies a hit condition to the AI (assuming it doesn't already have the condition)
+    /// </summary>
+    public void AddHitCondition(HitCondition cond)
+    {
+        if (!hitConditions.Contains(cond.InflictEffect))
+        {
+            hitConditions.Add(cond.InflictEffect);
+        }
+    }
+
+
     #endregion & Setup
 }

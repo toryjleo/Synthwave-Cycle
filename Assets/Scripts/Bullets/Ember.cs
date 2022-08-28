@@ -19,7 +19,6 @@ public class Ember : Bullet
 
     protected override void Move()
     {
-        Debug.Log("Ember move");
         if(!collided)
         {
             transform.position -= new Vector3(0, DROP_RATE * Time.deltaTime, 0);
@@ -35,13 +34,11 @@ public class Ember : Bullet
         }
         if (other.gameObject.tag == "Enemy")
         {
-            Debug.Log("Ember hit!");
             Ai hitAi = other.GetComponentInChildren<Ai>();
             if(hitAi)
             {
-                Debug.Log("Applying condition!");
                 Burning burn = new Burning(10f, 200f);
-                hitAi.ApplyCondition(burn);
+                hitAi.AddTickCondition(burn);
             }
         }
     }

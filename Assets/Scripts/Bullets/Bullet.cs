@@ -90,12 +90,12 @@ public abstract class Bullet : SelfWorldBoundsDespawn
         if (!alreadyHit.Contains(other))
         {
             alreadyHit.Add(other);
-            Health otherHealth = other.GetComponentInChildren<Health>();
-            if (otherHealth == null)
+            Ai otherAi = other.GetComponentInChildren<Ai>();
+            if (otherAi == null)
             {
-                Debug.LogError("Object does not have Health component: " + gameObject.name);
+                Debug.LogError("Object does not have Ai component: " + gameObject.name);
             }
-            otherHealth.TakeDamage(damageDealt);
+            otherAi.Hit(damageDealt);
             if (overPenetrates)
             {
                 OnDespawn();

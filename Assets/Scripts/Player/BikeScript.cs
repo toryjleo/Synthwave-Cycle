@@ -71,9 +71,14 @@ public class BikeScript : MonoBehaviour
     private void Awake()
     {
         Init();
-
-        // TODO: make this less gross. Update gun/equip code
-        InitializeStartingGun();
+        if (currentGun != null)
+        {
+            EquipGun(currentGun);
+        }
+        else
+        {
+            EquipGun(bikeGun);
+        }
     }
 
 
@@ -139,11 +144,6 @@ public class BikeScript : MonoBehaviour
         currentGun.BulletShot += movementComponent.bl_ProcessCompleted;
     }
 
-    /// <summary>Initialize the gun for the player to start with.</summary>
-    private void InitializeStartingGun()
-    {
-        EquipGun(bikeGun);
-    }
 
     /// <summary>Set current gun back to the bike's default weapon</summary>
     public void EquipBikeGun()

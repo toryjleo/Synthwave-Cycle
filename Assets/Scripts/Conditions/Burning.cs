@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>Burning condition damages enemies on a set tick rate</summary>
-public class Burning : Condition
+public class Burning : TickCondition
 {
     protected float fireDamage = 10f;
 
@@ -14,9 +14,11 @@ public class Burning : Condition
     }
 
 
-    internal override void InflictEffect()
+    internal override void InflictEffect(Ai host)
     {
-        //Debug.Log("Fire Damage Tick!");
-        hostAi.hp.TakeDamage(fireDamage);
+        if (CheckTick())
+        {
+            host.hp.TakeDamage(fireDamage);
+        }
     }
 }
