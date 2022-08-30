@@ -43,7 +43,7 @@ public class BloodSplatter : MonoBehaviour
     }
 
 
-    public void Init() 
+    public void HideBlood() 
     {
         meshRenderer.enabled = false;
     }

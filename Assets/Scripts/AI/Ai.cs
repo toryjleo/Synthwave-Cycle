@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public delegate void NotifyDeath();  // delegate
-
+public delegate void NotifyRespawn();
 
 public abstract class Ai : SelfWorldBoundsDespawn
 {
@@ -32,6 +32,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public bool alive;
 
     public event NotifyDeath DeadEvent; // event
+    public event NotifyRespawn RespawnEvent; // event
 
 
     // Update is called once per frame
@@ -101,22 +102,16 @@ public abstract class Ai : SelfWorldBoundsDespawn
         {
             // Notify all listeners that this AI has died
             DeadEvent?.Invoke();
-
-
             animationStateController.TriggerDeathA();
             rb.detectCollisions = false;
             animationStateController.SetAlive(false);
             alive = false;
 
-
             if (myGun != null)
             {
                 myGun.StopAllCoroutines();
             }
-
         }
- 
-
     }
     /// <summary>
     /// This method is called when the entitiy wants to attack. Checks if it has a gun 
@@ -266,6 +261,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     {
         alive = true;
         hp.Init(StartingHP);
+        RespawnEvent?.Invoke();
         animationStateController.SetAlive(true);
         rb.detectCollisions = true;
         rb.constraints = RigidbodyConstraints.FreezePositionY;
