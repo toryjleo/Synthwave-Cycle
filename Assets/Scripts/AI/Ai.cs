@@ -24,6 +24,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
     public float StartingHP;
     public float CurrentHP; //For Debugging TODO: Add tool implementation
+
     public float maxSpeed;
     public float maxForce;
     public float score;
@@ -45,6 +46,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         }
 
 
+
         //Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
@@ -52,7 +54,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         }
         else //Alive
         {
-            CurrentHP = hp.HitPoints;
+            
             if(target == null)
             {
                 Wander();
@@ -266,7 +268,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         hp.Init(StartingHP);
         animationStateController.SetAlive(true);
         rb.detectCollisions = true;
-        rb.constraints = RigidbodyConstraints.None;
+        rb.constraints = RigidbodyConstraints.FreezePositionY;
     }// this restets the enemies HP and sets them to alive;
 
     /// <summary>
@@ -279,6 +281,11 @@ public abstract class Ai : SelfWorldBoundsDespawn
             cond.SetHostAi(this);
             activeConditions.Add(cond);
         }
+    }
+
+    public Health CurrentHP()
+    {
+        return hp;
     }
     #endregion & Setup
 }
