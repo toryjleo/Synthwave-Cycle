@@ -23,7 +23,6 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public List<Condition> activeConditions = new List<Condition>();
 
     public float StartingHP;
-    public float CurrentHP; //For Debugging TODO: Add tool implementation
 
     public float maxSpeed;
     public float maxForce;
