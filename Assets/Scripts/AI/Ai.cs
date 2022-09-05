@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public delegate void NotifyDeath();  // delegate
+public delegate void NotifyRespawn();
 
-/// <summary>
-/// This is the base AI class for all enemies.
-/// </summary>
 public abstract class Ai : SelfWorldBoundsDespawn
 {
 
@@ -27,7 +25,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public List<Condition> activeConditions = new List<Condition>();
 
     public float StartingHP;
-    public float CurrentHP; //For Debugging TODO: Add tool implementation
+
     public float maxSpeed;
     public float maxForce;
     public float score;
@@ -35,6 +33,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public bool alive;
 
     public event NotifyDeath DeadEvent; // event
+    public event NotifyRespawn RespawnEvent; // event
 
     #endregion
 
@@ -53,6 +52,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         }
 
 
+
         //Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
@@ -60,7 +60,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         }
         else //Alive
         {
-            CurrentHP = hp.HitPoints;
+
             if(target == null)
             {
                 Wander();
@@ -101,21 +101,16 @@ public abstract class Ai : SelfWorldBoundsDespawn
         {
             // Notify all listeners that this AI has died
             DeadEvent?.Invoke();
-
-
             animationStateController.TriggerDeathA();
             rb.detectCollisions = false;
             animationStateController.SetAlive(false);
             alive = false;
 
-
             if (myGun != null)
             {
                 myGun.StopAllCoroutines();
             }
-
         }
-
     }
     /// <summary>
     /// This method is called when the entitiy wants to attack. Checks if it has a gun
@@ -282,9 +277,10 @@ public abstract class Ai : SelfWorldBoundsDespawn
     {
         alive = true;
         hp.Init(StartingHP);
+        RespawnEvent?.Invoke();
         animationStateController.SetAlive(true);
         rb.detectCollisions = true;
-        rb.constraints = RigidbodyConstraints.None;
+        rb.constraints = RigidbodyConstraints.FreezePositionY;
     }// this restets the enemies HP and sets them to alive;
 
     /// <summary>
@@ -297,6 +293,11 @@ public abstract class Ai : SelfWorldBoundsDespawn
             cond.SetHostAi(this);
             activeConditions.Add(cond);
         }
+    }
+
+    public Health CurrentHP()
+    {
+        return hp;
     }
     #endregion & Setup
 }

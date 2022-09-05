@@ -25,15 +25,17 @@ public enum Guns
 
 public class ObjectPool : MonoBehaviour
 {
-
+    /// <summary>
+    /// Creates a single Pool of objects for Enemies, each with their own Enemy Tag, prefab, and predetermined size.
+    /// </summary>
     [System.Serializable]
     public class Pool //One individual pool of objects that has a tag, a prefab, and a size 
     {
-        public string tag;
+        public Enemy tag;
         public GameObject prefab;
         public int size;
 
-        public Pool(string Tag, GameObject Prefab, int Size)
+        public Pool(Enemy Tag, GameObject Prefab, int Size)
         {
             tag = Tag;
             prefab = Prefab;
@@ -50,14 +52,14 @@ public class ObjectPool : MonoBehaviour
 
 
     public List<Pool> pools; //Pools
-    public Dictionary<string,Queue<GameObject>> poolDictionary; //These are the keys 
+    public Dictionary<Enemy,Queue<GameObject>> poolDictionary; //These are the keys 
 
 
     //Creates Pools for each object type 
     void Start()
     {   
         //Create Dictionary of tags for each if the pools
-        poolDictionary = new Dictionary<string, Queue<GameObject>>();
+        poolDictionary = new Dictionary<Enemy, Queue<GameObject>>();
 
         
 
@@ -88,7 +90,7 @@ public class ObjectPool : MonoBehaviour
         //Debug.Log("Despawned, Size of queue: " + bulletQueue.Count);
     }
 
-    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    public GameObject SpawnFromPool(Enemy tag, Vector3 position, Quaternion rotation)
     {
         if (!poolDictionary.ContainsKey(tag))
         {
@@ -98,7 +100,7 @@ public class ObjectPool : MonoBehaviour
 
         GameObject objectToSpawn = poolDictionary[tag].Dequeue();
 
-        
+
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
         objectToSpawn.SetActive(true);

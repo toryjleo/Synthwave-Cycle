@@ -1065,7 +1065,9 @@ MonoBehaviour:
   rb: {fileID: 2579800540101835106}
   myGun: {fileID: 5850231802911460637}
   hp: {fileID: 0}
+  activeConditions: []
   StartingHP: 0
+  CurrentHP: 0
   maxSpeed: 0
   maxForce: 0
   score: 0
@@ -1423,7 +1425,7 @@ Transform:
   m_GameObject: {fileID: 8037286657418295505}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -3.2, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2179842566602871690}
   - {fileID: 6080875204228315133}
