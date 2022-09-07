@@ -24,8 +24,7 @@ public class EmmissiveBikeScript : MonoBehaviour
     /// </summary>
     private void GetSingleInstanceOfMat() 
     {
-        //newSharedInstance = new Material(emissiveMaterial);
-        newSharedInstance = emissiveMaterial;
+        newSharedInstance = new Material(emissiveMaterial);
         foreach (Renderer emissiveObject in emissiveObjects) 
         {
             emissiveObject.sharedMaterial = newSharedInstance;
