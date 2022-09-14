@@ -40,7 +40,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// This will spawn an enemy of a specific type and then returns that enemy 
+    /// This will spawn an enemy of a specific type and then returns that enemy
     /// </summary>
     /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enenemy Type, AI type, and Gun loadout
     public Ai SpawnNewEnemy(Enemy type)

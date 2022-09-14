@@ -309,7 +309,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 834246066551d7f41ac27e763d655abe, type: 2}
+  - {fileID: 2100000, guid: 92634080070ee4946a84af8d0ae0083e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1372,7 +1372,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c400e969444e8df4a88763e386ac4b22, type: 2}
+  - {fileID: 2100000, guid: 66f0e60c51d4de8428587a74775f3b8b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1514,7 +1514,7 @@ Animator:
   m_GameObject: {fileID: 2023548184350315101}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: d0196a0e0d1ba7147adff8c5bb4e1e14, type: 3}
-  m_Controller: {fileID: 9100000, guid: 6b4229a99e1286f4ebba4e16379a0090, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1535,11 +1535,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6675fd315cbde074a8ff6f7be406ac4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetVec: {x: 0, y: 0, z: 0}
-  location: {x: 0, y: 0, z: 0}
   target: {fileID: 0}
+  animationStateController: {fileID: 0}
   rb: {fileID: 0}
+  myGun: {fileID: 0}
+  hp: {fileID: 0}
+  activeConditions: []
+  StartingHP: 0
+  maxSpeed: 0
+  maxForce: 0
+  score: 0
   attackRange: 0
+  alive: 0
+  muzzleLocation: {fileID: 0}
 --- !u!54 &553675284044195953
 Rigidbody:
   m_ObjectHideFlags: 0
