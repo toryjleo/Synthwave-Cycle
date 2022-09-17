@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public delegate void NotifyDeath();  // delegate
-
+public delegate void NotifyRespawn();
 
 public abstract class Ai : SelfWorldBoundsDespawn
 {
@@ -15,8 +15,6 @@ public abstract class Ai : SelfWorldBoundsDespawn
         //TODO: Add Logic here to make sure Entity either remains in the pool or becomes a new entity
     }
 
-
-
     public GameObject target;
     public CyborgAnimationStateController animationStateController;
     public Rigidbody rb;
@@ -25,6 +23,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public List<Condition> activeConditions = new List<Condition>();
 
     public float StartingHP;
+
     public float maxSpeed;
     public float maxForce;
     public float score;
@@ -32,7 +31,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public bool alive;
 
     public event NotifyDeath DeadEvent; // event
-
+    public event NotifyRespawn RespawnEvent; // event
 
 
     // Update is called once per frame
@@ -47,15 +46,15 @@ public abstract class Ai : SelfWorldBoundsDespawn
         }
 
 
+
         //Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
-            
-            die();
-           
+            Die();
         }
         else //Alive
         {
+            
             if(target == null)
             {
                 Wander();
@@ -93,39 +92,25 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// <summary>
     /// This method plays a death animation and the deactivates the enemy
     /// </summary>
-    public void die()
+    public void Die()
     {
-        rb.constraints = RigidbodyConstraints.FreezePosition;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
       
 
         if (alive == true)
         {
             // Notify all listeners that this AI has died
             DeadEvent?.Invoke();
-
-
             animationStateController.TriggerDeathA();
             rb.detectCollisions = false;
             animationStateController.SetAlive(false);
             alive = false;
 
-
             if (myGun != null)
             {
                 myGun.StopAllCoroutines();
             }
-
         }
-        
-        
-
-
-
-        
-        
-
-       
-
     }
     /// <summary>
     /// This method is called when the entitiy wants to attack. Checks if it has a gun 
@@ -251,11 +236,11 @@ public abstract class Ai : SelfWorldBoundsDespawn
     #endregion
 
     #region Getters & Setters
-    public bool isAlive()
+    public bool IsAlive()
     {
         return alive;
     }
-    public float getScore()
+    public float GetScore()
     {
         return score;
     }
@@ -263,7 +248,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// This method sets the target of the entity TODO: Will eventually equip a gun?
     /// </summary>
     /// <param name="targ"></param>
-    public void Loadout(GameObject targ)//sets the target of the entity and equips the gun
+    public void SetTarget(GameObject targ)//sets the target of the entity and equips the gun
     {
         target = targ;
         //myGun = gunToEquip;
@@ -275,6 +260,10 @@ public abstract class Ai : SelfWorldBoundsDespawn
     {
         alive = true;
         hp.Init(StartingHP);
+        RespawnEvent?.Invoke();
+        animationStateController.SetAlive(true);
+        rb.detectCollisions = true;
+        rb.constraints = RigidbodyConstraints.FreezePositionY;
     }// this restets the enemies HP and sets them to alive;
 
     /// <summary>
@@ -287,6 +276,11 @@ public abstract class Ai : SelfWorldBoundsDespawn
             cond.SetHostAi(this);
             activeConditions.Add(cond);
         }
+    }
+
+    public Health CurrentHP()
+    {
+        return hp;
     }
     #endregion & Setup
 }

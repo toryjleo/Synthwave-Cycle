@@ -43,7 +43,7 @@ public class BloodSplatter : MonoBehaviour
     }
 
 
-    public void Init() 
+    public void HideBlood() 
     {
         meshRenderer.enabled = false;
     }
@@ -88,7 +88,6 @@ public class BloodSplatter : MonoBehaviour
             timeSinceBloodSpilled += (Time.deltaTime / 100);
             float poolIncrease = (Mathf.Log(timeSinceBloodSpilled * .5f + 1f)) * 7;
             material.SetFloat(_AlphaMaskScale, Mathf.Clamp(alphaMaskCurScale + poolIncrease, .3f, alphaMaskMaxScale));
-            Debug.Log(timeSinceBloodSpilled + ", " + alphaMaskCurScale + poolIncrease);
         }
     }
 

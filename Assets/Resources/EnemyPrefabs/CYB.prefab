@@ -236,7 +236,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c400e969444e8df4a88763e386ac4b22, type: 2}
+  - {fileID: 2100000, guid: 66f0e60c51d4de8428587a74775f3b8b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -361,7 +361,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 834246066551d7f41ac27e763d655abe, type: 2}
+  - {fileID: 2100000, guid: 92634080070ee4946a84af8d0ae0083e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -502,7 +502,7 @@ Transform:
   m_GameObject: {fileID: 3874834856194593562}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -3.2, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3874834857648408913}
   - {fileID: 3874834855978255114}
@@ -1370,6 +1370,7 @@ MonoBehaviour:
   rb: {fileID: 3874834857555224720}
   myGun: {fileID: 250586739251281370}
   hp: {fileID: 0}
+  activeConditions: []
   StartingHP: 0
   maxSpeed: 0
   maxForce: 0
