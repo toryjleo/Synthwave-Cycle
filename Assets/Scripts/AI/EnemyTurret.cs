@@ -58,8 +58,7 @@ public class EnemyTurret : Gun
         //var angle = Mathf.Atan2(target.transform.position.x, target.transform.position.z) * Mathf.Rad2Deg;
 
         transform.LookAt(target.transform.position, Vector3.up);
-        //transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
-        //transform.Rotate(Vector3.up, steerRate);
+        
 
     }
 }

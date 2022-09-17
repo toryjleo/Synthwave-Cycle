@@ -85,11 +85,9 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
         if (alive == true)
         {
-            // Notify all listeners that this AI has died
+            //Notify all listeners that this AI has died
             DeadEvent?.Invoke();
-
-
-            animationStateController.TriggerDeathA();
+            animationStateController.TriggerDeathA();//TODO: add catch
             rb.detectCollisions = false;
             animationStateController.SetAlive(false);
             alive = false;
@@ -106,7 +104,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// <summary>
     /// This method is called when the entitiy wants to attack. Checks if it has a gun
     /// </summary>
-    public void Attack()
+    public virtual void Attack()
     {
         if (myGun != null && myGun.CanShootAgain() && alive)
         {

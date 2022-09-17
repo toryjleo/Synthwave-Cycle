@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00918fb0155c1d54dabccf0663cee456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 0}
-  muzzle1: {fileID: 0}
+  bulletPrefab: {fileID: 1463605476535994620, guid: fe41a6c58344d5f4e9c070825c6717cc, type: 3}
+  muzzle1: {fileID: 5533768979816693145}
   target: {fileID: 0}
 --- !u!1001 &4069202399462012402
 PrefabInstance:
@@ -88,5 +88,10 @@ PrefabInstance:
 --- !u!1 &3937458171360331800 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1070765298769853930, guid: 20b553fdc99502f4ab899e54e647d0ee, type: 3}
+  m_PrefabInstance: {fileID: 4069202399462012402}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5533768979816693145 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8409156827372390507, guid: 20b553fdc99502f4ab899e54e647d0ee, type: 3}
   m_PrefabInstance: {fileID: 4069202399462012402}
   m_PrefabAsset: {fileID: 0}

@@ -5,7 +5,7 @@ using UnityEngine;
 public class BikeAI : Ai
 {
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
-
+    public EnemyTurret turret;
     public GameObject[] trackingPoints;
     public override void Init()
     {
@@ -13,15 +13,21 @@ public class BikeAI : Ai
         StartingHP = 40;
         score = 300;
         maxSpeed = 100;
-        attackRange = 5;
+        attackRange = 50;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
         this.Despawn += op_ProcessCompleted;
         hp.Init(StartingHP);
-
         trackingPoints = GameObject.FindGameObjectsWithTag("TrackerChild");
 
+        //Initializes Turret 
+        if (GetComponentInChildren<EnemyTurret>() != null)
+        {
+            turret = GetComponentInChildren<EnemyTurret>();
+            turret.Init();
+            //turret.BulletShot += bl_ProcessCompleted;
+        }
 
 
 
@@ -68,6 +74,11 @@ public class BikeAI : Ai
     }
 
     //stats used in construction
+
+    public override void Attack()
+    {
+        turret.Shoot(rb.velocity);
+    }
 
     public float hitpoints
     {
