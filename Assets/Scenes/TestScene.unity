@@ -888,6 +888,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 281125569, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
+      propertyPath: Priority
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281125569, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
+      propertyPath: m_Volume
+      value: 0.034
+      objectReference: {fileID: 0}
+    - target: {fileID: 1805576751, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
+      propertyPath: Priority
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1805576751, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
+      propertyPath: m_Volume
+      value: 0.078
+      objectReference: {fileID: 0}
     - target: {fileID: 3820667865579537716, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
       propertyPath: m_Name
       value: JukeBox
