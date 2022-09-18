@@ -57,7 +57,7 @@ public abstract class MovementComponent : MonoBehaviour
     /// Depended on Mesh Of Prefab, this will yeild, the FORWARD Direction
     /// </summary>
     /// <returns></returns>
-    public Vector3 ForwardVector()
+    public virtual Vector3 ForwardVector()
     {
         return new Vector3(-MeshParent.transform.right.x, MeshParent.transform.right.y, -MeshParent.transform.right.z);
     }

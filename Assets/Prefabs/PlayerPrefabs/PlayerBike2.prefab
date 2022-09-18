@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MeshParent: {fileID: 1386951459658203378}
-  MeshChild: {fileID: 1835853794373737885}
+  MeshChild: {fileID: 1546176323811278948}
   rb: {fileID: 2141739292}
   health: {fileID: 91802621}
   verticalInput: 0
@@ -468,14 +468,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+--- !u!1 &1546176323811278948 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1546176323357348353, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+  m_PrefabInstance: {fileID: 1026658917}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8778939077874034419 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8778939078055539862, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
-  m_PrefabInstance: {fileID: 1026658917}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1835853794373737885 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1835853794555105272, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
   m_PrefabInstance: {fileID: 1026658917}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &91802621 stripped
@@ -483,7 +483,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 944331160, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
   m_PrefabInstance: {fileID: 1026658917}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1835853794373737885}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}

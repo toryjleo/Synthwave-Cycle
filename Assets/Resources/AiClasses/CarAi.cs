@@ -5,24 +5,43 @@ using UnityEngine;
 public class CarAi : Ai
 {
 
-    private MovementComponent movementComponent;
+    private CarMovementComponent movementComponent;
     public override void Init()
     {
+        alive = true;
+        StartingHP = 100;
+        score = 300;
+        maxSpeed = 100;
+        attackRange = 30;
+
+        hp = GetComponentInChildren<Health>();
+        rb = GetComponent<Rigidbody>();
+        this.Despawn += op_ProcessCompleted;
+        hp.Init(StartingHP);
         
+
     }
-
-
 
     // Start is called before the first frame update
     void Awake()
     {
-        movementComponent = GetComponent<MovementComponent>();
+        movementComponent = GetComponent<CarMovementComponent>();
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Move(Vector3 target)
     {
-        float fowardAmount = 0;
-        float turnAmount = 0f;
+        Vector3 desiredVec = target - rb.transform.position;
+
+        float x = 0f;
+        float z = 0f;
+
+        float dot = Vector3.Dot(movementComponent.ForwardVector(), desiredVec);
+
+
+        print(dot);
+        
+        movementComponent.control(x, z);
     }
+  
 }
