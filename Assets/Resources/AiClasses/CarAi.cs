@@ -5,16 +5,18 @@ using UnityEngine;
 public class CarAi : Ai
 {
 
-    private BikeMovementComponent movementComponent;
+    private MovementComponent movementComponent;
     public override void Init()
     {
         
     }
 
+
+
     // Start is called before the first frame update
     void Awake()
     {
-        movementComponent = GetComponent<BikeMovementComponent>();
+        movementComponent = GetComponent<MovementComponent>();
     }
 
     // Update is called once per frame

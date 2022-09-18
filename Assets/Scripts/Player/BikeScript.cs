@@ -133,7 +133,7 @@ public class BikeScript : MonoBehaviour
 
         this.currentGun = gunToEquip;
         // Make gun child of TracerMeshParent
-        currentGun.transform.parent = movementComponent.bikeMeshParent.transform;
+        currentGun.transform.parent = movementComponent.MeshParent.transform;
 
         // Hook up event
         currentGun.BulletShot += movementComponent.bl_ProcessCompleted;

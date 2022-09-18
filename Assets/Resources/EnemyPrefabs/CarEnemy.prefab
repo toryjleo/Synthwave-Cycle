@@ -46,13 +46,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54bcd5d5e131bf34c9f131e9e58b986c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bikeMeshParent: {fileID: 7451586931672031094}
-  bikeMeshChild: {fileID: 1096021110275958863}
-  appliedForce: {x: 0, y: 0, z: 0}
+  MeshParent: {fileID: 7451586931672031094}
+  MeshChild: {fileID: 1096021110275958863}
   rb: {fileID: 5596625525561022962}
+  health: {fileID: 0}
+  verticalInput: 0
+  horizontalInput: 0
+  appliedForce: {x: 0, y: 0, z: 0}
   MoveSpeed: 100
   Traction: 80
+  dragCoefficient: 0.98
   SteerAngle: 2
+  maxLean: 40
 --- !u!114 &8586306528787280163
 MonoBehaviour:
   m_ObjectHideFlags: 0
