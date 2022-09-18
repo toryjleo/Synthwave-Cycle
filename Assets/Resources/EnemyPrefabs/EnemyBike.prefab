@@ -109,6 +109,7 @@ MonoBehaviour:
   attackRange: 1
   alive: 0
   muzzleLocation: {fileID: 0}
+  turret: {fileID: 0}
   trackingPoints: []
 --- !u!54 &2456476443549810091
 Rigidbody:

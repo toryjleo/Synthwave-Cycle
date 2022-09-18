@@ -19,6 +19,8 @@ public class BikeMovementComponent : MonoBehaviour
     // Dictates movement speed
     private Health health;
 
+    private float verticalInput;
+    private float horizontalInput;
 
     public float MoveSpeed = 100; //The speed of the bike 
     public float Traction = 3; //How slippy the bike is when turning 
@@ -62,6 +64,8 @@ public class BikeMovementComponent : MonoBehaviour
 
     private void FixedUpdate()
     {
+        verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = Input.GetAxis("Horizontal");
         ApplyForces();
     }
 
@@ -80,6 +84,7 @@ public class BikeMovementComponent : MonoBehaviour
 
     public Vector3 ForwardVector()
     {
+        
         return new Vector3(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.y, -bikeMeshParent.transform.right.z);
     }
 
@@ -92,11 +97,11 @@ public class BikeMovementComponent : MonoBehaviour
 
 
         //Movement Forward and Back and applies velocity 
-        appliedForce += ForwardVector().normalized * Acceleration * Input.GetAxis("Vertical") * Time.fixedDeltaTime;
+        appliedForce += ForwardVector().normalized * Acceleration * verticalInput * Time.fixedDeltaTime;
 
 
         //Steering Takes Horizontal Input and rotates both 
-        float steerInupt = Input.GetAxis("Horizontal");
+        float steerInupt = horizontalInput;
         bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInupt, 0, 0);
         bikeMeshParent.transform.Rotate(Vector3.up * steerInupt * (appliedForce.magnitude + 100) * Time.fixedDeltaTime);
 
