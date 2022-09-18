@@ -13,7 +13,7 @@ public class BikeAI : Ai
         StartingHP = 40;
         score = 300;
         maxSpeed = 100;
-        attackRange = 50;
+        attackRange = 30;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
@@ -78,6 +78,11 @@ public class BikeAI : Ai
     public override void Attack()
     {
         turret.Shoot(rb.velocity);
+    }
+
+    public override void Aim(Vector3 aimAt)
+    {
+        
     }
 
     public float hitpoints

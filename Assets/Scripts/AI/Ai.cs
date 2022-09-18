@@ -70,7 +70,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
     }
 
-    public void Aim(Vector3 aimAt)
+    public virtual void Aim(Vector3 aimAt)
     {
         transform.LookAt(aimAt);
     }

@@ -704,6 +704,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 91802620, guid: a8b26bd453659d24c82fcb6aba829898, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1386951459658203378, guid: a8b26bd453659d24c82fcb6aba829898, type: 3}
       propertyPath: m_TagString
       value: TracerMeshParent
