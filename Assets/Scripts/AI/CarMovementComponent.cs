@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class CarMovementComponent : MovementComponent
 {
+    public void Start()
+    {
+        MoveSpeed = 50;
+        Traction = 10;
+        SteerAngle = 4;
+    }
+
     public override void ApplyForces()
     {
         //Movement Forward and Back and applies velocity 

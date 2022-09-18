@@ -11,11 +11,11 @@ public class CarAi : Ai
         alive = true;
         StartingHP = 100;
         score = 300;
-        maxSpeed = 100;
         attackRange = 30;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
+
         this.Despawn += op_ProcessCompleted;
         hp.Init(StartingHP);
         
@@ -32,16 +32,35 @@ public class CarAi : Ai
     public override void Move(Vector3 target)
     {
         Vector3 desiredVec = target - rb.transform.position;
-
-        float x = 0f;
+        float distanceToTarget = desiredVec.magnitude;
+        float reachTargetDistance = 7f;
         float z = 0f;
 
-        float dot = Vector3.Dot(movementComponent.ForwardVector(), desiredVec);
+        if(distanceToTarget > reachTargetDistance)
+        {
+            desiredVec = desiredVec.normalized;
 
 
-        print(dot);
+            float dot = Vector3.Dot(movementComponent.ForwardVector(), desiredVec); //This dot protduct returns -1 to 1 if the car is behind to infront of the target. 
+
+            float angleToDir = Vector3.SignedAngle(movementComponent.ForwardVector(), desiredVec, Vector3.up);
+
+            if (angleToDir > 0)
+            {
+                z = 1;
+            }
+            else
+            {
+                z = -1;
+            }
+
+            Debug.Log(angleToDir);
+
+            movementComponent.control(dot, z);
+        }
+
+
         
-        movementComponent.control(x, z);
     }
   
 }
