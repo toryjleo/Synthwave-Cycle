@@ -35,28 +35,40 @@ public class CarAi : Ai
         float distanceToTarget = desiredVec.magnitude;
         float reachTargetDistance = 7f;
         float z = 0f;
+        float deadZone = 5;
 
         if(distanceToTarget > reachTargetDistance)
         {
             desiredVec = desiredVec.normalized;
-
-
+            
+            //Values 
             float dot = Vector3.Dot(movementComponent.ForwardVector(), desiredVec); //This dot protduct returns -1 to 1 if the car is behind to infront of the target. 
-
             float angleToDir = Vector3.SignedAngle(movementComponent.ForwardVector(), desiredVec, Vector3.up);
 
-            if (angleToDir > 0)
+            if (angleToDir > deadZone)
             {
                 z = 1;
             }
-            else
+            else if (angleToDir < -deadZone)
             {
                 z = -1;
+            } else
+            {
+                z = 0;
             }
 
             Debug.Log(angleToDir);
 
-            movementComponent.control(dot, z);
+            
+
+            if (distanceToTarget < attackRange)
+            {
+                movementComponent.control(dot, z);
+            } else
+            {
+                movementComponent.control(1, z);
+            }
+           
         }
 
 
