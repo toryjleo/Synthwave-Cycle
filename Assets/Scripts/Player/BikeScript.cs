@@ -32,11 +32,16 @@ public class BikeScript : MonoBehaviour
 
     // TODO: see if we can make attribute
     /// <summary>This method gets the direction the bike's mesh is currently facing in world coordinates.</summary>
-    /// <returns>A Vector3 of the bike's forward vector in world coordinates. The Vector's x represents the x direction 
+    /// <returns>A Vector3 of the bike's forward vector in world coordinates. The Vector's x represents the x direction
     /// in world coordinates and the vector's y represents the z direction in world coordinates.</returns>
     public Vector3 ForwardVector()
     {
         return movementComponent.ForwardVector();
+    }
+
+    public Vector3 GetForwardVector()
+    {
+        return ForwardVector();
     }
 
     #region Camera
@@ -45,22 +50,22 @@ public class BikeScript : MonoBehaviour
     public GameObject cameraFollower;
 
     // Height of the empty object the camera follows
-    public float FollowerHeight 
+    public float FollowerHeight
     {
-        get 
+        get
         {
             return cameraFollower.transform.position.y;
         }
-        set 
+        set
         {
             cameraFollower.transform.position = new Vector3(cameraFollower.transform.position.x, value, cameraFollower.transform.position.z);
         }
     }
 
     // Returns the transform of the empty object the camera follows
-    public Transform CameraFollower 
+    public Transform CameraFollower
     {
-        get 
+        get
         {
             return cameraFollower.transform;
         }
@@ -118,11 +123,11 @@ public class BikeScript : MonoBehaviour
 
     #region GunCode
     /// <summary>Equips the gun to the bike.</summary>
-    /// <param name="gunToEquip">The gun which will be hooked up to the bike's bl_ProcessCompleted. Will be set as a 
+    /// <param name="gunToEquip">The gun which will be hooked up to the bike's bl_ProcessCompleted. Will be set as a
     /// child of bikeMeshParent.</param>
-    public void EquipGun(Gun gunToEquip) 
+    public void EquipGun(Gun gunToEquip)
     {
-        if (currentGun != null) 
+        if (currentGun != null)
         {
             // Remove event handled from current gun
             currentGun.BulletShot -= movementComponent.bl_ProcessCompleted;
@@ -177,15 +182,15 @@ public class BikeScript : MonoBehaviour
     }
 
 
-    /// <summary>Sets the bike's emission material color to a specific color if the bike is or is not pointing at a 
+    /// <summary>Sets the bike's emission material color to a specific color if the bike is or is not pointing at a
     /// healthpool.</summary>
     private void UpdateBikeEmission()
     {
-        if (HealthPoolCheck()) 
+        if (HealthPoolCheck())
         {
             emissiveBike.SetHPDistance(distanceToHP, consecutiveDistanceToHP);
         }
-        else 
+        else
         {
             emissiveBike.SetNotAheadColor();
         }

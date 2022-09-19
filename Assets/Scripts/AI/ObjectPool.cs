@@ -8,6 +8,7 @@ public enum Enemy
     Grunt,
     Rifleman,
     Ranger,
+    Bike,
     Sniper,
     Dog,
     Cactus
