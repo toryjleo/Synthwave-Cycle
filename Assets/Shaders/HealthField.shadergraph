@@ -3142,7 +3142,7 @@
     },
     "m_Name": "ScanlinePos",
     "m_DefaultReferenceName": "Vector1_7d4d896136c8407fac5d2f2a44614805",
-    "m_OverrideReferenceName": "",
+    "m_OverrideReferenceName": "ScanlinePos",
     "m_GeneratePropertyBlock": true,
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
