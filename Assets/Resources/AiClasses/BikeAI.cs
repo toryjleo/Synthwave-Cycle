@@ -2,16 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This is the Ai component used by the bikes. It has a unique movement component and TODO: Will be adding a ramming feature and gun on these bikes
+/// </summary>
 public class BikeAI : Ai
 {
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
+
     public EnemyTurret turret;
     public GameObject[] trackingPoints;
+
+
+    public float Hitpoints
+    {
+        get => hp.HitPoints;
+    }
+
+
+    void Awake()
+    {
+        Init();
+    }
+    
+    public Vector3 velocity;
+    public Vector3 STR;
+    public Vector3 TRG;
+    public Vector3 offset;
+
     public override void Init()
     {
         alive = true;
         StartingHP = 40;
         score = 300;
+
         maxSpeed = 100;
         attackRange = 30;
 
@@ -45,6 +68,7 @@ public class BikeAI : Ai
         #endregion
     }
 
+
     public GameObject findNearestTrackingPoint()
     {
         GameObject nearestTrackingPoint = null;
@@ -61,11 +85,34 @@ public class BikeAI : Ai
                 nearestTrackingPoint = ty;
             }
         }
+
+    /// <summary>
+    /// This is a custom move method for the bikes since they will move vastly differently from other AI
+    /// </summary>
+    /// <param name="t"></param>
+    public override void Move(Vector3 t)
+    {
+        BikeMovementComponent bmc = target.GetComponent<BikeMovementComponent>();
+
+        Vector3 desiredVec = t - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
+        float dMag = desiredVec.magnitude;
+        desiredVec.Normalize();
+        Vector3 BikeForward = bmc.ForwardVector();
+
         
+
 
 
         return nearestTrackingPoint;
     }
+
+
+        transform.LookAt(t);
+
+
+        if (dMag < maxSpeed)
+        {
+            desiredVec *= dMag;
 
 
     public override void Move(Vector3 target)
@@ -85,15 +132,8 @@ public class BikeAI : Ai
         
     }
 
-    public float hitpoints
-    {
-        get => hp.HitPoints;
-    }
 
-    void Awake()
-    {
-        Init();
-    }
+
 
     public override void Update()
     {

@@ -21,19 +21,24 @@ public class BikeMovementComponent : MonoBehaviour
 
 
     public float MoveSpeed = 100; //The speed of the bike 
+
     public float Traction = 3; //How slippy the bike is when turning 
 
     public float SteerAngle = 10; //the angle at which the bike turns
+
+    public float SideForce = 100; //The force imparted on the bike to allow for lateral movement 
 
     private float dragCoefficient = .98f; // A linear scale of how much drag will be applied to the bike
 
     private float maxLean = 40.0f;
 
-    private const float ACCELERATION_SCALE = 5.0f;
+    private const float ACCELERATION_SCALE = 10.0f;
 
     private const float STARTING_HEALTH = 200.0f;
 
     private const float MAX_ACCELERATION = 1000.0f;
+
+    private const float MIN_ACCELERATION = 40.0f;
 
     /// <summary>
     /// The current acceleration of the bike. Is dependant on health
@@ -42,7 +47,7 @@ public class BikeMovementComponent : MonoBehaviour
     {
         get 
         {
-            return Mathf.Clamp( HitPoints / ACCELERATION_SCALE, STARTING_HEALTH / ACCELERATION_SCALE, MAX_ACCELERATION);
+            return Mathf.Clamp( (HitPoints / ACCELERATION_SCALE) + MIN_ACCELERATION, MIN_ACCELERATION, MAX_ACCELERATION);
         }
     }
 
@@ -78,10 +83,23 @@ public class BikeMovementComponent : MonoBehaviour
         health.Init(STARTING_HEALTH);
     }
 
-    public Vector3 ForwardVector()
+
+
+    #region Directional Vectors
+    public Vector3 ForwardVector() //Returns a vector of the bike's FORWARD
     {
         return new Vector3(-bikeMeshParent.transform.right.x, bikeMeshParent.transform.right.y, -bikeMeshParent.transform.right.z);
     }
+
+    public Vector3 RightVector() //Returns a vector of the bikes Right
+    {
+        return new Vector3(bikeMeshParent.transform.forward.x, bikeMeshParent.transform.right.y, bikeMeshParent.transform.forward.z); 
+    }
+    public Vector3 LeftVector() //Returns a vector of the bikes Left
+    {
+        return new Vector3(-bikeMeshParent.transform.forward.x, bikeMeshParent.transform.right.y, -bikeMeshParent.transform.forward.z);
+    }
+#endregion
 
     #region Forces
     /// <summary> Main method for controlling bike 
@@ -90,9 +108,19 @@ public class BikeMovementComponent : MonoBehaviour
     public void ApplyForces()
     {
 
-
         //Movement Forward and Back and applies velocity 
         appliedForce += ForwardVector().normalized * Acceleration * Input.GetAxis("Vertical") * Time.fixedDeltaTime;
+
+        
+        //Latteral movement inputs, q and e add side force to the bike 
+        if (Input.GetKey(KeyCode.E))
+        {
+            rb.AddForce(RightVector() * SideForce);
+        }
+        if (Input.GetKey(KeyCode.Q))
+        {
+            rb.AddForce(LeftVector() * SideForce);
+        }
 
 
         //Steering Takes Horizontal Input and rotates both 
@@ -102,14 +130,13 @@ public class BikeMovementComponent : MonoBehaviour
 
         //Drag and MaxSpeed Limit to prevent infinit velocity  
         appliedForce *= dragCoefficient;
-        //appliedForce = Vector3.ClampMagnitude(appliedForce, MaxSpeed);
 
         // Debug lines
         Debug.DrawRay(rb.transform.position, ForwardVector().normalized * 30, Color.red);
         Debug.DrawRay(rb.transform.position, appliedForce.normalized * 30, Color.blue);
 
+        //Lerp from actual vector to desired vector 
         appliedForce = Vector3.Lerp(appliedForce.normalized, ForwardVector().normalized, Traction * Time.fixedDeltaTime) * appliedForce.magnitude;
-
 
         rb.AddForce(appliedForce);
     }
