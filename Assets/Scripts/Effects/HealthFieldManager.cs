@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages effect for the player where a sphere will envelop the player upon picking up health.
+/// </summary>
 public class HealthFieldManager : MonoBehaviour
 {
     
     [SerializeField] private Health health; // (Player health)
-    [SerializeField] private MeshRenderer meshRenderer;
-    [SerializeField] private Material material;
+    [SerializeField] private MeshRenderer meshRenderer; // Mesh renderer of the field effect
+    [SerializeField] private Material material; // Material for the effect to use
 
     [SerializeField] private float effectTime = 2.0f; // Time for the effect to complete in seconds
 
@@ -70,6 +73,9 @@ public class HealthFieldManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Initiates the effect.
+    /// </summary>
     private void PlayEffect() 
     {
         scanlinePos = 0;
@@ -77,6 +83,9 @@ public class HealthFieldManager : MonoBehaviour
         meshRenderer.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// Stops the effect immediately.
+    /// </summary>
     private void DisableEffect() 
     {
         scanlinePos = 0;
