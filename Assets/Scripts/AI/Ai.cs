@@ -87,9 +87,14 @@ public abstract class Ai : SelfWorldBoundsDespawn
         {
             //Notify all listeners that this AI has died
             DeadEvent?.Invoke();
-            animationStateController.TriggerDeathA();//TODO: add catch
             rb.detectCollisions = false;
-            animationStateController.SetAlive(false);
+
+            if(animationStateController != null)
+            {
+                animationStateController.TriggerDeathA();//TODO: add catch
+                animationStateController.SetAlive(false);
+            }
+            
             alive = false;
 
 

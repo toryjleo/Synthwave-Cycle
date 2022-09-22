@@ -18,7 +18,6 @@ public abstract class MovementComponent : MonoBehaviour
 
     //Movement
     public Vector3 appliedForce; // The force being applied to the bike
-    public float MoveSpeed = 100; //The speed of the bike 
     public float Traction = 3; //How slippy the bike is when turning 
     public float dragCoefficient = .98f; // A linear scale of how much drag will be applied to the bike
 
@@ -27,12 +26,14 @@ public abstract class MovementComponent : MonoBehaviour
     public float maxLean = 40.0f;
 
     
-    public const float ACCELERATION_SCALE = 5.0f;
-    public const float STARTING_HEALTH = 200.0f;
-    public const float MAX_ACCELERATION = 1000.0f;
+    public float ACCELERATION_SCALE = 5.0f;
+    public float STARTING_HEALTH = 200.0f;
+    public float MAX_ACCELERATION = 1000.0f;
 
     #region Getters
 
+
+    
     /// <summary>
     /// The current acceleration of the bike. Is dependant on <see cref="health"/>
     /// </summary>
@@ -43,6 +44,7 @@ public abstract class MovementComponent : MonoBehaviour
            return Mathf.Clamp(HitPoints / ACCELERATION_SCALE, STARTING_HEALTH / ACCELERATION_SCALE, MAX_ACCELERATION);
         }
     }
+    
 
     // Number of player hit points
     public float HitPoints

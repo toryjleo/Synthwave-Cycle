@@ -361,6 +361,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CarEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 8820055375388924410, guid: 392437103b962f3489dee9415739be5f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 392437103b962f3489dee9415739be5f, type: 3}
 --- !u!1001 &840130558
@@ -755,7 +759,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 91802620, guid: a8b26bd453659d24c82fcb6aba829898, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1386951459658203378, guid: a8b26bd453659d24c82fcb6aba829898, type: 3}
       propertyPath: m_TagString

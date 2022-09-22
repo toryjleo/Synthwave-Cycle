@@ -6,9 +6,11 @@ public class CarMovementComponent : MovementComponent
 {
     public void Start()
     {
-        //MoveSpeed = 50;
-        //Traction = 10;
-        //SteerAngle = 4;
+        ACCELERATION_SCALE = 1.0f;
+        MAX_ACCELERATION = 100.0f;
+        Traction = 10;
+        SteerAngle = 70;
+        health.Init(300);
     }
 
     public override void ApplyForces()
@@ -20,7 +22,7 @@ public class CarMovementComponent : MovementComponent
         //Steering Takes Horizontal Input and rotates both 
         float steerInupt = horizontalInput;
 
-        MeshParent.transform.Rotate(Vector3.up * steerInupt * (appliedForce.magnitude + 100) * Time.fixedDeltaTime);
+        MeshParent.transform.Rotate(Vector3.up * steerInupt * SteerAngle * Time.fixedDeltaTime);
 
         //Drag and MaxSpeed Limit to prevent infinit velocity  
         appliedForce *= dragCoefficient;

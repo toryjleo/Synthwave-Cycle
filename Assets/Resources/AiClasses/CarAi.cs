@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class CarAi : Ai
 {
-
+    public void Start()
+    {
+        Init();
+    }
     private CarMovementComponent movementComponent;
     public override void Init()
     {
@@ -22,13 +25,26 @@ public class CarAi : Ai
 
     }
 
-    // Start is called before the first frame update
+    public override void Update()
+    {
+        //print(hp.HitPoints);
+        base.Update();
+    }
+
+    public float hitpoints
+    {
+        get => hp.HitPoints;
+    }
+
     void Awake()
     {
         movementComponent = GetComponent<CarMovementComponent>();
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// This method is called during update to Move the Ai. 
+    /// </summary>
+    /// <param name="target"></param>
     public override void Move(Vector3 target)
     {
         Vector3 desiredVec = target - rb.transform.position;
@@ -57,17 +73,17 @@ public class CarAi : Ai
                 z = 0;
             }
 
-            Debug.Log(angleToDir);
-
-            
+            print(alive);
 
             if (distanceToTarget < attackRange)
             {
                 movementComponent.control(dot, z);
-            } else
+            } else if (distanceToTarget >attackRange)
             {
                 movementComponent.control(1, z);
-            }
+            } 
+
+            
            
         }
 
