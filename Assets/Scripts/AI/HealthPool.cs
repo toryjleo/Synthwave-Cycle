@@ -6,6 +6,8 @@ public class HealthPool : SelfDespawn
 {
     // Visuals
     private BikeScript player;
+    [SerializeField]
+    private CircleRendererScript circleRenderer;
     public int Spawndistance = 800;
     public int SpawnAngleRandomNess = 60;
     public float SizeofCylinder = 400;
@@ -65,6 +67,8 @@ public class HealthPool : SelfDespawn
         {
             // Shrink if player is in the pool
             Shrink(shrinkPerSecond * Time.deltaTime);
+            float leeway = 3.0f; // Make the circle a little larger than the hitbox
+            circleRenderer.DrawCircle(transform.position, 80, (transform.localScale.x / 2) + leeway);
         }
     }
 
@@ -179,9 +183,16 @@ public class HealthPool : SelfDespawn
             playerHealthRef.Heal(currentPlayerHealAmount);
             BikeScript playerBikeRef = player.GetComponent<BikeScript>();
             //playerBikeRef.movementComponent.IncreaseEngineForce(currentSpeedIncrease);
-            // TODO: Make this method
-            currentPlayerHealAmount += PLAYER_HEAL_AMNT_INCREASE;
+            IncreaseHealthOutput();
             OnDespawn();
         }
+    }
+
+    /// <summary>
+    /// Increaces the amount of health player will gain when they receive health again.
+    /// </summary>
+    private void IncreaseHealthOutput() 
+    {
+        currentPlayerHealAmount += PLAYER_HEAL_AMNT_INCREASE;
     }
 }
