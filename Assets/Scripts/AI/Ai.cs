@@ -84,7 +84,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
     }
 
-    public void Aim(Vector3 aimAt)
+    public virtual void Aim(Vector3 aimAt)
     {
         transform.LookAt(aimAt);
     }
@@ -99,9 +99,13 @@ public abstract class Ai : SelfWorldBoundsDespawn
 
         if (alive == true)
         {
-            // Notify all listeners that this AI has died
+            //Notify all listeners that this AI has died
             DeadEvent?.Invoke();
+
+            animationStateController.TriggerDeathA();//TODO: add catch
+
             animationStateController.TriggerDeathA();
+
             rb.detectCollisions = false;
             animationStateController.SetAlive(false);
             alive = false;
@@ -115,7 +119,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// <summary>
     /// This method is called when the entitiy wants to attack. Checks if it has a gun
     /// </summary>
-    public void Attack()
+    public virtual void Attack()
     {
         if (myGun != null && myGun.CanShootAgain() && alive)
         {
@@ -266,6 +270,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// </summary>
     /// <param name="targ"></param>
     public void SetTarget(GameObject targ)//sets the target of the entity and equips the gun
+
     {
         target = targ;
         //myGun = gunToEquip;

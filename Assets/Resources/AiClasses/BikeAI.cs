@@ -9,6 +9,10 @@ public class BikeAI : Ai
 {
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
 
+    public EnemyTurret turret;
+    public GameObject[] trackingPoints;
+
+
     public float Hitpoints
     {
         get => hp.HitPoints;
@@ -24,21 +28,30 @@ public class BikeAI : Ai
     public Vector3 STR;
     public Vector3 TRG;
     public Vector3 offset;
+
     public override void Init()
     {
         alive = true;
         StartingHP = 40;
         score = 300;
-        maxSpeed = 80;
-        attackRange = 1;
+
+        maxSpeed = 100;
+        attackRange = 30;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
-        animationStateController = GetComponent<CyborgAnimationStateController>();
         this.Despawn += op_ProcessCompleted;
         hp.Init(StartingHP);
+        trackingPoints = GameObject.FindGameObjectsWithTag("TrackerChild");
 
-        
+        //Initializes Turret 
+        if (GetComponentInChildren<EnemyTurret>() != null)
+        {
+            turret = GetComponentInChildren<EnemyTurret>();
+            turret.Init();
+            //turret.BulletShot += bl_ProcessCompleted;
+        }
+
 
 
         #region Error Checkers
@@ -54,42 +67,46 @@ public class BikeAI : Ai
         }
         #endregion
     }
-    /// <summary>
-    /// This is a custom move method for the bikes since they will move vastly differently from other AI
-    /// </summary>
-    /// <param name="t"></param>
-    public override void Move(Vector3 t)
+
+
+    public GameObject findNearestTrackingPoint()
     {
-        BikeMovementComponent bmc = target.GetComponent<BikeMovementComponent>();
-
-        Vector3 desiredVec = t - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
-        float dMag = desiredVec.magnitude;
-        desiredVec.Normalize();
-        Vector3 BikeForward = bmc.ForwardVector();
-        
-        Debug.DrawRay(rb.transform.position, BikeForward.normalized * 30, Color.red);
-
-
-        transform.LookAt(t);
-
-
-        if (dMag < maxSpeed)
+        GameObject nearestTrackingPoint = null;
+        Vector3 trackingPoint;
+        float shortestDistance = 0;
+        foreach( GameObject ty in trackingPoints)
         {
-            desiredVec *= dMag;
+            trackingPoint = ty.transform.position;
+            Vector3 distance = trackingPoint - this.transform.position;
+            float dMag = distance.magnitude;
+            if(dMag < shortestDistance || shortestDistance == 0)
+            {
+                shortestDistance = dMag;
+                nearestTrackingPoint = ty;
+            }
+        }
 
-            //Attack();
-        }
-        else
-        {
-            desiredVec *= maxSpeed;
-        }
-        Vector3 steer = desiredVec - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
-        applyForce(steer);
+
+        return nearestTrackingPoint;
     }
 
 
+    public override void Move(Vector3 target)
+    {
+        base.Move(findNearestTrackingPoint().transform.position);
+    }
 
     //stats used in construction
+
+    public override void Attack()
+    {
+        turret.Shoot(rb.velocity);
+    }
+
+    public override void Aim(Vector3 aimAt)
+    {
+        
+    }
 
 
 
@@ -97,7 +114,6 @@ public class BikeAI : Ai
     public override void Update()
     {
         base.Update();
-        //Move(target.transform.position);
     }
 
 
