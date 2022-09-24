@@ -41,7 +41,7 @@ public class EnemySpawner : MonoBehaviour
                 {
                     Debug.LogError("No Wave Object is Assigned to Spawner");
                 }
-            }
+            
 
     }
 
@@ -91,7 +91,7 @@ public class EnemySpawner : MonoBehaviour
                 enemy = ops.SpawnFromPool(Enemy.Ranger, biasSpawnVector(), Quaternion.identity);
                 break;
             case 3:
-                enemy = ops.SpawnFromPool(Enemy.Bike.ToString(), biasSpawnVector(), Quaternion.identity);
+                enemy = ops.SpawnFromPool(Enemy.Bike, biasSpawnVector(), Quaternion.identity);
                 break;
             default:
                 enemy = ops.SpawnFromPool(Enemy.Cactus, biasSpawnVector(), Quaternion.identity);
