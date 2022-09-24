@@ -18,6 +18,7 @@ public abstract class MovementComponent : MonoBehaviour
 
     //Movement
     public Vector3 appliedForce; // The force being applied to the bike
+    
     public float Traction = 3; //How slippy the bike is when turning 
     public float dragCoefficient = .98f; // A linear scale of how much drag will be applied to the bike
 

@@ -18,37 +18,27 @@ public class EnemySpawner : MonoBehaviour
 
     public ObjectPool ops;
     public GameObject player;
-    private Vector3 playerForwardVector;
-    public Waves waves;
-
-
-    private BikeMovementComponent Bmc;
+    private Waves waves;
 
     //Spawning Variables
     public int spawnDistance;
     public int spawnBiasAngle;
-
-    private int firstWaveSize = 5;
 
     void Start()
     {
         ops = ObjectPool.Instance;
         waves = Waves.Instance;
         player = GameObject.FindGameObjectWithTag("Player");
-        Bmc = player.GetComponent<BikeMovementComponent>();
-
                 if (waves == null)
                 {
                     Debug.LogError("No Wave Object is Assigned to Spawner");
                 }
-            
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        playerForwardVector = Bmc.ForwardVector();
+        
     }
     /// <summary>
     /// This will spawn an enemy of a specific type and then returns that enemy
@@ -61,11 +51,9 @@ public class EnemySpawner : MonoBehaviour
 
         enemy = ops.SpawnFromPool(type, biasSpawnVector(), Quaternion.identity);
 
-
         //Init Enemy
         enemyAI = enemy.GetComponent<Ai>();
-        enemyAI.SetTarget(player);
-        enemyAI.NewLife();
+        InitAI(enemyAI);
         return enemyAI;
     }
 
@@ -100,33 +88,10 @@ public class EnemySpawner : MonoBehaviour
 
         //Init Enemy
         enemyAI = enemy.GetComponent<Ai>();
-        enemyAI.SetTarget(player);
-        enemyAI.NewLife();
+        InitAI(enemyAI);
         return enemyAI;
     }
 
-
-    /// <summary>
-    /// This Method is called at the beginning of the game to spawn in the first wave.
-    /// </summary>
-    public List<Ai> SpawnFirstWave(List<Ai> currentEnemies)
-    {
-        GameObject enemy;
-        Ai enemyAI;
-
-
-
-        for(int i = 0; i< firstWaveSize; i++)
-        {
-            enemy = ops.SpawnFromPool(Enemy.Rifleman, generateSpawnVector(), Quaternion.identity);
-            enemyAI = enemy.GetComponent<Ai>();
-            enemyAI.SetTarget(player);
-            enemyAI.NewLife();
-            currentEnemies.Add(enemyAI);
-        }
-
-        return currentEnemies;
-    }
     /// <summary>
     /// Spawns a Wave of enemies given an input of Wave index and returns them as List of Ai Components CurrentEnemies
     /// </summary>
@@ -140,15 +105,19 @@ public class EnemySpawner : MonoBehaviour
         {
             for(int i = 0; i< unit.Quantity; i++)
             {
-                currentEnemies.Add(SpawnNewEnemy(unit.UnitType));
-
+                Ai newEnemy = SpawnNewEnemy(unit.UnitType);
+                currentEnemies.Add(newEnemy);
             }
-
         }
-
         return currentEnemies;
     }
 
+
+    private void InitAI(Ai enemyAI)
+    {  
+        enemyAI.SetTarget(player);
+        enemyAI.NewLife();
+    }
 
     //These methods generate spawn vectors
     #region Spawning Vector Maths

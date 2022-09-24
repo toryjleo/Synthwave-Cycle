@@ -22,25 +22,22 @@ public class EnemyManager : MonoBehaviour
     void Start()
     {
         dl = DLevel.Instance;
+        scoreKeeper = GameObject.FindGameObjectWithTag("ScoreKeeper").GetComponent<ScoreTracker>();
+
     }
 
-    void Update() //TODO add new spawning behavior 
+    void FixedUpdate() //TODO add new spawning behavior 
     {
         UpdateEnemyStates();
 
         if (currentEnemies.Count < dl.dangerLevel)
         {
-            //This method sees if all enemies have been Killed
-            if (currentEnemies.Count == 0)
-            {
-                //Refill the screen with Enemies 
-                currentEnemies = enemySpawner.SpawnWave(currentEnemies, 5);
-            }
-            else
-            {
-
-            }
-
+           
+            //Refill the screen with Enemies 
+            currentEnemies = enemySpawner.SpawnWave(currentEnemies, 5);
+            
+           
+            print(currentEnemies.Count);
         }
     }
     /// <summary>
@@ -59,7 +56,10 @@ public class EnemyManager : MonoBehaviour
             else
             {
                 //Do Death Things 
+                a.GetScore();
+
                 scoreKeeper.AddToScore((int)a.GetScore());
+                
                 //TODO: ADD Gore and soundeffects here? 
             }
         }
