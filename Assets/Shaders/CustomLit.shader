@@ -1,5 +1,7 @@
 Shader "Universal Render Pipeline/Custom Lit"
 {
+// Created from this tutorial:
+// https://www.youtube.com/watch?v=3TULxrZCAdM&list=PLEW5iA4IZi_G1b7V2tGkwitvqMoIohzpE&index=10&ab_channel=EthanShulman
     Properties
     {
         // Specular vs Metallic workflow
