@@ -2,16 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This is the Ai component used by the bikes. It has a unique movement component and TODO: Will be adding a ramming feature and gun on these bikes
+/// </summary>
 public class BikeAI : Ai
 {
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
+
     public EnemyTurret turret;
     public GameObject[] trackingPoints;
+
+
+    public float Hitpoints
+    {
+        get => hp.HitPoints;
+    }
+
+
+    void Awake()
+    {
+        Init();
+    }
+    
+    public Vector3 velocity;
+    public Vector3 STR;
+    public Vector3 TRG;
+    public Vector3 offset;
+
     public override void Init()
     {
         alive = true;
         StartingHP = 40;
         score = 300;
+
         maxSpeed = 100;
         attackRange = 30;
 
@@ -44,6 +67,7 @@ public class BikeAI : Ai
         #endregion
     }
 
+
     public GameObject findNearestTrackingPoint()
     {
         GameObject nearestTrackingPoint = null;
@@ -60,7 +84,6 @@ public class BikeAI : Ai
                 nearestTrackingPoint = ty;
             }
         }
-        
 
 
         return nearestTrackingPoint;
@@ -84,15 +107,8 @@ public class BikeAI : Ai
         
     }
 
-    public float hitpoints
-    {
-        get => hp.HitPoints;
-    }
 
-    void Awake()
-    {
-        Init();
-    }
+
 
     public override void Update()
     {

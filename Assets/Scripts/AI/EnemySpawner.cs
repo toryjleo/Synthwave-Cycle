@@ -19,9 +19,10 @@ public class EnemySpawner : MonoBehaviour
     public ObjectPool ops;
     public GameObject player;
     private Vector3 playerForwardVector;
+    public Waves waves;
 
 
-    private BikeMovementComponent bs;
+    private BikeMovementComponent Bmc;
 
     //Spawning Variables
     public int spawnDistance;
@@ -32,32 +33,40 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         ops = ObjectPool.Instance;
+        waves = Waves.Instance;
         player = GameObject.FindGameObjectWithTag("Player");
-        bs = player.GetComponent<BikeMovementComponent>();
+        Bmc = player.GetComponent<BikeMovementComponent>();
+
+                if (waves == null)
+                {
+                    Debug.LogError("No Wave Object is Assigned to Spawner");
+                }
+            
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        playerForwardVector = bs.ForwardVector();
+        playerForwardVector = Bmc.ForwardVector();
     }
     /// <summary>
     /// This will spawn an enemy of a specific type and then returns that enemy
     /// </summary>
     /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enenemy Type, AI type, and Gun loadout
-    public GameObject SpawnNewEnemy(Enemy type)
+    public Ai SpawnNewEnemy(Enemy type)
     {
         GameObject enemy;
         Ai enemyAI;
 
-        enemy = ops.SpawnFromPool(type.ToString(), biasSpawnVector(), Quaternion.identity);
+        enemy = ops.SpawnFromPool(type, biasSpawnVector(), Quaternion.identity);
 
 
         //Init Enemy
         enemyAI = enemy.GetComponent<Ai>();
-        enemyAI.Loadout(player);
+        enemyAI.SetTarget(player);
         enemyAI.NewLife();
-        return enemy;
+        return enemyAI;
     }
 
     /// <summary>
@@ -69,29 +78,29 @@ public class EnemySpawner : MonoBehaviour
     {
         GameObject enemy;
         Ai enemyAI;
-        int rand = Random.Range(3, 4);
+        int rand = Random.Range(0, 3);
         switch (rand)
         {
             case 0:
-                enemy = ops.SpawnFromPool(Enemy.Grunt.ToString(), biasSpawnVector(), Quaternion.identity);
+                enemy = ops.SpawnFromPool(Enemy.Grunt, biasSpawnVector(), Quaternion.identity);
                 break;
             case 1:
-                enemy = ops.SpawnFromPool(Enemy.Rifleman.ToString(), biasSpawnVector(), Quaternion.identity);
+                enemy = ops.SpawnFromPool(Enemy.Rifleman, biasSpawnVector(), Quaternion.identity);
                 break;
             case 2:
-                enemy = ops.SpawnFromPool(Enemy.Ranger.ToString(), biasSpawnVector(), Quaternion.identity);
+                enemy = ops.SpawnFromPool(Enemy.Ranger, biasSpawnVector(), Quaternion.identity);
                 break;
             case 3:
-                enemy = ops.SpawnFromPool(Enemy.Bike.ToString(), biasSpawnVector(), Quaternion.identity);
+                enemy = ops.SpawnFromPool(Enemy.Bike, biasSpawnVector(), Quaternion.identity);
                 break;
             default:
-                enemy = ops.SpawnFromPool(Enemy.Cactus.ToString(), biasSpawnVector(), Quaternion.identity);
+                enemy = ops.SpawnFromPool(Enemy.Cactus, biasSpawnVector(), Quaternion.identity);
                 break;
         }
 
         //Init Enemy
         enemyAI = enemy.GetComponent<Ai>();
-        enemyAI.Loadout(player);
+        enemyAI.SetTarget(player);
         enemyAI.NewLife();
         return enemyAI;
     }
@@ -104,16 +113,37 @@ public class EnemySpawner : MonoBehaviour
     {
         GameObject enemy;
         Ai enemyAI;
+
+
+
         for(int i = 0; i< firstWaveSize; i++)
         {
-            enemy = ops.SpawnFromPool("Bike", generateSpawnVector(), Quaternion.identity);
-
-
-
+            enemy = ops.SpawnFromPool(Enemy.Rifleman, generateSpawnVector(), Quaternion.identity);
             enemyAI = enemy.GetComponent<Ai>();
-            enemyAI.Loadout(player);
+            enemyAI.SetTarget(player);
             enemyAI.NewLife();
             currentEnemies.Add(enemyAI);
+        }
+
+        return currentEnemies;
+    }
+    /// <summary>
+    /// Spawns a Wave of enemies given an input of Wave index and returns them as List of Ai Components CurrentEnemies
+    /// </summary>
+    /// <param name="currentEnemies">The List of Enemies that are in the scene.</param>
+    /// <param name="WaveIndex">The Number associated with the wave that will be spawned</param>
+    /// <returns></returns>
+    public List<Ai> SpawnWave(List<Ai> currentEnemies, int WaveIndex) //TODO: This may take into account other factors in the future to create more dynamic wave spawning behavior
+    {
+        Wave w = waves.GetWave(WaveIndex);
+        foreach (Unit unit in w.Units)
+        {
+            for(int i = 0; i< unit.Quantity; i++)
+            {
+                currentEnemies.Add(SpawnNewEnemy(unit.UnitType));
+
+            }
+
         }
 
         return currentEnemies;

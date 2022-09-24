@@ -6,16 +6,20 @@ using UnityEngine;
 public abstract class Bullet : SelfWorldBoundsDespawn
 {
 
-    private Vector3 shootDir;
-    private Vector3 initialVelocity;
+    protected Vector3 shootDir;
+    protected Vector3 initialVelocity;
 
     // Specific to gun
     protected float muzzleVelocity = 0;
     protected float mass = 0;
+    protected float boost = 0;
     protected float damageDealt = 0;
     protected bool hasFiniteLifetime = false;
+    protected bool overPenetrates = false;
     protected float lifetime = float.MaxValue;
     protected float timeSinceShot = 0;
+
+    private List<GameObject> alreadyHit = new List<GameObject>();
 
     /// <summary>Speed of bullet out of the gun.</summary>
     public float MuzzleVelocity
@@ -29,6 +33,12 @@ public abstract class Bullet : SelfWorldBoundsDespawn
         get => mass;
     }
 
+    /// <summary>Amount of additional force given by a bullet (make negative to dampen effect of a shot)</summary>
+    public float Boost
+    {
+        get => boost;
+    }
+
     // Update is called once per frame
     public override void Update()
     {
@@ -38,7 +48,7 @@ public abstract class Bullet : SelfWorldBoundsDespawn
     }
 
     /// <summary>Updates the object's location this frame.</summary>
-    private void Move()
+    protected virtual void Move()
     {
         Vector3 distanceThisFrame = ((shootDir * muzzleVelocity) + initialVelocity) * Time.deltaTime;
         transform.position = transform.position + distanceThisFrame;
@@ -62,7 +72,7 @@ public abstract class Bullet : SelfWorldBoundsDespawn
     /// <param name="curPosition">Location to start being shot from.</param>
     /// <param name="direction">Direction in which bullet will move.</param>
     /// <param name="initialVelocity">Velocity of the object shooting.</param>
-    public void Shoot(Vector3 curPosition, Vector3 direction, Vector3 initialVelocity)
+    public virtual void Shoot(Vector3 curPosition, Vector3 direction, Vector3 initialVelocity)
     {
         transform.position = curPosition;
         direction.y = 0; // Do not travel vertically
@@ -77,13 +87,20 @@ public abstract class Bullet : SelfWorldBoundsDespawn
     /// component.</param>
     protected void DealDamageAndDespawn(GameObject other) 
     {
-        Health otherHealth = other.GetComponentInChildren<Health>();
-        if (otherHealth == null) 
+        if (!alreadyHit.Contains(other))
         {
-            Debug.LogError("Object does not have Health component: " + gameObject.name);
+            alreadyHit.Add(other);
+            Health otherHealth = other.GetComponentInChildren<Health>();
+            if (otherHealth == null)
+            {
+                Debug.LogError("Object does not have Health component: " + gameObject.name);
+            }
+            otherHealth.TakeDamage(damageDealt);
+            if (overPenetrates)
+            {
+                OnDespawn();
+            }
         }
-        otherHealth.TakeDamage(damageDealt);
-        OnDespawn();
     }
 
 }
