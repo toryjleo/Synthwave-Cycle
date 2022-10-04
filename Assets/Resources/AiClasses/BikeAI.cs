@@ -86,33 +86,9 @@ public class BikeAI : Ai
             }
         }
 
-    /// <summary>
-    /// This is a custom move method for the bikes since they will move vastly differently from other AI
-    /// </summary>
-    /// <param name="t"></param>
-    public override void Move(Vector3 t)
-    {
-        BikeMovementComponent bmc = target.GetComponent<BikeMovementComponent>();
-
-        Vector3 desiredVec = t - transform.position; //this logic creates the vector between where the entity is and where it wants to be 
-        float dMag = desiredVec.magnitude;
-        desiredVec.Normalize();
-        Vector3 BikeForward = bmc.ForwardVector();
-
-        
-
-
 
         return nearestTrackingPoint;
     }
-
-
-        transform.LookAt(t);
-
-
-        if (dMag < maxSpeed)
-        {
-            desiredVec *= dMag;
 
 
     public override void Move(Vector3 target)

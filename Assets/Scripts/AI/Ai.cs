@@ -269,9 +269,6 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// This method sets the target of the entity TODO: Will eventually equip a gun?
     /// </summary>
     /// <param name="targ"></param>
-
-    public virtual void Loadout(GameObject targ)//sets the target of the entity and equips the gun
-
     public void SetTarget(GameObject targ)//sets the target of the entity and equips the gun
 
     {
