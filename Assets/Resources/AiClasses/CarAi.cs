@@ -14,10 +14,11 @@ public class CarAi : Ai
         alive = true;
         StartingHP = 100;
         score = 300;
-        attackRange = 30;
+        attackRange = 5;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
+        movementComponent = GetComponent<CarMovementComponent>();
 
         this.Despawn += op_ProcessCompleted;
         hp.Init(StartingHP);
@@ -36,10 +37,6 @@ public class CarAi : Ai
         get => hp.HitPoints;
     }
 
-    void Awake()
-    {
-        movementComponent = GetComponent<CarMovementComponent>();
-    }
 
     /// <summary>
     /// This method is called during update to Move the Ai. 

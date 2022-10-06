@@ -123,22 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!54 &3625341 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 5596625525561022962, guid: 392437103b962f3489dee9415739be5f, type: 3}
-  m_PrefabInstance: {fileID: 617403579}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3625342 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8586306528787280163, guid: 392437103b962f3489dee9415739be5f, type: 3}
-  m_PrefabInstance: {fileID: 617403579}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &128016114
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -330,10 +314,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 98061403506324181, guid: 392437103b962f3489dee9415739be5f, type: 3}
-      propertyPath: MeshChild
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1752742610481971667, guid: 392437103b962f3489dee9415739be5f, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -379,48 +359,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2403519697623962353, guid: 392437103b962f3489dee9415739be5f, type: 3}
-      propertyPath: hp
-      value: 
-      objectReference: {fileID: 3625342}
-    - target: {fileID: 2403519697623962353, guid: 392437103b962f3489dee9415739be5f, type: 3}
-      propertyPath: rb
-      value: 
-      objectReference: {fileID: 3625341}
-    - target: {fileID: 2403519697623962353, guid: 392437103b962f3489dee9415739be5f, type: 3}
       propertyPath: target
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2403519697623962353, guid: 392437103b962f3489dee9415739be5f, type: 3}
-      propertyPath: StartingHP
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4443657631132679640, guid: 392437103b962f3489dee9415739be5f, type: 3}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5596625525561022962, guid: 392437103b962f3489dee9415739be5f, type: 3}
-      propertyPath: m_Drag
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6040215825489878069, guid: 392437103b962f3489dee9415739be5f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 6040215825489878069, guid: 392437103b962f3489dee9415739be5f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 6040215825489878069, guid: 392437103b962f3489dee9415739be5f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1101221372}
     - target: {fileID: 7451586931672031094, guid: 392437103b962f3489dee9415739be5f, type: 3}
       propertyPath: m_Name
       value: CarEnemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 8820055375388924410, guid: 392437103b962f3489dee9415739be5f, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 392437103b962f3489dee9415739be5f, type: 3}
@@ -815,12 +759,17 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 990085328645293825, guid: a8b26bd453659d24c82fcb6aba829898, type: 3}
   m_PrefabInstance: {fileID: 2102421934}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1101221372}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54bcd5d5e131bf34c9f131e9e58b986c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1101221372 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3369499019353642388, guid: a8b26bd453659d24c82fcb6aba829898, type: 3}
+  m_PrefabInstance: {fileID: 2102421934}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1202201953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -926,7 +875,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7334479611325427085, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: waves.Array.data[2].WaveNumber
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7334479611325427085, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: waves.Array.data[1].SpawningDelay

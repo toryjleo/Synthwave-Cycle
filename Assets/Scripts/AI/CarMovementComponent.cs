@@ -8,8 +8,8 @@ public class CarMovementComponent : MovementComponent
     {
         ACCELERATION_SCALE = 1.0f;
         MAX_ACCELERATION = 100.0f;
-        Traction = 10;
-        SteerAngle = 70;
+        Traction = 20;
+        SteerAngle = 45;
         health.Init(300);
     }
 
