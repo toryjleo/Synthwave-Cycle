@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// The movement component to be used by the Car Ai to controll the steering and applied forces to the car.
+/// </summary>
 public class CarMovementComponent : MovementComponent
 {
     public void Start()

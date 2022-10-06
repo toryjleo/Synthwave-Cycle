@@ -576,17 +576,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd0bb043908a9c24fa1ae974b2c06b1d, type: 3}
---- !u!114 &1050625118 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 990085328645293825, guid: a8b26bd453659d24c82fcb6aba829898, type: 3}
-  m_PrefabInstance: {fileID: 2102421934}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54bcd5d5e131bf34c9f131e9e58b986c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1202201953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1532,18 +1521,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2451000880455329689, guid: a8b26bd453659d24c82fcb6aba829898, type: 3}
-      propertyPath: turret
-      value: 
-      objectReference: {fileID: 2922006163326734836, guid: 20b553fdc99502f4ab899e54e647d0ee, type: 3}
-    - target: {fileID: 2451000880455329689, guid: a8b26bd453659d24c82fcb6aba829898, type: 3}
-      propertyPath: bikeGun
-      value: 
-      objectReference: {fileID: 7942487576101075648, guid: a150aa7a565a61341ac429d02e3ccd71, type: 3}
-    - target: {fileID: 2451000880455329689, guid: a8b26bd453659d24c82fcb6aba829898, type: 3}
-      propertyPath: movementComponent
-      value: 
-      objectReference: {fileID: 1050625118}
     - target: {fileID: 2704707542116306734, guid: a8b26bd453659d24c82fcb6aba829898, type: 3}
       propertyPath: m_RootOrder
       value: 8

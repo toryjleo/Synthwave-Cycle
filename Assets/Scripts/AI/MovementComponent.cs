@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// This is an abstract class that can be used to create components to allow for objects in the game to move in dynamic and interesting ways including drifting. 
+/// </summary>
 public abstract class MovementComponent : MonoBehaviour
 {
     //Used for Designating Parts of Object

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4467864045780246486}
   m_Layer: 0
   m_Name: TracerMeshParent
-  m_TagString: Untagged
+  m_TagString: PlayerMesh
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82,8 +82,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: {fileID: 0}
-  turret: {fileID: 0}
-  movementComponent: {fileID: 0}
+  turret: {fileID: 2922006163326734836, guid: 20b553fdc99502f4ab899e54e647d0ee, type: 3}
+  bikeGun: {fileID: 7942487576101075648, guid: a150aa7a565a61341ac429d02e3ccd71, type: 3}
+  movementComponent: {fileID: 990085328645293825}
   cameraFollower: {fileID: 8096175468203405583}
 --- !u!54 &2141739292
 Rigidbody:
@@ -240,11 +241,14 @@ MonoBehaviour:
   verticalInput: 0
   horizontalInput: 0
   appliedForce: {x: 0, y: 0, z: 0}
-  MoveSpeed: 100
   Traction: 3
   dragCoefficient: 0.98
   SteerAngle: 10
   maxLean: 40
+  ACCELERATION_SCALE: 5
+  STARTING_HEALTH: 200
+  MAX_ACCELERATION: 1000
+  SideForce: 100
 --- !u!1 &8096175468203405583
 GameObject:
   m_ObjectHideFlags: 0

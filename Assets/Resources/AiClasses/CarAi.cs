@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// This is the Ai to be used by Car Enemies, it requires a rigid body, health component, and a movement componenet to function properly
+/// </summary>
 public class CarAi : Ai
 {
     public void Start()
@@ -58,6 +60,7 @@ public class CarAi : Ai
             float dot = Vector3.Dot(movementComponent.ForwardVector(), desiredVec); //This dot protduct returns -1 to 1 if the car is behind to infront of the target. 
             float angleToDir = Vector3.SignedAngle(movementComponent.ForwardVector(), desiredVec, Vector3.up);
 
+            //This causes the car to have a deadzone of steering 
             if (angleToDir > deadZone)
             {
                 z = 1;
@@ -69,10 +72,8 @@ public class CarAi : Ai
             {
                 z = 0;
             }
-
-            print(alive);
-
-            if (distanceToTarget < attackRange)
+            //These functions determine if the car will back up or try to turn around
+            if (distanceToTarget < attackRange) 
             {
                 movementComponent.control(dot, z);
             } else if (distanceToTarget >attackRange)
