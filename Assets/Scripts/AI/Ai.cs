@@ -285,9 +285,13 @@ public abstract class Ai : SelfWorldBoundsDespawn
         alive = true;
         hp.Init(StartingHP);
         RespawnEvent?.Invoke();
-        animationStateController.SetAlive(true);
+        if(animationStateController != null) {
+            animationStateController.SetAlive(true);
+        }
+        
         rb.detectCollisions = true;
-        rb.constraints = RigidbodyConstraints.FreezePositionY;
+        rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
+        
     }// this restets the enemies HP and sets them to alive;
 
     /// <summary>

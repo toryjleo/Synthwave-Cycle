@@ -28,17 +28,21 @@ public class EnemyManager : MonoBehaviour
     {
         UpdateEnemyStates();
 
+        print(currentEnemies.Count);
         if (currentEnemies.Count < dl.dangerLevel)
         {
+            Ai NewEnemy = enemySpawner.SpawnNewEnemy(Enemy.Bike);
+            currentEnemies.Add(NewEnemy);
             //This method sees if all enemies have been Killed
             if (currentEnemies.Count == 0)
             {
                 //Refill the screen with Enemies 
-                currentEnemies = enemySpawner.SpawnWave(currentEnemies, 5);
+                //currentEnemies = enemySpawner.SpawnWave(currentEnemies, 5);
+                
             }
             else
             {
-
+                
             }
 
         }

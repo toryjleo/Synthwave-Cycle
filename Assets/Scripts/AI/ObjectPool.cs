@@ -10,7 +10,7 @@ public enum Enemy
     Ranger,
     Bike,
     Sniper,
-    Dog,
+    Car,
     Cactus
 }
 public enum Guns
