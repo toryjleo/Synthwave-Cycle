@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class HealthFieldManager : MonoBehaviour
 {
-    
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private Health health; // (Player health)
     [SerializeField] private MeshRenderer meshRenderer; // Mesh renderer of the field effect
     [SerializeField] private Material material; // Material for the effect to use
@@ -81,6 +81,7 @@ public class HealthFieldManager : MonoBehaviour
         scanlinePos = 0;
         playingEffect = true;
         meshRenderer.gameObject.SetActive(true);
+        audioSource.Play();
     }
 
     /// <summary>
