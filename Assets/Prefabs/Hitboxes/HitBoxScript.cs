@@ -30,7 +30,7 @@ public class HitBoxScript : MonoBehaviour
     /// <summary>
     /// This is a submethod that takes in each collider as a parameter and activates them
     /// </summary>
-    /// <param name="c">This is the one of the coliders in the child of the prefab passed in throught the Activate Method</param>
+    /// <param name="c">This is the one of the coliders in the child of the prefab</param>
     void ActivateHitbox(Collider c)
     {
         c.enabled = true;
@@ -48,7 +48,7 @@ public class HitBoxScript : MonoBehaviour
     /// <summary>
     /// This is a submethod that tackes in each  collider as a parameter and deactivates them
     /// </summary>
-    /// <param name="c">This is the one of the coliders in the child of the prefab passed in throught the Activate Method</param>
+    /// <param name="c">This is the one of the coliders in the child of the prefab</param>
     void DeActivateHitbox(Collider c)
     {
         c.enabled = false;
