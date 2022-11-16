@@ -4,7 +4,6 @@ using UnityEngine;
 
 /// <summary>
 /// This class is the base abstract class that will be used for all weapons and guns. 
-/// In the PR please list any aditional features you want for this class
 /// </summary>
 public abstract class Weapon : MonoBehaviour
 {

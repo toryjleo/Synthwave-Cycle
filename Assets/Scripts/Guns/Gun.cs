@@ -19,7 +19,12 @@ public abstract class Gun : Weapon
 
     public event NotifyShot BulletShot; // event
 
-
+    protected override void OnDestroy()
+    {
+        bulletPool.DeInit();
+        DeInit();
+    }
+    
 
     /// <summary>Fires the bullet from the muzzle of the gun. Is responsible for calling OnBulletShot and getting 
     /// bullet from the object pool.</summary>
