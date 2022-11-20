@@ -14,6 +14,8 @@ public class BikeScript : MonoBehaviour
 
     public Gun currentGun;
     public TurretScript turret;
+    [SerializeField]
+    private Arsenal arsenal;
 
     public Gun bikeGun;
 
@@ -92,7 +94,8 @@ public class BikeScript : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            currentGun.Shoot(movementComponent.rb.velocity);
+            //currentGun.Shoot(movementComponent.rb.velocity);
+            arsenal.Shoot(movementComponent.rb.velocity);
             if(turret!= null)
             {
                 turret.Shoot(movementComponent.rb.velocity);
