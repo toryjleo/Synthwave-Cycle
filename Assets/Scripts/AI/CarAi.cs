@@ -6,6 +6,10 @@ using UnityEngine;
 /// </summary>
 public class CarAi : Ai
 {
+    public float Hitpoints
+    {
+        get => hp.HitPoints;
+    }
     public void Start()
     {
         Init();
@@ -17,29 +21,16 @@ public class CarAi : Ai
         StartingHP = 100;
         score = 300;
         attackRange = 5;
-
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
         movementComponent = GetComponent<CarMovementComponent>();
-
         this.Despawn += op_ProcessCompleted;
         hp.Init(StartingHP);
-        
-
     }
-
-
     public override void Update()
     {
-        //print(hp.HitPoints);
         base.Update();
     }
-
-    public float hitpoints
-    {
-        get => hp.HitPoints;
-    }
-
 
     /// <summary>
     /// This method is called during update to Move the Ai. 
@@ -81,13 +72,6 @@ public class CarAi : Ai
             {
                 movementComponent.control(1, z);
             } 
-
-            
-           
-        }
-
-
-        
-    }
-  
+        }    
+    } 
 }

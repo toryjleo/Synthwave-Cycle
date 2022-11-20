@@ -95,17 +95,11 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public void Die()
     {
         rb.constraints = RigidbodyConstraints.FreezeAll;
-
-
         if (alive == true)
         {
             //Notify all listeners that this AI has died
             DeadEvent?.Invoke();
-
             animationStateController.TriggerDeathA();//TODO: add catch
-
-            animationStateController.TriggerDeathA();
-
             rb.detectCollisions = false;
             animationStateController.SetAlive(false);
             alive = false;
