@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!54 &5596625525561022962
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -88,8 +88,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2283e54b857545744a33addda8dc4551, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   MeshParent: {fileID: 7451586931672031094}
   MeshChild: {fileID: 3068176888741079859}
   rb: {fileID: 5596625525561022962}
@@ -113,8 +113,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d3b08d9e7b18804dbb5247a07670746, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   target: {fileID: 0}
   animationStateController: {fileID: 0}
   rb: {fileID: 5596625525561022962}
