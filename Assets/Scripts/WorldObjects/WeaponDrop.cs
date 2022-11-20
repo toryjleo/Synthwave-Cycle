@@ -36,6 +36,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
             else
             {
                 Debug.Log("Yay");
+                OnDespawn();
             }
         }
     }
