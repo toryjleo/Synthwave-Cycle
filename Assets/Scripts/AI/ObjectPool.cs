@@ -11,7 +11,8 @@ public enum Enemy
     Bike,
     Sniper,
     Dog,
-    Cactus
+    Cactus,
+    Car
 }
 public enum Guns
 {
