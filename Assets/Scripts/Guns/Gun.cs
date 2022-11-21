@@ -11,7 +11,7 @@ public abstract class Gun : MonoBehaviour
 
     public Bullet bulletPrefab;
     protected BulletPool bulletPool;
-    protected float lastFired = 0;
+    protected float lastFired;
     protected float fireRate = 0;  // The number of bullets fired per second
     protected int ammunition;
     public bool infiniteAmmo = false;
@@ -31,7 +31,12 @@ public abstract class Gun : MonoBehaviour
     }
 
     /// <summary>Initializes veriables. Specifically must initialize lastFired and fireRate variables.</summary>
-    public abstract void Init();
+    public virtual void Init()
+    {
+        bulletPool = gameObject.AddComponent<BulletPool>();
+        bulletPool.Init(bulletPrefab);
+        lastFired = 0;
+    }
 
     /// <summary>Basically a destructor. Calls bulletPool.DeInit().</summary>
     public virtual void DeInit() 

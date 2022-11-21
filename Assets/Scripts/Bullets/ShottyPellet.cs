@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LMGBullet : Bullet
+public class ShottyPellet : Bullet
 {
     public override void Init()
     {
-        muzzleVelocity = 180;
-        mass = .1f; //The Mass controlls how slowed down the bike is by recoil
-        damageDealt = 20;
+        muzzleVelocity = 90;
+        mass = .002f; //The Mass controlls how slowed down the bike is by recoil
+        damageDealt = 2;
     }
 
     private void OnTriggerEnter(Collider other)
