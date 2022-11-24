@@ -30,14 +30,14 @@ public class WeaponDrop : SelfWorldBoundsDespawn
         if (other.tag == "Player")
         {
             Debug.Log("Player hit pickup!");
-            BikeScript bs = other.gameObject.GetComponent<BikeScript>();
-            if (bs == null) 
+            Arsenal arsenal = other.gameObject.GetComponentInChildren<Arsenal>();
+            if (arsenal == null) 
             {
-                Debug.Log("Fuck");
+                Debug.LogError("Cannot find Bike Arsenal Component");
             }
             else
             {
-                Debug.Log("Yay");
+                arsenal.EquipGun(PlayerGunType.OctoLMG);
                 OnDespawn();
             }
         }
