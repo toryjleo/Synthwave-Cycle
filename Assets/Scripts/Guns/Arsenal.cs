@@ -9,6 +9,7 @@ public enum PlayerGunType
     DefaultGun,
     OctoLMG,
     VulkanV64AutoCannons,
+    Shotty,
     INVALID
 }
 
