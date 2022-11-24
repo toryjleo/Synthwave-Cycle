@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>A big ass rip-off of the double barrel LMG</summary>
-public class OctoBarrelLMG : Gun
+public class OctoBarrelLMG : LeveledGun
 {
-
+    
     // Very specific to this gun
     public GameObject muzzle1;
     public GameObject muzzle2;
@@ -20,11 +20,10 @@ public class OctoBarrelLMG : Gun
 
     public override void Init() 
     {
-        lastFired = 0;
-        fireRate = 60;
-        bulletPool = gameObject.AddComponent<BulletPool>();
-        bulletPool.Init(bulletPrefab);
-        ammunition = 100;
+        base.Init();
+        int currentLevel = GetCurrentLevel();
+        fireRate = 60 * currentLevel;
+        ammunition = 50 * currentLevel;
     }
 
     /// <summary>Fires a bullet out of either muzzle, alternating each turn.</summary>
