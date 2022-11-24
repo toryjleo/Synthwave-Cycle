@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A player shotgun that has a low rate of fire and fires multiple pellets in various directions
+/// As this gun levels up, the rate of fire steadily increases and it gets more pellets
+/// </summary>
 public class Shotty : LeveledGun
 {
     public GameObject barrel;
