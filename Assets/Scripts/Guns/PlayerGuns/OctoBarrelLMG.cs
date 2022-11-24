@@ -13,6 +13,11 @@ public class OctoBarrelLMG : LeveledGun
     public AudioSource muzzle2Audio;
     private bool muzzle1Turn = true;
 
+    public override PlayerGunType GetPlayerGunType()
+    {
+        return PlayerGunType.OctoLMG;
+    }
+
     public override void Init() 
     {
         base.Init();

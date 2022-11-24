@@ -4,11 +4,11 @@ using UnityEngine;
 
 
 public delegate void NotifyShot(Vector3 force);  // delegate
+public delegate void NotifyOutOfAmmo(Gun self);
 
 /// <summary>Class <c>Bullet</c> A Unity Component which spawns bullets.</summary>
 public abstract class Gun : Weapon
 {
-
     public Bullet bulletPrefab;
     protected BulletPool bulletPool;
     protected float lastFired;
@@ -18,6 +18,10 @@ public abstract class Gun : Weapon
 
 
     public event NotifyShot BulletShot; // event
+    public event NotifyOutOfAmmo OutOfAmmo; // event
+
+    //Must be implemented, if Gun is not designed to be equipped by the player, use the INVALID value
+    public abstract PlayerGunType GetPlayerGunType();
 
     protected virtual void Awake()
     {
@@ -70,11 +74,7 @@ public abstract class Gun : Weapon
         }
         if(!infiniteAmmo && ammunition <= 0)
         {
-            BikeScript playerBikeScript = (BikeScript)FindObjectOfType(typeof(BikeScript));
-            if(playerBikeScript)
-            {
-                playerBikeScript.EquipBikeGun();
-            }
+            OutOfAmmo?.Invoke(this);
         }
     }
 

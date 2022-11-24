@@ -13,6 +13,11 @@ public class DoubleBarrelLMG : LeveledGun
     public AudioSource muzzle2Audio;
     private bool muzzle1Turn = true;
 
+    public override PlayerGunType GetPlayerGunType()
+    {
+        return PlayerGunType.DefaultGun;
+    }
+
     public override void Init() 
     {
         base.Init();

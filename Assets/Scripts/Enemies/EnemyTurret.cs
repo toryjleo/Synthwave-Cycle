@@ -12,6 +12,10 @@ public class EnemyTurret : Gun
 
     public GameObject target;
 
+    public override PlayerGunType GetPlayerGunType()
+    {
+        return PlayerGunType.INVALID;
+    }
 
     public override void Init()
     {
