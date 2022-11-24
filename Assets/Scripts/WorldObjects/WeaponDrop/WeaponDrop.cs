@@ -4,6 +4,28 @@ using UnityEngine;
 
 public class WeaponDrop : SelfWorldBoundsDespawn
 {
+    private PlayerGunType gunType;
+
+    public PlayerGunType GunType 
+    {
+        get 
+        {
+            return gunType;
+        }
+
+        set 
+        {
+            if (value == PlayerGunType.INVALID) 
+            {
+                Debug.LogWarning("Tried to initialize WeaponDrop to use an invalid weapon type");
+            }
+            else 
+            {
+                gunType = value;
+            }
+        }
+    }
+
     void Start()
     {
         Init();
@@ -14,6 +36,13 @@ public class WeaponDrop : SelfWorldBoundsDespawn
         // TODO: remove this and replace with a object pool 
         Despawn += op_SelfDelete;
     }
+
+
+    private PlayerGunType AssignRandomGunDrop() 
+    {
+        return PlayerGunType.INVALID;
+    }
+
 
     /// <summary>
     /// Weapon drops clean themselves up
@@ -31,7 +60,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
         {
             Debug.Log("Player hit pickup!");
             Arsenal arsenal = other.gameObject.GetComponentInChildren<Arsenal>();
-            if (arsenal == null) 
+            if (arsenal == null)
             {
                 Debug.LogError("Cannot find Bike Arsenal Component");
             }

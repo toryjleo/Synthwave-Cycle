@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 129718079232237040}
   - component: {fileID: 3056530599521346954}
   - component: {fileID: 3634437053447519325}
+  - component: {fileID: 7945880739057807610}
   m_Layer: 0
   m_Name: OctoLMG
   m_TagString: Untagged
@@ -81,6 +82,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7945880739057807610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2664871386217262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d0034b21852a540b67b04f0a67871a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1844121693836716503
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,6 +105,7 @@ GameObject:
   - component: {fileID: 7880520407517120666}
   - component: {fileID: 7773832500726516674}
   - component: {fileID: 5311178416199474069}
+  - component: {fileID: 3645051182207865467}
   m_Layer: 0
   m_Name: Shotty
   m_TagString: Untagged
@@ -162,6 +176,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3645051182207865467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844121693836716503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8259fe55ba991c74b863810d76f20011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2157447271029124370
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,6 +269,7 @@ GameObject:
   - component: {fileID: 5177322661924035826}
   - component: {fileID: 8157743581944076786}
   - component: {fileID: 8787069919765252617}
+  - component: {fileID: 3940643445428814279}
   m_Layer: 0
   m_Name: VulkanV64AutoCannons
   m_TagString: Untagged
@@ -313,6 +340,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3940643445428814279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3733673173475255785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 101b625f911c8614f838affb354e4ed8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4337248814000855309
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,6 +363,7 @@ GameObject:
   - component: {fileID: 858639061989224656}
   - component: {fileID: 5487566384070734133}
   - component: {fileID: 1415881746102053030}
+  - component: {fileID: 5279618928656443697}
   m_Layer: 0
   m_Name: DefaultGun
   m_TagString: Untagged
@@ -394,3 +434,15 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5279618928656443697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4337248814000855309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be8fb1754895fbb4ca30b32447a04d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
