@@ -254,6 +254,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   circleRenderer: {fileID: 1249744620}
   Spawndistance: 800
-  SpawnAngleRandomNess: 60
-  SizeofCylinder: 400
-  RateOfDecay: 20
+  SpawnAngleRandomNess: 15
+  SizeofCylinder: 500
+  RateOfDecay: 10
