@@ -6,7 +6,7 @@ using UnityEngine;
 public delegate void NotifyShot(Vector3 force);  // delegate
 
 /// <summary>Class <c>Bullet</c> A Unity Component which spawns bullets.</summary>
-public abstract class Gun : MonoBehaviour
+public abstract class Gun : Weapon
 {
 
     public Bullet bulletPrefab;
@@ -18,7 +18,6 @@ public abstract class Gun : MonoBehaviour
 
 
     public event NotifyShot BulletShot; // event
-
 
     protected virtual void Awake()
     {
@@ -43,6 +42,7 @@ public abstract class Gun : MonoBehaviour
     {
         bulletPool.DeInit();
     }
+    
 
     /// <summary>Fires the bullet from the muzzle of the gun. Is responsible for calling OnBulletShot and getting 
     /// bullet from the object pool.</summary>

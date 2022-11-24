@@ -9,6 +9,7 @@ TagManager:
   - TrackerParent
   - TracerMeshParent
   - TrackerChild
+  - TrackThis
   layers:
   - Default
   - TransparentFX
