@@ -13,6 +13,11 @@ public class Shotty : LeveledGun
 
     float angleDifference = 5f;
 
+    public override PlayerGunType GetPlayerGunType()
+    {
+        return PlayerGunType.Shotty;
+    }
+
     public override void Init()
     {
         base.Init();
