@@ -11,6 +11,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
 
     public override void Init()
     {
+        // TODO: remove this and replace with a object pool 
         Despawn += op_SelfDelete;
     }
 
@@ -20,6 +21,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
     /// <param name="entity">This GameObject</param>
     public void op_SelfDelete(SelfDespawn entity)
     {
+        // TODO: Instead of this object destroying itself, it should be sent back to an object pool.
         Destroy(entity.gameObject);
     }
 
