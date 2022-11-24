@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//enum for determining gun type quickly
 public enum PlayerGunType
 {
     DefaultGun,
@@ -11,6 +12,9 @@ public enum PlayerGunType
     INVALID
 }
 
+/// <summary>
+/// The Arsenal keeps track of guns that the player bike can equip, as well as handling the equip/dequip code
+/// </summary>
 public class Arsenal : MonoBehaviour
 {
     private Dictionary<PlayerGunType, Gun> guns;
@@ -24,9 +28,9 @@ public class Arsenal : MonoBehaviour
 
         guns = new Dictionary<PlayerGunType, Gun>();
         Gun[] arsenalWeapons = this.GetComponentsInChildren<Gun>();
+        //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
         for (int i = 0; i < arsenalWeapons.Length; i++)
         {
-            //arsenalWeapons[i] = Instantiate(arsenalWeapons[i], playerBike.movementComponent.transform.position, Quaternion.identity);
             arsenalWeapons[i].transform.parent = playerBike.movementComponent.bikeMeshParent.transform;
             arsenalWeapons[i].transform.rotation = playerBike.movementComponent.bikeMeshParent.transform.rotation;
             arsenalWeapons[i].transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
@@ -53,6 +57,7 @@ public class Arsenal : MonoBehaviour
 
     }
 
+    //Tells the current gun to fire
     public void Shoot(Vector3 initialVelocity) 
     {
         if (currentGun != null)
@@ -61,6 +66,7 @@ public class Arsenal : MonoBehaviour
         }
     }
 
+    //Discards current gun and inits/equips new gun
     public void EquipGun(PlayerGunType gunType)
     {
         if(guns.ContainsKey(gunType))
@@ -77,9 +83,10 @@ public class Arsenal : MonoBehaviour
         }
     }
 
+    //Un-registers shooting event and disables current gun
     public void DiscardGun(Gun gunToDiscard) 
     {
-        // TODO: big gun shot is called
+        // TODO: (after impl.) big gun shot is called
         // TODO: (after impl.) Level up a LevelledGun
         gunToDiscard.BulletShot -= playerBike.movementComponent.bl_ProcessCompleted;
         gunToDiscard.gameObject.SetActive(false);

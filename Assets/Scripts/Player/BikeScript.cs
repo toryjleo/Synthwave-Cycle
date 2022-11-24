@@ -118,42 +118,6 @@ public class BikeScript : MonoBehaviour
 
     #endregion
 
-    #region GunCode
-    /// <summary>Equips the gun to the bike.</summary>
-    /// <param name="gunToEquip">The gun which will be hooked up to the bike's bl_ProcessCompleted. Will be set as a
-    /// child of bikeMeshParent.</param>
-    public void EquipGun(Gun gunToEquip)
-    {
-        //if (currentGun != null)
-        //{
-        //    // Remove event handled from current gun
-        //    currentGun.BulletShot -= movementComponent.bl_ProcessCompleted;
-        //}
-
-        //this.currentGun = Instantiate(gunToEquip, movementComponent.bikeMeshParent.transform.position, Quaternion.identity);
-        //// Make gun child of TracerMeshParent
-        //currentGun.transform.parent = movementComponent.bikeMeshParent.transform;
-        //currentGun.transform.rotation = movementComponent.bikeMeshParent.transform.rotation;
-        ////currentGun.transform.position = movementComponent.bikeMeshParent.transform.position;
-        //currentGun.transform.RotateAround(currentGun.transform.position, currentGun.transform.up, 180f);
-
-        //// Hook up event
-        //currentGun.BulletShot += movementComponent.bl_ProcessCompleted;
-    }
-
-    /// <summary>Initialize the gun for the player to start with.</summary>
-    //private void InitializeStartingGun()
-    //{
-    //    EquipGun(bikeGun);
-    //}
-
-    /// <summary>Set current gun back to the bike's default weapon</summary>
-    //public void EquipBikeGun()
-    //{
-    //    EquipGun(bikeGun);
-    //}
-    #endregion
-
     #region Health Related
     /// <summary>Checks to see if a HealthPool is in front of the bike.</summary>
     /// <returns>True when a HealthPool is in front of the bike.</returns>

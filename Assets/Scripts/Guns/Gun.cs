@@ -20,6 +20,7 @@ public abstract class Gun : Weapon
     public event NotifyShot BulletShot; // event
     public event NotifyOutOfAmmo OutOfAmmo; // event
 
+    //Must be implemented, if Gun is not designed to be equipped by the player, use the INVALID value
     public abstract PlayerGunType GetPlayerGunType();
 
     protected override void OnDestroy()
