@@ -72,4 +72,9 @@ public class AkimboRangers : Gun
             Shoot(Vector3.zero);
         }
     }
+
+    public override PlayerGunType GetPlayerGunType()
+    {
+        return PlayerGunType.INVALID;
+    }
 }

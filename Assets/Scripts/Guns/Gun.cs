@@ -4,25 +4,47 @@ using UnityEngine;
 
 
 public delegate void NotifyShot(Vector3 force);  // delegate
+public delegate void NotifyOutOfAmmo(Gun self);
 
 /// <summary>Class <c>Bullet</c> A Unity Component which spawns bullets.</summary>
 public abstract class Gun : Weapon
 {
-
     public Bullet bulletPrefab;
     protected BulletPool bulletPool;
-    protected float lastFired = 0;
+    protected float lastFired;
     protected float fireRate = 0;  // The number of bullets fired per second
     protected int ammunition;
     public bool infiniteAmmo = false;
 
 
     public event NotifyShot BulletShot; // event
+    public event NotifyOutOfAmmo OutOfAmmo; // event
 
-    protected override void OnDestroy()
+    //Must be implemented, if Gun is not designed to be equipped by the player, use the INVALID value
+    public abstract PlayerGunType GetPlayerGunType();
+
+    protected virtual void Awake()
+    {
+        Init();
+    }
+
+    protected virtual void OnDestroy() 
+    {
+        DeInit();
+    }
+
+    /// <summary>Initializes veriables. Specifically must initialize lastFired and fireRate variables.</summary>
+    public virtual void Init()
+    {
+        bulletPool = gameObject.AddComponent<BulletPool>();
+        bulletPool.Init(bulletPrefab);
+        lastFired = 0;
+    }
+
+    /// <summary>Basically a destructor. Calls bulletPool.DeInit().</summary>
+    public virtual void DeInit() 
     {
         bulletPool.DeInit();
-        DeInit();
     }
     
 
@@ -52,11 +74,7 @@ public abstract class Gun : Weapon
         }
         if(!infiniteAmmo && ammunition <= 0)
         {
-            BikeScript playerBikeScript = (BikeScript)FindObjectOfType(typeof(BikeScript));
-            if(playerBikeScript)
-            {
-                playerBikeScript.EquipBikeGun();
-            }
+            OutOfAmmo?.Invoke(this);
         }
     }
 
