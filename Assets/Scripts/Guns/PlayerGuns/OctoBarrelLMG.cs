@@ -13,6 +13,11 @@ public class OctoBarrelLMG : Gun
     public AudioSource muzzle2Audio;
     private bool muzzle1Turn = true;
 
+    public override PlayerGunType GetPlayerGunType()
+    {
+        return PlayerGunType.OctoLMG;
+    }
+
     public override void Init() 
     {
         lastFired = 0;

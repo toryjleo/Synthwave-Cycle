@@ -13,6 +13,11 @@ public class DoubleBarrelLMG : Gun
     public AudioSource muzzle2Audio;
     private bool muzzle1Turn = true;
 
+    public override PlayerGunType GetPlayerGunType()
+    {
+        return PlayerGunType.DefaultGun;
+    }
+
     public override void Init() 
     {
         lastFired = 0;

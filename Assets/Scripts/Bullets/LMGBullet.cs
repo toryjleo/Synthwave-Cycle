@@ -20,7 +20,6 @@ public class LMGBullet : Bullet
             Health otherHealth = other.GetComponentInChildren<Health>();
             float z = otherHealth.HitPoints;
             otherHealth.TakeDamage(damageDealt);
-
         }
     }
 }

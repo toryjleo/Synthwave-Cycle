@@ -9,7 +9,6 @@ public delegate void NotifyOutOfAmmo(Gun self);
 /// <summary>Class <c>Bullet</c> A Unity Component which spawns bullets.</summary>
 public abstract class Gun : Weapon
 {
-
     public Bullet bulletPrefab;
     protected BulletPool bulletPool;
     protected float lastFired = 0;
@@ -20,6 +19,8 @@ public abstract class Gun : Weapon
 
     public event NotifyShot BulletShot; // event
     public event NotifyOutOfAmmo OutOfAmmo; // event
+
+    public abstract PlayerGunType GetPlayerGunType();
 
     protected override void OnDestroy()
     {

@@ -21,6 +21,11 @@ public class TurretScript : Gun
         bulletPool.Init(bulletPrefab);
     }
 
+    public override PlayerGunType GetPlayerGunType()
+    {
+        return PlayerGunType.INVALID;
+    }
+
     public override void Shoot(Vector3 initialVelocity)
     {
         if (CanShootAgain())
