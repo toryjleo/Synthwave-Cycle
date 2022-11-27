@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9de5b54d6fb124941b4b571d0952f2d9, type: 3}
-  m_Name: DrumAndBassLoop7
+  m_Name: DrumAndBassLoop8
   m_EditorClassIdentifier: 
-  variation: {fileID: 8300000, guid: 51d7a44dcbcc23a43969ad514c8d4c96, type: 3}
-  dangerLevelStart: 60
+  variation: {fileID: 8300000, guid: b2073d667f5c9b64497667989383cd37, type: 3}
+  dangerLevelStart: 100

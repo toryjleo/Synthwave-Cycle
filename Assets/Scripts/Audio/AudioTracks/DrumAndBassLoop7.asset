@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: DrumAndBassLoop7
   m_EditorClassIdentifier: 
   variation: {fileID: 8300000, guid: 51d7a44dcbcc23a43969ad514c8d4c96, type: 3}
-  dangerLevelStart: 60
+  dangerLevelStart: 80
