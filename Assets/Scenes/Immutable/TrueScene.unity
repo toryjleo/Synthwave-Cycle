@@ -260,6 +260,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: JukeBox
       objectReference: {fileID: 0}
+    - target: {fileID: 3820667865579537718, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
+      propertyPath: trackList.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3820667865579537718, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
+      propertyPath: trackList.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: a2f9cc1666716a942a309e609ba15d69, type: 2}
     - target: {fileID: 3820667865579537721, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
       propertyPath: m_RootOrder
       value: 1
