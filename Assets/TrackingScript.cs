@@ -13,7 +13,7 @@ public class TrackingScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("TrackThis");
+        player = GameObject.FindGameObjectWithTag("Player");
 
         TPoints = GameObject.FindGameObjectsWithTag("TrackerChild");
 
@@ -25,6 +25,5 @@ public class TrackingScript : MonoBehaviour
     {
         this.transform.position = player.transform.position;
         this.transform.rotation = player.transform.rotation;
-        
     }
 }

@@ -302,8 +302,6 @@ MonoBehaviour:
   trackList:
   - {fileID: 11400000, guid: 185152a77e0fbd641974e04df0d1f4b3, type: 2}
   - {fileID: 11400000, guid: 55816fd2f98885a4e8f2d666cef4a647, type: 2}
-  - {fileID: 11400000, guid: 1189d8cfb23cec0498915c3f2417921a, type: 2}
-  - {fileID: 11400000, guid: 7bd5ec07ff8d12e4ca27ef28cabc3439, type: 2}
   audioSourceArray:
   - {fileID: 281125569}
   - {fileID: 1805576751}

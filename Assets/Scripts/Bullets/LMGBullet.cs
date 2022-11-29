@@ -13,12 +13,14 @@ public class LMGBullet : Bullet
 
     private void OnTriggerEnter(Collider other)
     {
+
         if (other.gameObject.tag == "Enemy")
         {
             // TracerMesh should have a Health component
             Health otherHealth = other.GetComponentInChildren<Health>();
             float z = otherHealth.HitPoints;
             otherHealth.TakeDamage(damageDealt);
+
         }
     }
 }

@@ -6,19 +6,20 @@ using UnityEngine;
 /// <summary>
 /// This Script Controlls the turret attached to the turret bike. It requires a GameObject for the muzzle and keeps track of the mouse coordinates. 
 /// </summary>
-public class TurretScript : Gun
+public class EnemyTurret : Gun
 {
     public GameObject muzzle1;
 
-    public Vector3 mouse;
+    public GameObject target;
 
 
     public override void Init()
     {
         lastFired = 0;
-        fireRate = 10;
+        fireRate = .5f;
         bulletPool = gameObject.AddComponent<BulletPool>();
         bulletPool.Init(bulletPrefab);
+        target = GameObject.FindGameObjectWithTag("Player");
     }
 
     public override void Shoot(Vector3 initialVelocity)
@@ -30,10 +31,10 @@ public class TurretScript : Gun
 
             Vector3 shotDir = muzzle1.transform.right;
             bullet.Shoot(muzzle1.transform.position, shotDir, initialVelocity);
-            
+
 
             // Gun specific
-            
+
             OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
             ApplyRecoil(shotDir, bullet);
         }
@@ -42,9 +43,9 @@ public class TurretScript : Gun
     }
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        target = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
@@ -52,20 +53,12 @@ public class TurretScript : Gun
     {
 
         // Logic for Having turret track the Mouse. 
-        Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(r, out RaycastHit raycastHit))
-        {
-            mouse = raycastHit.point;
 
-            //Debug.Log(mouse +"   "+this.transform.position);
-
-            mouse -= this.transform.position; 
-        }
         //mouse = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
-        var angle = Mathf.Atan2(mouse.x, mouse.z) * Mathf.Rad2Deg;
+        //var angle = Mathf.Atan2(target.transform.position.x, target.transform.position.z) * Mathf.Rad2Deg;
 
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
-        //transform.Rotate(Vector3.up, steerRate);
+        transform.LookAt(target.transform.position, Vector3.up);
+        
 
     }
 }

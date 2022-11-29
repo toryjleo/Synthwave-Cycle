@@ -16,11 +16,6 @@ public class VulcanV64AutoCannons : Gun
     const float MAX_INACCURACY = 0f;
     float inaccuracy = 0f;
 
-    public override PlayerGunType GetPlayerGunType()
-    {
-        return PlayerGunType.VulkanV64AutoCannons;
-    }
-
     public override void Init()
     {
         lastFired = 0;

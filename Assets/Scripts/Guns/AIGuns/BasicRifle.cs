@@ -29,10 +29,6 @@ public class BasicRifle : Gun
             //OnBulletShot(shotDir * bullet.Mass * bullet.muzzleVelocity);
         }
     }
-    public override PlayerGunType GetPlayerGunType()
-    {
-        return PlayerGunType.INVALID;
-    }
 
     /// <summary>Will wait some time before firing the next bullet.</summary>
     IEnumerator TripleShot() 

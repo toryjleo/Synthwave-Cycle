@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class DoubleBarrelLMG : LeveledGun
+public class DoubleBarrelLMG : Gun
 {
 
     // Very specific to this gun
@@ -13,17 +13,12 @@ public class DoubleBarrelLMG : LeveledGun
     public AudioSource muzzle2Audio;
     private bool muzzle1Turn = true;
 
-    public override PlayerGunType GetPlayerGunType()
-    {
-        return PlayerGunType.DefaultGun;
-    }
-
     public override void Init() 
     {
-        base.Init();
-        int currentLevel = GetCurrentLevel();
-        fireRate = 2f * currentLevel;
-        ammunition = 20 * currentLevel;
+        lastFired = 0;
+        fireRate = 15;
+        bulletPool = gameObject.AddComponent<BulletPool>();
+        bulletPool.Init(bulletPrefab);
     }
 
     /// <summary>Fires a bullet out of either muzzle, alternating each turn.</summary>

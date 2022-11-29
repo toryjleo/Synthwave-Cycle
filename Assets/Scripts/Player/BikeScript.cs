@@ -12,9 +12,10 @@ public class BikeScript : MonoBehaviour
     private float distanceToHP; // The current distance to the healthpool.
     private float consecutiveDistanceToHP; // The distance to the healthpool the first time we raycast hit it.
 
+    public Gun currentGun;
     public TurretScript turret;
-    [SerializeField]
-    private Arsenal arsenal;
+
+    public Gun bikeGun;
 
     public BikeMovementComponent movementComponent;
     private EmmissiveBikeScript emissiveBike;
@@ -75,6 +76,9 @@ public class BikeScript : MonoBehaviour
     private void Awake()
     {
         Init();
+
+        // TODO: make this less gross. Update gun/equip code
+        InitializeStartingGun();
     }
 
 
@@ -88,8 +92,7 @@ public class BikeScript : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            //currentGun.Shoot(movementComponent.rb.velocity);
-            arsenal.Shoot(movementComponent.rb.velocity);
+            currentGun.Shoot(movementComponent.rb.velocity);
             if(turret!= null)
             {
                 turret.Shoot(movementComponent.rb.velocity);
@@ -116,6 +119,42 @@ public class BikeScript : MonoBehaviour
         consecutiveDistanceToHP = 0;
     }
 
+    #endregion
+
+    #region GunCode
+    /// <summary>Equips the gun to the bike.</summary>
+    /// <param name="gunToEquip">The gun which will be hooked up to the bike's bl_ProcessCompleted. Will be set as a
+    /// child of bikeMeshParent.</param>
+    public void EquipGun(Gun gunToEquip)
+    {
+        if (currentGun != null)
+        {
+            // Remove event handled from current gun
+            currentGun.BulletShot -= movementComponent.bl_ProcessCompleted;
+        }
+
+        this.currentGun = Instantiate(gunToEquip, movementComponent.bikeMeshParent.transform.position, Quaternion.identity);
+        // Make gun child of TracerMeshParent
+        currentGun.transform.parent = movementComponent.bikeMeshParent.transform;
+        currentGun.transform.rotation = movementComponent.bikeMeshParent.transform.rotation;
+        //currentGun.transform.position = movementComponent.bikeMeshParent.transform.position;
+        currentGun.transform.RotateAround(currentGun.transform.position, currentGun.transform.up, 180f);
+
+        // Hook up event
+        currentGun.BulletShot += movementComponent.bl_ProcessCompleted;
+    }
+
+    /// <summary>Initialize the gun for the player to start with.</summary>
+    private void InitializeStartingGun()
+    {
+        EquipGun(bikeGun);
+    }
+
+    /// <summary>Set current gun back to the bike's default weapon</summary>
+    public void EquipBikeGun()
+    {
+        EquipGun(bikeGun);
+    }
     #endregion
 
     #region Health Related
