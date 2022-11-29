@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 1752742610481971667}
   - component: {fileID: 8586306528787280163}
   - component: {fileID: 5596625525561022962}
+  - component: {fileID: 98061403506324181}
+  - component: {fileID: 2403519697623962353}
   - component: {fileID: 8820055375388924410}
-  - component: {fileID: 639530514}
-  - component: {fileID: 639530515}
   m_Layer: 0
   m_Name: CarEnemy
   m_TagString: Enemy
@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &5596625525561022962
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -64,6 +64,56 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!114 &98061403506324181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7451586931672031094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a76ad1898754c924dbd52d320d88e4ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MeshParent: {fileID: 7451586931672031094}
+  MeshChild: {fileID: 0}
+  rb: {fileID: 5596625525561022962}
+  health: {fileID: 8586306528787280163}
+  verticalInput: 0
+  horizontalInput: 0
+  appliedForce: {x: 0, y: 0, z: 0}
+  Traction: 3
+  dragCoefficient: 0.98
+  SteerAngle: 3
+  maxLean: 40
+  ACCELERATION_SCALE: 5
+  STARTING_HEALTH: 200
+  MAX_ACCELERATION: 1000
+--- !u!114 &2403519697623962353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7451586931672031094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4275d4408fbc1224b85a5c7f58c29fdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  animationStateController: {fileID: 0}
+  rb: {fileID: 5596625525561022962}
+  myGun: {fileID: 0}
+  hp: {fileID: 8586306528787280163}
+  activeConditions: []
+  StartingHP: 0
+  maxSpeed: 100
+  maxForce: 100
+  score: 0
+  attackRange: 0
+  alive: 1
 --- !u!136 &8820055375388924410
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -78,55 +128,6 @@ CapsuleCollider:
   m_Height: 12.34764
   m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &639530514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7451586931672031094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2283e54b857545744a33addda8dc4551, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  MeshParent: {fileID: 7451586931672031094}
-  MeshChild: {fileID: 3068176888741079859}
-  rb: {fileID: 5596625525561022962}
-  verticalInput: 0
-  horizontalInput: 0
-  appliedForce: {x: 0, y: 0, z: 0}
-  Traction: 3
-  dragCoefficient: 0.98
-  SteerAngle: 10
-  maxLean: 40
-  ACCELERATION_SCALE: 5
-  STARTING_HEALTH: 200
-  MAX_ACCELERATION: 1000
---- !u!114 &639530515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7451586931672031094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d3b08d9e7b18804dbb5247a07670746, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  target: {fileID: 0}
-  animationStateController: {fileID: 0}
-  rb: {fileID: 5596625525561022962}
-  myGun: {fileID: 0}
-  hp: {fileID: 0}
-  activeConditions: []
-  StartingHP: 0
-  maxSpeed: 0
-  maxForce: 0
-  score: 0
-  attackRange: 0
-  alive: 0
 --- !u!1001 &7338551751319501074
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -407,10 +408,5 @@ PrefabInstance:
 --- !u!4 &6040215825489878069 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3892497274273293607, guid: 72f1457839393754f81447bf7fb11c20, type: 3}
-  m_PrefabInstance: {fileID: 7338551751319501074}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3068176888741079859 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5711584057536647713, guid: 72f1457839393754f81447bf7fb11c20, type: 3}
   m_PrefabInstance: {fileID: 7338551751319501074}
   m_PrefabAsset: {fileID: 0}

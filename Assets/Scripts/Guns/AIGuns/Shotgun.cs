@@ -27,7 +27,11 @@ public class Shotgun : Gun
         }
     }
 
-    
+    public override PlayerGunType GetPlayerGunType()
+    {
+        return PlayerGunType.INVALID;
+    }
+
 
     IEnumerator SpreadShot()
     {
