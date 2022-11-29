@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//enum for determining gun type quickly
+// enum for determining gun type quickly
+// Ensure that DefaultGun is always the first and INVALID is always last.
 public enum PlayerGunType
 {
     DefaultGun,
