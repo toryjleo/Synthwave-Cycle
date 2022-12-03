@@ -13,6 +13,19 @@ public class Shotty : LeveledGun
 
     float angleDifference = 5f;
 
+    public override void BigBoom()
+    {
+        for(int i = 0; i < 60; i++)
+        {
+            Bullet bullet = bulletPool.SpawnFromPool();
+
+            Vector3 shotDir = Quaternion.Euler(0, 360f * (i / 60f) , 0) * barrel.transform.up;
+            //shotDir = barrel.transform.up;
+
+            bullet.Shoot(barrel.transform.position, shotDir, Vector3.zero);
+        }
+    }
+
     public override PlayerGunType GetPlayerGunType()
     {
         return PlayerGunType.Shotty;
