@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class WeaponDrop : SelfWorldBoundsDespawn
 {
+    // Tracks the possible guns which this drop can represent
     private Dictionary<PlayerGunType, GameObject> attachedGuns;
 
+    // Current PlayerGunType this drop represents
     private PlayerGunType gunType;
 
     public PlayerGunType GunType
@@ -23,7 +25,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
             }
             else
             {
-                gunType = value;
+                SetGunType(value);
             }
         }
     }
@@ -49,12 +51,16 @@ public class WeaponDrop : SelfWorldBoundsDespawn
         SetRandomGunType();
     }
 
-    public void SetGunType(PlayerGunType gunType)
+    /// <summary>
+    /// Sets this WeaponDrop's associated gunType and model to the new gunType
+    /// </summary>
+    /// <param name="gunType">The PlayerGunType to be assigned</param>
+    private void SetGunType(PlayerGunType gunType)
     {
-        if (attachedGuns.ContainsKey(gunType)) 
+        if (attachedGuns.ContainsKey(gunType))
         {
             // Make sure to disable old gunType
-            if (attachedGuns.ContainsKey(this.gunType)) 
+            if (attachedGuns.ContainsKey(this.gunType))
             {
                 attachedGuns[this.gunType].SetActive(false);
             }
@@ -68,6 +74,10 @@ public class WeaponDrop : SelfWorldBoundsDespawn
         }
     }
 
+    /// <summary>
+    /// Assigns a random PlayerGunType to this WeaponDrop
+    /// </summary>
+    /// <returns>The selected PlayerGunType</returns>
     public PlayerGunType SetRandomGunType()
     {
         PlayerGunType typeToAssign = (PlayerGunType) Random.Range((int)PlayerGunType.DefaultGun, (int)PlayerGunType.INVALID - 1);
@@ -75,11 +85,19 @@ public class WeaponDrop : SelfWorldBoundsDespawn
         return typeToAssign;
     }
 
+    /// <summary>
+    /// Returns a list of WeaponDropGunTypes attached to models undderneath this WeaponDrop object.
+    /// </summary>
+    /// <returns>List of child object WeaponDropGunType</returns>
     private WeaponDropGunType[] GetAttachedWeaponDropGunTypes()
     {
         return GetComponentsInChildren<WeaponDropGunType>();
     }
 
+    /// <summary>
+    /// Takes in a list of WeaponDropGunType to populate the internal attachedGuns dictionary.
+    /// </summary>
+    /// <param name="attachedGunTypes">List of child WeaponDropGunTypes which are attached to models.</param>
     private void PopulateDictionary(WeaponDropGunType[] attachedGunTypes)
     {
         attachedGuns = new Dictionary<PlayerGunType, GameObject>();
@@ -103,6 +121,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
 
     private void OnTriggerEnter(Collider other)
     {
+        // When hitting a player, get the arsenal and equip the selected gun
         if (other.tag == "Player")
         {
             Debug.Log("Player hit pickup!");
