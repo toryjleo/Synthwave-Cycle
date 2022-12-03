@@ -13,6 +13,21 @@ public class DoubleBarrelLMG : LeveledGun
     public AudioSource muzzle2Audio;
     private bool muzzle1Turn = true;
 
+    public override void BigBoom()
+    {
+        for (int i = 0; i < 60; i++)
+        {
+            Bullet bullet = bulletPool.SpawnFromPool();
+
+            Vector3 shotDir;
+            GameObject curMuzzle = i % 2 == 0 ? muzzle1 : muzzle2;
+            shotDir = Quaternion.Euler(0, 360f * (i / 60f), 0) * curMuzzle.transform.forward;
+            //shotDir = barrel.transform.up;
+
+            bullet.Shoot(curMuzzle.transform.position, shotDir, Vector3.zero);
+        }
+    }
+
     public override PlayerGunType GetPlayerGunType()
     {
         return PlayerGunType.DefaultGun;

@@ -23,16 +23,6 @@ public abstract class Gun : Weapon
     //Must be implemented, if Gun is not designed to be equipped by the player, use the INVALID value
     public abstract PlayerGunType GetPlayerGunType();
 
-    protected virtual void Awake()
-    {
-        Init();
-    }
-
-    protected virtual void OnDestroy() 
-    {
-        DeInit();
-    }
-
     /// <summary>Initializes veriables. Specifically must initialize lastFired and fireRate variables.</summary>
     public override void Init()
     {
@@ -42,7 +32,7 @@ public abstract class Gun : Weapon
     }
 
     /// <summary>Basically a destructor. Calls bulletPool.DeInit().</summary>
-    public virtual void DeInit() 
+    public override void DeInit() 
     {
         bulletPool.DeInit();
     }

@@ -43,14 +43,20 @@ public class Arsenal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if(Input.GetKeyDown(KeyCode.L))
-        //{
-        //    EquipGun(PlayerGunType.DefaultGun);
-        //}
-        //else if(Input.GetKeyDown(KeyCode.O))
-        //{
-        //    EquipGun(PlayerGunType.OctoLMG);
-        //}
+        /*
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            EquipGun(PlayerGunType.DefaultGun);
+        }
+        else if (Input.GetKeyDown(KeyCode.O))
+        {
+            EquipGun(PlayerGunType.OctoLMG);
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            EquipGun(PlayerGunType.Shotty);
+        }
+        */
     }
 
     public void Init() 
@@ -87,8 +93,11 @@ public class Arsenal : MonoBehaviour
     //Un-registers shooting event and disables current gun
     public void DiscardGun(Gun gunToDiscard) 
     {
-        // TODO: (after impl.) big gun shot is called
-        // TODO: (after impl.) Level up a LevelledGun
+        if(currentGun is LeveledGun)
+        {
+            ((LeveledGun)currentGun).BigBoom();
+            ((LeveledGun)currentGun).LevelUp();
+        }
         gunToDiscard.BulletShot -= playerBike.movementComponent.bl_ProcessCompleted;
         gunToDiscard.gameObject.SetActive(false);
     }
