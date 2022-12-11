@@ -9,12 +9,12 @@ using UnityEngine;
 public abstract class LeveledGun : Gun
 {
     //Denotes the current level of each gun. Starting at 1 and getting higher every DeInit
-    private static Dictionary<PlayerGunType, int> gunLevels = new Dictionary<PlayerGunType, int>();
+    private static Dictionary<PlayerWeaponType, int> gunLevels = new Dictionary<PlayerWeaponType, int>();
 
     //Returns the current level of the LeveledGun, if the gun is not present in the dictionary, add it at level 1
     protected int GetCurrentLevel()
     {
-        PlayerGunType gunType = GetPlayerGunType();
+        PlayerWeaponType gunType = GetPlayerWeaponType();
         if (!gunLevels.ContainsKey(gunType))
         {
             gunLevels.Add(gunType, 1);
@@ -26,14 +26,14 @@ public abstract class LeveledGun : Gun
     //De-Initialize the gun and level it up by one so it will be stronger next time
     public override void DeInit()
     {
-        gunLevels[GetPlayerGunType()]++;
+        gunLevels[GetPlayerWeaponType()]++;
         base.DeInit();
     }
 
     //increases the gun's level by one
     public void LevelUp()
     {
-        PlayerGunType gunType = GetPlayerGunType();
+        PlayerWeaponType gunType = GetPlayerWeaponType();
         if (!gunLevels.ContainsKey(gunType))
         {
             gunLevels.Add(gunType, 1);

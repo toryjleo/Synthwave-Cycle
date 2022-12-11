@@ -27,9 +27,9 @@ public class OctoBarrelLMG : LeveledGun
         }
     }
 
-    public override PlayerGunType GetPlayerGunType()
+    public override PlayerWeaponType GetPlayerWeaponType()
     {
-        return PlayerGunType.OctoLMG;
+        return PlayerWeaponType.OctoLMG;
     }
 
     public override void Init() 
@@ -42,7 +42,7 @@ public class OctoBarrelLMG : LeveledGun
 
     /// <summary>Fires a bullet out of either muzzle, alternating each turn.</summary>
     /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
-    public override void Shoot(Vector3 initialVelocity) 
+    public override void PrimaryFire(Vector3 initialVelocity) 
     {
         if (CanShootAgain())
         {
@@ -68,5 +68,9 @@ public class OctoBarrelLMG : LeveledGun
             ApplyRecoil(shotDir, bullet);
             //OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
         }
+    }
+    public override void SecondaryFire(Vector3 initialVelocity)
+    {
+        throw new System.NotImplementedException();
     }
 }

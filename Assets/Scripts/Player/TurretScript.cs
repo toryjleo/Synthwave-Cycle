@@ -21,12 +21,12 @@ public class TurretScript : Gun
         bulletPool.Init(bulletPrefab);
     }
 
-    public override PlayerGunType GetPlayerGunType()
+    public override PlayerWeaponType GetPlayerWeaponType()
     {
-        return PlayerGunType.INVALID;
+        return PlayerWeaponType.INVALID;
     }
 
-    public override void Shoot(Vector3 initialVelocity)
+    public override void PrimaryFire(Vector3 initialVelocity)
     {
         if (CanShootAgain())
         {
@@ -44,6 +44,10 @@ public class TurretScript : Gun
         }
 
 
+    }
+    public override void SecondaryFire(Vector3 initialVelocity)
+    {
+        throw new System.NotImplementedException();
     }
 
     // Start is called before the first frame update

@@ -11,8 +11,8 @@ public class OctoLMGDrop : WeaponDropGunType
     /// Returns the guntype PlayerGunType.OctoLMG
     /// </summary>
     /// <returns>PlayerGunType.OctoLMG</returns>
-    public override PlayerGunType GetPlayerGunType()
+    public override PlayerWeaponType GetPlayerGunType()
     {
-        return PlayerGunType.OctoLMG;
+        return PlayerWeaponType.OctoLMG;
     }
 }

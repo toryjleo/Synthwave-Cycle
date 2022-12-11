@@ -17,7 +17,7 @@ public class ScoreTracker : MonoBehaviour
     public TextMeshProUGUI currentScoreText;
     public TextMeshProUGUI currentHPText;
 
-    public List<PlayerGunType> weaponPool;
+    public List<PlayerWeaponType> weaponPool;
 
     public BikeScript bike;
 
@@ -109,7 +109,7 @@ public class ScoreTracker : MonoBehaviour
         {
             if(weaponPool != null && weaponPool.Count > 0)
             {
-                PlayerGunType gun = weaponPool[Random.Range(0, weaponPool.Count)];
+                PlayerWeaponType gun = weaponPool[Random.Range(0, weaponPool.Count)];
                 Arsenal a = bike.gameObject.GetComponent<Arsenal>();
                 if (a != null)
                 {

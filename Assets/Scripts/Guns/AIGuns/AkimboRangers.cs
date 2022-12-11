@@ -14,7 +14,7 @@ public class AkimboRangers : Gun
         bulletPool.Init(bulletPrefab);
     }
 
-    public override void Shoot(Vector3 initialVelocity)
+    public override void PrimaryFire(Vector3 initialVelocity)
     {
         if (CanShootAgain())
         {
@@ -69,12 +69,17 @@ public class AkimboRangers : Gun
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            Shoot(Vector3.zero);
+            PrimaryFire(Vector3.zero);
         }
     }
 
-    public override PlayerGunType GetPlayerGunType()
+    public override PlayerWeaponType GetPlayerWeaponType()
     {
-        return PlayerGunType.INVALID;
+        return PlayerWeaponType.INVALID;
+    }
+
+    public override void SecondaryFire(Vector3 initialVelocity)
+    {
+        throw new System.NotImplementedException();
     }
 }

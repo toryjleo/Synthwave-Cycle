@@ -11,8 +11,8 @@ public class VulkanV64AutoCannonsDrop : WeaponDropGunType
     /// Returns the guntype PlayerGunType.VulkanV64AutoCannons
     /// </summary>
     /// <returns>PlayerGunType.VulkanV64AutoCannons</returns>
-    public override PlayerGunType GetPlayerGunType()
+    public override PlayerWeaponType GetPlayerGunType()
     {
-        return PlayerGunType.VulkanV64AutoCannons;
+        return PlayerWeaponType.VulkanV64AutoCannons;
     }
 }
