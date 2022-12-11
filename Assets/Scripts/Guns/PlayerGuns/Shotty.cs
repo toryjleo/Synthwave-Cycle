@@ -39,6 +39,11 @@ public class Shotty : LeveledGun
         fireRate = 0.5f * currentLevel;
         ammunition = 8 * currentLevel;
     }
+
+    /// <summary>
+    /// Fires the left barrel
+    /// </summary>
+    /// <param name="initialVelocity">Velocity of the player</param>
     public override void PrimaryFire(Vector3 initialVelocity)
     {
         if(CanShootAgain())
@@ -60,6 +65,11 @@ public class Shotty : LeveledGun
             }
         }
     }
+
+    /// <summary>
+    /// Fires the right barrel
+    /// </summary>
+    /// <param name="initialVelocity">Velocity of the player</param>
     public override void SecondaryFire(Vector3 initialVelocity)
     {
         if (CanShootAgain())
