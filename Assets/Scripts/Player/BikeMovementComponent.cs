@@ -122,7 +122,7 @@ public class BikeMovementComponent : MonoBehaviour
             rb.AddForce(LeftVector() * SideForce);
         }
 
-
+        Debug.Log(Input.GetAxis("Horizontal"));
         //Steering Takes Horizontal Input and rotates both 
         float steerInupt = Input.GetAxis("Horizontal");
         bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInupt, 0, 0);

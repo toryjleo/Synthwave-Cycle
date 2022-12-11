@@ -8,7 +8,8 @@ using UnityEngine;
 /// </summary>
 public class Shotty : LeveledGun
 {
-    public GameObject barrel;
+    public GameObject barrelL;
+    public GameObject barrelR;
     public AudioSource muzzleAudio;
 
     float angleDifference = 5f;
@@ -19,16 +20,16 @@ public class Shotty : LeveledGun
         {
             Bullet bullet = bulletPool.SpawnFromPool();
 
-            Vector3 shotDir = Quaternion.Euler(0, 360f * (i / 60f) , 0) * barrel.transform.up;
-            //shotDir = barrel.transform.up;
-
-            bullet.Shoot(barrel.transform.position, shotDir, Vector3.zero);
+            Vector3 shotDir = Quaternion.Euler(0, 180f * (i / 60f) , 0) * barrelL.transform.up;
+            bullet.Shoot(barrelL.transform.position, shotDir, Vector3.zero);
+            shotDir = Quaternion.Euler(0, 180f * (i / 60f) , 0) * barrelR.transform.up;
+            bullet.Shoot(barrelR.transform.position, shotDir, Vector3.zero);
         }
     }
 
-    public override PlayerGunType GetPlayerGunType()
+    public override PlayerWeaponType GetPlayerWeaponType()
     {
-        return PlayerGunType.Shotty;
+        return PlayerWeaponType.Shotty;
     }
 
     public override void Init()
@@ -38,7 +39,12 @@ public class Shotty : LeveledGun
         fireRate = 0.5f * currentLevel;
         ammunition = 8 * currentLevel;
     }
-    public override void Shoot(Vector3 initialVelocity)
+
+    /// <summary>
+    /// Fires the left barrel
+    /// </summary>
+    /// <param name="initialVelocity">Velocity of the player</param>
+    public override void PrimaryFire(Vector3 initialVelocity)
     {
         if(CanShootAgain())
         {
@@ -50,10 +56,36 @@ public class Shotty : LeveledGun
 
                 Vector3 shotDir;
 
-                shotDir = Quaternion.Euler(0, Random.Range(-angleDifference, angleDifference), 0) * barrel.transform.up;
+                shotDir = Quaternion.Euler(0, Random.Range(-angleDifference, angleDifference), 0) * barrelL.transform.up;
                 //shotDir = barrel.transform.up;
 
-                bullet.Shoot(barrel.transform.position, shotDir, initialVelocity);
+                bullet.Shoot(barrelL.transform.position, shotDir, initialVelocity);
+                //muzzleAudio.Play();
+                ApplyRecoil(shotDir, bullet);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Fires the right barrel
+    /// </summary>
+    /// <param name="initialVelocity">Velocity of the player</param>
+    public override void SecondaryFire(Vector3 initialVelocity)
+    {
+        if (CanShootAgain())
+        {
+            lastFired = Time.time;
+            int currentLevel = GetCurrentLevel();
+            for (int i = 0; i < currentLevel * 4; i++)
+            {
+                Bullet bullet = bulletPool.SpawnFromPool();
+
+                Vector3 shotDir;
+
+                shotDir = Quaternion.Euler(0, Random.Range(-angleDifference, angleDifference), 0) * barrelR.transform.up;
+                //shotDir = barrel.transform.up;
+
+                bullet.Shoot(barrelR.transform.position, shotDir, initialVelocity);
                 //muzzleAudio.Play();
                 ApplyRecoil(shotDir, bullet);
             }

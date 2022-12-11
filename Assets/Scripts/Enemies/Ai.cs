@@ -124,7 +124,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         if (myGun != null && myGun.CanShootAgain() && alive)
         {
 
-            this.myGun.Shoot(target.transform.position);
+            this.myGun.PrimaryFire(target.transform.position);
             animationStateController.AimWhileWalking(true);
 
         }

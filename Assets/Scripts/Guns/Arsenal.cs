@@ -3,24 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// enum for determining gun type quickly
-// Ensure that DefaultGun is always the first and INVALID is always last.
-public enum PlayerGunType
-{
-    DefaultGun,
-    OctoLMG,
-    VulkanV64AutoCannons,
-    Shotty,
-    INVALID
-}
 
 /// <summary>
 /// The Arsenal keeps track of guns that the player bike can equip, as well as handling the equip/dequip code
 /// </summary>
 public class Arsenal : MonoBehaviour
 {
-    private Dictionary<PlayerGunType, Gun> guns;
-    private Gun currentGun;
+    private Dictionary<PlayerWeaponType, Weapon> weapons;
+    private Weapon currentWeapon;
     private BikeScript playerBike;
 
     // Start is called before the first frame update
@@ -28,8 +18,8 @@ public class Arsenal : MonoBehaviour
     {
         playerBike = GetComponentInParent<BikeScript>();
 
-        guns = new Dictionary<PlayerGunType, Gun>();
-        Gun[] arsenalWeapons = this.GetComponentsInChildren<Gun>();
+        weapons = new Dictionary<PlayerWeaponType, Weapon>();
+        Weapon[] arsenalWeapons = this.GetComponentsInChildren<Weapon>();
         //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
         for (int i = 0; i < arsenalWeapons.Length; i++)
         {
@@ -37,27 +27,27 @@ public class Arsenal : MonoBehaviour
             arsenalWeapons[i].transform.rotation = playerBike.movementComponent.bikeMeshParent.transform.rotation;
             arsenalWeapons[i].transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
             arsenalWeapons[i].gameObject.SetActive(false);
-            guns.Add(arsenalWeapons[i].GetPlayerGunType(), arsenalWeapons[i]);
+            weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*
+#if DEBUG
         if (Input.GetKeyDown(KeyCode.L))
         {
-            EquipGun(PlayerGunType.DefaultGun);
+            EquipGun(PlayerWeaponType.DefaultGun);
         }
         else if (Input.GetKeyDown(KeyCode.O))
         {
-            EquipGun(PlayerGunType.OctoLMG);
+            EquipGun(PlayerWeaponType.OctoLMG);
         }
         else if (Input.GetKeyDown(KeyCode.P))
         {
-            EquipGun(PlayerGunType.Shotty);
+            EquipGun(PlayerWeaponType.Shotty);
         }
-        */
+#endif
     }
 
     public void Init() 
@@ -66,40 +56,54 @@ public class Arsenal : MonoBehaviour
     }
 
     //Tells the current gun to fire
-    public void Shoot(Vector3 initialVelocity) 
+    public void PrimaryFire(Vector3 initialVelocity) 
     {
-        if (currentGun != null)
+        if (currentWeapon != null)
         {
-            currentGun.Shoot(initialVelocity);
+            currentWeapon.PrimaryFire(initialVelocity);
+        }
+    }
+
+    public void SecondaryFire(Vector3 initialVelocity)
+    {
+        if (currentWeapon != null)
+        {
+            currentWeapon.SecondaryFire(initialVelocity);
         }
     }
 
     //Discards current gun and inits/equips new gun
-    public void EquipGun(PlayerGunType gunType)
+    public void EquipGun(PlayerWeaponType gunType)
     {
-        if(guns.ContainsKey(gunType))
+        if(weapons.ContainsKey(gunType))
         {
-            if (currentGun != null)
+            if (currentWeapon != null)
             {
-                DiscardGun(currentGun);
+                DiscardGun(currentWeapon);
             }
 
-            currentGun = guns[gunType];
-            currentGun.Init();
-            currentGun.BulletShot += playerBike.movementComponent.bl_ProcessCompleted;
-            currentGun.gameObject.SetActive(true);
+            currentWeapon = weapons[gunType];
+            currentWeapon.Init();
+            if (currentWeapon is Gun)
+            {
+                ((Gun)currentWeapon).BulletShot += playerBike.movementComponent.bl_ProcessCompleted;
+            }
+            currentWeapon.gameObject.SetActive(true);
         }
     }
 
     //Un-registers shooting event and disables current gun
-    public void DiscardGun(Gun gunToDiscard) 
+    public void DiscardGun(Weapon gunToDiscard) 
     {
-        if(currentGun is LeveledGun)
+        if(currentWeapon is LeveledGun)
         {
-            ((LeveledGun)currentGun).BigBoom();
-            ((LeveledGun)currentGun).LevelUp();
+            ((LeveledGun)currentWeapon).BigBoom();
+            ((LeveledGun)currentWeapon).LevelUp();
         }
-        gunToDiscard.BulletShot -= playerBike.movementComponent.bl_ProcessCompleted;
+        if (gunToDiscard is Gun)
+        {
+            ((Gun)gunToDiscard).BulletShot -= playerBike.movementComponent.bl_ProcessCompleted;
+        }
         gunToDiscard.gameObject.SetActive(false);
     }
 }

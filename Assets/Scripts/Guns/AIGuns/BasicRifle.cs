@@ -17,7 +17,7 @@ public class BasicRifle : Gun
 
     /// <summary>Fires a sequence of 3 bullets.</summary>
     /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
-    public override void Shoot(Vector3 initialVelocity)
+    public override void PrimaryFire(Vector3 initialVelocity)
     {
         if (CanShootAgain()) 
         {
@@ -29,9 +29,13 @@ public class BasicRifle : Gun
             //OnBulletShot(shotDir * bullet.Mass * bullet.muzzleVelocity);
         }
     }
-    public override PlayerGunType GetPlayerGunType()
+    public override void SecondaryFire(Vector3 initialVelocity)
     {
-        return PlayerGunType.INVALID;
+        throw new System.NotImplementedException();
+    }
+    public override PlayerWeaponType GetPlayerWeaponType()
+    {
+        return PlayerWeaponType.INVALID;
     }
 
     /// <summary>Will wait some time before firing the next bullet.</summary>
@@ -55,7 +59,7 @@ public class BasicRifle : Gun
     {
         if(Input.GetKeyDown(KeyCode.M)) 
         {
-            Shoot(Vector3.zero);
+            PrimaryFire(Vector3.zero);
         }
     }
 }

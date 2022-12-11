@@ -14,7 +14,7 @@ public class Shotgun : Gun
         bulletPool.Init(bulletPrefab);
     }
 
-    public override void Shoot(Vector3 initialVelocity)
+    public override void PrimaryFire(Vector3 initialVelocity)
     {
         if (CanShootAgain())
         {
@@ -26,10 +26,13 @@ public class Shotgun : Gun
             //OnBulletShot(shotDir * bullet.Mass * bullet.muzzleVelocity);
         }
     }
-
-    public override PlayerGunType GetPlayerGunType()
+    public override void SecondaryFire(Vector3 initialVelocity)
     {
-        return PlayerGunType.INVALID;
+        throw new System.NotImplementedException();
+    }
+    public override PlayerWeaponType GetPlayerWeaponType()
+    {
+        return PlayerWeaponType.INVALID;
     }
 
 
@@ -73,7 +76,7 @@ public class Shotgun : Gun
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            Shoot(Vector3.zero);
+            PrimaryFire(Vector3.zero);
         }
     }
 }

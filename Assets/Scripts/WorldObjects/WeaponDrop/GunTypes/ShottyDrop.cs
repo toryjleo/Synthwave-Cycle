@@ -11,8 +11,8 @@ public class ShottyDrop : WeaponDropGunType
     /// Returns the guntype PlayerGunType.Shotty
     /// </summary>
     /// <returns>PlayerGunType.Shotty</returns>
-    public override PlayerGunType GetPlayerGunType()
+    public override PlayerWeaponType GetPlayerGunType()
     {
-        return PlayerGunType.Shotty;
+        return PlayerWeaponType.Shotty;
     }
 }

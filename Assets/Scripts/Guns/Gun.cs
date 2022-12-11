@@ -20,9 +20,6 @@ public abstract class Gun : Weapon
     public event NotifyShot BulletShot; // event
     public event NotifyOutOfAmmo OutOfAmmo; // event
 
-    //Must be implemented, if Gun is not designed to be equipped by the player, use the INVALID value
-    public abstract PlayerGunType GetPlayerGunType();
-
     /// <summary>Initializes veriables. Specifically must initialize lastFired and fireRate variables.</summary>
     public override void Init()
     {
@@ -37,12 +34,6 @@ public abstract class Gun : Weapon
         bulletPool.DeInit();
     }
     
-
-    /// <summary>Fires the bullet from the muzzle of the gun. Is responsible for calling OnBulletShot and getting 
-    /// bullet from the object pool.</summary>
-    /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
-    public abstract void Shoot(Vector3 initialVelocity);
-
     /// <summary>Calls OnBulletShot. Will apply variable recoil based on bullet's mass and muzzle velocity</summary>
     /// <param name="directionOfBullet">Non-normalized direction bullet is travelling.</param>
     /// <param name="bulletShot">The bullet that is currently being shot.</param>

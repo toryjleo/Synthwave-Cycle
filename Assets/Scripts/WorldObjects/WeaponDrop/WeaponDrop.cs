@@ -5,12 +5,12 @@ using UnityEngine;
 public class WeaponDrop : SelfWorldBoundsDespawn
 {
     // Tracks the possible guns which this drop can represent
-    private Dictionary<PlayerGunType, GameObject> attachedGuns;
+    private Dictionary<PlayerWeaponType, GameObject> attachedGuns;
 
     // Current PlayerGunType this drop represents
-    private PlayerGunType gunType;
+    private PlayerWeaponType gunType;
 
-    public PlayerGunType GunType
+    public PlayerWeaponType GunType
     {
         get
         {
@@ -19,7 +19,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
 
         set
         {
-            if (value == PlayerGunType.INVALID)
+            if (value == PlayerWeaponType.INVALID)
             {
                 Debug.LogWarning("Tried to initialize WeaponDrop to use an invalid weapon type");
             }
@@ -55,7 +55,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
     /// Sets this WeaponDrop's associated gunType and model to the new gunType
     /// </summary>
     /// <param name="gunType">The PlayerGunType to be assigned</param>
-    private void SetGunType(PlayerGunType gunType)
+    private void SetGunType(PlayerWeaponType gunType)
     {
         if (attachedGuns.ContainsKey(gunType))
         {
@@ -78,9 +78,9 @@ public class WeaponDrop : SelfWorldBoundsDespawn
     /// Assigns a random PlayerGunType to this WeaponDrop
     /// </summary>
     /// <returns>The selected PlayerGunType</returns>
-    public PlayerGunType SetRandomGunType()
+    public PlayerWeaponType SetRandomGunType()
     {
-        PlayerGunType typeToAssign = (PlayerGunType) Random.Range((int)PlayerGunType.DefaultGun, (int)PlayerGunType.INVALID - 1);
+        PlayerWeaponType typeToAssign = (PlayerWeaponType) Random.Range((int)PlayerWeaponType.DefaultGun, (int)PlayerWeaponType.INVALID - 1);
         SetGunType(typeToAssign);
         return typeToAssign;
     }
@@ -100,7 +100,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
     /// <param name="attachedGunTypes">List of child WeaponDropGunTypes which are attached to models.</param>
     private void PopulateDictionary(WeaponDropGunType[] attachedGunTypes)
     {
-        attachedGuns = new Dictionary<PlayerGunType, GameObject>();
+        attachedGuns = new Dictionary<PlayerWeaponType, GameObject>();
         foreach (WeaponDropGunType gunType in attachedGunTypes)
         {
             attachedGuns[gunType.GetPlayerGunType()] = gunType.gameObject;

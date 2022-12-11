@@ -11,8 +11,8 @@ public class DefaultGunDrop : WeaponDropGunType
     /// Returns the guntype PlayerGunType.DefaultGun
     /// </summary>
     /// <returns>PlayerGunType.DefaultGun</returns>
-    public override PlayerGunType GetPlayerGunType()
+    public override PlayerWeaponType GetPlayerGunType()
     {
-        return PlayerGunType.DefaultGun;
+        return PlayerWeaponType.DefaultGun;
     }
 }

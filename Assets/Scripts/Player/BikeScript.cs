@@ -87,15 +87,19 @@ public class BikeScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // Handle primary and secondary fire inputs
         if (Input.GetKey(KeyCode.Mouse0))
         {
             //currentGun.Shoot(movementComponent.rb.velocity);
-            arsenal.Shoot(movementComponent.rb.velocity);
+            arsenal.PrimaryFire(movementComponent.rb.velocity);
             if(turret!= null)
             {
-                turret.Shoot(movementComponent.rb.velocity);
+                turret.PrimaryFire(movementComponent.rb.velocity);
             }
-            
+        }
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            arsenal.SecondaryFire(movementComponent.rb.velocity);
         }
     }
 
