@@ -63,6 +63,7 @@ public class VulcanV64AutoCannons : Gun
             ApplyRecoil(shotDir, bullet);
         }
     }
+    //TODO: Implement secondary fire
     public override void SecondaryFire(Vector3 initialVelocity)
     {
         throw new System.NotImplementedException();
