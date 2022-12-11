@@ -69,6 +69,7 @@ public class OctoBarrelLMG : LeveledGun
             //OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
         }
     }
+    //TODO: Implement secondary fire
     public override void SecondaryFire(Vector3 initialVelocity)
     {
         throw new System.NotImplementedException();
