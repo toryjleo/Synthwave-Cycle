@@ -45,7 +45,13 @@ public class EnemyTurret : Gun
 
 
     }
+
     public override void SecondaryFire(Vector3 initialVelocity)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void ReleaseSecondaryFire(Vector3 initialVelocity)
     {
         throw new System.NotImplementedException();
     }

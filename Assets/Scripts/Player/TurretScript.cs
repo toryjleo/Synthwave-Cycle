@@ -50,6 +50,11 @@ public class TurretScript : Gun
         throw new System.NotImplementedException();
     }
 
+    public override void ReleaseSecondaryFire(Vector3 initialVelocity)
+    {
+        throw new System.NotImplementedException();
+    }
+
     // Start is called before the first frame update
     void Start()
     {

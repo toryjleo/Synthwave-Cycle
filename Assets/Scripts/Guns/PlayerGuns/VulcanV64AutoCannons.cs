@@ -68,4 +68,10 @@ public class VulcanV64AutoCannons : Gun
     {
         throw new System.NotImplementedException();
     }
+
+
+    public override void ReleaseSecondaryFire(Vector3 initialVelocity)
+    {
+        throw new System.NotImplementedException();
+    }
 }

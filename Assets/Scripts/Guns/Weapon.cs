@@ -51,6 +51,12 @@ public abstract class Weapon : MonoBehaviour
     /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
     public abstract void SecondaryFire(Vector3 initialVelocity);
 
+    /// <summary>
+    /// Does necessary logic for the secondary fire being released.
+    /// </summary>
+    /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
+    public abstract void ReleaseSecondaryFire(Vector3 initialVelocity);
+
     //Must be implemented, if Weapon is not designed to be equipped by the player, use the INVALID value
     public abstract PlayerWeaponType GetPlayerWeaponType();
 

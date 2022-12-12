@@ -13,6 +13,14 @@ public class OctoBarrelLMG : LeveledGun
     public AudioSource muzzle2Audio;
     private bool muzzle1Turn = true;
 
+    // Determines rotation movement of barrels
+    [SerializeField] private bool rotateOutward = true;
+    private const float MIN_ROTATION_ANGLE = 90.0f;
+    private const float MAX_OUTWARD_ROTATION_AMOUNT = 140.0f;
+    private float currentRotationFromMin = 0.0f;
+    private float rotationRate = 70f;
+    private bool altFireReleased = true;
+
     public override void BigBoom()
     {
         for (int i = 0; i < 60; i++)
@@ -38,6 +46,7 @@ public class OctoBarrelLMG : LeveledGun
         int currentLevel = GetCurrentLevel();
         fireRate = 60 * currentLevel;
         ammunition = 50 * currentLevel;
+        ResetRotation();
     }
 
     /// <summary>Fires a bullet out of either muzzle, alternating each turn.</summary>
@@ -69,9 +78,55 @@ public class OctoBarrelLMG : LeveledGun
             //OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
         }
     }
-    //TODO: Implement secondary fire
+
+    /// <summary>
+    /// Rotates the barrels of this gun
+    /// </summary>
+    /// <param name="initialVelocity"></param>
     public override void SecondaryFire(Vector3 initialVelocity)
     {
+        float rotationThisFrame = Time.deltaTime * rotationRate;
+        // TODO: make work
+        if (rotateOutward) 
+        {
+            currentRotationFromMin += rotationThisFrame;
+            // Have met maximum rotation
+            if (currentRotationFromMin > MAX_OUTWARD_ROTATION_AMOUNT) 
+            {
+                rotateOutward = false;
+                currentRotationFromMin = MAX_OUTWARD_ROTATION_AMOUNT;
+            }
+        }
+        else 
+        {
+            currentRotationFromMin -= rotationThisFrame;
+            // Have met maximum rotation
+            if (currentRotationFromMin < 0)
+            {
+                rotateOutward = true;
+                currentRotationFromMin = 0;
+            }
+        }
+
+        // Finally, update the rotation
+        muzzle1.transform.localRotation = Quaternion.AngleAxis(-currentRotationFromMin + MIN_ROTATION_ANGLE, Vector3.up);
+        muzzle2.transform.localRotation = Quaternion.AngleAxis(currentRotationFromMin + MIN_ROTATION_ANGLE, Vector3.up);
+    }
+
+
+    public override void ReleaseSecondaryFire(Vector3 initialVelocity)
+    {
         throw new System.NotImplementedException();
+    }
+
+    /// <summary>
+    /// Sets the rotation so both barrels are pointed forward
+    /// </summary>
+    private void ResetRotation()
+    {
+        muzzle1.transform.rotation = Quaternion.AngleAxis(MIN_ROTATION_ANGLE, Vector3.up);
+        muzzle2.transform.rotation = Quaternion.AngleAxis(MIN_ROTATION_ANGLE, Vector3.up);
+        rotateOutward = true;
+        currentRotationFromMin = 0.0f;
     }
 }
