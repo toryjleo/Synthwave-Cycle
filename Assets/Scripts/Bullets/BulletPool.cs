@@ -12,15 +12,14 @@ public class BulletPool : MonoBehaviour
 
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
     /// <param name="bulletPrefab">The template object for this pool.</param>
-    public void Init(Bullet bulletPrefab) 
+    public void Init(Bullet bulletPrefab, int bulletPoolSize = 100) 
     {
         this.bulletPrefab = bulletPrefab;
 
-        bulletStartAmnt = 100;
         bulletQueue = new Queue<Bullet>();
 
         // Spawn in defualt bullets
-        for (int i = 0; i < bulletStartAmnt; i++) 
+        for (int i = 0; i < bulletPoolSize; i++) 
         {
             Bullet newBullet = CreateNewBullet();
             bulletQueue.Enqueue(newBullet);
@@ -65,7 +64,7 @@ public class BulletPool : MonoBehaviour
             Bullet objectToSpawn = bulletQueue.Dequeue();
             //Debug.Log("Spawned, Size of queue: " + bulletQueue.Count);
             // Check if object already in world
-
+            objectToSpawn.ResetBullet();
             objectToSpawn.gameObject.SetActive(true);
             // Add the object to the end of the queue
 

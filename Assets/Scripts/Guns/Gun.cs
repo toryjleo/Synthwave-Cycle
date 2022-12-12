@@ -15,7 +15,7 @@ public abstract class Gun : Weapon
     protected float fireRate = 0;  // The number of bullets fired per second
     protected int ammunition;
     public bool infiniteAmmo = false;
-
+    public int bulletPoolSize = 100;
 
     public event NotifyShot BulletShot; // event
     public event NotifyOutOfAmmo OutOfAmmo; // event
@@ -24,7 +24,7 @@ public abstract class Gun : Weapon
     public override void Init()
     {
         bulletPool = gameObject.AddComponent<BulletPool>();
-        bulletPool.Init(bulletPrefab);
+        bulletPool.Init(bulletPrefab, bulletPoolSize);
         lastFired = 0;
     }
 

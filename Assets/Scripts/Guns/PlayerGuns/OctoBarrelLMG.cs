@@ -34,6 +34,7 @@ public class OctoBarrelLMG : LeveledGun
 
     public override void Init() 
     {
+        bulletPoolSize = 200;
         base.Init();
         int currentLevel = GetCurrentLevel();
         fireRate = 60 * currentLevel;

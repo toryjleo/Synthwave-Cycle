@@ -12,7 +12,7 @@ public abstract class Bullet : SelfWorldBoundsDespawn
     // Specific to gun
     protected float muzzleVelocity = 0;
     protected float mass = 0;
-    protected float boost = 0;
+    protected float boost = 1f;
     protected float damageDealt = 0;
     protected bool hasFiniteLifetime = false;
     protected bool overPenetrates = false;
@@ -103,4 +103,8 @@ public abstract class Bullet : SelfWorldBoundsDespawn
         }
     }
 
+    /// <summary>
+    /// Resets bullet properties. This is used when a bullet is spawned from a pool to ensure it gets a fresh start
+    /// </summary>
+    public virtual void ResetBullet() { }
 }
