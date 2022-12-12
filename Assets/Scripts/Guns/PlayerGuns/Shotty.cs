@@ -95,6 +95,6 @@ public class Shotty : LeveledGun
 
     public override void ReleaseSecondaryFire(Vector3 initialVelocity)
     {
-        throw new System.NotImplementedException();
+
     }
 }

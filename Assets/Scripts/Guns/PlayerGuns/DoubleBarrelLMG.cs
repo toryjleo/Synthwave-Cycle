@@ -78,6 +78,6 @@ public class DoubleBarrelLMG : LeveledGun
 
     public override void ReleaseSecondaryFire(Vector3 initialVelocity)
     {
-        throw new System.NotImplementedException();
+
     }
 }

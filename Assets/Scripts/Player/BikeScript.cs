@@ -101,6 +101,10 @@ public class BikeScript : MonoBehaviour
         {
             arsenal.SecondaryFire(movementComponent.rb.velocity);
         }
+        else
+        {
+            arsenal.ReleaseSecondaryFire(movementComponent.rb.velocity);
+        }
     }
 
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>

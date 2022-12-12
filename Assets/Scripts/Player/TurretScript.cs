@@ -45,6 +45,7 @@ public class TurretScript : Gun
 
 
     }
+
     public override void SecondaryFire(Vector3 initialVelocity)
     {
         throw new System.NotImplementedException();

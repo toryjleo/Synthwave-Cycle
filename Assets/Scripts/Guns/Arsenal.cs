@@ -76,6 +76,18 @@ public class Arsenal : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Calls weapon's implementation of ReleaseSecondaryFire.
+    /// </summary>
+    /// <param name="initialVelocity">Current velocity of the bike</param>
+    public void ReleaseSecondaryFire(Vector3 initialVelocity)
+    {
+        if (currentWeapon != null)
+        {
+            currentWeapon.ReleaseSecondaryFire(initialVelocity);
+        }
+    }
+
     //Discards current gun and inits/equips new gun
     public void EquipGun(PlayerWeaponType gunType)
     {

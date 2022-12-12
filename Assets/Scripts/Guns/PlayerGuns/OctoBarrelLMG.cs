@@ -19,7 +19,7 @@ public class OctoBarrelLMG : LeveledGun
     private const float MAX_OUTWARD_ROTATION_AMOUNT = 140.0f;
     private float currentRotationFromMin = 0.0f;
     private float rotationRate = 70f;
-    private bool altFireReleased = true;
+    private bool secondaryFireJustHit = false;
 
     public override void BigBoom()
     {
@@ -82,11 +82,12 @@ public class OctoBarrelLMG : LeveledGun
     /// <summary>
     /// Rotates the barrels of this gun
     /// </summary>
-    /// <param name="initialVelocity"></param>
+    /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
     public override void SecondaryFire(Vector3 initialVelocity)
     {
+        secondaryFireJustHit = true;
         float rotationThisFrame = Time.deltaTime * rotationRate;
-        // TODO: make work
+
         if (rotateOutward) 
         {
             currentRotationFromMin += rotationThisFrame;
@@ -113,10 +114,17 @@ public class OctoBarrelLMG : LeveledGun
         muzzle2.transform.localRotation = Quaternion.AngleAxis(currentRotationFromMin + MIN_ROTATION_ANGLE, Vector3.up);
     }
 
-
+    /// <summary>
+    /// Swaps the rotation direction of the barrels
+    /// </summary>
+    /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
     public override void ReleaseSecondaryFire(Vector3 initialVelocity)
     {
-        throw new System.NotImplementedException();
+        if (secondaryFireJustHit) 
+        {
+            rotateOutward = !rotateOutward;
+            secondaryFireJustHit = false;
+        }
     }
 
     /// <summary>
