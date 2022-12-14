@@ -23,8 +23,6 @@ public class Arsenal : MonoBehaviour
         //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
         for (int i = 0; i < arsenalWeapons.Length; i++)
         {
-            //arsenalWeapons[i].gameObject.transform.parent = playerBike.movementComponent.bikeMeshParent.transform;
-            //arsenalWeapons[i].gameObject.transform.rotation = playerBike.movementComponent.bikeMeshParent.transform.rotation;
             arsenalWeapons[i].gameObject.transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
             arsenalWeapons[i].gameObject.SetActive(false);
             weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
