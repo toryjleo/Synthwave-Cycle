@@ -97,6 +97,11 @@ public class BikeScript : MonoBehaviour
                 turret.PrimaryFire(movementComponent.rb.velocity);
             }
         }
+        else 
+        {
+            arsenal.ReleasePrimaryFire(movementComponent.rb.velocity);
+        }
+
         if (Input.GetKey(KeyCode.Mouse1))
         {
             arsenal.SecondaryFire(movementComponent.rb.velocity);

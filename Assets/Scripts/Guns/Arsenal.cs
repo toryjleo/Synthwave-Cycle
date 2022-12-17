@@ -65,6 +65,18 @@ public class Arsenal : MonoBehaviour
     }
 
     /// <summary>
+    /// Calls weapon's implementation of ReleasePrimaryFire.
+    /// </summary>
+    /// <param name="initialVelocity">Current velocity of the bike</param>
+    public void ReleasePrimaryFire(Vector3 initialVelocity)
+    {
+        if (currentWeapon != null)
+        {
+            currentWeapon.ReleasePrimaryFire(initialVelocity);
+        }
+    }
+
+    /// <summary>
     /// Calls weapon's implementation of SecondaryFire.
     /// </summary>
     /// <param name="initialVelocity">Current velocity of the bike</param>

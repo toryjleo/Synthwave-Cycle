@@ -79,6 +79,10 @@ public class OctoBarrelLMG : LeveledGun
         }
     }
 
+    public override void ReleasePrimaryFire(Vector3 initialVelocity)
+    {
+    }
+
     /// <summary>
     /// Rotates the barrels of this gun
     /// </summary>

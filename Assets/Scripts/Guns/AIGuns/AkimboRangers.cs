@@ -27,6 +27,9 @@ public class AkimboRangers : Gun
         }
     }
 
+    public override void ReleasePrimaryFire(Vector3 initialVelocity)
+    {
+    }
 
 
     IEnumerator SpreadShot()

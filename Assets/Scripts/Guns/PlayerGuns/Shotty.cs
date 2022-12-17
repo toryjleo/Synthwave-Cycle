@@ -66,6 +66,10 @@ public class Shotty : LeveledGun
         }
     }
 
+    public override void ReleasePrimaryFire(Vector3 initialVelocity)
+    {
+    }
+
     /// <summary>
     /// Fires the right barrel
     /// </summary>

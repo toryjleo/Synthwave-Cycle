@@ -69,10 +69,14 @@ public class DoubleBarrelLMG : LeveledGun
             //OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
         }
     }
+
+    public override void ReleasePrimaryFire(Vector3 initialVelocity)
+    {
+    }
+
     //TODO: Implement secondary fire
     public override void SecondaryFire(Vector3 initialVelocity)
     {
-        throw new System.NotImplementedException();
     }
 
 
