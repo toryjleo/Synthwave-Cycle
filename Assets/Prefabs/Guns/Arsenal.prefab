@@ -83,15 +83,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3958296069600219862, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3958296069600219862, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3958296069600219862, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3958296069600219862, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -157,15 +157,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3958296069600219862, guid: a150aa7a565a61341ac429d02e3ccd71, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3958296069600219862, guid: a150aa7a565a61341ac429d02e3ccd71, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3958296069600219862, guid: a150aa7a565a61341ac429d02e3ccd71, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3958296069600219862, guid: a150aa7a565a61341ac429d02e3ccd71, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -211,7 +211,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5638672446242456111, guid: f3de116ad1b78b24cabf6fd98cd4f263, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.28
+      value: 0.14
       objectReference: {fileID: 0}
     - target: {fileID: 5638672446242456111, guid: f3de116ad1b78b24cabf6fd98cd4f263, type: 3}
       propertyPath: m_LocalPosition.y

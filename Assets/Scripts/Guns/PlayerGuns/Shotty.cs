@@ -12,18 +12,19 @@ public class Shotty : LeveledGun
     public GameObject barrelR;
     public AudioSource muzzleAudio;
 
-    float angleDifference = 5f;
+    float angleDifference = 25f;
 
     public override void BigBoom()
     {
-        for(int i = 0; i < 60; i++)
+        for(int i = 0; i < 30; i++)
         {
             Bullet bullet = bulletPool.SpawnFromPool();
-
-            Vector3 shotDir = Quaternion.Euler(0, 180f * (i / 60f) , 0) * barrelL.transform.up;
+            Vector3 shotDir = Quaternion.Euler(0, (180f * (i / 30f))- 90f , 0) * barrelL.transform.up;
             bullet.Shoot(barrelL.transform.position, shotDir, Vector3.zero);
-            shotDir = Quaternion.Euler(0, 180f * (i / 60f) , 0) * barrelR.transform.up;
-            bullet.Shoot(barrelR.transform.position, shotDir, Vector3.zero);
+
+            Bullet bullet2 = bulletPool.SpawnFromPool();
+            shotDir = Quaternion.Euler(0, (180f * (i / 30f)) - 90f , 0) * barrelR.transform.up;
+            bullet2.Shoot(barrelR.transform.position, shotDir, Vector3.zero);
         }
     }
 
