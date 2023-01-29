@@ -25,26 +25,21 @@ public class GameStateController : MonoBehaviour
         return Instance().currentState == GameState.Playing;
     }
 
+    public static bool IsPlayerSpawning()
+    {
+        return Instance().currentState == GameState.Spawning;
+    }
+
+    public static GameState GetGameState()
+    {
+        return Instance().currentState; 
+    }
+
     #endregion
 
     private GameStateController()
     {
-        currentState = GameState.Paused;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Pause))
-        {
-            if(currentState == GameState.Playing)
-            {
-                currentState = GameState.Paused;
-            } 
-            else 
-            {
-                currentState = GameState.Playing;
-            }
-        }
+        currentState = GameState.Menu;
     }
 
     private void Awake()
@@ -65,7 +60,8 @@ public class GameStateController : MonoBehaviour
 
 public enum GameState
 {
-    Paused,
+    Menu,
+    Spawning,
     Playing,
     Resetting
 }

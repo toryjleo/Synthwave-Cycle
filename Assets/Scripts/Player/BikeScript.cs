@@ -7,7 +7,7 @@ using UnityEngine;
 // TODO: Make inherit from Pawn class
 /// <summary>Class <c>BikeScript</c> A Unity Component which holds the logic for the Player movement.</summary>
 /// Expects there to be an LMG spawned in-place on the bike's location
-public class BikeScript : MonoBehaviour
+public class BikeScript : MonoBehaviour, IResettable
 {
     private float distanceToHP; // The current distance to the healthpool.
     private float consecutiveDistanceToHP; // The distance to the healthpool the first time we raycast hit it.
@@ -81,25 +81,31 @@ public class BikeScript : MonoBehaviour
 
     private void Update()
     {
-        UpdateBikeEmission();
+        if (GameStateController.IsGamePlaying())
+        {
+            UpdateBikeEmission();
+        }
     }
 
 
     private void FixedUpdate()
     {
-        // Handle primary and secondary fire inputs
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (GameStateController.IsGamePlaying())
         {
-            //currentGun.Shoot(movementComponent.rb.velocity);
-            arsenal.PrimaryFire(movementComponent.rb.velocity);
-            if(turret!= null)
+            // Handle primary and secondary fire inputs
+            if (Input.GetKey(KeyCode.Mouse0))
             {
-                turret.PrimaryFire(movementComponent.rb.velocity);
+                //currentGun.Shoot(movementComponent.rb.velocity);
+                arsenal.PrimaryFire(movementComponent.rb.velocity);
+                if (turret != null)
+                {
+                    turret.PrimaryFire(movementComponent.rb.velocity);
+                }
             }
-        }
-        if (Input.GetKey(KeyCode.Mouse1))
-        {
-            arsenal.SecondaryFire(movementComponent.rb.velocity);
+            if (Input.GetKey(KeyCode.Mouse1))
+            {
+                arsenal.SecondaryFire(movementComponent.rb.velocity);
+            }
         }
     }
 
@@ -160,6 +166,11 @@ public class BikeScript : MonoBehaviour
         {
             emissiveBike.SetNotAheadColor();
         }
+    }
+
+    public void ResetGameObject()
+    {
+        Init();
     }
     #endregion
 }

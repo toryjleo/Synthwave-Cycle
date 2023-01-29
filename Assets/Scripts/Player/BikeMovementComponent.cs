@@ -70,7 +70,6 @@ public class BikeMovementComponent : MonoBehaviour
         ApplyForces();
     }
 
-
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
     private void Init()
     {
@@ -122,7 +121,7 @@ public class BikeMovementComponent : MonoBehaviour
             rb.AddForce(LeftVector() * SideForce);
         }
 
-        Debug.Log(Input.GetAxis("Horizontal"));
+        //Debug.Log(Input.GetAxis("Horizontal"));
         //Steering Takes Horizontal Input and rotates both 
         float steerInupt = Input.GetAxis("Horizontal");
         bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInupt, 0, 0);

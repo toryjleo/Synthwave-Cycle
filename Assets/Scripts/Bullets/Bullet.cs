@@ -42,14 +42,10 @@ public abstract class Bullet : SelfWorldBoundsDespawn, IResettable
     // Update is called once per frame
     public override void Update()
     {
-        if (GameStateController.IsGamePlaying())
-        {
-            base.Update();
-            UpdateBulletLifeTime();
-            Move();
-        }
+        base.Update();
+        UpdateBulletLifeTime();
+        Move();
     }
-
     /// <summary>Updates the object's location this frame.</summary>
     protected virtual void Move()
     {
@@ -113,6 +109,6 @@ public abstract class Bullet : SelfWorldBoundsDespawn, IResettable
 
     public void ResetGameObject()
     {
-        throw new System.NotImplementedException();
+        this.OnDespawn();
     }
 }
