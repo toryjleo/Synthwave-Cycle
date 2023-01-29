@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>Class <c>Bullet</c> A Unity Component which moves a gameobject foreward.</summary>
-public abstract class Bullet : SelfWorldBoundsDespawn
+public abstract class Bullet : SelfWorldBoundsDespawn, IResettable
 {
 
     protected Vector3 shootDir;
@@ -42,9 +42,12 @@ public abstract class Bullet : SelfWorldBoundsDespawn
     // Update is called once per frame
     public override void Update()
     {
-        base.Update();
-        UpdateBulletLifeTime();
-        Move();
+        if (GameStateController.IsGamePlaying())
+        {
+            base.Update();
+            UpdateBulletLifeTime();
+            Move();
+        }
     }
 
     /// <summary>Updates the object's location this frame.</summary>
@@ -107,4 +110,9 @@ public abstract class Bullet : SelfWorldBoundsDespawn
     /// Resets bullet properties. This is used when a bullet is spawned from a pool to ensure it gets a fresh start
     /// </summary>
     public virtual void ResetBullet() { }
+
+    public void ResetGameObject()
+    {
+        throw new System.NotImplementedException();
+    }
 }
