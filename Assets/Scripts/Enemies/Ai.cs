@@ -62,7 +62,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
         else //Alive
         {
 
-            if (target == null || GameStateController.IsPlayerSpawning())
+            if (target == null || !GameStateController.IsGamePlaying())
             {
                 Wander();
             }

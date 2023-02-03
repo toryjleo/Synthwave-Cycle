@@ -10,8 +10,7 @@ public class Shotgun : Gun
     {
         lastFired = 0;
         fireRate = .7f; // Every 2 seconds
-        bulletPool = gameObject.AddComponent<BulletPool>();
-        bulletPool.Init(bulletPrefab);
+        base.Init();
     }
 
     public override void PrimaryFire(Vector3 initialVelocity)

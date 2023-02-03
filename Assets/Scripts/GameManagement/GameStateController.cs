@@ -4,55 +4,48 @@ using UnityEngine;
 
 public class GameStateController : MonoBehaviour
 {
-    private static GameStateController instance;
+    private static GameStateController Instance;
 
     private GameState currentState;
 
 
     #region static functions
 
-    public static GameStateController Instance()
-    {
-        if(instance == null)
-        {
-            instance = new GameStateController();
-        }
-        return instance;
-    }
 
     public static bool IsGamePlaying()
     {
-        return Instance().currentState == GameState.Playing;
+        return Instance.currentState == GameState.Playing;
     }
 
     public static bool IsPlayerSpawning()
     {
-        return Instance().currentState == GameState.Spawning;
+        return Instance.currentState == GameState.Spawning;
     }
 
     public static GameState GetGameState()
     {
-        return Instance().currentState; 
+        return Instance.currentState; 
     }
 
     #endregion
 
     private GameStateController()
     {
-        currentState = GameState.Menu;
+        //The game should start in the menu, but for now, we start it in a playing state
+        currentState = GameState.Playing;
+        //currentState = GameState.Menu;
     }
 
     private void Awake()
     {
         // If there is an instance, and it's not me, delete myself.
-
-        if (instance != null && instance != this)
+        if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         else
         {
-            instance = this;
+            Instance = this;
         }
     }
 

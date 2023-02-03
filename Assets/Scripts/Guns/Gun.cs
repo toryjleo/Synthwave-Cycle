@@ -23,7 +23,12 @@ public abstract class Gun : Weapon
     /// <summary>Initializes veriables. Specifically must initialize lastFired and fireRate variables.</summary>
     public override void Init()
     {
-        bulletPool = gameObject.AddComponent<BulletPool>();
+        bulletPool = gameObject.GetComponent<BulletPool>();
+        if (bulletPool == null)
+        {
+            Debug.Log("Creating bullet pool");
+            bulletPool = gameObject.AddComponent<BulletPool>();
+        }
         bulletPool.Init(bulletPrefab, bulletPoolSize);
         lastFired = 0;
     }

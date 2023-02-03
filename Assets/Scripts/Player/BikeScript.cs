@@ -171,6 +171,7 @@ public class BikeScript : MonoBehaviour, IResettable
     public void ResetGameObject()
     {
         Init();
+        movementComponent.transform.position = new Vector3(0, 0, 0);
     }
     #endregion
 }

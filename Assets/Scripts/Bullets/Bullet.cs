@@ -19,7 +19,7 @@ public abstract class Bullet : SelfWorldBoundsDespawn, IResettable
     protected float lifetime = float.MaxValue;
     protected float timeSinceShot = 0;
 
-    private List<GameObject> alreadyHit = new List<GameObject>();
+    internal List<GameObject> alreadyHit = new List<GameObject>();
 
     /// <summary>Speed of bullet out of the gun.</summary>
     public float MuzzleVelocity
@@ -84,31 +84,21 @@ public abstract class Bullet : SelfWorldBoundsDespawn, IResettable
     /// <summary>Deals damage to other and despawns this bullet.</summary>
     /// <param name="other">GameObject who we will deal damage to. Expects this GameObject to have a Health 
     /// component.</param>
-    protected void DealDamageAndDespawn(GameObject other) 
-    {
-        if (!alreadyHit.Contains(other))
-        {
-            alreadyHit.Add(other);
-            Health otherHealth = other.GetComponentInChildren<Health>();
-            if (otherHealth == null)
-            {
-                Debug.LogError("Object does not have Health component: " + gameObject.name);
-            }
-            otherHealth.TakeDamage(damageDealt);
-            if (overPenetrates)
-            {
-                OnDespawn();
-            }
-        }
-    }
+    abstract internal void DealDamageAndDespawn(GameObject other);
 
     /// <summary>
     /// Resets bullet properties. This is used when a bullet is spawned from a pool to ensure it gets a fresh start
     /// </summary>
-    public virtual void ResetBullet() { }
+    public virtual void ResetBullet()
+    {
+        initialVelocity = Vector3.zero;
+    }
 
     public void ResetGameObject()
     {
-        this.OnDespawn();
+        if (this.gameObject.activeSelf)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

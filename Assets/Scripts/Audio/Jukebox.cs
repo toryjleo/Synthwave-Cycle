@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// A class that plays a random track on start.
 /// </summary>
-public class Jukebox : MonoBehaviour
+public class Jukebox : MonoBehaviour, IResettable
 {
     private Track track;
     //A list of all the tracks to play
@@ -100,5 +100,15 @@ public class Jukebox : MonoBehaviour
     public void SetNextTrack(Track newTrack)
     {
         nextTrack = newTrack;
+    }
+
+    public void ResetGameObject()
+    {
+        for (int i = 0; i < audioSourceArray.Length; i++)
+        {
+            audioSourceArray[i].Stop();
+        }
+        nextTrack = null;
+        Start();
     }
 }

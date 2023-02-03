@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// The Arsenal keeps track of guns that the player bike can equip, as well as handling the equip/dequip code
 /// </summary>
-public class Arsenal : MonoBehaviour
+public class Arsenal : MonoBehaviour, IResettable
 {
     private Dictionary<PlayerWeaponType, Weapon> weapons;
     private Weapon currentWeapon;
@@ -16,17 +16,7 @@ public class Arsenal : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerBike = GetComponentInParent<BikeScript>();
-
-        weapons = new Dictionary<PlayerWeaponType, Weapon>();
-        Weapon[] arsenalWeapons = this.GetComponentsInChildren<Weapon>();
-        //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
-        for (int i = 0; i < arsenalWeapons.Length; i++)
-        {
-            arsenalWeapons[i].gameObject.transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
-            arsenalWeapons[i].gameObject.SetActive(false);
-            weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
-        }
+        Init();
     }
 
     // Update is called once per frame
@@ -50,7 +40,26 @@ public class Arsenal : MonoBehaviour
 
     public void Init() 
     {
-
+        playerBike = GetComponentInParent<BikeScript>();
+        if (weapons == null)
+        {
+            weapons = new Dictionary<PlayerWeaponType, Weapon>();
+            Weapon[] arsenalWeapons = this.GetComponentsInChildren<Weapon>();
+            //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
+            for (int i = 0; i < arsenalWeapons.Length; i++)
+            {
+                arsenalWeapons[i].gameObject.transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
+                arsenalWeapons[i].gameObject.SetActive(false);
+                weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
+            }
+        }
+        else
+        {
+            foreach (Weapon weapon in weapons.Values)
+            {
+                weapon.gameObject.SetActive(false);
+            }
+        }
     }
 
     //Tells the current gun to fire
@@ -103,5 +112,11 @@ public class Arsenal : MonoBehaviour
             ((Gun)gunToDiscard).BulletShot -= playerBike.movementComponent.bl_ProcessCompleted;
         }
         gunToDiscard.gameObject.SetActive(false);
+    }
+
+    public void ResetGameObject()
+    {
+        currentWeapon = null;
+        Init();
     }
 }

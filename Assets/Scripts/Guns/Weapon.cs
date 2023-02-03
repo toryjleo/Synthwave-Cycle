@@ -16,7 +16,7 @@ public enum PlayerWeaponType
 /// <summary>
 /// This class is the base abstract class that will be used for all weapons and guns. 
 /// </summary>
-public abstract class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour, IResettable
 {
     /// <summary>
     /// The Awake Function, initializes the Weapon 
@@ -53,6 +53,11 @@ public abstract class Weapon : MonoBehaviour
 
     //Must be implemented, if Weapon is not designed to be equipped by the player, use the INVALID value
     public abstract PlayerWeaponType GetPlayerWeaponType();
+
+    public void ResetGameObject()
+    {
+        Init();
+    }
 
     //TODO: Add Code for Weapons and items being able to be picked up here! 
 }

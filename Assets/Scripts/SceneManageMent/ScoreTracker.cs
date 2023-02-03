@@ -4,10 +4,11 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Timers;
+using System.Linq;
 
 /// <summary>Class <c>ScoreTracker</c> Component which manages the UI in the upper left of the game screen.</summary>
 /// Expects there to be an object with BikeScript in the scene.
-public class ScoreTracker : MonoBehaviour
+public class ScoreTracker : MonoBehaviour, IResettable
 {
     private const float MAX_TIME = 90;
     private float currentTime;
@@ -56,6 +57,15 @@ public class ScoreTracker : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+        }
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("Resetting!");
+            List<IResettable> resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
+            foreach (IResettable r in resetObjects)
+            {
+                r.ResetGameObject();
+            }
         }
     }
 
@@ -152,5 +162,10 @@ public class ScoreTracker : MonoBehaviour
         {
             yield return null;
         }
+    }
+
+    public void ResetGameObject()
+    {
+        Init();
     }
 }
