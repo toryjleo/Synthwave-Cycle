@@ -7,7 +7,7 @@ public delegate void NotifyShot(Vector3 force);  // delegate
 public delegate void NotifyOutOfAmmo(Gun self);
 
 /// <summary>Class <c>Bullet</c> A Unity Component which spawns bullets.</summary>
-public abstract class Gun : Weapon
+public abstract class Gun : Weapon, IResettable
 {
     public Bullet bulletPrefab;
     protected BulletPool bulletPool;
@@ -70,4 +70,10 @@ public abstract class Gun : Weapon
     {
         return Time.time - lastFired > 1 / fireRate;
     }
+    public new void ResetGameObject()
+    {
+        BulletShot = null;
+        base.ResetGameObject();
+    }
+
 }

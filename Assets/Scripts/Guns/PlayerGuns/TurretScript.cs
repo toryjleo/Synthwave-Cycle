@@ -41,7 +41,7 @@ public class TurretScript : Gun
             // Gun specific
             
             OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
-            ApplyRecoil(shotDir, bullet);
+            //ApplyRecoil(shotDir, bullet);
         }
 
 
