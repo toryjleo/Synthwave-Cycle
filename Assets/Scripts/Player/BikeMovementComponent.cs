@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Contains the movement behavior our bike uses
 /// </summary>
-public class BikeMovementComponent : MonoBehaviour
+public class BikeMovementComponent : MonoBehaviour, IResettable
 {
     // Parent of the bike mesh. This is used to get the forward vector of the bike. 
     // The forward vector of the bike will change as we alter the rotation of this variable.
@@ -70,7 +70,6 @@ public class BikeMovementComponent : MonoBehaviour
         ApplyForces();
     }
 
-
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
     private void Init()
     {
@@ -122,7 +121,7 @@ public class BikeMovementComponent : MonoBehaviour
             rb.AddForce(LeftVector() * SideForce);
         }
 
-        Debug.Log(Input.GetAxis("Horizontal"));
+        //Debug.Log(Input.GetAxis("Horizontal"));
         //Steering Takes Horizontal Input and rotates both 
         float steerInupt = Input.GetAxis("Horizontal");
         bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInupt, 0, 0);
@@ -151,6 +150,15 @@ public class BikeMovementComponent : MonoBehaviour
 
         // Reset acceleration for next update
         //acceleration = new Vector2(0, 0);
+    }
+
+    public void ResetGameObject()
+    {
+        rb.angularVelocity = new Vector3(0, 0, 0);
+        rb.velocity = new Vector3(0, 0, 0);
+        rb.transform.rotation= Quaternion.Euler(new Vector3(0f, 0f, 0f));
+        appliedForce = new Vector3(0, 0, 0);
+        Init();
     }
 
     #endregion

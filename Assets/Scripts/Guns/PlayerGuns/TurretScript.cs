@@ -15,10 +15,9 @@ public class TurretScript : Gun
 
     public override void Init()
     {
+        base.Init();
         lastFired = 0;
         fireRate = 10;
-        bulletPool = gameObject.AddComponent<BulletPool>();
-        bulletPool.Init(bulletPrefab);
     }
 
     public override PlayerWeaponType GetPlayerWeaponType()
@@ -35,12 +34,13 @@ public class TurretScript : Gun
 
             Vector3 shotDir = muzzle1.transform.right;
             bullet.Shoot(muzzle1.transform.position, shotDir, initialVelocity);
-            
 
+            //Debug.Log("MuzzleVelocity: " + bullet.MuzzleVelocity);
+            //Debug.Log("Mass: " + bullet.Mass);
+            //Debug.Log("shotDir: " + shotDir.ToString());
             // Gun specific
             
             OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
-            ApplyRecoil(shotDir, bullet);
         }
 
 

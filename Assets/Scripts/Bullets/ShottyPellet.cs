@@ -1,8 +1,9 @@
+using Assets.Scripts.Bullets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShottyPellet : Bullet
+public class ShottyPellet : PlayerBullet
 {
     private float growthSpeed = 4f;
     private float maxSize = 10f;
@@ -27,17 +28,5 @@ public class ShottyPellet : Bullet
             this.gameObject.transform.localScale = new Vector3(resize, resize, resize);
         }
         base.Update();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-
-        if (other.gameObject.tag == "Enemy")
-        {
-            // TracerMesh should have a Health component
-            Health otherHealth = other.GetComponentInChildren<Health>();
-            float z = otherHealth.HitPoints;
-            otherHealth.TakeDamage(damageDealt);
-        }
     }
 }

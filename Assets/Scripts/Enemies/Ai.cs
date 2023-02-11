@@ -5,7 +5,7 @@ using UnityEngine;
 public delegate void NotifyDeath();  // delegate
 public delegate void NotifyRespawn();
 
-public abstract class Ai : SelfWorldBoundsDespawn
+public abstract class Ai : SelfWorldBoundsDespawn, IResettable
 {
 
     // THis is the method that sets the entity to Deactive and bascially is uesd to kill the entitiy
@@ -40,13 +40,14 @@ public abstract class Ai : SelfWorldBoundsDespawn
     // Update is called once per frame
     public override void Update()
     {
+
         base.Update();
 
         SetAnimationSpeed(rb.velocity.magnitude);
 
 
         //update conditions
-        foreach(Condition cond in activeConditions)
+        foreach (Condition cond in activeConditions)
         {
             cond.Tick();
         }
@@ -61,27 +62,28 @@ public abstract class Ai : SelfWorldBoundsDespawn
         else //Alive
         {
 
-            if(target == null)
+            if (target == null || !GameStateController.IsGamePlaying())
             {
                 Wander();
-            } else
+            }
+            else
             {
                 Vector3 desiredVec = target.transform.position - transform.position;
-                if(desiredVec.magnitude < attackRange)
+                if (desiredVec.magnitude < attackRange)
                 {
 
                     Move(this.transform.position);
                     Aim(target.transform.position);
                     Attack();
                     SetAnimationSpeed(0);
-                } else
+                }
+                else
                 {
                     Move(target.transform.position);
                     SetAnimationSpeed(rb.velocity.magnitude / 40); //this devides them by a constant to allow for slower enemies to walk slower.
                 }
             }
         }
-
     }
 
     public virtual void Aim(Vector3 aimAt)
@@ -305,4 +307,8 @@ public abstract class Ai : SelfWorldBoundsDespawn
         return hp;
     }
     #endregion & Setup
+    public void ResetGameObject()
+    {
+        OnDespawn();
+    }
 }
