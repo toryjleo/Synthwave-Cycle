@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Assets.Scripts.Bullets
 {
+    /// <summary>
+    /// An EnemyBullet is the abstract class all hostile bullets inherit from. It will damage the player on hit
+    /// </summary>
     public abstract class EnemyBullet : Bullet
     {
         internal override void DealDamageAndDespawn(GameObject other)

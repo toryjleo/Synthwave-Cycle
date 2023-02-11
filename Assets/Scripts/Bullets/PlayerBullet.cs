@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Assets.Scripts.Bullets
 {
+    /// <summary>
+    /// PlayerBullet is the abstract class all player guns fire, it will damage enemies on hit
+    /// </summary>
     public abstract class PlayerBullet : Bullet
     {
         internal override void DealDamageAndDespawn(GameObject other)

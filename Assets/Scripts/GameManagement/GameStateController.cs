@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GameStateController : MonoBehaviour
 {
+    /// <summary>
+    /// The GameStateController is a singleton that holds the current state (playing/menu/etc.) of the game
+    /// so other game objects can know how to act at any time
+    /// </summary>
     private static GameStateController Instance;
 
     private GameState currentState;
