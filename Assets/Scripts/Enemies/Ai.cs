@@ -40,7 +40,6 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     // Update is called once per frame
     public override void Update()
     {
-
         base.Update();
 
         SetAnimationSpeed(rb.velocity.magnitude);
@@ -52,37 +51,10 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
             cond.Tick();
         }
 
-
-
         //Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
             Die();
-        }
-        else //Alive
-        {
-
-            if (target == null || !GameStateController.IsGamePlaying())
-            {
-                Wander();
-            }
-            else
-            {
-                Vector3 desiredVec = target.transform.position - transform.position;
-                if (desiredVec.magnitude < attackRange)
-                {
-
-                    Move(this.transform.position);
-                    Aim(target.transform.position);
-                    Attack();
-                    SetAnimationSpeed(0);
-                }
-                else
-                {
-                    Move(target.transform.position);
-                    SetAnimationSpeed(rb.velocity.magnitude / 40); //this devides them by a constant to allow for slower enemies to walk slower.
-                }
-            }
         }
     }
 

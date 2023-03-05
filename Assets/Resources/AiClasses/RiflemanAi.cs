@@ -13,7 +13,7 @@ public class RiflemanAi : Ai
         StartingHP = 20;
         score = 100;
         maxSpeed = 40;
-        attackRange = 60;
+        attackRange = 10; //LGM - TODO: Turn back to 60
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
