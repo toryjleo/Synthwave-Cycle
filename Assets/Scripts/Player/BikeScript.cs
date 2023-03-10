@@ -7,7 +7,7 @@ using UnityEngine;
 // TODO: Make inherit from Pawn class
 /// <summary>Class <c>BikeScript</c> A Unity Component which holds the logic for the Player movement.</summary>
 /// Expects there to be an LMG spawned in-place on the bike's location
-public class BikeScript : MonoBehaviour
+public class BikeScript : MonoBehaviour, IResettable
 {
     private float distanceToHP; // The current distance to the healthpool.
     private float consecutiveDistanceToHP; // The distance to the healthpool the first time we raycast hit it.
@@ -72,6 +72,7 @@ public class BikeScript : MonoBehaviour
     }
     #endregion
     #endregion
+
     #region Monobehavior
     private void Awake()
     {
@@ -84,20 +85,31 @@ public class BikeScript : MonoBehaviour
 
     private void Update()
     {
-        UpdateBikeEmission();
+        if (GameStateController.IsGamePlaying())
+        {
+            UpdateBikeEmission();
+        }
     }
 
 
     private void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (GameStateController.IsGamePlaying())
         {
-            currentGun.Shoot(movementComponent.rb.velocity);
-            if(turret!= null)
+            // Handle primary and secondary fire inputs
+            if (Input.GetKey(KeyCode.Mouse0))
             {
-                turret.Shoot(movementComponent.rb.velocity);
+                //currentGun.Shoot(movementComponent.rb.velocity);
+                arsenal.PrimaryFire(movementComponent.rb.velocity);
+                if (turret != null)
+                {
+                    turret.PrimaryFire(movementComponent.rb.velocity);
+                }
             }
-            
+            if (Input.GetKey(KeyCode.Mouse1))
+            {
+                arsenal.SecondaryFire(movementComponent.rb.velocity);
+            }
         }
     }
 
@@ -108,13 +120,13 @@ public class BikeScript : MonoBehaviour
         movementComponent = GetComponent<BikeMovementComponent>();
 
 
-        //Initializes Turret 
-        if(GetComponentInChildren<TurretScript>() != null) { 
+        //Initializes Turret
+        if(GetComponentInChildren<TurretScript>() != null) {
             turret = GetComponentInChildren<TurretScript>();
             turret.Init();
             turret.BulletShot += movementComponent.bl_ProcessCompleted;
         }
-        
+
         healthPoolLayerMask = (1 << healthPoolLayer);
         consecutiveDistanceToHP = 0;
     }
@@ -168,7 +180,7 @@ public class BikeScript : MonoBehaviour
         {
             //Debug.Log("Hit something: " + hitData.collider.gameObject.name);
             distanceToHP = hitData.distance;
-            if (consecutiveDistanceToHP == 0) 
+            if (consecutiveDistanceToHP == 0)
             {
                 consecutiveDistanceToHP = hitData.distance;
             }
@@ -194,6 +206,12 @@ public class BikeScript : MonoBehaviour
         {
             emissiveBike.SetNotAheadColor();
         }
+    }
+
+    public void ResetGameObject()
+    {
+        Init();
+        movementComponent.transform.position = new Vector3(0, 0, 0);
     }
     #endregion
 }

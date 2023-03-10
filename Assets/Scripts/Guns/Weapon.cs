@@ -2,12 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// enum for determining gun type quickly
+// Ensure that DefaultGun is always the first and INVALID is always last.
+public enum PlayerWeaponType
+{
+    DefaultGun,
+    OctoLMG,
+    VulkanV64AutoCannons,
+    Shotty,
+    INVALID
+}
+
 /// <summary>
 /// This class is the base abstract class that will be used for all weapons and guns. 
 /// </summary>
-public abstract class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour, IResettable
 {
-
     /// <summary>
     /// The Awake Function, initializes the Weapon 
     /// </summary>
@@ -31,8 +41,23 @@ public abstract class Weapon : MonoBehaviour
        //TODO: add more featuers? Thoughts
     }
 
+    /// <summary>Fires the bullet from the muzzle of the gun. Is responsible for calling OnBulletShot and getting 
+    /// bullet from the object pool.</summary>
+    /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
+    public abstract void PrimaryFire(Vector3 initialVelocity);
+
+    /// <summary>Fires the bullet from the muzzle of the gun. Is responsible for calling OnBulletShot and getting 
+    /// bullet from the object pool.</summary>
+    /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
+    public abstract void SecondaryFire(Vector3 initialVelocity);
+
+    //Must be implemented, if Weapon is not designed to be equipped by the player, use the INVALID value
+    public abstract PlayerWeaponType GetPlayerWeaponType();
+
+    public void ResetGameObject()
+    {
+        Init();
+    }
+
     //TODO: Add Code for Weapons and items being able to be picked up here! 
-
-
-
 }

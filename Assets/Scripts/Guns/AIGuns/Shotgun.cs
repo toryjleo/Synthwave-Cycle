@@ -10,11 +10,10 @@ public class Shotgun : Gun
     {
         lastFired = 0;
         fireRate = .7f; // Every 2 seconds
-        bulletPool = gameObject.AddComponent<BulletPool>();
-        bulletPool.Init(bulletPrefab);
+        base.Init();
     }
 
-    public override void Shoot(Vector3 initialVelocity)
+    public override void PrimaryFire(Vector3 initialVelocity)
     {
         if (CanShootAgain())
         {
@@ -26,8 +25,15 @@ public class Shotgun : Gun
             //OnBulletShot(shotDir * bullet.Mass * bullet.muzzleVelocity);
         }
     }
+    public override void SecondaryFire(Vector3 initialVelocity)
+    {
+        throw new System.NotImplementedException();
+    }
+    public override PlayerWeaponType GetPlayerWeaponType()
+    {
+        return PlayerWeaponType.INVALID;
+    }
 
-    
 
     IEnumerator SpreadShot()
     {
@@ -46,15 +52,15 @@ public class Shotgun : Gun
 
             for(int p = 0; p < numberOfPellets; p++)
             {
-                Bullet bullet = bulletPool.SpawnFromPool();               
+                Bullet bullet = bulletPool.SpawnFromPool();
                 bullet.Shoot(bulletPosition, Quaternion.Euler(0, degreeOff, 0)*shotDir, initialVelocity);
                 degreeOff += 2;
             }
             numberOfPellets--;
 
             degreeOff = -7;
-          
-            
+
+
             yield return new WaitForSeconds(timeBetweenBlastWaves);
         }
         yield return null;
@@ -69,7 +75,7 @@ public class Shotgun : Gun
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            Shoot(Vector3.zero);
+            PrimaryFire(Vector3.zero);
         }
     }
 }

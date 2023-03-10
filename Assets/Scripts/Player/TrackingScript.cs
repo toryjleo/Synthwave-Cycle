@@ -17,13 +17,20 @@ public class TrackingScript : MonoBehaviour
 
         TPoints = GameObject.FindGameObjectsWithTag("TrackerChild");
 
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = player.transform.position;
-        this.transform.rotation = player.transform.rotation;
+        try
+        {
+            this.transform.position = player.transform.position;
+            this.transform.rotation = player.transform.rotation;
+        }
+        catch (System.Exception e)
+        {
+            //kill the messages
+        }
     }
 }

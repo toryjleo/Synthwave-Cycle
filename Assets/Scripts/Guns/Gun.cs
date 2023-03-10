@@ -6,7 +6,7 @@ using UnityEngine;
 public delegate void NotifyShot(Vector3 force);  // delegate
 
 /// <summary>Class <c>Bullet</c> A Unity Component which spawns bullets.</summary>
-public abstract class Gun : Weapon
+public abstract class Gun : Weapon, IResettable
 {
 
     public Bullet bulletPrefab;
@@ -15,26 +15,34 @@ public abstract class Gun : Weapon
     protected float fireRate = 0;  // The number of bullets fired per second
     protected int ammunition;
     public bool infiniteAmmo = false;
-
+    public int bulletPoolSize = 100;
 
     public event NotifyShot BulletShot; // event
 
-    protected override void OnDestroy()
+    /// <summary>Initializes veriables. Specifically must initialize lastFired and fireRate variables.</summary>
+    public override void Init()
+    {
+        bulletPool = gameObject.GetComponent<BulletPool>();
+        if (bulletPool == null)
+        {
+            Debug.Log("Creating bullet pool");
+            bulletPool = gameObject.AddComponent<BulletPool>();
+        }
+        bulletPool.Init(bulletPrefab, bulletPoolSize);
+        lastFired = 0;
+    }
+
+    /// <summary>Basically a destructor. Calls bulletPool.DeInit().</summary>
+    public override void DeInit()
     {
         bulletPool.DeInit();
         DeInit();
     }
-    
-
-    /// <summary>Fires the bullet from the muzzle of the gun. Is responsible for calling OnBulletShot and getting 
-    /// bullet from the object pool.</summary>
-    /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
-    public abstract void Shoot(Vector3 initialVelocity);
 
     /// <summary>Calls OnBulletShot. Will apply variable recoil based on bullet's mass and muzzle velocity</summary>
     /// <param name="directionOfBullet">Non-normalized direction bullet is travelling.</param>
     /// <param name="bulletShot">The bullet that is currently being shot.</param>
-    protected void ApplyRecoil(Vector3 directionOfBullet, Bullet bulletShot) 
+    protected void ApplyRecoil(Vector3 directionOfBullet, Bullet bulletShot)
     {
         OnBulletShot(directionOfBullet.normalized * bulletShot.Mass * bulletShot.MuzzleVelocity * bulletShot.Boost);
     }
@@ -62,8 +70,14 @@ public abstract class Gun : Weapon
 
     /// <summary>Will return true if the gun's cooldown has happened.</summary>
     /// <returns>True if the gun can shoot again.</returns>
-    public bool CanShootAgain() 
+    public bool CanShootAgain()
     {
         return Time.time - lastFired > 1 / fireRate;
     }
+    public new void ResetGameObject()
+    {
+        BulletShot = null;
+        base.ResetGameObject();
+    }
+
 }

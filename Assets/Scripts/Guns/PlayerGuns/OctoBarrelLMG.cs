@@ -13,18 +13,37 @@ public class OctoBarrelLMG : Gun
     public AudioSource muzzle2Audio;
     private bool muzzle1Turn = true;
 
-    public override void Init() 
+    public override void BigBoom()
     {
-        lastFired = 0;
-        fireRate = 60;
-        bulletPool = gameObject.AddComponent<BulletPool>();
-        bulletPool.Init(bulletPrefab);
-        ammunition = 100;
+        for (int i = 0; i < 60; i++)
+        {
+            Bullet bullet = bulletPool.SpawnFromPool();
+
+            GameObject curMuzzle = i % 2 == 0 ? muzzle1 : muzzle2;
+            Vector3 shotDir = Quaternion.Euler(0, 360f * (i / 60f), 0) * curMuzzle.transform.forward;
+            //shotDir = barrel.transform.up;
+
+            bullet.Shoot(curMuzzle.transform.position, shotDir, Vector3.zero);
+        }
+    }
+
+    public override PlayerWeaponType GetPlayerWeaponType()
+    {
+        return PlayerWeaponType.OctoLMG;
+    }
+
+    public override void Init()
+    {
+        bulletPoolSize = 200;
+        base.Init();
+        int currentLevel = GetCurrentLevel();
+        fireRate = 60 * currentLevel;
+        ammunition = 50 * currentLevel;
     }
 
     /// <summary>Fires a bullet out of either muzzle, alternating each turn.</summary>
     /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
-    public override void Shoot(Vector3 initialVelocity) 
+    public override void PrimaryFire(Vector3 initialVelocity)
     {
         if (CanShootAgain())
         {
@@ -50,5 +69,10 @@ public class OctoBarrelLMG : Gun
             ApplyRecoil(shotDir, bullet);
             //OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
         }
+    }
+    //TODO: Implement secondary fire
+    public override void SecondaryFire(Vector3 initialVelocity)
+    {
+        throw new System.NotImplementedException();
     }
 }

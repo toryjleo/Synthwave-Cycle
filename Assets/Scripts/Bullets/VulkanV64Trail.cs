@@ -1,8 +1,9 @@
+using Assets.Scripts.Bullets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VulkanV64Trail : Bullet
+public class VulkanV64Trail : PlayerBullet
 {
     private const float SHOT_RANGE = 100f;
     public TrailRenderer BulletTrail;

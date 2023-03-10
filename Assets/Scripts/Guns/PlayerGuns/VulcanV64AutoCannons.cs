@@ -16,16 +16,20 @@ public class VulcanV64AutoCannons : Gun
     const float MAX_INACCURACY = 0f;
     float inaccuracy = 0f;
 
+    public override PlayerWeaponType GetPlayerWeaponType()
+    {
+        return PlayerWeaponType.VulkanV64AutoCannons;
+    }
+
     public override void Init()
     {
         lastFired = 0;
         fireRate = 45;
-        bulletPool = gameObject.AddComponent<BulletPool>();
-        bulletPool.Init(bulletPrefab);
+        base.Init();
     }
     /// <summary>Fires a bullet out of either muzzle, alternating each turn.</summary>
     /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
-    public override void Shoot(Vector3 initialVelocity)
+    public override void PrimaryFire(Vector3 initialVelocity)
     {
         if (CanShootAgain())
         {
@@ -57,5 +61,10 @@ public class VulcanV64AutoCannons : Gun
             muzzle1Turn = !muzzle1Turn;
             ApplyRecoil(shotDir, bullet);
         }
+    }
+    //TODO: Implement secondary fire
+    public override void SecondaryFire(Vector3 initialVelocity)
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// This Script Controlls the turret attached to the turret bike. It requires a GameObject for the muzzle and keeps track of the mouse coordinates. 
+/// This Script Controlls the turret attached to the turret bike. It requires a GameObject for the muzzle and keeps track of the mouse coordinates.
 /// </summary>
 public class TurretScript : Gun
 {
@@ -15,13 +15,17 @@ public class TurretScript : Gun
 
     public override void Init()
     {
+        base.Init();
         lastFired = 0;
         fireRate = 10;
-        bulletPool = gameObject.AddComponent<BulletPool>();
-        bulletPool.Init(bulletPrefab);
     }
 
-    public override void Shoot(Vector3 initialVelocity)
+    public override PlayerWeaponType GetPlayerWeaponType()
+    {
+        return PlayerWeaponType.INVALID;
+    }
+
+    public override void PrimaryFire(Vector3 initialVelocity)
     {
         if (CanShootAgain())
         {
@@ -30,28 +34,33 @@ public class TurretScript : Gun
 
             Vector3 shotDir = muzzle1.transform.right;
             bullet.Shoot(muzzle1.transform.position, shotDir, initialVelocity);
-            
 
+            //Debug.Log("MuzzleVelocity: " + bullet.MuzzleVelocity);
+            //Debug.Log("Mass: " + bullet.Mass);
+            //Debug.Log("shotDir: " + shotDir.ToString());
             // Gun specific
-            
+
             OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
-            ApplyRecoil(shotDir, bullet);
         }
 
 
+    }
+    public override void SecondaryFire(Vector3 initialVelocity)
+    {
+        throw new System.NotImplementedException();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        // Logic for Having turret track the Mouse. 
+        // Logic for Having turret track the Mouse.
         Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(r, out RaycastHit raycastHit))
         {
@@ -59,7 +68,7 @@ public class TurretScript : Gun
 
             //Debug.Log(mouse +"   "+this.transform.position);
 
-            mouse -= this.transform.position; 
+            mouse -= this.transform.position;
         }
         //mouse = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
         var angle = Mathf.Atan2(mouse.x, mouse.z) * Mathf.Rad2Deg;

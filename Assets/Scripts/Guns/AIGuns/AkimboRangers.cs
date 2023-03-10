@@ -10,11 +10,10 @@ public class AkimboRangers : Gun
     {
         lastFired = 0;
         fireRate = 2f; // Every 1 second
-        bulletPool = gameObject.AddComponent<BulletPool>();
-        bulletPool.Init(bulletPrefab);
+        base.Init();
     }
 
-    public override void Shoot(Vector3 initialVelocity)
+    public override void PrimaryFire(Vector3 initialVelocity)
     {
         if (CanShootAgain())
         {
@@ -69,7 +68,17 @@ public class AkimboRangers : Gun
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            Shoot(Vector3.zero);
+            PrimaryFire(Vector3.zero);
         }
+    }
+
+    public override PlayerWeaponType GetPlayerWeaponType()
+    {
+        return PlayerWeaponType.INVALID;
+    }
+
+    public override void SecondaryFire(Vector3 initialVelocity)
+    {
+        throw new System.NotImplementedException();
     }
 }

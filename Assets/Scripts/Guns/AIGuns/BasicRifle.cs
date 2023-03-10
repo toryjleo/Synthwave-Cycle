@@ -11,15 +11,14 @@ public class BasicRifle : Gun
     {
         lastFired = 0;
         fireRate = .25f; // Every 2 seconds
-        bulletPool = gameObject.AddComponent<BulletPool>();
-        bulletPool.Init(bulletPrefab);
+        base.Init();
     }
 
     /// <summary>Fires a sequence of 3 bullets.</summary>
     /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
-    public override void Shoot(Vector3 initialVelocity)
+    public override void PrimaryFire(Vector3 initialVelocity)
     {
-        if (CanShootAgain()) 
+        if (CanShootAgain())
         {
             lastFired = Time.time;
             //Bullet bullet = bulletPool.SpawnFromPool();
@@ -29,9 +28,17 @@ public class BasicRifle : Gun
             //OnBulletShot(shotDir * bullet.Mass * bullet.muzzleVelocity);
         }
     }
+    public override void SecondaryFire(Vector3 initialVelocity)
+    {
+        throw new System.NotImplementedException();
+    }
+    public override PlayerWeaponType GetPlayerWeaponType()
+    {
+        return PlayerWeaponType.INVALID;
+    }
 
     /// <summary>Will wait some time before firing the next bullet.</summary>
-    IEnumerator TripleShot() 
+    IEnumerator TripleShot()
     {
         int numberOfShots = 3;
         for (int i = 0; i < numberOfShots; i++)
@@ -49,9 +56,9 @@ public class BasicRifle : Gun
 
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.M)) 
+        if(Input.GetKeyDown(KeyCode.M))
         {
-            Shoot(Vector3.zero);
+            PrimaryFire(Vector3.zero);
         }
     }
 }

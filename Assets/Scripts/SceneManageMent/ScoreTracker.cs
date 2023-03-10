@@ -4,10 +4,11 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Timers;
+using System.Linq;
 
 /// <summary>Class <c>ScoreTracker</c> Component which manages the UI in the upper left of the game screen.</summary>
 /// Expects there to be an object with BikeScript in the scene.
-public class ScoreTracker : MonoBehaviour
+public class ScoreTracker : MonoBehaviour, IResettable
 {
     private const float MAX_TIME = 90;
     private float currentTime;
@@ -17,7 +18,7 @@ public class ScoreTracker : MonoBehaviour
     public TextMeshProUGUI currentScoreText;
     public TextMeshProUGUI currentHPText;
 
-    public List<Gun> weaponPool;
+    public List<PlayerWeaponType> weaponPool;
 
     public BikeScript bike;
 
@@ -56,6 +57,15 @@ public class ScoreTracker : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+        }
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("Resetting!");
+            List<IResettable> resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
+            foreach (IResettable r in resetObjects)
+            {
+                r.ResetGameObject();
+            }
         }
     }
 
@@ -109,8 +119,12 @@ public class ScoreTracker : MonoBehaviour
         {
             if(weaponPool != null && weaponPool.Count > 0)
             {
-                Gun gun = weaponPool[Random.Range(0, weaponPool.Count)];
-                bike.EquipGun(Instantiate(gun, new Vector3(0, 0, 0), Quaternion.identity));
+                PlayerWeaponType gun = weaponPool[Random.Range(0, weaponPool.Count)];
+                Arsenal a = bike.gameObject.GetComponent<Arsenal>();
+                if (a != null)
+                {
+                    a.EquipGun(gun);
+                }
             }
         }
         currentScore += points;
@@ -148,5 +162,10 @@ public class ScoreTracker : MonoBehaviour
         {
             yield return null;
         }
+    }
+
+    public void ResetGameObject()
+    {
+        Init();
     }
 }

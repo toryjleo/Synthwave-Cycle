@@ -13,7 +13,26 @@ public class DoubleBarrelLMG : Gun
     public AudioSource muzzle2Audio;
     private bool muzzle1Turn = true;
 
-    public override void Init() 
+    public override void BigBoom()
+    {
+        for (int i = 0; i < 60; i++)
+        {
+            Bullet bullet = bulletPool.SpawnFromPool();
+
+            GameObject curMuzzle = i % 2 == 0 ? muzzle1 : muzzle2;
+            Vector3 shotDir = Quaternion.Euler(0, 360f * (i / 60f), 0) * curMuzzle.transform.forward;
+            //shotDir = barrel.transform.up;
+
+            bullet.Shoot(curMuzzle.transform.position, shotDir, Vector3.zero);
+        }
+    }
+
+    public override PlayerWeaponType GetPlayerWeaponType()
+    {
+        return PlayerWeaponType.DefaultGun;
+    }
+
+    public override void Init()
     {
         lastFired = 0;
         fireRate = 15;
@@ -23,7 +42,7 @@ public class DoubleBarrelLMG : Gun
 
     /// <summary>Fires a bullet out of either muzzle, alternating each turn.</summary>
     /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
-    public override void Shoot(Vector3 initialVelocity) 
+    public override void PrimaryFire(Vector3 initialVelocity)
     {
         if (CanShootAgain())
         {
@@ -49,5 +68,10 @@ public class DoubleBarrelLMG : Gun
             ApplyRecoil(shotDir, bullet);
             //OnBulletShot(shotDir * bullet.Mass * bullet.MuzzleVelocity);
         }
+    }
+    //TODO: Implement secondary fire
+    public override void SecondaryFire(Vector3 initialVelocity)
+    {
+        throw new System.NotImplementedException();
     }
 }
