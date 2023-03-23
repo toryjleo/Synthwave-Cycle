@@ -37,6 +37,8 @@ public class BikeAI : Ai
 
         maxSpeed = 100;
         attackRange = 30;
+        minimumRange = 0;
+        speedBoost = 50;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
@@ -91,9 +93,9 @@ public class BikeAI : Ai
     }
 
 
-    public override void Move(Vector3 target)
+    public override void Move(Vector3 target, bool speedBoosted = false)
     {
-        base.Move(findNearestTrackingPoint().transform.position);
+        base.Move(findNearestTrackingPoint().transform.position, speedBoosted);
     }
 
     //stats used in construction

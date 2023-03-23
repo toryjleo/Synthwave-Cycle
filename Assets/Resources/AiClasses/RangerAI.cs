@@ -13,6 +13,8 @@ public class RangerAI : Ai
         score = 300;
         maxSpeed = 30;
         attackRange = 15;
+        minimumRange = 5;
+        speedBoost = 30;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
