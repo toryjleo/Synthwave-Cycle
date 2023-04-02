@@ -14,6 +14,8 @@ public class RiflemanAi : Ai
         score = 100;
         maxSpeed = 40;
         attackRange = 60;
+        minimumRange = 0;
+        speedBoost = 20;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
