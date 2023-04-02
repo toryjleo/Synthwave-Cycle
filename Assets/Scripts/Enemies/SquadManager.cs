@@ -64,6 +64,7 @@ public class SquadManager : MonoBehaviour
         {
             s.Update();
         }
+        //TODO: make this smarter, perhaps use the Wave.cs class
         while (squads.Count - 1 <= dl.dangerLevel / 5)
         {
             squads.Add(squadSpawner.SpawnSquad());

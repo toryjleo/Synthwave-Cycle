@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 enum SquadAction
 {
@@ -35,11 +36,10 @@ public class Squad
 
     //pot shot variables
     [SerializeField]
-    float timeBetweenPotShotsMS = 2000;
+    float timeBetweenPotShotsMS = 2000; //how many MS between pot shots +/- variance
     [SerializeField]
-    float potShotVarianceMS = 1000;
-
-    float nextShot = 0;
+    float potShotVarianceMS = 1000; //range of +/- MS between pot shots (so they aren't on an exact interval)
+    float nextShot = 0; //the time for the next shot, is reset to the current time in MS when a pot shot is taken
 
 
     public Squad(SquadManager _manager)
@@ -50,14 +50,20 @@ public class Squad
     // Update is called once per frame
     internal void Update()
     {
-        squadCenter = Vector3.zero;
-        foreach(Ai ai in squadMembers)
-        {
-            squadCenter.x += ai.transform.position.x;
-            squadCenter.z += ai.transform.position.z;
-        }
-        squadCenter.x /= squadMembers.Count;
-        squadCenter.z /= squadMembers.Count;
+        AdjustSquadCenter();
+
+        HandleAction();
+
+        HandleLife();
+
+        HandleMovement();
+
+        Debug.DrawLine(squadCenter, movementLoc, currentAction==SquadAction.Attacking?Color.yellow:Color.cyan);
+    }
+
+    //Updates the state of the squad based on the action
+    private void HandleAction()
+    {
         switch (currentAction)
         {
             //try to move in between the current position and the target
@@ -77,22 +83,33 @@ public class Squad
                 movementLoc = target.transform.position;
                 break;
         }
-        Debug.DrawLine(squadCenter, movementLoc, currentAction==SquadAction.Attacking?Color.yellow:Color.cyan);
+    }
+    //removes dead AI and shatters squad if too small
+    private void HandleLife()
+    {
         foreach (Ai ai in squadMembers)
         {
             Debug.DrawLine(ai.transform.position, squadCenter, Color.red);
             //handle AI death
-            if(!ai.IsAlive())
+            if (!ai.IsAlive())
             {
                 squadMembers.Remove(ai);
                 manager.currentEnemies.Remove(ai);
                 manager.scoreKeeper.AddToScore((int)ai.GetScore());
-                if(squadMembers.Count < minimumSize)
+                if (squadMembers.Count < minimumSize)
                 {
                     manager.DisbandSquad(this);
                 }
                 break;
             }
+
+        }
+    }
+    //controls the movement of all the squad members
+    private void HandleMovement()
+    {
+        foreach (Ai ai in squadMembers)
+        {
             if (target == null || !GameStateController.IsGamePlaying())
             {
                 ai.Wander();
@@ -119,6 +136,17 @@ public class Squad
         }
     }
 
+    private void AdjustSquadCenter()
+    {
+        squadCenter = Vector3.zero;
+        foreach (Ai ai in squadMembers)
+        {
+            squadCenter.x += ai.transform.position.x;
+            squadCenter.z += ai.transform.position.z;
+        }
+        squadCenter.x /= squadMembers.Count;
+        squadCenter.z /= squadMembers.Count;
+    }
 
     private float GetHitPoints(GameObject target)
     {

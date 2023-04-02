@@ -31,7 +31,7 @@ public class SquadSpawner : MonoBehaviour
         
     }
 
-
+    //TODO: Make this smarter, perhaps using the Wave.cs class
     public Squad SpawnSquad()
     {
         Squad s = new Squad(squadManager);
