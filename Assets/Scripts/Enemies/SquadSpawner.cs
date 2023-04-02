@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>Class <c>SquadSpawner</c> Handles the object creation side of spawning in a squad</summary>
+/// Currently creates a squad of 5 LMG gunners with the player as a target, will spawn different kinds of squads in the future
+
 public class SquadSpawner : MonoBehaviour
 {
     public GameObject player;

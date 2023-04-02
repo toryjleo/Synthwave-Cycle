@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>Class <c>SquadManager</c> The SquadManager holds a list of every squad and handles their interaction</summary>
+/// SquadManager also spawns in new squads according to the danger level and will handle breaking up a squad into individual units when it shatters
+
 public class SquadManager : MonoBehaviour
 {
     public SquadSpawner squadSpawner; //Reference to Script in charge of spawning Enemies    
@@ -13,6 +16,7 @@ public class SquadManager : MonoBehaviour
 
     public List<Squad> squads = new List<Squad>();
 
+    //Shatters a squad and sends the surviving members to join a new squad
     internal void DisbandSquad(Squad squad)
     {
         squads.Remove(squad);

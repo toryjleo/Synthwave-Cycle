@@ -11,6 +11,8 @@ enum SquadAction
     Attacking
 }
 
+/// <summary>Class <c>Squad</c> A Squad is a group of AI that will work and move together</summary>
+/// Squads will determine how aggressive they are based on their own strength compared to the player's
 
 public class Squad
 {
@@ -58,6 +60,7 @@ public class Squad
         squadCenter.z /= squadMembers.Count;
         switch (currentAction)
         {
+            //try to move in between the current position and the target
             case SquadAction.Following:
                 movementLoc = (squadCenter + target.transform.position) / 2;
                 if (IsConfident())
@@ -65,6 +68,7 @@ public class Squad
                     currentAction = SquadAction.Attacking;
                 }
                 break;
+            //rush the target
             case SquadAction.Attacking:
                 if (!IsConfident())
                 {
@@ -77,6 +81,7 @@ public class Squad
         foreach (Ai ai in squadMembers)
         {
             Debug.DrawLine(ai.transform.position, squadCenter, Color.red);
+            //handle AI death
             if(!ai.IsAlive())
             {
                 squadMembers.Remove(ai);
@@ -88,25 +93,22 @@ public class Squad
                 }
                 break;
             }
-            //ai.Seperate(squadMembers); TODO: LGM -- refactor
             if (target == null || !GameStateController.IsGamePlaying())
             {
                 ai.Wander();
             }
             else
             {
+                //Handle Movement
                 Vector3 desiredVec = ai.transform.position - movementLoc;
                 ai.Move(movementLoc, currentAction == SquadAction.Attacking);
-                //ai.SetAnimationSpeed(ai.rb.velocity.magnitude / 40); //this devides them by a constant to allow for slower enemies to walk slower.
-
-                //Attacking
-
+                //if attacking and in range, fire at will
                 if (currentAction == SquadAction.Attacking && desiredVec.magnitude < ai.attackRange)
                 {
                     ai.Aim(target.transform.position);
                     ai.Attack();
-                    //ai.SetAnimationSpeed(0);
                 }
+                //if following, take a pot shot
                 else if (currentAction == SquadAction.Following && Time.time > nextShot)
                 {
                     ai.Aim(target.transform.position);
@@ -131,6 +133,7 @@ public class Squad
         }
     }
 
+    //Returns true if the squad is ready to charge
     private bool IsConfident()
     {
         return squadMembers.Count >= attackSize ||
@@ -140,11 +143,6 @@ public class Squad
     public void SetTarget(GameObject newTarget)
     {
         target = newTarget;
-    }
-
-    public void SetDestination(Vector3 destination)
-    {
-        movementLoc = destination;
     }
 
     public void AddToSquad(Ai newMember)
