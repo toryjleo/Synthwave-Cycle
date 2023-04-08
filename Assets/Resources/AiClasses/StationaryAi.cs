@@ -12,6 +12,8 @@ public class StationaryAi : Ai
         score = 5;
         maxSpeed = 0;
         attackRange = 0;
+        minimumRange = 0;
+        speedBoost = 0;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();

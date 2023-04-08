@@ -30,7 +30,9 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     public float maxForce;
     public float score;
     public float attackRange;
+    public float minimumRange;
     public bool alive;
+    public float speedBoost;
 
     public event NotifyDeath DeadEvent; // event
     public event NotifyRespawn RespawnEvent; // event
@@ -40,7 +42,6 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     // Update is called once per frame
     public override void Update()
     {
-
         base.Update();
 
         SetAnimationSpeed(rb.velocity.magnitude);
@@ -52,37 +53,10 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
             cond.Tick();
         }
 
-
-
         //Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
             Die();
-        }
-        else //Alive
-        {
-
-            if (target == null || !GameStateController.IsGamePlaying())
-            {
-                Wander();
-            }
-            else
-            {
-                Vector3 desiredVec = target.transform.position - transform.position;
-                if (desiredVec.magnitude < attackRange)
-                {
-
-                    Move(this.transform.position);
-                    Aim(target.transform.position);
-                    Attack();
-                    SetAnimationSpeed(0);
-                }
-                else
-                {
-                    Move(target.transform.position);
-                    SetAnimationSpeed(rb.velocity.magnitude / 40); //this devides them by a constant to allow for slower enemies to walk slower.
-                }
-            }
         }
     }
 
@@ -150,11 +124,11 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     /// This method works for ranged Enemies that do not get into direct melee range with the target
     /// </summary>
     /// <param name="target"> Vector to target </param>
-    public virtual void Move(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee.
+    public virtual void Move(Vector3 target, bool speedBoosted = false) //This can be used for Enemies that stay at range and dont run into melee.
     {
             Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be
             float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points
-            dMag -= attackRange; // dmag is the distance between the two objects, by subtracking this, I make it so the object doesn't desire to move as far.
+            dMag -= minimumRange; // dmag is the distance between the two objects, by subtracking this, I make it so the object doesn't desire to move as far.
 
             desiredVec.Normalize(); // one the distance is measured this vector can now be used to actually generate movement,
                                     // but that movement has to be constant or at least adaptable, which is what the next part does
@@ -170,7 +144,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
         }
             else
             {
-                desiredVec *= maxSpeed;
+                desiredVec *= maxSpeed + (speedBoosted? speedBoost : 0f);
             }
             Vector3 steer = desiredVec - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
             applyForce(steer);
