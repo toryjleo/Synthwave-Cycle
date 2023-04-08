@@ -1,4 +1,4 @@
-Shader "Universal Render Pipeline/Custom Lit"
+Shader "Universal Render Pipeline/Ground_HLSL"
 {
 // Created from this tutorial:
 // https://www.youtube.com/watch?v=3TULxrZCAdM&list=PLEW5iA4IZi_G1b7V2tGkwitvqMoIohzpE&index=10&ab_channel=EthanShulman
@@ -7,12 +7,12 @@ Shader "Universal Render Pipeline/Custom Lit"
         // Specular vs Metallic workflow
         [HideInInspector] _WorkflowMode("WorkflowMode", Float) = 1.0
 
-        [MainTexture] _BaseMap("Albedo", 2D) = "white" {}
-        [MainColor] _BaseColor("Color", Color) = (1,1,1,1)
+        _BaseMap("Albedo", 2D) = "white" {}
+        _BaseColor("Color", Color) = (1,1,1,1)
 
         _Cutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
 
-        _Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
+        _Smoothness1("Smoothness", Range(0.0, 1.0)) = 0.5
         _GlossMapScale("Smoothness Scale", Range(0.0, 1.0)) = 1.0
         _SmoothnessTextureChannel("Smoothness texture channel", Float) = 0
 
