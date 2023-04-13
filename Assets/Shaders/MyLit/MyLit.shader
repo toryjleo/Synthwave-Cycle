@@ -9,6 +9,7 @@ Shader "Unlit/MyLit"
         // Convention states that property names start with an underscore
         _ColorTint("Tint", Color) = (1, 1, 1, 1)
         _ColorMap("Color", 2D)    = "white" {}
+        _Smoothness("Smoothness", Float) = 0
     }
     // SubShaaders allow for different behavior and optionf for different pipelines and platforms
     SubShader
@@ -25,12 +26,37 @@ Shader "Unlit/MyLit"
             Tags{"LightMode" = "UniversalForward"} // Pass specific tags. UniversalForward is the value for a color pass
     
             HLSLPROGRAM // Begin HLSL code
+
+            #define _SPECULAR_COLOR // Turn on specular highlighting
+#if UNITY_VERSION >= 202120
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
+#else
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS // Tells unity to compile a version of the shader that works with and without main light shadows. This creates variants of the forward lit pass
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE // Handles soft shadows automatically
+#endif
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT      // Handles soft shadows automatically
+
             // Register our programmable stage functions
             #pragma vertex Vertex     // Register my custom vertex shader function
             #pragma fragment Fragment // Register my custom fragment shader function
 
             // Inlcude my custom HLSL code
             #include "MyLitForwardLitPass.hlsl"
+            ENDHLSL
+        }
+
+        Pass
+        {
+            Name "ShadowCaster"
+            Tags {"LightMode" = "ShadowCaster"}
+
+            ColorMask 0 // Since we do not need color, turn off color to optimize this shader
+            
+            HLSLPROGRAM
+            #pragma vertex Vertex
+            #pragma fragment Fragment
+
+            #include "MyLitShadowCasterPass.hlsl"
             ENDHLSL
         }
     }
