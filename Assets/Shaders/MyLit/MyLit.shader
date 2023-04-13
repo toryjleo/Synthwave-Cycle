@@ -1,5 +1,15 @@
 Shader "Unlit/MyLit"
 {
+    // Properties set per material, exposed in the material inspector
+    Properties
+    {
+        [Header(Surface options)] // Creates a text header
+
+        // Format the properties like so: <_PropertyName>(<Material Inspector Name>, <DataType>) <DefaultVal>
+        // Convention states that property names start with an underscore
+        _ColorTint("Tint", Color) = (1, 1, 1, 1)
+        _ColorMap("Color", 2D)    = "white" {}
+    }
     // SubShaaders allow for different behavior and optionf for different pipelines and platforms
     SubShader
     {
