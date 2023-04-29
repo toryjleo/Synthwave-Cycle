@@ -10,13 +10,19 @@ Shader "Unlit/MyLit"
         _ColorTint("Tint", Color) = (1, 1, 1, 1)
         _ColorMap("Color", 2D)    = "white" {}
         _Smoothness("Smoothness", Float) = 0
+        
+        [HideInInspector] _SourceBlend("Source blend", Float) = 0
+        [HideInInspector] _DestBlend("Destination blend", Float) = 0
+        [HideInInspector] _ZWrite("ZWrite", Float) = 0
+
+        [HideInInspector] _SurfaceType("Surface type", Float) = 0
     }
     // SubShaaders allow for different behavior and optionf for different pipelines and platforms
     SubShader
     {
         // These tags are shared by all passes in this sub shader
         // This SubShader is tagged for use in the UniversalPipeline
-        Tags{"RenderPipeline" = "UniversalPipeline"}
+        Tags{"RenderPipeline" = "UniversalPipeline" "RenderType" = "Opaque"}
 
         // Shaders can have several passes which are used to render different data about the material
         // Each pass has it's own vertex and fragment function and shader variant keywords
@@ -25,6 +31,9 @@ Shader "Unlit/MyLit"
             Name "ForwardLit" // For debugging
             Tags{"LightMode" = "UniversalForward"} // Pass specific tags. UniversalForward is the value for a color pass
     
+            Blend[_SourceBlend][_DestBlend]
+            ZWrite[_ZWrite]
+
             HLSLPROGRAM // Begin HLSL code
 
             #define _SPECULAR_COLOR // Turn on specular highlighting
@@ -60,4 +69,5 @@ Shader "Unlit/MyLit"
             ENDHLSL
         }
     }
+    CustomEditor "MyLitCustomInspector"
 }
