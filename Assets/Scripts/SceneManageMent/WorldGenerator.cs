@@ -36,8 +36,8 @@ public class WorldGenerator : MonoBehaviour
     #region ground
     [SerializeField] private GameObject ground;
     private GameObject[,] groundTiles;
-    private const int GROUND_ARRAY_WIDTH = 3;
-    private int GROUND_ARRAY_HEIGHT = 3;
+    private const int GROUND_ARRAY_WIDTH = 9;
+    private int GROUND_ARRAY_HEIGHT = 9;
     private float groundTileSpawnHeight = -3.12f;
     #endregion
 
