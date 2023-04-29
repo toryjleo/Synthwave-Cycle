@@ -149,7 +149,8 @@ public class ScoreTracker : MonoBehaviour, IResettable
     private void EndGame(bool survivedEvent)
     {
         PlayerDataObject.survivedEvent = survivedEvent;
-        if (Object.FindObjectOfType<DLevel>() == null)
+DLevel dLevel = Object.FindObjectOfType<DLevel>();
+        if (dLevel == null)
         {
             Debug.Log("cannot find Dlevel Object in scene.");
         }
