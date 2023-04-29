@@ -141,7 +141,7 @@ public class WorldGenerator : MonoBehaviour
     /// </summary>
     private void CheckUpdateGroundTiles()
     {
-        if ( bike != null)
+        if (bike != null)
         {
             Vector3 bikePosition = bike.transform.position;
             float bikeHorizontalPos = bikePosition.x;
