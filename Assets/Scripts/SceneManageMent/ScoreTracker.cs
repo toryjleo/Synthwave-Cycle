@@ -133,7 +133,15 @@ public class ScoreTracker : MonoBehaviour, IResettable
     /// <summary>Updates this class's Energy to the bike's energy.</summary>
     private void UpdateUIEnergy()
     {
-        Energy = bike.Energy;
+        if (bike == null)
+        {
+            Debug.Log("There is no bike.");
+        }
+        else
+        {
+            Energy = bike.Energy;
+        }
+
     }
 
     /// <summary>Loads the gameover screen.</summary>
@@ -141,10 +149,19 @@ public class ScoreTracker : MonoBehaviour, IResettable
     private void EndGame(bool survivedEvent)
     {
         PlayerDataObject.survivedEvent = survivedEvent;
+DLevel dLevel = Object.FindObjectOfType<DLevel>();
+        if (dLevel == null)
+        {
+            Debug.Log("cannot find Dlevel Object in scene.");
+        }
+        else
+        {
+            dLevel.dangerTimer.Dispose(); //Dispose of timer for spawning more enemies
+            SceneManager.LoadScene("TestScene");
+            //StartCoroutine(LoadYourAsyncScene());
+        }
 
-        Object.FindObjectOfType<DLevel>().dangerTimer.Dispose(); //Dispose of timer for spawning more enemies
-        SceneManager.LoadScene("TestScene");
-        //StartCoroutine(LoadYourAsyncScene());
+
     }
 
     /// <summary>Loads the gameover screen asycronously.</summary>
