@@ -156,7 +156,7 @@ DLevel dLevel = Object.FindObjectOfType<DLevel>();
         }
         else
         {
-            Object.FindObjectOfType<DLevel>().dangerTimer.Dispose(); //Dispose of timer for spawning more enemies
+            dLevel.dangerTimer.Dispose(); //Dispose of timer for spawning more enemies
             SceneManager.LoadScene("TestScene");
             //StartCoroutine(LoadYourAsyncScene());
         }
