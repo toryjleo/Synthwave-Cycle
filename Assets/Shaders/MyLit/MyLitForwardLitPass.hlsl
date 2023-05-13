@@ -44,14 +44,22 @@ Interpolators Vertex(Attributes input)
 
 // The fragment function. This runs once per fragment, which you can think of as a pixel on the screen
 // It must output the final color of this pixel
-float4 Fragment(Interpolators input) : SV_TARGET
+float4 Fragment(Interpolators input
+#ifdef _DOUBLE_SIDED_NORMALS
+	, FRONT_FACE_TYPE frontFace : FRONT_FACE_SEMANTIC
+#endif
+) : SV_TARGET
 {
 	float4 colorSample = SAMPLE_TEXTURE2D(_ColorMap, sampler_ColorMap, input.uv);
 	TestAlphaClip(colorSample);
 
+	float3 normalWS = normalize(input.normalWS);
+#ifdef _DOUBLE_SIDED_NORMALS
+	normalWS *= IS_FRONT_VFACE(frontFace, 1, -1); // Multiply Normal vector by 1 or -1 depending if this face is facing the camera
+#endif
 	InputData lightingInput = (InputData)0;
-	lightingInput.positionWS = input.positionWS;
-	lightingInput.normalWS = normalize(input.normalWS);
+	lightingInput.positionWS = normalWS;
+	lightingInput.normalWS = normalWS;
 	lightingInput.viewDirectionWS = GetWorldSpaceNormalizeViewDir(input.positionWS);
 	lightingInput.shadowCoord = TransformWorldToShadowCoord(input.positionWS); // Sample the shadow coord from the shadow map
 

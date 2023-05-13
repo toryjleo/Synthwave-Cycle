@@ -9,6 +9,11 @@ public class MyLitCustomInspector : ShaderGUI
         Opaque, TransparentBlend, TransparentCutout
     }
 
+    public enum FaceRenderingMode 
+    {
+        FrontOnly, NoCulling, DoubleSided
+    }
+
     public override void AssignNewShaderToMaterial(Material material, Shader oldShader, Shader newShader)
     {
         base.AssignNewShaderToMaterial(material, oldShader, newShader);
@@ -24,9 +29,11 @@ public class MyLitCustomInspector : ShaderGUI
 
         Material material = materialEditor.target as Material;
         var surfaceProp = BaseShaderGUI.FindProperty("_SurfaceType", properties, true);
+        var faceProp    = BaseShaderGUI.FindProperty("_FaceRenderingMode", properties, true);
 
         EditorGUI.BeginChangeCheck();
         surfaceProp.floatValue = (int)(SurfaceType)EditorGUILayout.EnumPopup("Surface type", (SurfaceType)surfaceProp.floatValue);
+        faceProp.floatValue    = (int)(FaceRenderingMode)EditorGUILayout.EnumPopup("Face rendering mode", (FaceRenderingMode)faceProp.floatValue);
         if (EditorGUI.EndChangeCheck())
         {
             UpdateSurfaceType(material);
@@ -78,6 +85,25 @@ public class MyLitCustomInspector : ShaderGUI
         else 
         {
             material.DisableKeyword("_ALPHA_CUTOUT");
+        }
+
+        FaceRenderingMode faceRenderingMode = (FaceRenderingMode)material.GetFloat("_FaceRenderingMode");
+        if (faceRenderingMode == FaceRenderingMode.FrontOnly)
+        {
+            material.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Back);
+        }
+        else
+        {
+            material.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
+        }
+
+        if (faceRenderingMode == FaceRenderingMode.DoubleSided)
+        {
+            material.EnableKeyword("_DOUBLE_SIDED_NORMALS");
+        }
+        else
+        {
+            material.DisableKeyword("_DOUBLE_SIDED_NORMALS");
         }
     }
 

@@ -26,12 +26,23 @@ struct Interpolators
 #endif
 };
 
+float3 FlipNormalBasedOnViewDir(float3 normalWS, float3 positionWS)
+{
+	float3 viewDirWS = GetWorldSpaceNormalizeViewDir(positionWS); // Built-in URP function
+	return normalWS * (dot(normalWS, viewDirWS) < 0 ? -1 : 1);
+}
+
+
 float3 _LightDirection; // URP provided variable
 
 float4 GetShadowCasterPositionCS(float3 positionWS, float3 normalWS)
 {
 	float3 lightDirectionWS = _LightDirection;
+#ifdef _DOUBLE_SIDED_NORMALS
+	normalWS = FlipNormalBasedOnViewDir(normalWS, positionWS);
+#endif
 	float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, lightDirectionWS));
+
 #if UNITY_REVERSED_Z
 	positionCS.z = min(positionCS.z, UNITY_NEAR_CLIP_VALUE);
 #else

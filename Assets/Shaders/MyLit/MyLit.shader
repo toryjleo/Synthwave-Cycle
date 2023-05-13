@@ -11,12 +11,15 @@ Shader "Unlit/MyLit"
         _ColorMap("Color", 2D)    = "white" {}
         _Smoothness("Smoothness", Float) = 0
         _Cutoff("Alphaa cutout threshold", Range(0, 1)) = 0.5
+
+        [HideInInspector] _Cull("Cull mode", Float) = 2
         
         [HideInInspector] _SourceBlend("Source blend", Float) = 0
         [HideInInspector] _DestBlend("Destination blend", Float) = 0
         [HideInInspector] _ZWrite("ZWrite", Float) = 0
 
         [HideInInspector] _SurfaceType("Surface type", Float) = 0
+        [HideInInspector] _FaceRenderingMode("Face rendering type", Float) = 0
     }
     // SubShaaders allow for different behavior and optionf for different pipelines and platforms
     SubShader
@@ -34,12 +37,14 @@ Shader "Unlit/MyLit"
     
             Blend[_SourceBlend][_DestBlend]
             ZWrite[_ZWrite]
+            Cull[_Cull]
 
             HLSLPROGRAM // Begin HLSL code
 
             #define _SPECULAR_COLOR // Turn on specular highlighting
 
             #pragma shader_feature_local _ALPHA_CUTOUT
+            #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
 
 
 #if UNITY_VERSION >= 202120
@@ -65,10 +70,13 @@ Shader "Unlit/MyLit"
             Tags {"LightMode" = "ShadowCaster"}
 
             ColorMask 0 // Since we do not need color, turn off color to optimize this shader
+
+            Cull[_Cull]
             
             HLSLPROGRAM
 
             #pragma shader_feature_local _ALPHA_CUTOUT
+            #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
 
             #pragma vertex Vertex
             #pragma fragment Fragment
