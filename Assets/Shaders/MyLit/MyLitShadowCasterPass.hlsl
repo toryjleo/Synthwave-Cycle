@@ -1,5 +1,5 @@
-// Pull in URP library functions and our own common functions
-#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+// Pull in custom common toolbox
+#include "MyLitCommon.hlsl"
 
 /*------------------------------ Properties ------------------------------*/
 // Null
@@ -10,6 +10,9 @@ struct Attributes
 {
 	float3 positionOS : POSITION; // Position in object space
 	float3 normalOS : NORMAL;
+#ifdef _ALPHA_CUTOUT
+	float2 uv : TEXCOORD0;
+#endif
 };
 
 struct Interpolators
@@ -18,6 +21,9 @@ struct Interpolators
 	// when output from the vertex function. It will be transformed into pixel position of the current
 	// fragment on the screen when read from the fragment function
 	float4 positionCS : SV_POSITION;
+#ifdef _ALPHA_CUTOUT
+	float2 uv : TEXCOORD0;
+#endif
 };
 
 float3 _LightDirection; // URP provided variable
@@ -45,6 +51,9 @@ Interpolators Vertex(Attributes input)
 
 	// Pass position data to the fragment function
 	output.positionCS = GetShadowCasterPositionCS(posnInputs.positionWS, normInputs.normalWS);
+#ifdef _ALPHA_CUTOUT
+	output.uv = TRANSFORM_TEX(input.uv, _ColorMap);
+#endif
 
 	return output;
 }
@@ -53,5 +62,10 @@ Interpolators Vertex(Attributes input)
 // It must output the final color of this pixel
 float4 Fragment(Interpolators input) : SV_TARGET
 {
+#ifdef _ALPHA_CUTOUT
+	float2 uv = input.uv;
+	float4 colorSample = SAMPLE_TEXTURE2D(_ColorMap, sampler_ColorMap, input.uv);
+	TestAlphaClip(colorSample); // Clipped fragments will not be shown as shadow and will be discarded
+#endif
 	return 0;
 }

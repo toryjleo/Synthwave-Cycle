@@ -67,6 +67,9 @@ Shader "Unlit/MyLit"
             ColorMask 0 // Since we do not need color, turn off color to optimize this shader
             
             HLSLPROGRAM
+
+            #pragma shader_feature_local _ALPHA_CUTOUT
+
             #pragma vertex Vertex
             #pragma fragment Fragment
 
