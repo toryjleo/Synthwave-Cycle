@@ -4,6 +4,7 @@
 /*------------------------------ Properties ------------------------------*/
 // Must match the associated property name
 float4 _ColorTint;
+float _Cutoff;
 TEXTURE2D(_ColorMap); 
 SAMPLER(sampler_ColorMap); // Sampler variables must be declared as sample_<_TextureVarName>
 float4 _ColorMap_ST; // Offset variables must be declared as <_TextureVarName>_ST
@@ -55,6 +56,10 @@ Interpolators Vertex(Attributes input)
 float4 Fragment(Interpolators input) : SV_TARGET
 {
 	float4 colorSample = SAMPLE_TEXTURE2D(_ColorMap, sampler_ColorMap, input.uv);
+
+#ifdef _ALPHA_CUTOUT
+	clip(colorSample.a * _ColorTint.a - _Cutoff); // Discard any transparent part of the image
+#endif
 
 	InputData lightingInput = (InputData)0;
 	lightingInput.positionWS = input.positionWS;

@@ -10,6 +10,7 @@ Shader "Unlit/MyLit"
         _ColorTint("Tint", Color) = (1, 1, 1, 1)
         _ColorMap("Color", 2D)    = "white" {}
         _Smoothness("Smoothness", Float) = 0
+        _Cutoff("Alphaa cutout threshold", Range(0, 1)) = 0.5
         
         [HideInInspector] _SourceBlend("Source blend", Float) = 0
         [HideInInspector] _DestBlend("Destination blend", Float) = 0
@@ -37,6 +38,10 @@ Shader "Unlit/MyLit"
             HLSLPROGRAM // Begin HLSL code
 
             #define _SPECULAR_COLOR // Turn on specular highlighting
+
+            #pragma shader_feature_local _ALPHA_CUTOUT
+
+
 #if UNITY_VERSION >= 202120
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
 #else
