@@ -36,9 +36,11 @@ public class WorldGenerator : MonoBehaviour
     #region ground
     [SerializeField] private GameObject ground;
     private GameObject[,] groundTiles;
-    private const int GROUND_ARRAY_WIDTH = 9;
-    private int GROUND_ARRAY_HEIGHT = 9;
+    [SerializeField] private int GROUND_ARRAY_WIDTH = 9;
+    [SerializeField] private int GROUND_ARRAY_HEIGHT = 9;
     private float groundTileSpawnHeight = -3.12f;
+
+    private GameObject[,] newgroundTiles;
     #endregion
 
     // Start is called before the first frame update
@@ -61,6 +63,10 @@ public class WorldGenerator : MonoBehaviour
     void Update()
     {
         CheckUpdateGroundTiles();
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            UpdateNumberofGroundTiles();
+        }
     }
 
     #region ground
@@ -87,6 +93,13 @@ public class WorldGenerator : MonoBehaviour
         }
         UpdateMiddleTileMinMax();
         UpdateWorldMinMax();
+    }
+
+    private void UpdateNumberofGroundTiles()
+    {
+        newgroundTiles = new GameObject[GROUND_ARRAY_WIDTH, GROUND_ARRAY_HEIGHT];
+        groundTiles = newgroundTiles;
+        InitializeGround();
     }
 
     /// <summary>
@@ -176,5 +189,7 @@ public class WorldGenerator : MonoBehaviour
         UpdateMiddleTileMinMax();
         UpdateWorldMinMax();
     }
+
+
     #endregion
 }
