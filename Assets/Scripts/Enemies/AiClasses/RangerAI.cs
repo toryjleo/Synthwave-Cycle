@@ -2,20 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RiflemanAi : Ai
+public class RangerAI : InfantryAI
 {
-    public GameObject muzzleLocation; 
-
+    public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
 
     public override void Init()
     {
         alive = true;
         StartingHP = 20;
-        score = 100;
-        maxSpeed = 40;
-        attackRange = 60;
-        minimumRange = 0;
-        speedBoost = 20;
+        score = 300;
+        maxSpeed = 30;
+        attackRange = 15;
+        minimumRange = 5;
+        speedBoost = 30;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
@@ -23,8 +22,8 @@ public class RiflemanAi : Ai
         this.Despawn += op_ProcessCompleted;
         hp.Init(StartingHP);
 
-
         #region Error Checkers
+
         if (animationStateController == null)
         {
             Debug.LogError("This object needs a CyborgAnimationStateController component");
@@ -38,9 +37,11 @@ public class RiflemanAi : Ai
             Debug.LogError("This object needs a health component");
         }
         #endregion
-
-
     }
+
+
+
+    //stats used in construction
 
     public float hitpoints
     {
@@ -57,17 +58,5 @@ public class RiflemanAi : Ai
         base.Update();
     }
 
-    /// <summary>
-    /// Instantiates a gun for this AI. Preferably called at Awake since Instantiate is expensive.
-    /// </summary>
-    /// <param name="gun">Prefab to instantiate</param>
-    public void EquipGun(Gun gun)
-    {
-        if (myGun != null)
-        {
-            GameObject.Destroy(myGun.gameObject);
-        }
-        // This gameObject will be a child of muzzleLocation
-        myGun = Instantiate<Gun>(gun, muzzleLocation.transform);
-    }
+
 }

@@ -13,8 +13,6 @@ public class Factory : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        guns = Resources.LoadAll<GameObject>("Guns");
-        enemyPrefabs = Resources.LoadAll<GameObject>("EnemyPrefabs");
     }
 
     // Update is called once per frame

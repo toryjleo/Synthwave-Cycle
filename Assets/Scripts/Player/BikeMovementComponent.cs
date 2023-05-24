@@ -13,6 +13,10 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
     // The gameObject that holds the bike mesh. This will only be used for animations.
     public GameObject bikeMeshChild;
 
+    //Transforms that float in front of the bike on either side for vehicles to chase
+    public GameObject trackerFR;
+    public GameObject trackerFL;
+
     public Vector3 appliedForce; // The force being applied to the bike
     public Rigidbody rb;
 
@@ -131,9 +135,10 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         appliedForce *= dragCoefficient;
 
         // Debug lines
+        /*
         Debug.DrawRay(rb.transform.position, ForwardVector().normalized * 30, Color.red);
         Debug.DrawRay(rb.transform.position, appliedForce.normalized * 30, Color.blue);
-
+        */
         //Lerp from actual vector to desired vector 
         appliedForce = Vector3.Lerp(appliedForce.normalized, ForwardVector().normalized, Traction * Time.fixedDeltaTime) * appliedForce.magnitude;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// This is the Ai component used by the bikes. It has a unique movement component and TODO: Will be adding a ramming feature and gun on these bikes
 /// </summary>
-public class BikeAI : Ai
+public class BikeAI : VehicleAI
 {
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
 

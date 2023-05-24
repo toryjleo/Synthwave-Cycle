@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangerAI : Ai
+public class GruntAI : InfantryAI
 {
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
 
     public override void Init()
     {
         alive = true;
-        StartingHP = 20;
+        StartingHP = 40;
         score = 300;
-        maxSpeed = 30;
-        attackRange = 15;
-        minimumRange = 5;
-        speedBoost = 30;
+        maxSpeed = 10;
+        attackRange = 7;
+        minimumRange = 1;
+        speedBoost = 8;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
