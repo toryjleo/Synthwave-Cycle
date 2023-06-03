@@ -12,10 +12,12 @@ float _Cutoff;
 float _Smoothness;
 float _NormalStrength;
 float _MetalnessStrength;
+float3 _SpecularTint;
 
 TEXTURE2D(_ColorMap);  SAMPLER(sampler_ColorMap); // Sampler variables must be declared as sample_<_TextureVarName>
 TEXTURE2D(_NormalMap); SAMPLER(sampler_NormalMap);
 TEXTURE2D(_MetalnessMap); SAMPLER(sampler_MetalnessMap);
+TEXTURE2D(_SpecularMap); SAMPLER(sampler_SpecularMap);
 
 void TestAlphaClip(float4 colorSample)
 {

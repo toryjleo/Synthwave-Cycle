@@ -15,6 +15,10 @@ Shader "Unlit/MyLit"
         _NormalStrength("Normal strength", Range(0, 1)) = 1
         [NoScaleOffset] _MetalnessMap("Metalness Map", 2D) = "white" {} // Make sure srgb is turned off in the import settings for textures that are Metalness Map
         _MetalnessStrength("Metalness strength", Range(0, 1)) = 0
+        
+        [Toggle(_SPECULAR_SETUP)] _SpecularSetupToggle("Use specular workflow", Float) = 0
+        [NoScaleOffset] _SpecularMap("Specular map", 2D) = "white" {}
+        _SpecularTint("Specular tint", Color) = (1, 1, 1, 1)
 
         [HideInInspector] _Cull("Cull mode", Float) = 2
         
@@ -45,11 +49,10 @@ Shader "Unlit/MyLit"
 
             HLSLPROGRAM // Begin HLSL code
 
-            #define _SPECULAR_COLOR // Turn on specular highlighting
-
             #define _NORMALMAP
             #pragma shader_feature_local _ALPHA_CUTOUT
             #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
+            #pragma shader_feature_local _SPECULAR_SETUP
 
 
 #if UNITY_VERSION >= 202120
