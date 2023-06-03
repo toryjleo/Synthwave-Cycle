@@ -10,8 +10,12 @@ float4 _ColorMap_ST; // Offset variables must be declared as <_TextureVarName>_S
 float4 _ColorTint;
 float _Cutoff;
 float _Smoothness;
-TEXTURE2D(_ColorMap);
-SAMPLER(sampler_ColorMap); // Sampler variables must be declared as sample_<_TextureVarName>
+float _NormalStrength;
+float _MetalnessStrength;
+
+TEXTURE2D(_ColorMap);  SAMPLER(sampler_ColorMap); // Sampler variables must be declared as sample_<_TextureVarName>
+TEXTURE2D(_NormalMap); SAMPLER(sampler_NormalMap);
+TEXTURE2D(_MetalnessMap); SAMPLER(sampler_MetalnessMap);
 
 void TestAlphaClip(float4 colorSample)
 {

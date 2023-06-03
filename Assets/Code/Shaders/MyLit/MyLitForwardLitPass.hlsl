@@ -7,8 +7,9 @@
 struct Attributes 
 {
 	float3 positionOS : POSITION; // Position in object space
-	float2 uv : TEXCOORD0; // Material texture UVs
-	float3 normalOS : NORMAL; // Normal in object space
+	float2 uv         : TEXCOORD0; // Material texture UVs
+	float3 normalOS   : NORMAL; // Normal in object space
+	float4 tangentOS  : TANGENT;
 };
 
 struct Interpolators
@@ -19,9 +20,10 @@ struct Interpolators
 	float4 positionCS : SV_POSITION;
 	// The following variables will retain their values from the vertex stage, except the
 	// rasterizer will interpolate them between vertices
-	float2 uv : TEXCOORD0; // Material texture UVs
+	float2 uv         : TEXCOORD0; // Material texture UVs
 	float3 positionWS : TEXCOORD1;
-	float3 normalWS : TEXCOORD2;
+	float3 normalWS   : TEXCOORD2;
+	float4 tangentWS  : TEXCOORD3;
 };
 
 Interpolators Vertex(Attributes input)
@@ -31,13 +33,14 @@ Interpolators Vertex(Attributes input)
 	// These helper functions, found in URP/ShaderLib/ShaderVariablesFunctions.hlsl
 	// transform object space values into world and clip space
 	VertexPositionInputs posnInputs = GetVertexPositionInputs(input.positionOS);
-	VertexNormalInputs normInputs = GetVertexNormalInputs(input.normalOS);
+	VertexNormalInputs normInputs = GetVertexNormalInputs(input.normalOS, input.tangentOS);
 
 	// Pass position and orientation data to the fragment function
 	output.positionCS = posnInputs.positionCS;
 	output.uv = TRANSFORM_TEX(input.uv, _ColorMap); // Also applies offset variables (<name>_ST)
 	output.positionWS = posnInputs.positionWS;
 	output.normalWS = normInputs.normalWS;
+	output.tangentWS = float4(normInputs.tangentWS, input.tangentOS.w);
 
 	return output;
 }
@@ -53,25 +56,34 @@ float4 Fragment(Interpolators input
 	float4 colorSample = SAMPLE_TEXTURE2D(_ColorMap, sampler_ColorMap, input.uv);
 	TestAlphaClip(colorSample);
 
+	// Normal
 	float3 normalWS = normalize(input.normalWS);
 #ifdef _DOUBLE_SIDED_NORMALS
 	normalWS *= IS_FRONT_VFACE(frontFace, 1, -1); // Multiply Normal vector by 1 or -1 depending if this face is facing the camera
 #endif
+	float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, input.uv), _NormalStrength);
+	float3x3 tangentToWorld = CreateTangentToWorld(normalWS, input.tangentWS.xyz, input.tangentWS.w);
+	normalWS = normalize(TransformTangentToWorld(normalTS, tangentToWorld));
+	//return float4((normalWS + 1) * 0.5, 1); // Returns normals TEST
+
+	// Update lighting input data for lighting calculations
 	InputData lightingInput = (InputData)0;
 	lightingInput.positionWS = normalWS;
 	lightingInput.normalWS = normalWS;
 	lightingInput.viewDirectionWS = GetWorldSpaceNormalizeViewDir(input.positionWS);
 	lightingInput.shadowCoord = TransformWorldToShadowCoord(input.positionWS); // Sample the shadow coord from the shadow map
+#if UNITY_VERSION >= 202120
+	lightingInput.positionCS = input.positionCS;
+	lightingInput.tangentToWorld = tangentToWorld;
+#endif
 
 	SurfaceData surfaceInput = (SurfaceData)0;
 	surfaceInput.albedo = colorSample.rgb * _ColorTint.rgb;
 	surfaceInput.alpha = colorSample.a * _ColorTint.a;
 	surfaceInput.specular = 1;
 	surfaceInput.smoothness = _Smoothness;
+	surfaceInput.normalTS = normalTS;
+	surfaceInput.metallic = SAMPLE_TEXTURE2D(_MetalnessMap, sampler_MetalnessMap, input.uv).r * _MetalnessStrength;
 
-#if UNITY_VERSION >= 202120
-	return UniversalFragmentBlinnPhong(lightingInput, surfaceInput);
-#else
-	return UniversalFragmentBlinnPhong(lightingInput, surfaceInput.albedo, float4(surfaceInput.specular, 1), surfaceInput.smoothness, 0, surfaceInput.alpha);
-#endif
+	return UniversalFragmentPBR(lightingInput, surfaceInput);
 }

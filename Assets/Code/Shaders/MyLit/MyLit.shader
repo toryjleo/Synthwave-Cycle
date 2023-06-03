@@ -9,8 +9,12 @@ Shader "Unlit/MyLit"
         // Convention states that property names start with an underscore
         _ColorTint("Tint", Color) = (1, 1, 1, 1)
         _ColorMap("Color", 2D)    = "white" {}
-        _Smoothness("Smoothness", Float) = 0
-        _Cutoff("Alphaa cutout threshold", Range(0, 1)) = 0.5
+        _Smoothness("Smoothness", Range(0, 1)) = 0.5
+        _Cutoff("Alpha cutout threshold", Range(0, 1)) = 0.5
+        [NoScaleOffset][Normal] _NormalMap("Normal Map", 2D) = "bump" {} // Uses OpenGL bitangent Convention
+        _NormalStrength("Normal strength", Range(0, 1)) = 1
+        [NoScaleOffset] _MetalnessMap("Metalness Map", 2D) = "white" {} // Make sure srgb is turned off in the import settings for textures that are Metalness Map
+        _MetalnessStrength("Metalness strength", Range(0, 1)) = 0
 
         [HideInInspector] _Cull("Cull mode", Float) = 2
         
@@ -43,6 +47,7 @@ Shader "Unlit/MyLit"
 
             #define _SPECULAR_COLOR // Turn on specular highlighting
 
+            #define _NORMALMAP
             #pragma shader_feature_local _ALPHA_CUTOUT
             #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
 
@@ -54,6 +59,10 @@ Shader "Unlit/MyLit"
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE // Handles soft shadows automatically
 #endif
             #pragma multi_compile_fragment _ _SHADOWS_SOFT      // Handles soft shadows automatically
+#if UNITY_VERSION >= 202120
+            #pragma multi_compile_fragment _ DEBUG_DISPLAY
+#endif
+
 
             // Register our programmable stage functions
             #pragma vertex Vertex     // Register my custom vertex shader function
