@@ -9,16 +9,20 @@ Shader "Unlit/MyLit"
         // Convention states that property names start with an underscore
         _ColorTint("Tint", Color) = (1, 1, 1, 1)
         _ColorMap("Color", 2D)    = "white" {}
-        _Smoothness("Smoothness", Range(0, 1)) = 0.5
-        _Cutoff("Alpha cutout threshold", Range(0, 1)) = 0.5
+        
         [NoScaleOffset][Normal] _NormalMap("Normal Map", 2D) = "bump" {} // Uses OpenGL bitangent Convention
         _NormalStrength("Normal strength", Range(0, 1)) = 1
+        
         [NoScaleOffset] _MetalnessMap("Metalness Map", 2D) = "white" {} // Make sure srgb is turned off in the import settings for textures that are Metalness Map
         _MetalnessStrength("Metalness strength", Range(0, 1)) = 0
         
         [Toggle(_SPECULAR_SETUP)] _SpecularSetupToggle("Use specular workflow", Float) = 0
         [NoScaleOffset] _SpecularMap("Specular map", 2D) = "white" {}
         _SpecularTint("Specular tint", Color) = (1, 1, 1, 1)
+
+        [Toggle(_ROUGHNESS_SETUP)] _RoughnessMapToggle("Use roughness map", Float) = 0
+        [NoScaleOffset] _SmoothnessMask("Smoothness mask", 2D) = "white" {}
+        _Smoothness("Smoothness multiplier", Range(0, 1)) = 0.5
 
         [HideInInspector] _Cull("Cull mode", Float) = 2
         
@@ -53,6 +57,7 @@ Shader "Unlit/MyLit"
             #pragma shader_feature_local _ALPHA_CUTOUT
             #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
             #pragma shader_feature_local _SPECULAR_SETUP
+            #pragma shader_feature_local _ROUGHNESS_SETUP
 
 
 #if UNITY_VERSION >= 202120

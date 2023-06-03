@@ -81,7 +81,6 @@ float4 Fragment(Interpolators input
 	surfaceInput.albedo = colorSample.rgb * _ColorTint.rgb;
 	surfaceInput.alpha = colorSample.a * _ColorTint.a;
 	surfaceInput.specular = 1;
-	surfaceInput.smoothness = _Smoothness;
 	surfaceInput.normalTS = normalTS;
 #ifdef _SPECULAR_SETUP
 	surfaceInput.specular = SAMPLE_TEXTURE2D(_SpecularMap, sampler_SpecularMap, input.uv).rgb * _SpecularTint;
@@ -89,6 +88,11 @@ float4 Fragment(Interpolators input
 #else
 	surfaceInput.metallic = SAMPLE_TEXTURE2D(_MetalnessMap, sampler_MetalnessMap, input.uv).r * _MetalnessStrength;
 #endif
+	float smoothnessSample = SAMPLE_TEXTURE2D(_SmoothnessMask, sampler_SmoothnessMask, input.uv).r * _Smoothness;
+#ifdef _ROUGHNESS_SETUP
+	smoothnessSample = 1 - smoothnessSample;
+#endif
+	surfaceInput.smoothness = smoothnessSample;
 
 	return UniversalFragmentPBR(lightingInput, surfaceInput);
 }
