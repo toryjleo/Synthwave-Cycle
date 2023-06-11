@@ -1,5 +1,6 @@
 // Pull in custom common toolbox
 #include "MyLitCommon.hlsl"
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/ParallaxMapping.hlsl"
 
 
 /*------------------------------ Shader ------------------------------*/
@@ -53,25 +54,37 @@ float4 Fragment(Interpolators input
 #endif
 ) : SV_TARGET
 {
-	float4 colorSample = SAMPLE_TEXTURE2D(_ColorMap, sampler_ColorMap, input.uv);
-	TestAlphaClip(colorSample);
-
 	// Normal
-	float3 normalWS = normalize(input.normalWS);
+	float3 normalWS = input.normalWS;
 #ifdef _DOUBLE_SIDED_NORMALS
 	normalWS *= IS_FRONT_VFACE(frontFace, 1, -1); // Multiply Normal vector by 1 or -1 depending if this face is facing the camera
 #endif
-	float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, input.uv), _NormalStrength);
+
+	// View Direction
+	float3 positionWS = input.positionWS;
+	float3 viewDirWS = GetWorldSpaceNormalizeViewDir(positionWS); // In ShaderVariablesFunctions.hlsl
+	float3 viewDirTS = GetViewDirectionTangentSpace(input.tangentWS, normalWS, viewDirWS); // In ParallaxMapping.hlsl, normal must NOT be normalized
+
+	// Height Map Calculation
+	float2 uv = input.uv;
+	uv += ParallaxMapping(TEXTURE2D_ARGS(_ParallaxMap, sampler_ParallaxMap), viewDirTS, _ParallaxStrength, uv);
+
+	// Get Normal map
+	float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, uv), _NormalStrength);
 	float3x3 tangentToWorld = CreateTangentToWorld(normalWS, input.tangentWS.xyz, input.tangentWS.w);
 	normalWS = normalize(TransformTangentToWorld(normalTS, tangentToWorld));
 	//return float4((normalWS + 1) * 0.5, 1); // Returns normals TEST
 
+	// Color Sample
+	float4 colorSample = SAMPLE_TEXTURE2D(_ColorMap, sampler_ColorMap, uv);
+	TestAlphaClip(colorSample);
+
 	// Update lighting input data for lighting calculations
 	InputData lightingInput = (InputData)0;
-	lightingInput.positionWS = normalWS;
+	lightingInput.positionWS = positionWS;
 	lightingInput.normalWS = normalWS;
-	lightingInput.viewDirectionWS = GetWorldSpaceNormalizeViewDir(input.positionWS);
-	lightingInput.shadowCoord = TransformWorldToShadowCoord(input.positionWS); // Sample the shadow coord from the shadow map
+	lightingInput.viewDirectionWS = viewDirWS;
+	lightingInput.shadowCoord = TransformWorldToShadowCoord(positionWS); // Sample the shadow coord from the shadow map
 #if UNITY_VERSION >= 202120
 	lightingInput.positionCS = input.positionCS;
 	lightingInput.tangentToWorld = tangentToWorld;
@@ -83,17 +96,19 @@ float4 Fragment(Interpolators input
 	surfaceInput.specular = 1;
 	surfaceInput.normalTS = normalTS;
 #ifdef _SPECULAR_SETUP
-	surfaceInput.specular = SAMPLE_TEXTURE2D(_SpecularMap, sampler_SpecularMap, input.uv).rgb * _SpecularTint;
+	surfaceInput.specular = SAMPLE_TEXTURE2D(_SpecularMap, sampler_SpecularMap, uv).rgb * _SpecularTint;
 	surfaceInput.metallic = 0;
 #else
-	surfaceInput.metallic = SAMPLE_TEXTURE2D(_MetalnessMap, sampler_MetalnessMap, input.uv).r * _MetalnessStrength;
+	surfaceInput.metallic = SAMPLE_TEXTURE2D(_MetalnessMap, sampler_MetalnessMap, uv).r * _MetalnessStrength;
 #endif
-	float smoothnessSample = SAMPLE_TEXTURE2D(_SmoothnessMask, sampler_SmoothnessMask, input.uv).r * _Smoothness;
+	float smoothnessSample = SAMPLE_TEXTURE2D(_SmoothnessMask, sampler_SmoothnessMask, uv).r * _Smoothness;
 #ifdef _ROUGHNESS_SETUP
 	smoothnessSample = 1 - smoothnessSample;
 #endif
 	surfaceInput.smoothness = smoothnessSample;
-	surfaceInput.emission   = SAMPLE_TEXTURE2D(_EmissionMap, sampler_EmissionMap, input.uv).rgb * _EmissionTint;
+	surfaceInput.emission   = SAMPLE_TEXTURE2D(_EmissionMap, sampler_EmissionMap, uv).rgb * _EmissionTint;
+	surfaceInput.clearCoatMask = SAMPLE_TEXTURE2D(_ClearCoatMask, sampler_ClearCoatMask, uv).r * _ClearCoatStrength;
+	surfaceInput.clearCoatSmoothness = SAMPLE_TEXTURE2D(_ClearCoatSmoothnessMask, sampler_ClearCoatSmoothnessMask, uv).r * _ClearCoatSmoothness;
 
 	return UniversalFragmentPBR(lightingInput, surfaceInput);
 }

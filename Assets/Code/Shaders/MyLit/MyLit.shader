@@ -27,6 +27,14 @@ Shader "Unlit/MyLit"
         [NoScaleOffset] _EmissionMap("Emission map", 2D) = "white" {}
         [HDR]           _EmissionTint("Emission tint", Color) = (0, 0, 0, 0)
 
+        [NoScaleOffset] _ClearCoatMask("Clear coat mask", 2D) = "white" {}
+        _ClearCoatStrength("Clear coat strength", Range(0, 1)) = 0
+        [NoScaleOffset] _ClearCoatSmoothnessMask("Clear coat smoothness mask", 2D) = "white" {}
+        _ClearCoatSmoothness("Clear coat smoothness", Range(0, 1)) = 0
+
+        [NoScaleOffset] _ParallaxMap("Height/displacement map", 2D) = "white" {}
+        _ParallaxStrength("Parallax strength", Range(0, 1)) = 0.005
+
         [HideInInspector] _Cull("Cull mode", Float) = 2
         
         [HideInInspector] _SourceBlend("Source blend", Float) = 0
@@ -58,6 +66,7 @@ Shader "Unlit/MyLit"
             HLSLPROGRAM // Begin HLSL code
 
             #define _NORMALMAP
+            #define _CLEARCOATMAP
             #pragma shader_feature_local _ALPHA_CUTOUT
             #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
             #pragma shader_feature_local _SPECULAR_SETUP
