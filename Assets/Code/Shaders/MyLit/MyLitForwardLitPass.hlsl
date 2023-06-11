@@ -93,6 +93,7 @@ float4 Fragment(Interpolators input
 	smoothnessSample = 1 - smoothnessSample;
 #endif
 	surfaceInput.smoothness = smoothnessSample;
+	surfaceInput.emission   = SAMPLE_TEXTURE2D(_EmissionMap, sampler_EmissionMap, input.uv).rgb * _EmissionTint;
 
 	return UniversalFragmentPBR(lightingInput, surfaceInput);
 }

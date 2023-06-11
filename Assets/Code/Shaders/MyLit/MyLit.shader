@@ -24,6 +24,9 @@ Shader "Unlit/MyLit"
         [NoScaleOffset] _SmoothnessMask("Smoothness mask", 2D) = "white" {}
         _Smoothness("Smoothness multiplier", Range(0, 1)) = 0.5
 
+        [NoScaleOffset] _EmissionMap("Emission map", 2D) = "white" {}
+        [HDR]           _EmissionTint("Emission tint", Color) = (0, 0, 0, 0)
+
         [HideInInspector] _Cull("Cull mode", Float) = 2
         
         [HideInInspector] _SourceBlend("Source blend", Float) = 0
@@ -31,6 +34,7 @@ Shader "Unlit/MyLit"
         [HideInInspector] _ZWrite("ZWrite", Float) = 0
 
         [HideInInspector] _SurfaceType("Surface type", Float) = 0
+        [HideInInspector] _BlendType("Bland type", Float) = 0
         [HideInInspector] _FaceRenderingMode("Face rendering type", Float) = 0
     }
     // SubShaaders allow for different behavior and optionf for different pipelines and platforms
@@ -58,6 +62,7 @@ Shader "Unlit/MyLit"
             #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
             #pragma shader_feature_local _SPECULAR_SETUP
             #pragma shader_feature_local _ROUGHNESS_SETUP
+            #pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
 
 
 #if UNITY_VERSION >= 202120
