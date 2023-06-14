@@ -72,6 +72,12 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
     private void FixedUpdate()
     {
         ApplyForces();
+        rb.rotation = new Quaternion(0, rb.rotation.y, 0, rb.rotation.w);
+    }
+
+    public void TakeDamage(float damageTaken)
+    {
+        health.TakeDamage(damageTaken);
     }
 
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
@@ -127,10 +133,9 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
 
         //Debug.Log(Input.GetAxis("Horizontal"));
         //Steering Takes Horizontal Input and rotates both 
-        float steerInupt = Input.GetAxis("Horizontal");
-        bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInupt, 0, 0);
-        bikeMeshParent.transform.Rotate(Vector3.up * steerInupt * (appliedForce.magnitude + 100) * Time.fixedDeltaTime);
-
+        float steerInput = Input.GetAxis("Horizontal");
+        bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInput, 0, 0);
+        bikeMeshParent.transform.Rotate(Vector3.up * steerInput * (appliedForce.magnitude + 100) * Time.fixedDeltaTime);
         //Drag and MaxSpeed Limit to prevent infinit velocity  
         appliedForce *= dragCoefficient;
 
@@ -141,7 +146,6 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         */
         //Lerp from actual vector to desired vector 
         appliedForce = Vector3.Lerp(appliedForce.normalized, ForwardVector().normalized, Traction * Time.fixedDeltaTime) * appliedForce.magnitude;
-
         rb.AddForce(appliedForce);
     }
 

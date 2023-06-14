@@ -67,8 +67,16 @@ public class SquadManager : MonoBehaviour
         //TODO: make this smarter, perhaps use the Wave.cs class
         while (squads.Count - 1 <= dl.dangerLevel / 5)
         {
-            squads.Add(squadSpawner.SpawnVehicleSquad());
-            //squads.Add(squadSpawner.SpawnInfantrySquad());
+            switch (UnityEngine.Random.Range(0, 2))
+            {
+                case 0:
+                    squads.Add(squadSpawner.SpawnVehicleSquad());
+                    break;
+                case 1:
+                case 2:
+                    squads.Add(squadSpawner.SpawnInfantrySquad());
+                    break;
+            }
         }
     }
 }

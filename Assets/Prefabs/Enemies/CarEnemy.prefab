@@ -5799,7 +5799,7 @@ GameObject:
   - component: {fileID: 2279930514937360739}
   m_Layer: 7
   m_Name: CarEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5831,8 +5831,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.9015958, y: 2.4499922, z: 9.53847}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3.9015958, y: 7.821861, z: 9.53847}
+  m_Center: {x: 0, y: 2.6859348, z: 0}
 --- !u!54 &2279930514937360765
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5868,7 +5868,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   MaxSpeed: 120
   accelaration: 15
-  turn: 30
+  turn: 60
   rb: {fileID: 2279930515495505838}
   carBody: {fileID: 2279930514937360765}
   frictionCurve:
@@ -5877,17 +5877,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: -0.07083511
       value: 3.3773499
-      inSlope: 1.5153128
-      outSlope: 1.5153128
+      inSlope: 0.51174486
+      outSlope: 0.51174486
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1
-      value: 5
-      inSlope: 1.5153128
-      outSlope: 1.5153128
+      time: 0.99108887
+      value: 3.920784
+      inSlope: 0.51174486
+      outSlope: 0.51174486
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -6166,14 +6166,16 @@ MonoBehaviour:
   myGun: {fileID: 0}
   hp: {fileID: 2279930514937360739}
   activeConditions: []
-  StartingHP: 1000
+  StartingHP: 500
   maxSpeed: 150
   maxForce: 500
-  score: 0
+  score: 200
   attackRange: 100
   minimumRange: 100
   alive: 1
   speedBoost: 10
+  DamageMultiplyer: 1
+  RamModifier: 1
 --- !u!114 &2279930514937360739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21475,7 +21477,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.6, y: -0.68000007, z: 0.86999893}
+  m_ConnectedAnchor: {x: 0.6, y: -1.31, z: 0.86999893}
   m_UseSpring: 0
   m_Spring:
     spring: 10000

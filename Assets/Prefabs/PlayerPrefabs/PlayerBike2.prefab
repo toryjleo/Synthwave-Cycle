@@ -298,6 +298,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bikeMeshParent: {fileID: 1386951459658203378}
   bikeMeshChild: {fileID: 1546176323811278948}
+  trackerFR: {fileID: 1910745061}
+  trackerFL: {fileID: 1882824983}
   appliedForce: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   MoveSpeed: 100
@@ -429,6 +431,26 @@ PrefabInstance:
     - target: {fileID: 8400618852621413153, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 8462989661187633534, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8462989661187633534, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8462989661187633534, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8462989661187633534, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8462989661187633534, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 8775821855001049414, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
       propertyPath: light
