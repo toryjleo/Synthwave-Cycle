@@ -36,16 +36,22 @@ public class WorldGenerator : MonoBehaviour
     #region ground
     [SerializeField] private GameObject ground;
     private GameObject[,] groundTiles;
-    [SerializeField] private int GROUND_ARRAY_WIDTH = 9;
-    [SerializeField] private int GROUND_ARRAY_HEIGHT = 9;
+    private int starting_ground_tiles = 9;
     private float groundTileSpawnHeight = -3.12f;
 
+    private int ground_array_size;
+
+
     private GameObject[,] newgroundTiles;
+    [SerializeField] private int new_ground_size = 12;
+
+    
     #endregion
 
     // Start is called before the first frame update
     void Awake()
     {
+        ground_array_size = starting_ground_tiles;
         BikeScript[] bikeScripts = Object.FindObjectsOfType<BikeScript>();
         if (bikeScripts.Length <= 0) 
         {
@@ -56,34 +62,37 @@ public class WorldGenerator : MonoBehaviour
             bike = bikeScripts[0];
         }
 
-        InitializeGround();
+        InitializeGround(ground_array_size);
     }
 
     // Update is called once per frame
     void Update()
     {
-        CheckUpdateGroundTiles();
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             UpdateNumberofGroundTiles();
         }
+
+        CheckUpdateGroundTiles();
+        
+  
     }
 
     #region ground
     /// <summary>
     /// Spawns in ground gameObjects into groundTiles array and initializes the WorldBounds class
     /// </summary>
-    private void InitializeGround()
+    private void InitializeGround(int GroundArraySize)
     {
         WorldBounds.groundTileSize = ground.GetComponent<Renderer>().bounds.size;
         float groundWidth = WorldBounds.GroundTileWidth;
         float groundHeight = WorldBounds.GroundTileHeight;
-        groundTiles = new GameObject[GROUND_ARRAY_WIDTH, GROUND_ARRAY_HEIGHT];
+        groundTiles = new GameObject[GroundArraySize, GroundArraySize];
 
         // Initialize tiles at origin
-        for (int i = 0; i < GROUND_ARRAY_HEIGHT; i++)
+        for (int i = 0; i < GroundArraySize; i++)
         {
-            for (int j = 0; j < GROUND_ARRAY_WIDTH; j++)
+            for (int j = 0; j < GroundArraySize; j++)
             {
                 GameObject goundTile = Instantiate(ground);
                 Vector3 spawnLocation = new Vector3(groundHeight * (i - 1), groundTileSpawnHeight, groundWidth * (j - 1));
@@ -91,49 +100,56 @@ public class WorldGenerator : MonoBehaviour
                 groundTiles[i, j] = goundTile;
             }
         }
-        UpdateMiddleTileMinMax();
+        UpdateMiddleTileMinMax(GroundArraySize, GroundArraySize);
         UpdateWorldMinMax();
     }
 
     private void UpdateNumberofGroundTiles()
     {
-        newgroundTiles = new GameObject[GROUND_ARRAY_WIDTH, GROUND_ARRAY_HEIGHT];
-        groundTiles = newgroundTiles;
-        InitializeGround();
+        for (int i = 0; i < ground_array_size ; i++)
+        {
+            for (int j= 0; j < ground_array_size; j++)
+            {
+                Destroy(groundTiles[i,j].gameObject);
+            }
+        }
+        ground_array_size = new_ground_size;
+
+        InitializeGround(ground_array_size);
     }
 
     /// <summary>
     /// Returns the center tile (the one the player is on)
     /// </summary>
-    private GameObject GetMiddleTile()
+    private GameObject GetMiddleTile(int groundarraywidth, int groundarrayheight)
     {
-        int middleHeightIdx = GetMiddleTileVerticalIdx();
-        int middleWidthIdx = GetMiddleTileHorizontalIdx();
+        int middleHeightIdx = GetMiddleTileVerticalIdx(groundarraywidth);
+        int middleWidthIdx = GetMiddleTileHorizontalIdx(groundarrayheight);
         return groundTiles[middleHeightIdx, middleWidthIdx];
     }
 
     /// <summary>
     /// Returns the vertical index of the middle tile inside the groundTiles array
     /// </summary>
-    private int GetMiddleTileVerticalIdx()
+    private int GetMiddleTileVerticalIdx(int vertical_index)
     {
-        return (GROUND_ARRAY_HEIGHT - 1) / 2;
+        return (vertical_index - 1) / 2;
     }
 
     /// <summary>
     /// Returns the horizontal index of the middle tile inside the groundTiles array
     /// </summary>
-    private int GetMiddleTileHorizontalIdx()
+    private int GetMiddleTileHorizontalIdx(int horizontal_index)
     {
-        return (GROUND_ARRAY_WIDTH - 1) / 2;
+        return (horizontal_index - 1) / 2;
     }
 
     /// <summary>
     /// Caches the Min/Max of the tile the player is currently on inside WorldBounds
     /// </summary>
-    private void UpdateMiddleTileMinMax()
+    private void UpdateMiddleTileMinMax(int ground_array_width, int ground_array_height)
     {
-        Vector3 currentTileLocation = GetMiddleTile().transform.position;
+        Vector3 currentTileLocation = GetMiddleTile(ground_array_width, ground_array_height).transform.position;
         float halfTileWidth = WorldBounds.groundTileSize.x / 2;
         WorldBounds.currentTileHorizontalMinMax = new Vector2(currentTileLocation.x - halfTileWidth, currentTileLocation.x + halfTileWidth);
         float halfTileHeight = WorldBounds.groundTileSize.z / 2;
@@ -159,14 +175,14 @@ public class WorldGenerator : MonoBehaviour
             Vector3 bikePosition = bike.transform.position;
             float bikeHorizontalPos = bikePosition.x;
             float bikeVerticalPos = bikePosition.z;
-            if (bikeHorizontalPos > WorldBounds.currentTileHorizontalMinMax.y && bikeVerticalPos > WorldBounds.currentTileVericalMinMax.y) { MoveGroundTiles(1, 1); } // Upper Right
-            else if (bikeHorizontalPos > WorldBounds.currentTileHorizontalMinMax.y && bikeVerticalPos < WorldBounds.currentTileVericalMinMax.x) { MoveGroundTiles(1, -1); } // Lower Right
-            else if (bikeHorizontalPos < WorldBounds.currentTileHorizontalMinMax.x && bikeVerticalPos > WorldBounds.currentTileVericalMinMax.y) { MoveGroundTiles(-1, 1); } // Upper Left
-            else if (bikeHorizontalPos < WorldBounds.currentTileHorizontalMinMax.x && bikeVerticalPos < WorldBounds.currentTileVericalMinMax.x) { MoveGroundTiles(-1, -1); } // Lower Left
-            else if (bikeHorizontalPos > WorldBounds.currentTileHorizontalMinMax.y) { MoveGroundTiles(1, 0); } // Right Quyadrant
-            else if (bikeHorizontalPos < WorldBounds.currentTileHorizontalMinMax.x) { MoveGroundTiles(-1, 0); } // Left Quadrant
-            else if (bikeVerticalPos > WorldBounds.currentTileVericalMinMax.y) { MoveGroundTiles(0, 1); } // Upper Quadrant
-            else if (bikeVerticalPos < WorldBounds.currentTileVericalMinMax.x) { MoveGroundTiles(0, -1); } // Lower Quadrant
+            if (bikeHorizontalPos > WorldBounds.currentTileHorizontalMinMax.y && bikeVerticalPos > WorldBounds.currentTileVericalMinMax.y) { MoveGroundTiles(1, 1, ground_array_size); } // Upper Right
+            else if (bikeHorizontalPos > WorldBounds.currentTileHorizontalMinMax.y && bikeVerticalPos < WorldBounds.currentTileVericalMinMax.x) { MoveGroundTiles(1, -1, ground_array_size); } // Lower Right
+            else if (bikeHorizontalPos < WorldBounds.currentTileHorizontalMinMax.x && bikeVerticalPos > WorldBounds.currentTileVericalMinMax.y) { MoveGroundTiles(-1, 1, ground_array_size); } // Upper Left
+            else if (bikeHorizontalPos < WorldBounds.currentTileHorizontalMinMax.x && bikeVerticalPos < WorldBounds.currentTileVericalMinMax.x) { MoveGroundTiles(-1, -1, ground_array_size); } // Lower Left
+            else if (bikeHorizontalPos > WorldBounds.currentTileHorizontalMinMax.y) { MoveGroundTiles(1, 0, ground_array_size); } // Right Quyadrant
+            else if (bikeHorizontalPos < WorldBounds.currentTileHorizontalMinMax.x) { MoveGroundTiles(-1, 0, ground_array_size); } // Left Quadrant
+            else if (bikeVerticalPos > WorldBounds.currentTileVericalMinMax.y) { MoveGroundTiles(0, 1, ground_array_size); } // Upper Quadrant
+            else if (bikeVerticalPos < WorldBounds.currentTileVericalMinMax.x) { MoveGroundTiles(0, -1, ground_array_size); } // Lower Quadrant
         }
     }
 
@@ -175,18 +191,18 @@ public class WorldGenerator : MonoBehaviour
     /// </summary>
     /// <param name="xDiff">A value representing the direction and quantity of ground tile widths the grid must be shifted in the x direction.</param>
     /// <param name="yDiff">A value representing the direction and quantity of ground tile widths the grid must be shifted in the y direction.</param>
-    private void MoveGroundTiles(int xDiff, int yDiff)
+    private void MoveGroundTiles(int xDiff, int yDiff, int ground_array_size)
     {
-        for (int i = 0; i < GROUND_ARRAY_HEIGHT; i++)
+        for (int i = 0; i < ground_array_size; i++)
         {
-            for (int j = 0; j < GROUND_ARRAY_WIDTH; j++)
+            for (int j = 0; j < ground_array_size; j++)
             {
                 Vector3 newPosition = groundTiles[i, j].transform.position + new Vector3(xDiff * WorldBounds.groundTileSize.x, 0, yDiff * WorldBounds.groundTileSize.z);
                 groundTiles[i, j].transform.position = newPosition;
             }
         }
         // Update WorldBounds object
-        UpdateMiddleTileMinMax();
+        UpdateMiddleTileMinMax(ground_array_size, ground_array_size);
         UpdateWorldMinMax();
     }
 
