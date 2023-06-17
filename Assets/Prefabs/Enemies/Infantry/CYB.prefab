@@ -1376,7 +1376,9 @@ MonoBehaviour:
   maxForce: 0
   score: 0
   attackRange: 0
+  minimumRange: 0
   alive: 0
+  speedBoost: 0
   muzzleLocation: {fileID: 0}
 --- !u!54 &3874834857555224720
 Rigidbody:
@@ -1826,7 +1828,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7170651920001017730, guid: f34b39831693cc345b1644047b451e33, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.75
+      value: -1.43
       objectReference: {fileID: 0}
     - target: {fileID: 7170651920001017730, guid: f34b39831693cc345b1644047b451e33, type: 3}
       propertyPath: m_LocalPosition.z
