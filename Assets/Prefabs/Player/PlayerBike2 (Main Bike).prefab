@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 990085328645293825}
   - component: {fileID: 878124009356200507}
   m_Layer: 0
-  m_Name: PlayerBike2
+  m_Name: PlayerBike2 (Main Bike)
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -430,19 +430,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8778939078055539862, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8778939078055539862, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8778939078055539862, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8778939078055539862, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8778939078055539862, guid: 8c49106968f09d94a91c3a759d926994, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
