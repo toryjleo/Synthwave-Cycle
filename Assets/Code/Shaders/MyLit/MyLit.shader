@@ -1,4 +1,4 @@
-Shader "Unlit/MyLit"
+Shader "Custom/MyLit"
 {
     // Properties set per material, exposed in the material inspector
     Properties
@@ -8,7 +8,7 @@ Shader "Unlit/MyLit"
         // Format the properties like so: <_PropertyName>(<Material Inspector Name>, <DataType>) <DefaultVal>
         // Convention states that property names start with an underscore
         _ColorTint("Tint", Color) = (1, 1, 1, 1)
-        _ColorMap("Color", 2D)    = "white" {}
+        _ColorMap("Color Map", 2D)    = "white" {}
         
         [NoScaleOffset][Normal] _NormalMap("Normal Map", 2D) = "bump" {} // Uses OpenGL bitangent Convention
         _NormalStrength("Normal strength", Range(0, 1)) = 1
