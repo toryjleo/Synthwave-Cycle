@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class VehicleSquad : Squad
 {
@@ -38,7 +40,7 @@ public class VehicleSquad : Squad
         {
             float distanceToTrackerFR = (ai.transform.position - bikeScript.movementComponent.trackerFR.transform.position).sqrMagnitude;
             float distanceToTrackerFL = (ai.transform.position - bikeScript.movementComponent.trackerFL.transform.position).sqrMagnitude;
-            if(distanceToTrackerFR > distanceToTrackerFL) 
+            if(distanceToTrackerFR < distanceToTrackerFL) 
             {
                 ai.SetTarget(bikeScript.movementComponent.trackerFR);
             }
