@@ -2,6 +2,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
+/// <summary>
+/// Adds new dropdowns for customlit shader which sets various hidden shader properties
+/// </summary>
 public class MyLitCustomInspector : ShaderGUI
 {
     public enum SurfaceType
@@ -29,6 +32,11 @@ public class MyLitCustomInspector : ShaderGUI
         }
     }
 
+    /// <summary>
+    /// Adds dropdown for various shader features
+    /// </summary>
+    /// <param name="materialEditor"></param>
+    /// <param name="properties"></param>
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
 
@@ -49,9 +57,13 @@ public class MyLitCustomInspector : ShaderGUI
         base.OnGUI(materialEditor, properties);
     }
 
+    /// <summary>
+    /// Sets various surface properties of the shader, using dropdown menues
+    /// </summary>
+    /// <param name="material">Material to be impacted</param>
     private void UpdateSurfaceType(Material material)
     {
-        //--- SurfaceType ---TODO: Make Method
+        //--- SurfaceType ---
         SurfaceType surface = (SurfaceType)material.GetFloat("_SurfaceType");
         switch (surface)
         {
@@ -95,7 +107,7 @@ public class MyLitCustomInspector : ShaderGUI
             material.DisableKeyword("_ALPHA_CUTOUT");
         }
 
-        //--- FaceRenderingMode ---TODO: Make Method
+        //--- FaceRenderingMode ---
         FaceRenderingMode faceRenderingMode = (FaceRenderingMode)material.GetFloat("_FaceRenderingMode");
         if (faceRenderingMode == FaceRenderingMode.FrontOnly)
         {
@@ -115,7 +127,7 @@ public class MyLitCustomInspector : ShaderGUI
             material.DisableKeyword("_DOUBLE_SIDED_NORMALS");
         }
 
-        // --- BlendType ---TODO: Make Method
+        // --- BlendType ---
         BlendType blend = (BlendType)material.GetFloat("_BlendType");
         switch (surface)
         {
