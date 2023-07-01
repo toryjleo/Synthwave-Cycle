@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 4208104993131320759}
   - component: {fileID: 7987252324069687820}
   m_Layer: 0
-  m_Name: Teker_2_3
+  m_Name: WheelFL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -698,7 +698,7 @@ GameObject:
   - component: {fileID: 5997594584331348619}
   - component: {fileID: 3998297128517237644}
   m_Layer: 0
-  m_Name: Teker_3
+  m_Name: WheelRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -941,7 +941,7 @@ GameObject:
   - component: {fileID: 4528196128316781012}
   - component: {fileID: 5557616404220960659}
   m_Layer: 0
-  m_Name: Teker_2_2_2
+  m_Name: WheelRR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1419,7 +1419,7 @@ GameObject:
   - component: {fileID: 4084822660260653535}
   - component: {fileID: 9071228260855989141}
   m_Layer: 0
-  m_Name: Teker_1_2
+  m_Name: WheelFR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
