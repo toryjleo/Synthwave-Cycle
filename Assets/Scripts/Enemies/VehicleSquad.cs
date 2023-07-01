@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
+/// <summary>Class<c>VehicleSquad</c> 
+/// Holds the information for a squad of vehicles, 
+/// Handles Vehicle's strategy (different from Infantry Squads)
 public class VehicleSquad : Squad
 {
     public VehicleSquad(SquadManager _manager) : base(_manager) { }

@@ -65,6 +65,8 @@ public class SquadManager : MonoBehaviour
             s.Update();
         }
         //TODO: make this smarter, perhaps use the Wave.cs class
+        //Currently makes sure a few squads always exist based on danger level
+        //33% vehicle squad chance and 66% infantry (rifleman) squad chance
         while (squads.Count - 1 <= dl.dangerLevel / 5)
         {
             switch (UnityEngine.Random.Range(0, 2))

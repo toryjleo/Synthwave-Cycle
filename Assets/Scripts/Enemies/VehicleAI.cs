@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>Class<c>VehicleAI</c> 
+/// VehicleAI holds all the code that makes an enemy Vehicle different form other enemy types
 public class VehicleAI : Ai
 {
     ArcadeAiVehicleController vehicleController;

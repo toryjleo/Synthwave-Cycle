@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
+/// <summary>Class<c>InfantrySquad</c> 
+/// Infantry Squad coordinates mutliple infantry units into one group
+/// The squad handles forming up, moving to points and charging
 public class InfantrySquad : Squad
 {
     [SerializeField]

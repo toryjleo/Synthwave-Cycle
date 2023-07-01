@@ -5,7 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class InfantryAI : Ai
+/// <summary>Class<c>InfantryAI</c> 
+/// Infantry AI is the abstract base class for all enemy footsoldiers
+/// This handles their movement, combat, animation, and respawning
+public abstract class InfantryAI : Ai
 {
     public CyborgAnimationStateController animationStateController;
 
