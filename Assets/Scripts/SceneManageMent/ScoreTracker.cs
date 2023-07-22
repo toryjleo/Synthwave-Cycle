@@ -4,10 +4,11 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Timers;
+using System.Linq;
 
 /// <summary>Class <c>ScoreTracker</c> Component which manages the UI in the upper left of the game screen.</summary>
 /// Expects there to be an object with BikeScript in the scene.
-public class ScoreTracker : MonoBehaviour
+public class ScoreTracker : MonoBehaviour, IResettable
 {
     private const float MAX_TIME = 90;
     private float currentTime;
@@ -56,6 +57,15 @@ public class ScoreTracker : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+        }
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("Resetting!");
+            List<IResettable> resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
+            foreach (IResettable r in resetObjects)
+            {
+                r.ResetGameObject();
+            }
         }
     }
 
@@ -123,7 +133,15 @@ public class ScoreTracker : MonoBehaviour
     /// <summary>Updates this class's Energy to the bike's energy.</summary>
     private void UpdateUIEnergy()
     {
-        Energy = bike.Energy;
+        if (bike == null)
+        {
+            Debug.Log("There is no bike.");
+        }
+        else
+        {
+            Energy = bike.Energy;
+        }
+
     }
 
     /// <summary>Loads the gameover screen.</summary>
@@ -131,10 +149,19 @@ public class ScoreTracker : MonoBehaviour
     private void EndGame(bool survivedEvent)
     {
         PlayerDataObject.survivedEvent = survivedEvent;
+DLevel dLevel = Object.FindObjectOfType<DLevel>();
+        if (dLevel == null)
+        {
+            Debug.Log("cannot find Dlevel Object in scene.");
+        }
+        else
+        {
+            dLevel.dangerTimer.Dispose(); //Dispose of timer for spawning more enemies
+            SceneManager.LoadScene("TestScene");
+            //StartCoroutine(LoadYourAsyncScene());
+        }
 
-        Object.FindObjectOfType<DLevel>().dangerTimer.Dispose(); //Dispose of timer for spawning more enemies
-        SceneManager.LoadScene("TestScene");
-        //StartCoroutine(LoadYourAsyncScene());
+
     }
 
     /// <summary>Loads the gameover screen asycronously.</summary>
@@ -152,5 +179,10 @@ public class ScoreTracker : MonoBehaviour
         {
             yield return null;
         }
+    }
+
+    public void ResetGameObject()
+    {
+        Init();
     }
 }

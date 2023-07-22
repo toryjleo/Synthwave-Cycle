@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>Class <c>BulletPool</c> A Unity Component works as an object pool for bullets.</summary>
-public class BulletPool : MonoBehaviour
+public class BulletPool : MonoBehaviour, IResettable
 {
     private Bullet bulletPrefab;
     private int bulletStartAmnt = 0;
@@ -14,12 +14,13 @@ public class BulletPool : MonoBehaviour
     /// <param name="bulletPrefab">The template object for this pool.</param>
     public void Init(Bullet bulletPrefab, int bulletPoolSize = 100) 
     {
+        bulletStartAmnt = bulletPoolSize;
         this.bulletPrefab = bulletPrefab;
-
-        bulletQueue = new Queue<Bullet>();
-
-        // Spawn in defualt bullets
-        for (int i = 0; i < bulletPoolSize; i++) 
+        if (bulletQueue == null)
+        {
+            bulletQueue = new Queue<Bullet>();
+        }
+        while (bulletQueue.Count < bulletStartAmnt)
         {
             Bullet newBullet = CreateNewBullet();
             bulletQueue.Enqueue(newBullet);
@@ -80,5 +81,10 @@ public class BulletPool : MonoBehaviour
         bullet.gameObject.SetActive(false);
         bulletQueue.Enqueue(bullet as Bullet); // Make sure this is bullet in the future
         //Debug.Log("Despawned, Size of queue: " + bulletQueue.Count);
+    }
+
+    public void ResetGameObject()
+    {
+        Init(bulletPrefab, bulletStartAmnt);
     }
 }

@@ -19,10 +19,9 @@ public class EnemyTurret : Gun
 
     public override void Init()
     {
+        base.Init();
         lastFired = 0;
         fireRate = .5f;
-        bulletPool = gameObject.AddComponent<BulletPool>();
-        bulletPool.Init(bulletPrefab);
         target = GameObject.FindGameObjectWithTag("Player");
     }
 

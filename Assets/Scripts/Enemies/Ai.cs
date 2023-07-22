@@ -5,7 +5,7 @@ using UnityEngine;
 public delegate void NotifyDeath();  // delegate
 public delegate void NotifyRespawn();
 
-public abstract class Ai : SelfWorldBoundsDespawn
+public abstract class Ai : SelfWorldBoundsDespawn, IResettable
 {
 
     // THis is the method that sets the entity to Deactive and bascially is uesd to kill the entitiy
@@ -18,7 +18,6 @@ public abstract class Ai : SelfWorldBoundsDespawn
     #region Variables for Setup.
 
     public GameObject target;
-    public CyborgAnimationStateController animationStateController;
     public Rigidbody rb;
     public Gun myGun;
     public Health hp;
@@ -30,7 +29,9 @@ public abstract class Ai : SelfWorldBoundsDespawn
     public float maxForce;
     public float score;
     public float attackRange;
+    public float minimumRange;
     public bool alive;
+    public float speedBoost;
 
     public event NotifyDeath DeadEvent; // event
     public event NotifyRespawn RespawnEvent; // event
@@ -42,46 +43,22 @@ public abstract class Ai : SelfWorldBoundsDespawn
     {
         base.Update();
 
-        SetAnimationSpeed(rb.velocity.magnitude);
-
-
         //update conditions
-        foreach(Condition cond in activeConditions)
+        foreach (Condition cond in activeConditions)
         {
             cond.Tick();
         }
-
-
 
         //Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
             Die();
         }
-        else //Alive
-        {
+    }
 
-            if(target == null)
-            {
-                Wander();
-            } else
-            {
-                Vector3 desiredVec = target.transform.position - transform.position;
-                if(desiredVec.magnitude < attackRange)
-                {
-
-                    Move(this.transform.position);
-                    Aim(target.transform.position);
-                    Attack();
-                    SetAnimationSpeed(0);
-                } else
-                {
-                    Move(target.transform.position);
-                    SetAnimationSpeed(rb.velocity.magnitude / 40); //this devides them by a constant to allow for slower enemies to walk slower.
-                }
-            }
-        }
-
+    void Awake()
+    {
+        Init();
     }
 
     public virtual void Aim(Vector3 aimAt)
@@ -92,7 +69,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// <summary>
     /// This method plays a death animation and the deactivates the enemy
     /// </summary>
-    public void Die()
+    public virtual void Die()
     {
         rb.constraints = RigidbodyConstraints.FreezeAll;
 
@@ -102,12 +79,6 @@ public abstract class Ai : SelfWorldBoundsDespawn
             //Notify all listeners that this AI has died
             DeadEvent?.Invoke();
 
-            animationStateController.TriggerDeathA();//TODO: add catch
-
-            animationStateController.TriggerDeathA();
-
-            rb.detectCollisions = false;
-            animationStateController.SetAlive(false);
             alive = false;
 
             if (myGun != null)
@@ -119,40 +90,19 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// <summary>
     /// This method is called when the entitiy wants to attack. Checks if it has a gun
     /// </summary>
-    public virtual void Attack()
-    {
-        if (myGun != null && myGun.CanShootAgain() && alive)
-        {
+    public abstract void Attack();
 
-            this.myGun.PrimaryFire(target.transform.position);
-            animationStateController.AimWhileWalking(true);
-
-        }
-    }
-
-
-    /// <summary>
-    /// This Metod is used to set the animation speed without causing errors or Ai that do not have an animation state controller.
-    /// </summary>
-    /// <param name="animationSpeed"></param>
-    public virtual void SetAnimationSpeed(float animationSpeed)
-    {
-        if (animationStateController != null)
-        {
-            animationStateController.SetSpeed(animationSpeed);
-        }
-    }
 
     #region MOVEMENT
     /// <summary>
     /// This method works for ranged Enemies that do not get into direct melee range with the target
     /// </summary>
     /// <param name="target"> Vector to target </param>
-    public virtual void Move(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee.
+    public virtual void Move(Vector3 target, bool speedBoosted = false) //This can be used for Enemies that stay at range and dont run into melee.
     {
             Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be
             float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points
-            dMag -= attackRange; // dmag is the distance between the two objects, by subtracking this, I make it so the object doesn't desire to move as far.
+            dMag -= minimumRange; // dmag is the distance between the two objects, by subtracking this, I make it so the object doesn't desire to move as far.
 
             desiredVec.Normalize(); // one the distance is measured this vector can now be used to actually generate movement,
                                     // but that movement has to be constant or at least adaptable, which is what the next part does
@@ -168,7 +118,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
         }
             else
             {
-                desiredVec *= maxSpeed;
+                desiredVec *= maxSpeed + (speedBoosted? speedBoost : 0f);
             }
             Vector3 steer = desiredVec - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
             applyForce(steer);
@@ -269,7 +219,7 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// This method sets the target of the entity TODO: Will eventually equip a gun?
     /// </summary>
     /// <param name="targ"></param>
-    public void SetTarget(GameObject targ)//sets the target of the entity and equips the gun
+    public virtual void SetTarget(GameObject targ)//sets the target of the entity and equips the gun
 
     {
         target = targ;
@@ -278,14 +228,12 @@ public abstract class Ai : SelfWorldBoundsDespawn
     /// <summary>
     /// This method is called to reset the entity's health and alive status. Use every time they spawn.
     /// </summary>
-    public void NewLife()
+    public virtual void NewLife()
     {
         alive = true;
         hp.Init(StartingHP);
         RespawnEvent?.Invoke();
-        animationStateController.SetAlive(true);
         rb.detectCollisions = true;
-        rb.constraints = RigidbodyConstraints.FreezePositionY;
     }// this restets the enemies HP and sets them to alive;
 
     /// <summary>
@@ -305,4 +253,8 @@ public abstract class Ai : SelfWorldBoundsDespawn
         return hp;
     }
     #endregion & Setup
+    public void ResetGameObject()
+    {
+        OnDespawn();
+    }
 }

@@ -1,8 +1,9 @@
+using Assets.Scripts.Bullets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ember : Bullet
+public class Ember : PlayerBullet
 {
     const float DROP_RATE = 10f;
     bool collided = false;

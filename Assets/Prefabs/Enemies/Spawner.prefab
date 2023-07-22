@@ -9,12 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3780906798646803480}
-  - component: {fileID: 609589161}
   - component: {fileID: 609589166}
   - component: {fileID: 609589167}
   - component: {fileID: 609589168}
-  - component: {fileID: 609589169}
-  - component: {fileID: 7334479611325427085}
+  - component: {fileID: 1202201957}
+  - component: {fileID: 1202201958}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -36,22 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &609589161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3780906798646803492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2db30df14ef96db418a30065b01a00fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemySpawner: {fileID: 609589169}
-  dl: {fileID: 609589168}
-  scoreKeeper: {fileID: 0}
-  currentEnemies: []
 --- !u!114 &609589166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,8 +57,8 @@ MonoBehaviour:
   - tag: 2
     prefab: {fileID: 6749199786922221708, guid: 7577d168a208c5445a7f8ec18fb2eadf, type: 3}
     size: 30
-  - tag: 5
-    prefab: {fileID: 5811562474388505295, guid: 6cdbe3db9f170dd4a8679c9613211708, type: 3}
+  - tag: 7
+    prefab: {fileID: 2279930514937360740, guid: 89ba535868233dd438d5e9151af1a050, type: 3}
     size: 30
 --- !u!114 &609589167
 MonoBehaviour:
@@ -103,8 +86,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1f3ac1d6b9da654a83819e6638f0b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dangerLevel: 0
---- !u!114 &609589169
+  dangerLevel: 10
+--- !u!114 &1202201957
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,15 +96,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3780906798646803492}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555c781b633785644aeffaf92227ac55, type: 3}
+  m_Script: {fileID: 11500000, guid: d719866dce005bc47b09ce95e8f09292, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ops: {fileID: 609589166}
   player: {fileID: 0}
-  waves: {fileID: 0}
-  spawnDistance: 200
+  ops: {fileID: 609589166}
+  spawnDistance: 150
   spawnBiasAngle: 30
---- !u!114 &7334479611325427085
+--- !u!114 &1202201958
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,20 +112,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3780906798646803492}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1654d42ae441177459b8b1682f5d25d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fc287a7379551e498ef551f73c86067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
-  - WaveNumber: 1
-    Units: []
-    SpawningDelay: 3
-  units:
-  - UnitName: 
-    UnitType: 0
-    Quantity: 0
-  - UnitName: 
-    UnitType: 0
-    Quantity: 0
-  - UnitName: 
-    UnitType: 0
-    Quantity: 0
+  squadSpawner: {fileID: 1202201957}
+  dl: {fileID: 609589168}
+  scoreKeeper: {fileID: 0}
+  currentEnemies: []
