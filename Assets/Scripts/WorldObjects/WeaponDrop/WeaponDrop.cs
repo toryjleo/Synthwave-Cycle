@@ -80,7 +80,8 @@ public class WeaponDrop : SelfWorldBoundsDespawn
     /// <returns>The selected PlayerGunType</returns>
     public PlayerWeaponType SetRandomGunType()
     {
-        PlayerWeaponType typeToAssign = (PlayerWeaponType) Random.Range((int)PlayerWeaponType.DefaultGun, (int)PlayerWeaponType.INVALID - 1);
+        //PlayerWeaponType typeToAssign = (PlayerWeaponType) Random.Range((int)PlayerWeaponType.DefaultGun, (int)PlayerWeaponType.INVALID - 1);
+        PlayerWeaponType typeToAssign = PlayerWeaponType.Shotty;
         SetGunType(typeToAssign);
         return typeToAssign;
     }
@@ -132,6 +133,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
             }
             else
             {
+                Debug.Log("Equipping gun type: " + gunType);
                 arsenal.EquipGun(gunType);
                 OnDespawn();
             }

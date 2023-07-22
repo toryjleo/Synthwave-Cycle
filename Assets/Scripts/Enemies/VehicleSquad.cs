@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using UnityEngine;
 
 /// <summary>Class<c>VehicleSquad</c> 
@@ -39,17 +34,26 @@ public class VehicleSquad : Squad
     internal override void HandleMovement()
     {
         BikeScript bikeScript = target.GetComponent<BikeScript>();
-        foreach (Ai ai in squadMembers)
+        foreach (VehicleAI ai in squadMembers)
         {
-            float distanceToTrackerFR = (ai.transform.position - bikeScript.movementComponent.trackerFR.transform.position).sqrMagnitude;
-            float distanceToTrackerFL = (ai.transform.position - bikeScript.movementComponent.trackerFL.transform.position).sqrMagnitude;
-            if(distanceToTrackerFR < distanceToTrackerFL) 
+            //if car is confident, ATTACK PLAYER 
+            if (ai.IsConfident())
             {
-                ai.SetTarget(bikeScript.movementComponent.trackerFR);
+                UnityEngine.Debug.Log("ATTACK!");
+                ai.SetMovementTarget(bikeScript.gameObject);
             }
             else
             {
-                ai.SetTarget(bikeScript.movementComponent.trackerFL);
+                float distanceToTrackerFR = (ai.transform.position - bikeScript.movementComponent.trackerFR.transform.position).sqrMagnitude;
+                float distanceToTrackerFL = (ai.transform.position - bikeScript.movementComponent.trackerFL.transform.position).sqrMagnitude;
+                if (distanceToTrackerFR < distanceToTrackerFL)
+                {
+                    ai.SetMovementTarget(bikeScript.movementComponent.trackerFR);
+                }
+                else
+                {
+                    ai.SetMovementTarget(bikeScript.movementComponent.trackerFL);
+                }
             }
         }
     }

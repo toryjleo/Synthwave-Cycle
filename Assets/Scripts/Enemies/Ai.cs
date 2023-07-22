@@ -71,7 +71,6 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     /// </summary>
     public virtual void Die()
     {
-        rb.constraints = RigidbodyConstraints.FreezeAll;
 
 
         if (alive == true)
