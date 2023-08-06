@@ -32,9 +32,9 @@ public class SquadSpawner : MonoBehaviour
     }
 
     //TODO: Make this smarter, perhaps using the Wave.cs class
-    public Squad SpawnInfantrySquad()
+    public InfantrySquad SpawnInfantrySquad()
     {
-        Squad s = new InfantrySquad(squadManager);
+        InfantrySquad s = new InfantrySquad(squadManager);
         s.SetTarget(player);
         for(int i = 0; i < 5; i++) //for now, a squad will always have 5 units
         {
@@ -46,9 +46,9 @@ public class SquadSpawner : MonoBehaviour
         return s;
     }
 
-    public Squad SpawnVehicleSquad()
+    public VehicleSquad SpawnVehicleSquad()
     {
-        Squad s = new VehicleSquad(squadManager);
+        VehicleSquad s = new VehicleSquad(squadManager);
         s.SetTarget(player);
 
         VehicleAI ai = SpawnNewEnemy(Enemy.Car) as VehicleAI;

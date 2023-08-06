@@ -45,9 +45,10 @@ public abstract class InfantryAI : Ai
 
     public override void Die()
     {
-        if(alive)
-        {
+        rb.constraints = RigidbodyConstraints.FreezeAll;
 
+        if (alive)
+        {
             animationStateController.TriggerDeathA();//TODO: add catch
 
             animationStateController.TriggerDeathA();

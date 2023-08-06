@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1106271468399150406, guid: 9d25eac8b63f7ff478724c0b226b690e, type: 3}
   infiniteAmmo: 1
+  bulletPoolSize: 100
   muzzle1: {fileID: 8303222821773514719}
   muzzle2: {fileID: 8303222819895225781}
   muzzle1Audio: {fileID: 8303222821773514718}
