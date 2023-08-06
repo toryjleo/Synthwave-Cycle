@@ -11,7 +11,7 @@ public class ArcadeAiVehicleController : MonoBehaviour
     public LayerMask drivableSurface;
 
     public float MaxSpeed, accelaration, turn;
-    //rb is the sphere collidaer that acts as the center of balance, and the bottom bound of the vehicle
+    //rb is the sphere collider that acts as the center of balance, and the bottom bound of the vehicle
     public Rigidbody rb, carBody;
 
     [HideInInspector]

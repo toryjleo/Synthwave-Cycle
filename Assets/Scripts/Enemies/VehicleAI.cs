@@ -104,8 +104,14 @@ public class VehicleAI : Ai
             BikeScript bike = collision.gameObject.GetComponent<BikeScript>();
             Rigidbody bikeRB = bike.movementComponent.rb;
             Debug.DrawLine(transform.position, transform.position + vehicleController.carVelocity);
-            bike.movementComponent.TakeDamage(DamageMultiplyer * Mathf.Abs(bike.movementComponent.appliedForce.magnitude - vehicleController.carVelocity.magnitude));
-            Vector3 bumpForce = Vector3.ClampMagnitude((vehicleController.carVelocity - bike.movementComponent.appliedForce) * RamModifier, MAX_RAM_MAGNITUDE);
+            //Damage player bike based on difference in velocity * multiplier
+            bike.movementComponent.TakeDamage(DamageMultiplyer * 
+                Mathf.Abs(bike.movementComponent.appliedForce.magnitude - 
+                vehicleController.carVelocity.magnitude));
+            //bump the bike based on difference in velocity and ram modifier
+            Vector3 bumpForce = Vector3.ClampMagnitude((vehicleController.carVelocity - 
+                bike.movementComponent.appliedForce) * RamModifier, MAX_RAM_MAGNITUDE);
+
             bikeRB.AddForce(bumpForce, ForceMode.Impulse);
             bikeRB.AddTorque(Vector3.up * Random.Range(-MAX_RANDOM_TORQUE, MAX_RANDOM_TORQUE), ForceMode.Impulse);
         }
@@ -117,7 +123,10 @@ public class VehicleAI : Ai
         rb.angularDrag = 1;
         rb.constraints = RigidbodyConstraints.None;
         rb.AddForce(new Vector3(0, 20f, 0), ForceMode.Impulse);
-        rb.AddTorque(new Vector3(Random.Range(-minMaxTorque, minMaxTorque), Random.Range(-minMaxTorque, minMaxTorque), Random.Range(-minMaxTorque, minMaxTorque)), ForceMode.Impulse);
+        rb.AddTorque(new Vector3(Random.Range(-minMaxTorque, minMaxTorque), 
+                                Random.Range(-minMaxTorque, minMaxTorque), 
+                                Random.Range(-minMaxTorque, minMaxTorque)), 
+                                ForceMode.Impulse);
         vehicleController.enabled = false;
         Instantiate(itemDrop, this.transform.position, Quaternion.identity);
     }
