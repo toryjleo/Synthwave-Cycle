@@ -143,7 +143,7 @@ public class ScoreTracker : MonoBehaviour, IResettable
     {
         if (bike == null)
         {
-            Debug.Log("There is no bike.");
+            Debug.LogError("No bike found in the scene.");
         }
         else
         {
