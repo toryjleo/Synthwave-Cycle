@@ -14,16 +14,26 @@ public class SquadManager : MonoBehaviour
 
     public List<Ai> currentEnemies; //This is a list of Ai that are currently active in the scene. 
 
-    public List<Squad> squads = new List<Squad>();
+    public IList<InfantrySquad> infantrySquads = new List<InfantrySquad>();
+    public IList<VehicleSquad> vehicleSquads = new List<VehicleSquad>();
 
     //Shatters a squad and sends the surviving members to join a new squad
     internal void DisbandSquad(Squad squad)
     {
-        squads.Remove(squad);
-        if(squads.Count > 0 )
+        List<Squad> squadsToCheck;
+        if (squad is InfantrySquad)
+        {
+            squadsToCheck = infantrySquads as List<Squad>;
+        }
+        else
+        {
+            squadsToCheck = vehicleSquads as List<Squad>;
+        }
+        squadsToCheck.Remove(squad);
+        if(squadsToCheck.Count > 0 )
         {
             Squad closest = null;
-            foreach(Squad s  in squads ) 
+            foreach(Squad s  in squadsToCheck) 
             {
                 if(closest == null || (s.GetCenter() - squad.GetCenter()).sqrMagnitude < (closest.GetCenter() - squad.GetCenter()).sqrMagnitude)
                 {
@@ -46,37 +56,27 @@ public class SquadManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        foreach (InfantrySquad s in infantrySquads) 
         {
-            foreach(Squad squad in squads )
-            {
-                squad.SetAction(SquadAction.Following);
-            }
+            s.Update();
         }
-        else if(Input.GetKeyDown(KeyCode.K)) 
-        {
-            foreach (Squad squad in squads)
-            {
-                squad.SetAction(SquadAction.Attacking);
-            }
-        }
-        foreach (Squad s in squads) 
+        foreach (VehicleSquad s in vehicleSquads)
         {
             s.Update();
         }
         //TODO: make this smarter, perhaps use the Wave.cs class
         //Currently makes sure a few squads always exist based on danger level
         //33% vehicle squad chance and 66% infantry (rifleman) squad chance
-        while (squads.Count - 1 <= dl.dangerLevel / 5)
+        while (vehicleSquads.Count + infantrySquads.Count - 1 <= dl.dangerLevel / 5)
         {
             switch (UnityEngine.Random.Range(0, 2))
             {
                 case 0:
-                    squads.Add(squadSpawner.SpawnVehicleSquad());
+                    vehicleSquads.Add(squadSpawner.SpawnVehicleSquad());
                     break;
                 case 1:
                 case 2:
-                    squads.Add(squadSpawner.SpawnInfantrySquad());
+                    infantrySquads.Add(squadSpawner.SpawnInfantrySquad());
                     break;
             }
         }

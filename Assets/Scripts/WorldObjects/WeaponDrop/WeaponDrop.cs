@@ -132,6 +132,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
             }
             else
             {
+                Debug.Log("Equipping gun type: " + gunType);
                 arsenal.EquipGun(gunType);
                 OnDespawn();
             }
