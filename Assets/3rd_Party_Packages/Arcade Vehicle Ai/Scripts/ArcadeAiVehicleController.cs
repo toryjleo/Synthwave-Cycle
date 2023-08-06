@@ -145,15 +145,12 @@ public class ArcadeAiVehicleController : MonoBehaviour
         }
         else 
         {
-            Debug.Log("Target reached");
             if (carVelocity.z > 1f)
             {
-                Debug.Log("Hit the brakes!");
                 brakeAI = -1f;
             }
             else
             {
-                Debug.Log("Keep er gooooin");
                 brakeAI = 0f;
             }
             TurnAI = 0f;

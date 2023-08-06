@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class WeaponDrop : SelfWorldBoundsDespawn
 {
     // Tracks the possible guns which this drop can represent
     private Dictionary<PlayerWeaponType, GameObject> attachedGuns;
+
+    [SerializeField]
+    public AudioSource pickupAudio;
 
     // Current PlayerGunType this drop represents
     private PlayerWeaponType gunType;
@@ -133,6 +137,8 @@ public class WeaponDrop : SelfWorldBoundsDespawn
             else
             {
                 arsenal.EquipGun(gunType);
+                pickupAudio.clip = arsenal.GetPickupSoundClip();
+                pickupAudio.Play();
                 OnDespawn();
             }
         }

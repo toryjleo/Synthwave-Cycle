@@ -147,4 +147,9 @@ public class Arsenal : MonoBehaviour, IResettable
         currentWeapon = null;
         Init();
     }
+
+    internal AudioClip GetPickupSoundClip()
+    {
+        return currentWeapon.PickupSound;
+    }
 }

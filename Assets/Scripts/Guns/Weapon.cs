@@ -18,6 +18,9 @@ public enum PlayerWeaponType
 /// </summary>
 public abstract class Weapon : MonoBehaviour, IResettable
 {
+    [SerializeField]
+    public AudioClip PickupSound;
+
     /// <summary>
     /// The Awake Function, initializes the Weapon 
     /// </summary>
