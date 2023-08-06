@@ -8,9 +8,11 @@ public class VehicleAI : Ai
 {
     ArcadeAiVehicleController vehicleController;
 
+    //How much damage ramming deals
     [SerializeField]
     public float DamageMultiplyer = 1.0f;
 
+    //How much additional force does a ram apply
     [SerializeField] 
     public float RamModifier = 1.0f;
 
@@ -19,7 +21,9 @@ public class VehicleAI : Ai
 
     public GameObject movementTarget;
 
+    //How much directional/rotational force effects the player on a ram
     private const float MAX_RANDOM_TORQUE = 4500f;
+    private const float MAX_RAM_MAGNITUDE = 200f;
 
     //This is the time the Vehicle has spent within CONFIDENCE_BUILD_DISTANCE to it's target
     //When it exceeds TIME_BY_TARGET_TO_ATTACK the car is ready to attack
@@ -53,7 +57,6 @@ public class VehicleAI : Ai
         }
         if(Vector3.Distance(transform.position, movementTarget.transform.position) <= CONFIDENCE_BUILD_DISTANCE)
         {
-            Debug.Log("Close to target: " + timeByTarget + "/" + TIME_BY_TARGET_TO_ATTACK);
             timeByTarget += Time.deltaTime;
         }
         else
@@ -102,7 +105,8 @@ public class VehicleAI : Ai
             Rigidbody bikeRB = bike.movementComponent.rb;
             Debug.DrawLine(transform.position, transform.position + vehicleController.carVelocity);
             bike.movementComponent.TakeDamage(DamageMultiplyer * Mathf.Abs(bike.movementComponent.appliedForce.magnitude - vehicleController.carVelocity.magnitude));
-            bikeRB.AddForce((vehicleController.carVelocity - bike.movementComponent.appliedForce) * RamModifier, ForceMode.Impulse);
+            Vector3 bumpForce = Vector3.ClampMagnitude((vehicleController.carVelocity - bike.movementComponent.appliedForce) * RamModifier, MAX_RAM_MAGNITUDE);
+            bikeRB.AddForce(bumpForce, ForceMode.Impulse);
             bikeRB.AddTorque(Vector3.up * Random.Range(-MAX_RANDOM_TORQUE, MAX_RANDOM_TORQUE), ForceMode.Impulse);
         }
     }
