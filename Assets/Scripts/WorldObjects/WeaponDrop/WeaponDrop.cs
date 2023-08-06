@@ -8,9 +8,6 @@ public class WeaponDrop : SelfWorldBoundsDespawn
     // Tracks the possible guns which this drop can represent
     private Dictionary<PlayerWeaponType, GameObject> attachedGuns;
 
-    [SerializeField]
-    public AudioSource pickupAudio;
-
     // Current PlayerGunType this drop represents
     private PlayerWeaponType gunType;
 
@@ -138,8 +135,6 @@ public class WeaponDrop : SelfWorldBoundsDespawn
             {
                 Debug.Log("Equipping gun type: " + gunType);
                 arsenal.EquipGun(gunType);
-                pickupAudio.clip = arsenal.GetPickupSoundClip();
-                pickupAudio.Play();
                 OnDespawn();
             }
         }

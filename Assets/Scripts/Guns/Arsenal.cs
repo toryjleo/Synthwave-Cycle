@@ -9,6 +9,9 @@ using UnityEngine;
 /// </summary>
 public class Arsenal : MonoBehaviour, IResettable
 {
+    [SerializeField]
+    public AudioSource weaponPickupSFX;
+
     private Dictionary<PlayerWeaponType, Weapon> weapons;
     private Weapon currentWeapon;
     private BikeScript playerBike;
@@ -119,6 +122,8 @@ public class Arsenal : MonoBehaviour, IResettable
 
             currentWeapon = weapons[gunType];
             currentWeapon.Init();
+            weaponPickupSFX.clip = currentWeapon.PickupSound;
+            weaponPickupSFX.Play();
             if (currentWeapon is Gun)
             {
                 ((Gun)currentWeapon).BulletShot += playerBike.movementComponent.bl_ProcessCompleted;
@@ -146,10 +151,5 @@ public class Arsenal : MonoBehaviour, IResettable
     {
         currentWeapon = null;
         Init();
-    }
-
-    internal AudioClip GetPickupSoundClip()
-    {
-        return currentWeapon.PickupSound;
     }
 }
