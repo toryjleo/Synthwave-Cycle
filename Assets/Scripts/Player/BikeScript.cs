@@ -102,9 +102,19 @@ public class BikeScript : MonoBehaviour, IResettable
                     turret.PrimaryFire(movementComponent.rb.velocity);
                 }
             }
+            else
+            {
+                arsenal.ReleasePrimaryFire(movementComponent.rb.velocity);
+            }
+
+            // Handle Secondary Fire Input
             if (Input.GetKey(KeyCode.Mouse1))
             {
                 arsenal.SecondaryFire(movementComponent.rb.velocity);
+            }
+            else
+            {
+                arsenal.ReleaseSecondaryFire(movementComponent.rb.velocity);
             }
         }
     }

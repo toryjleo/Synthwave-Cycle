@@ -25,10 +25,21 @@ public class Shotgun : Gun
             //OnBulletShot(shotDir * bullet.Mass * bullet.muzzleVelocity);
         }
     }
+
+
+    public override void ReleasePrimaryFire(Vector3 initialVelocity)
+    {
+    }
+
     public override void SecondaryFire(Vector3 initialVelocity)
     {
-        throw new System.NotImplementedException();
     }
+
+
+    public override void ReleaseSecondaryFire(Vector3 initialVelocity)
+    {
+    }
+
     public override PlayerWeaponType GetPlayerWeaponType()
     {
         return PlayerWeaponType.INVALID;
@@ -78,4 +89,5 @@ public class Shotgun : Gun
             PrimaryFire(Vector3.zero);
         }
     }
+
 }
