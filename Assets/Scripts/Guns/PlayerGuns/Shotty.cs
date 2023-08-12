@@ -61,7 +61,7 @@ public class Shotty : LeveledGun
                 //shotDir = barrel.transform.up;
 
                 bullet.Shoot(barrelL.transform.position, shotDir, initialVelocity);
-                //muzzleAudio.Play();
+                muzzleAudio.Play();
                 ApplyRecoil(shotDir, bullet);
             }
         }
@@ -91,7 +91,7 @@ public class Shotty : LeveledGun
                 //shotDir = barrel.transform.up;
 
                 bullet.Shoot(barrelR.transform.position, shotDir, initialVelocity);
-                //muzzleAudio.Play();
+                muzzleAudio.Play();
                 ApplyRecoil(shotDir, bullet);
             }
         }
