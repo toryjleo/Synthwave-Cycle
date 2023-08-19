@@ -18,6 +18,9 @@ public enum PlayerWeaponType
 /// </summary>
 public abstract class Weapon : MonoBehaviour, IResettable
 {
+    [SerializeField]
+    public AudioClip PickupSound;
+
     /// <summary>
     /// The Awake Function, initializes the Weapon 
     /// </summary>
@@ -46,10 +49,22 @@ public abstract class Weapon : MonoBehaviour, IResettable
     /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
     public abstract void PrimaryFire(Vector3 initialVelocity);
 
+    /// <summary>
+    /// Does necessary logic for the primary fire being released.
+    /// </summary>
+    /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
+    public abstract void ReleasePrimaryFire(Vector3 initialVelocity);
+
     /// <summary>Fires the bullet from the muzzle of the gun. Is responsible for calling OnBulletShot and getting 
     /// bullet from the object pool.</summary>
     /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
     public abstract void SecondaryFire(Vector3 initialVelocity);
+
+    /// <summary>
+    /// Does necessary logic for the secondary fire being released.
+    /// </summary>
+    /// <param name="initialVelocity">The velocity of the gun when the bullet is shot.</param>
+    public abstract void ReleaseSecondaryFire(Vector3 initialVelocity);
 
     //Must be implemented, if Weapon is not designed to be equipped by the player, use the INVALID value
     public abstract PlayerWeaponType GetPlayerWeaponType();

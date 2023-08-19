@@ -46,13 +46,13 @@ public class ScoreTracker : MonoBehaviour, IResettable
         UpdateText();
         if (currentTime <= 0)
         {
-            // Win condition
-            EndGame(true);
+            GameReset();
         }
         else if (_currentEnergy <=0)
         {
             // Lose Condition
-            EndGame(false);
+            Debug.Log("Player ran out of health");
+            GameReset();
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -60,12 +60,7 @@ public class ScoreTracker : MonoBehaviour, IResettable
         }
         if(Input.GetKeyDown(KeyCode.R))
         {
-            Debug.Log("Resetting!");
-            List<IResettable> resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
-            foreach (IResettable r in resetObjects)
-            {
-                r.ResetGameObject();
-            }
+            GameReset();
         }
     }
 
@@ -130,55 +125,31 @@ public class ScoreTracker : MonoBehaviour, IResettable
         currentScore += points;
     }
 
+    /// <summary>
+    /// Calls ResetGameObject() on every IResettable object in the game world
+    /// </summary>
+    private void GameReset()
+    {
+        Debug.Log("Resetting!");
+        List<IResettable> resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
+        foreach (IResettable r in resetObjects)
+        {
+            r.ResetGameObject();
+        }
+    }
+
     /// <summary>Updates this class's Energy to the bike's energy.</summary>
     private void UpdateUIEnergy()
     {
         if (bike == null)
         {
-            Debug.Log("There is no bike.");
+            Debug.LogError("No bike found in the scene.");
         }
         else
         {
             Energy = bike.Energy;
         }
 
-    }
-
-    /// <summary>Loads the gameover screen.</summary>
-    /// <param name="survivedEvent">True if the player beat the level.</param>
-    private void EndGame(bool survivedEvent)
-    {
-        PlayerDataObject.survivedEvent = survivedEvent;
-DLevel dLevel = Object.FindObjectOfType<DLevel>();
-        if (dLevel == null)
-        {
-            Debug.Log("cannot find Dlevel Object in scene.");
-        }
-        else
-        {
-            dLevel.dangerTimer.Dispose(); //Dispose of timer for spawning more enemies
-            SceneManager.LoadScene("TestScene");
-            //StartCoroutine(LoadYourAsyncScene());
-        }
-
-
-    }
-
-    /// <summary>Loads the gameover screen asycronously.</summary>
-    IEnumerator LoadYourAsyncScene()
-    {
-        // The Application loads the Scene in the background as the current Scene runs.
-        // This is particularly good for creating loading screens.
-        // You could also load the Scene by using sceneBuildIndex. In this case Scene2 has
-        // a sceneBuildIndex of 1 as shown in Build Settings.
-
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("EndGameScene");
-
-        // Wait until the asynchronous scene fully loads
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
     }
 
     public void ResetGameObject()

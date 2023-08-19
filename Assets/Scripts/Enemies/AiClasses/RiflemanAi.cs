@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RiflemanAi : Ai
+public class RiflemanAi : InfantryAI
 {
     public GameObject muzzleLocation; 
 

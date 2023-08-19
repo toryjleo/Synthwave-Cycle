@@ -32,19 +32,31 @@ public class SquadSpawner : MonoBehaviour
     }
 
     //TODO: Make this smarter, perhaps using the Wave.cs class
-    public Squad SpawnSquad()
+    public InfantrySquad SpawnInfantrySquad()
     {
-        Squad s = new Squad(squadManager);
+        InfantrySquad s = new InfantrySquad(squadManager);
         s.SetTarget(player);
         for(int i = 0; i < 5; i++) //for now, a squad will always have 5 units
         {
-            Ai ai = SpawnNewEnemy(Enemy.Rifleman);
+            InfantryAI ai = SpawnNewEnemy(Enemy.Rifleman) as InfantryAI;
             s.AddToSquad(ai);
             squadManager.currentEnemies.Add(ai);
         }
 
         return s;
     }
+
+    public VehicleSquad SpawnVehicleSquad()
+    {
+        VehicleSquad s = new VehicleSquad(squadManager);
+        s.SetTarget(player);
+
+        VehicleAI ai = SpawnNewEnemy(Enemy.Car) as VehicleAI;
+        s.AddToSquad(ai);
+        squadManager.currentEnemies.Add(ai);
+        return s;
+    }
+
     /// <summary>
     /// This will spawn an enemy of a specific type and then returns that enemy
     /// </summary>

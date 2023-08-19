@@ -11,6 +11,7 @@ public class ArcadeAiVehicleController : MonoBehaviour
     public LayerMask drivableSurface;
 
     public float MaxSpeed, accelaration, turn;
+    //rb is the sphere collider that acts as the center of balance, and the bottom bound of the vehicle
     public Rigidbody rb, carBody;
 
     [HideInInspector]
@@ -56,7 +57,8 @@ public class ArcadeAiVehicleController : MonoBehaviour
 
     private float desiredTurning;
 
-
+    //constraints
+    private const float REACHED_TARGET_DISTANCE = 10f; //How close vehicle has to be to the target to consider the location reached
 
     private void Start()
     {
@@ -81,7 +83,7 @@ public class ArcadeAiVehicleController : MonoBehaviour
         desiredTurning = Mathf.Abs(Vector3.Angle(myDir, Vector3.ProjectOnPlane( aimedDir,transform.up)));
         //
 
-        float reachedTargetDistance = 1f;
+        
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
         Vector3 dirToMovePosition = (target.position - transform.position).normalized;
         float dot = Vector3.Dot(transform.forward, dirToMovePosition);
@@ -100,7 +102,7 @@ public class ArcadeAiVehicleController : MonoBehaviour
         }
         else { brakeAI = 0; }
 
-        if (distanceToTarget > reachedTargetDistance)
+        if (distanceToTarget > REACHED_TARGET_DISTANCE)
         {
 
             if (dot > 0)
@@ -221,7 +223,9 @@ public class ArcadeAiVehicleController : MonoBehaviour
             {
                 if (Mathf.Abs(SpeedAI) > 0.1f && brakeAI < 0.1f)
                 {
-                    rb.velocity = Vector3.Lerp(rb.velocity, carBody.transform.forward * SpeedAI * MaxSpeed, accelaration / 10 * Time.deltaTime);
+                    Vector3 newVelocity = Vector3.Lerp(rb.velocity, carBody.transform.forward * (SpeedAI + brakeAI) * MaxSpeed, accelaration / 10 * Time.deltaTime);
+
+                    rb.velocity = newVelocity;               
                 }
             }
 

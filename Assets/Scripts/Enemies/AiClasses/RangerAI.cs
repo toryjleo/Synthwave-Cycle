@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangerAI : Ai
+public class RangerAI : InfantryAI
 {
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
 

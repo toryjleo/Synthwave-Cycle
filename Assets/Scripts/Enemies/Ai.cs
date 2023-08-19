@@ -18,7 +18,6 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     #region Variables for Setup.
 
     public GameObject target;
-    public CyborgAnimationStateController animationStateController;
     public Rigidbody rb;
     public Gun myGun;
     public Health hp;
@@ -44,9 +43,6 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     {
         base.Update();
 
-        SetAnimationSpeed(rb.velocity.magnitude);
-
-
         //update conditions
         foreach (Condition cond in activeConditions)
         {
@@ -60,6 +56,11 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
         }
     }
 
+    void Awake()
+    {
+        Init();
+    }
+
     public virtual void Aim(Vector3 aimAt)
     {
         transform.LookAt(aimAt);
@@ -68,9 +69,8 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     /// <summary>
     /// This method plays a death animation and the deactivates the enemy
     /// </summary>
-    public void Die()
+    public virtual void Die()
     {
-        rb.constraints = RigidbodyConstraints.FreezeAll;
 
 
         if (alive == true)
@@ -78,12 +78,6 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
             //Notify all listeners that this AI has died
             DeadEvent?.Invoke();
 
-            animationStateController.TriggerDeathA();//TODO: add catch
-
-            animationStateController.TriggerDeathA();
-
-            rb.detectCollisions = false;
-            animationStateController.SetAlive(false);
             alive = false;
 
             if (myGun != null)
@@ -95,29 +89,8 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     /// <summary>
     /// This method is called when the entitiy wants to attack. Checks if it has a gun
     /// </summary>
-    public virtual void Attack()
-    {
-        if (myGun != null && myGun.CanShootAgain() && alive)
-        {
+    public abstract void Attack();
 
-            this.myGun.PrimaryFire(target.transform.position);
-            animationStateController.AimWhileWalking(true);
-
-        }
-    }
-
-
-    /// <summary>
-    /// This Metod is used to set the animation speed without causing errors or Ai that do not have an animation state controller.
-    /// </summary>
-    /// <param name="animationSpeed"></param>
-    public virtual void SetAnimationSpeed(float animationSpeed)
-    {
-        if (animationStateController != null)
-        {
-            animationStateController.SetSpeed(animationSpeed);
-        }
-    }
 
     #region MOVEMENT
     /// <summary>
@@ -245,7 +218,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     /// This method sets the target of the entity TODO: Will eventually equip a gun?
     /// </summary>
     /// <param name="targ"></param>
-    public void SetTarget(GameObject targ)//sets the target of the entity and equips the gun
+    public virtual void SetTarget(GameObject targ)//sets the target of the entity and equips the gun
 
     {
         target = targ;
@@ -254,14 +227,12 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     /// <summary>
     /// This method is called to reset the entity's health and alive status. Use every time they spawn.
     /// </summary>
-    public void NewLife()
+    public virtual void NewLife()
     {
         alive = true;
         hp.Init(StartingHP);
         RespawnEvent?.Invoke();
-        animationStateController.SetAlive(true);
         rb.detectCollisions = true;
-        rb.constraints = RigidbodyConstraints.FreezePositionY;
     }// this restets the enemies HP and sets them to alive;
 
     /// <summary>

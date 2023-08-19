@@ -45,12 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56cd9280c26b1214fa6a5f34a8fa85c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PickupSound: {fileID: 0}
   bulletPrefab: {fileID: -4795468542068541559, guid: 084e10c8016e91741a5756a57400916f, type: 3}
   infiniteAmmo: 0
+  bulletPoolSize: 100
   muzzle1: {fileID: 3958296070482876350}
   muzzle2: {fileID: 3958296070210934518}
   muzzle1Audio: {fileID: 3958296070482864193}
   muzzle2Audio: {fileID: 3958296070210934521}
+  rotateOutward: 1
 --- !u!1 &3958296070210934518
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,7 +103,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3958296070210934518}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -157,9 +160,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e41759f32edd3a0488c9e626c510ef41, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d6900079c6ebc324d82e56a91e10b068, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.497
+  m_Volume: 0.4
   m_Pitch: 1.29
   Loop: 0
   Mute: 0
@@ -292,7 +295,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3958296070482876350}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -349,9 +352,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e41759f32edd3a0488c9e626c510ef41, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d6900079c6ebc324d82e56a91e10b068, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.715
+  m_Volume: 0.4
   m_Pitch: 1.09
   Loop: 0
   Mute: 0

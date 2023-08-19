@@ -9,6 +9,9 @@ using UnityEngine;
 /// </summary>
 public class Arsenal : MonoBehaviour, IResettable
 {
+    [SerializeField]
+    public AudioSource weaponPickupSFX;
+
     private Dictionary<PlayerWeaponType, Weapon> weapons;
     private Weapon currentWeapon;
     private BikeScript playerBike;
@@ -71,11 +74,39 @@ public class Arsenal : MonoBehaviour, IResettable
         }
     }
 
+    /// <summary>
+    /// Calls weapon's implementation of ReleasePrimaryFire.
+    /// </summary>
+    /// <param name="initialVelocity">Current velocity of the bike</param>
+    public void ReleasePrimaryFire(Vector3 initialVelocity)
+    {
+        if (currentWeapon != null)
+        {
+            currentWeapon.ReleasePrimaryFire(initialVelocity);
+        }
+    }
+
+    /// <summary>
+    /// Calls weapon's implementation of SecondaryFire.
+    /// </summary>
+    /// <param name="initialVelocity">Current velocity of the bike</param>
     public void SecondaryFire(Vector3 initialVelocity)
     {
         if (currentWeapon != null)
         {
             currentWeapon.SecondaryFire(initialVelocity);
+        }
+    }
+
+    /// <summary>
+    /// Calls weapon's implementation of ReleaseSecondaryFire.
+    /// </summary>
+    /// <param name="initialVelocity">Current velocity of the bike</param>
+    public void ReleaseSecondaryFire(Vector3 initialVelocity)
+    {
+        if (currentWeapon != null)
+        {
+            currentWeapon.ReleaseSecondaryFire(initialVelocity);
         }
     }
 
@@ -91,6 +122,8 @@ public class Arsenal : MonoBehaviour, IResettable
 
             currentWeapon = weapons[gunType];
             currentWeapon.Init();
+            weaponPickupSFX.clip = currentWeapon.PickupSound;
+            weaponPickupSFX.Play();
             if (currentWeapon is Gun)
             {
                 ((Gun)currentWeapon).BulletShot += playerBike.movementComponent.bl_ProcessCompleted;

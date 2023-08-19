@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GruntAI : Ai
+public class GruntAI : InfantryAI
 {
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
 
