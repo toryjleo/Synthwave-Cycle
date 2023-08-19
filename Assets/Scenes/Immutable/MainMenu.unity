@@ -317,7 +317,7 @@ GameObject:
   - component: {fileID: 627273855}
   - component: {fileID: 627273854}
   m_Layer: 5
-  m_Name: DeathRideTitle
+  m_Name: BikeGameTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -375,7 +375,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: DEATH RIDE
+  m_Text: BIKE GAME
 --- !u!222 &627273855
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -788,7 +788,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1303171938}
+      - m_Target: {fileID: 1606358523}
         m_TargetAssemblyTypeName: ChangeScene, Assembly-CSharp
         m_MethodName: MoveToScene
         m_Mode: 3
