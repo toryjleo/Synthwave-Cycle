@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Main Menu code
+/// </summary>
 public class ChangeScene : MonoBehaviour
 {
     public void MoveToScene(int sceneID)
@@ -12,7 +15,7 @@ public class ChangeScene : MonoBehaviour
 
     public void QuitGame()
     {
-        Application.Quit();
         Debug.Log("Quitting Game");
+        Application.Quit();
     }
 }
