@@ -59,6 +59,7 @@ public abstract class Squad
                 squadMembers.Remove(ai);
                 manager.currentEnemies.Remove(ai);
                 manager.scoreKeeper.AddToScore((int)ai.GetScore());
+                DLevel.Instance.IncreaseDangerLevel((int)ai.dlScore);
                 break;
             }
 
@@ -101,7 +102,6 @@ public abstract class Squad
     {
         squadMembers.Add(newMember);
         newMember.SetTarget(target);
-        Debug.Log("Joined a squad! Current Size: " + squadMembers.Count);
     }
 
     internal Vector3 GetCenter()

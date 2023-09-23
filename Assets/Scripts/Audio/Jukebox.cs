@@ -9,11 +9,9 @@ using UnityEngine;
 /// </summary>
 public class Jukebox : MonoBehaviour, IResettable
 {
-    private Track track;
-    //A list of all the tracks to play
-    public List<Track> trackList;
-    //Used to queue up a new track
-    private Track nextTrack = null;
+    [SerializeField]
+    public List<WaveSequence> soundTracks;
+    private WaveSequence sequence;
     // An audiosource array with 2 members to switch between with "toggle"
     public AudioSource[] audioSourceArray;
     int toggle;
@@ -23,15 +21,16 @@ public class Jukebox : MonoBehaviour, IResettable
 
     void Start()
     {
-        track = trackList[Random.Range(0, trackList.Count)];
-
+        sequence = soundTracks[Random.Range(0, soundTracks.Count)];
+        sequence.spawner = GameObject.FindObjectOfType<SquadSpawner>();
         toggle = 0;
-        TrackVariation tv = track.variations[0];
+        sequence.UpdateCurrentWave();
+        AudioClip clip = sequence.GetCurrentTrackVariation();
         // Schedule the first track
-        audioSourceArray[toggle].clip = tv.variation;
+        audioSourceArray[toggle].clip = clip;
 
         double startTime  = AudioSettings.dspTime + 0.2;
-        double introDuration = GetClipDuration(tv.variation);
+        double introDuration = GetClipDuration(clip);
         nextStartTime = startTime + introDuration;
 
         audioSourceArray[toggle].PlayScheduled(startTime);
@@ -44,6 +43,7 @@ public class Jukebox : MonoBehaviour, IResettable
         // Schedule next track 1 second before this track ends
         if (AudioSettings.dspTime > nextStartTime - 1) 
         {
+            sequence.CheckForWaveSpawn();
             QueueNextSong();
         }
         
@@ -52,31 +52,22 @@ public class Jukebox : MonoBehaviour, IResettable
     /// <summary>
     /// Adds the next song to play to the queue of audiosources
     /// </summary>
-    private void QueueNextSong() 
+    private void QueueNextSong()
     {
-        AudioClip clipToPlay = null;
-        if (nextTrack != null)
-        {
-            track = nextTrack;
-            nextTrack = null;
-            clipToPlay = track.intro;
-        }
-        else
-        {
-            // TODO: Make dynamic
-            int dl = DLevel.Instance.GetDangerLevel();
-            int variationIndex = 0;
-            for (; variationIndex < track.variations.Count; variationIndex++)
-            {
-                if (track.variations[variationIndex].dangerLevelStart >= dl)
-                {
-                    break;
-                }
-            }
-            Debug.unityLogger.Log("Danger level: " + dl + ". Queueing variation: " + variationIndex);
-            clipToPlay = track.variations[variationIndex].variation;
-        }
-
+        //AudioClip clipToPlay = null;
+        //// TODO: Make dynamic
+        //int dl = DLevel.Instance.GetDangerLevel();
+        //int variationIndex = 0;
+        //for (; variationIndex < sequence.variations.Count; variationIndex++)
+        //{
+        //    if (sequence.variations[variationIndex].dangerLevelStart >= dl)
+        //    {
+        //        break;
+        //    }
+        //}
+        //Debug.unityLogger.Log("Danger level: " + dl + ". Queueing variation: " + variationIndex);
+        //clipToPlay = sequence.variations[variationIndex].variation;
+        AudioClip clipToPlay = sequence.GetCurrentTrackVariation();
         // Loads the next Clip to play and schedules when it will start
         audioSourceArray[toggle].clip = clipToPlay;
         audioSourceArray[toggle].PlayScheduled(nextStartTime);
@@ -94,21 +85,12 @@ public class Jukebox : MonoBehaviour, IResettable
         return duration;
     }
 
-    /// <summary>
-    /// Sets the next track to play after the current loop
-    /// </summary>
-    public void SetNextTrack(Track newTrack)
-    {
-        nextTrack = newTrack;
-    }
-
     public void ResetGameObject()
     {
         for (int i = 0; i < audioSourceArray.Length; i++)
         {
             audioSourceArray[i].Stop();
         }
-        nextTrack = null;
         Start();
     }
 }

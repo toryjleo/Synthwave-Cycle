@@ -325,7 +325,7 @@ GameObject:
   - component: {fileID: 2279930514028191588}
   - component: {fileID: 2279930514028191589}
   - component: {fileID: 2279930514028191590}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Skid marks FL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5797,7 +5797,7 @@ GameObject:
   - component: {fileID: 2279930514937360736}
   - component: {fileID: 2279930514937360738}
   - component: {fileID: 2279930514937360739}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: CarEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -6447,7 +6447,7 @@ GameObject:
   - component: {fileID: 2279930515040519957}
   - component: {fileID: 2279930515040519958}
   - component: {fileID: 2279930515040519959}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Skid marks FR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11479,7 +11479,7 @@ GameObject:
   - component: {fileID: 2279930515226922964}
   - component: {fileID: 2279930515226922965}
   - component: {fileID: 2279930515226922966}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Skid marks RR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16318,7 +16318,7 @@ GameObject:
   - component: {fileID: 2279930515288756140}
   - component: {fileID: 2279930515288756141}
   - component: {fileID: 2279930515288756142}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Skid marks RL
   m_TagString: Untagged
   m_Icon: {fileID: 0}

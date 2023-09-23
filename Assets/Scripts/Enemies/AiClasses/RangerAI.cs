@@ -11,6 +11,7 @@ public class RangerAI : InfantryAI
         alive = true;
         StartingHP = 20;
         score = 300;
+        dlScore = 5;
         maxSpeed = 30;
         attackRange = 15;
         minimumRange = 5;
