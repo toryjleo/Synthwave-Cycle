@@ -9,8 +9,10 @@ using UnityEngine;
 /// </summary>
 public class Jukebox : MonoBehaviour, IResettable
 {
+    //The list of each possible WaveSequence, to be randomly selected on reset
     [SerializeField]
     public List<WaveSequence> soundTracks;
+    //The current WaveSequence in play
     private WaveSequence sequence;
     // An audiosource array with 2 members to switch between with "toggle"
     public AudioSource[] audioSourceArray;
@@ -54,19 +56,6 @@ public class Jukebox : MonoBehaviour, IResettable
     /// </summary>
     private void QueueNextSong()
     {
-        //AudioClip clipToPlay = null;
-        //// TODO: Make dynamic
-        //int dl = DLevel.Instance.GetDangerLevel();
-        //int variationIndex = 0;
-        //for (; variationIndex < sequence.variations.Count; variationIndex++)
-        //{
-        //    if (sequence.variations[variationIndex].dangerLevelStart >= dl)
-        //    {
-        //        break;
-        //    }
-        //}
-        //Debug.unityLogger.Log("Danger level: " + dl + ". Queueing variation: " + variationIndex);
-        //clipToPlay = sequence.variations[variationIndex].variation;
         AudioClip clipToPlay = sequence.GetCurrentTrackVariation();
         // Loads the next Clip to play and schedules when it will start
         audioSourceArray[toggle].clip = clipToPlay;

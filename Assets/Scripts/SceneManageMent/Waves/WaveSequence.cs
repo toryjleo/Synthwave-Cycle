@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// A track is a container of all associated music clips.
+/// Holds a set of Waves and handles moving from one to the next, as well as providing
+/// the Jukebox with the current TrackVariation audio clip
 /// </summary>
 [CreateAssetMenu(menuName = "Wave/WaveSequence", fileName = "New Wave Sequence")]
 public class WaveSequence : ScriptableObject
@@ -22,24 +23,20 @@ public class WaveSequence : ScriptableObject
     public void CheckForWaveSpawn()
     {
         UpdateCurrentWave();
-        //if (CurrentWave >= previousWave || CurrentWave < previousWave - 1)
-        {
-            spawner.SpawnWave(sequence[CurrentWave].GetWaveAi());
-            previousWave = CurrentWave;
-        }
+        spawner.SpawnWave(sequence[CurrentWave].GetWaveAi());
+        previousWave = CurrentWave;
     }
 
     internal void UpdateCurrentWave()
     {
-        int index = 0;
-        for (; index < sequence.Count; index++)
+        for (int index = 0; index < sequence.Count; index++)
         {
             if (!sequence[index].IsOverThreshold())
             {
                 Debug.Log("Current Wave: " + (index) + "/" + (sequence.Count - 1));
+                CurrentWave = index;
                 break;
             }
         }
-        CurrentWave = index;
     }
 }
