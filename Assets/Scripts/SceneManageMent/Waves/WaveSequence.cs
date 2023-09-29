@@ -33,7 +33,7 @@ public class WaveSequence : ScriptableObject
         {
             if (!sequence[index].IsOverThreshold())
             {
-                Debug.Log("Current Wave: " + (index) + "/" + (sequence.Count - 1));
+                Debug.Log("Current Wave: " + (index) + "/" + (sequence.Count - 1) + "\nDanger Level: " + DLevel.Instance.GetDangerLevel());
                 CurrentWave = index;
                 break;
             }
