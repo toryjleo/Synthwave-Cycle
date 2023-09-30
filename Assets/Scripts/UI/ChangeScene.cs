@@ -5,17 +5,19 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
-/// Main Menu code
+/// Menu code
 /// </summary>
 public class ChangeScene : MonoBehaviour
 {
     [SerializeField] private Button PlayButton;
     [SerializeField] private Button QuitButton;
+    [SerializeField] private Button ReturnMainMenuButton;
 
     private void Start()
     {
-        PlayButton.onClick.AddListener( () => { MoveToScene("TrueScene"); } );
-        QuitButton.onClick.AddListener( () => { QuitGame(); } );
+        if (PlayButton)           { PlayButton.onClick.AddListener(() =>           { MoveToScene("TrueScene"); }); }
+        if (ReturnMainMenuButton) { ReturnMainMenuButton.onClick.AddListener(() => { MoveToScene("MainMenu"); }); }
+        if (QuitButton)           { QuitButton.onClick.AddListener(() =>           { QuitGame(); }); }
     }
 
     public void MoveToScene(string sceneID)
