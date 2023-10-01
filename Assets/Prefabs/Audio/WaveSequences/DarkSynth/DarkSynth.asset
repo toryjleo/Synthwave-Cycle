@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26f68fa8ad7406c41accb8fcf62a8cad, type: 3}
+  m_Name: DarkSynth
+  m_EditorClassIdentifier: 
+  sequence:
+  - {fileID: 11400000, guid: 6afa5b73cc8958446b300bdfd3d11ca5, type: 2}
+  - {fileID: 11400000, guid: b7b8a3a115fb7a8488d46a14020d40ee, type: 2}
+  - {fileID: 11400000, guid: e906e63b1b5ab1e43923c518f902e62a, type: 2}
+  - {fileID: 11400000, guid: 967993e824e715947962d4cf0842242c, type: 2}
+  - {fileID: 11400000, guid: d0fe598f8abbf9f4d8d412c49fadc451, type: 2}

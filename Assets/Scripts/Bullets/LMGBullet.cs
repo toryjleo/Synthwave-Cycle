@@ -9,6 +9,6 @@ public class LMGBullet : PlayerBullet
     {
         muzzleVelocity = 180;
         mass = .1f; //The Mass controlls how slowed down the bike is by recoil
-        damageDealt = 20;
+        damageDealt = 200;
     }
 }

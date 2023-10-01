@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26f68fa8ad7406c41accb8fcf62a8cad, type: 3}
+  m_Name: DrivingSynth
+  m_EditorClassIdentifier: 
+  sequence:
+  - {fileID: 11400000, guid: aec058b25e103c040bcfbe68bc6e6e3e, type: 2}
+  - {fileID: 11400000, guid: 2455057b1d3655f41bc1d1daa836c285, type: 2}
+  - {fileID: 11400000, guid: bc7deb1b23080b843a0c79e39d0fd28f, type: 2}
+  - {fileID: 11400000, guid: 05ac1363172d82b48b31147175c2f46b, type: 2}
+  - {fileID: 11400000, guid: ead42f195c9c91247967021f733734f0, type: 2}
+  - {fileID: 11400000, guid: 996854cbefc84ad4ba0b5af0274b3ab2, type: 2}

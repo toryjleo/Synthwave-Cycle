@@ -12,6 +12,7 @@ public class RiflemanAi : InfantryAI
         alive = true;
         StartingHP = 20;
         score = 100;
+        dlScore = 5;
         maxSpeed = 40;
         attackRange = 60;
         minimumRange = 0;
