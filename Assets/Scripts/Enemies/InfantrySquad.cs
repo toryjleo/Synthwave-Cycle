@@ -33,7 +33,7 @@ public class InfantrySquad : Squad
     {
         if (squadMembers.Count < minimumSize)
         {
-            manager.DisbandSquad(this);
+            manager.DisbandInfantrySquad(this);
             return;
         }
         switch (currentAction)

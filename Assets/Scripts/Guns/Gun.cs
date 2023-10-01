@@ -26,7 +26,6 @@ public abstract class Gun : Weapon, IResettable
         bulletPool = gameObject.GetComponent<BulletPool>();
         if (bulletPool == null)
         {
-            Debug.Log("Creating bullet pool");
             bulletPool = gameObject.AddComponent<BulletPool>();
         }
         bulletPool.Init(bulletPrefab, bulletPoolSize);
@@ -68,7 +67,7 @@ public abstract class Gun : Weapon, IResettable
     /// <returns>True if the gun can shoot again.</returns>
     public bool CanShootAgain() 
     {
-        return Time.time - lastFired > 1 / fireRate;
+        return this.isActiveAndEnabled && (Time.time - lastFired > 1 / fireRate);
     }
     public new void ResetGameObject()
     {

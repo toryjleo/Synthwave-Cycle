@@ -28,6 +28,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     public float maxSpeed;
     public float maxForce;
     public float score;
+    public float dlScore;
     public float attackRange;
     public float minimumRange;
     public bool alive;
@@ -71,8 +72,6 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     /// </summary>
     public virtual void Die()
     {
-
-
         if (alive == true)
         {
             //Notify all listeners that this AI has died
