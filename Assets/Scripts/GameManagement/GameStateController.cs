@@ -18,8 +18,6 @@ public class GameStateController : MonoBehaviour
 
     private static GameState currentState;
 
-    private BikeScript bike;
-
 
     #region static functions
 
@@ -57,22 +55,30 @@ public class GameStateController : MonoBehaviour
     {
         get { return currentState; }
         set {
+            if (value == currentState)
+            {
+                Debug.Log("Trying to set state to '" + value + "' but world is already in that state.");
+            }
+            else
+            {
                 switch (value)
                 {
+                    case GameState.Spawning:
+                        if (currentState == GameState.Playing) 
+                            { // TODO: Make sure that all UI is updated to respawn
+                            }
+                        currentState = GameState.Spawning;
+                        break;
+                    
                     default:
                         currentState = value;
                         break;
                 }
             }
+            }
     }
 
     #endregion
-
-    private GameStateController()
-    {
-        //The game should start in the menu, but for now, we start it in a playing state
-        currentState = GameState.Playing;
-    }
 
     #region MonoBehavior
     private void Awake()
@@ -87,20 +93,14 @@ public class GameStateController : MonoBehaviour
             Instance = this;
         }
 
-        FindBike();
+        //The game should start in the menu, but for now, we start it in a playing state
+        currentState = GameState.Playing;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R) && ((currentState == GameState.Playing) || (currentState == GameState.Spawning)))
         {
-            GameReset();
-        }
-
-        else if (bike.Energy <= 0)
-        {
-            // Lose Condition
-            Debug.Log("Player ran out of health");
             GameReset();
         }
     }
@@ -119,18 +119,6 @@ public class GameStateController : MonoBehaviour
         }
     }
 
-    private void FindBike()
-    {
-        BikeScript[] bikeScripts = Object.FindObjectsOfType<BikeScript>();
-        if (bikeScripts.Length <= 0)
-        {
-            Debug.LogError("WorldGenerator did not find any BikeScripts in scene");
-        }
-        else
-        {
-            bike = bikeScripts[0];
-        }
-    }
 
 }
 

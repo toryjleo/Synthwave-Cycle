@@ -21,7 +21,7 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
     public Rigidbody rb;
 
     // Dictates movement speed
-    private Health health;
+    public Health health;
 
 
     public float MoveSpeed = 100; //The speed of the bike 

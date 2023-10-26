@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public delegate void NotifyHeal();
+public delegate void NotifyHealth();
 
 /// <summary>Class <c>Health</c> A Unity Component which tracks health.</summary>
 public class Health : MonoBehaviour
 {
     private float _hitPoints;
-    public NotifyHeal healEvent;
+    public NotifyHealth healEvent;
+    public NotifyHealth deadEvent;
 
 
 
@@ -32,7 +33,17 @@ public class Health : MonoBehaviour
     /// <param name="hp">The number of points to subtract from _hitPoints.</param>
     public void TakeDamage(float hp)
     {
-        _hitPoints -= hp;
+        if (GameStateController.WorldState == GameState.Playing)
+        {
+
+
+            _hitPoints -= hp;
+
+            if (_hitPoints <= 0)
+            {
+                deadEvent?.Invoke();
+            }
+        }
     }
 
     /// <summary>Adds points to _hitPoints.</summary>
