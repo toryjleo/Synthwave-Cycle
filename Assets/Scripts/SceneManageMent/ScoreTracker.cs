@@ -34,8 +34,8 @@ public class ScoreTracker : MonoBehaviour, IResettable
 
     private void Awake()
     {
-        Init();
-        FindBike();
+        //Init();
+        //FindBike();
     }
 
     // Update is called once per frame
@@ -43,10 +43,6 @@ public class ScoreTracker : MonoBehaviour, IResettable
     {
         UpdateUIEnergy();
         UpdateText();
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
     }
 
     public void Init()
