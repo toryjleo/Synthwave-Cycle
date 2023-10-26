@@ -81,7 +81,7 @@ public class BikeScript : MonoBehaviour, IResettable
 
     private void Update()
     {
-        if (GameStateController.IsGamePlaying())
+        if (GameStateController.GameIsPlaying())
         {
             UpdateBikeEmission();
         }
@@ -90,7 +90,7 @@ public class BikeScript : MonoBehaviour, IResettable
 
     private void FixedUpdate()
     {
-        if (GameStateController.IsGamePlaying())
+        if (GameStateController.GameIsPlaying())
         {
             // Handle primary and secondary fire inputs
             if (Input.GetKey(KeyCode.Mouse0))

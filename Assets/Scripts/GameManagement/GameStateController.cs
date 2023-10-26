@@ -16,14 +16,28 @@ public class GameStateController : MonoBehaviour
     #region static functions
 
 
-    public static bool IsGamePlaying()
+    public static bool GameIsPlaying()
     {
-        return Instance.currentState == GameState.Playing;
+        if (Instance) // Covering case where Gamestatecontroller gets called before it is initialized
+        {
+            return Instance.currentState == GameState.Playing;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    public static bool IsPlayerSpawning()
+    public static bool PlayerIsSpawning()
     {
-        return Instance.currentState == GameState.Spawning;
+        if (Instance)
+        {
+            return Instance.currentState == GameState.Spawning;
+        }
+        else 
+        {
+            return false;
+        }
     }
 
     public static GameState GetGameState()
@@ -37,7 +51,6 @@ public class GameStateController : MonoBehaviour
     {
         //The game should start in the menu, but for now, we start it in a playing state
         currentState = GameState.Playing;
-        //currentState = GameState.Menu;
     }
 
     private void Awake()
@@ -57,6 +70,7 @@ public class GameStateController : MonoBehaviour
 
 public enum GameState
 {
+    Uninitialized,
     Menu,
     Spawning,
     Playing,
