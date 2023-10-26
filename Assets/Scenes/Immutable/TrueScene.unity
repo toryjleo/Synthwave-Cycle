@@ -187,74 +187,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1856768569547263133, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768569547263133, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768569547263133, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768569547263133, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768569547263133, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768569547263133, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768570848331091, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768570848331091, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768570848331091, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768570848331091, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768570848331091, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768570848331091, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768570870572794, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768570870572794, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768570870572794, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768570870572794, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856768570870572794, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 9053255649069867666, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
       propertyPath: m_Name
       value: WorldGenerator
@@ -303,10 +235,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9053255649069867677, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
-      propertyPath: ground
-      value: 
-      objectReference: {fileID: 7351959165376983231, guid: 3d6806701aba1304b8a86361d41d3501, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e921b28c3be9f94898df601eec8d91e, type: 3}
 --- !u!1001 &327971194
@@ -972,7 +900,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5930299348999970244, guid: b3bc9afd0bf30914a96078c85db57f0b, type: 3}
       propertyPath: m_Name
-      value: PauseMenu[Canvas]
+      value: TrueSceneUI[Canvas]
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3bc9afd0bf30914a96078c85db57f0b, type: 3}
