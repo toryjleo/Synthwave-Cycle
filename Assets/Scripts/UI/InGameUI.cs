@@ -6,18 +6,21 @@ using UnityEngine.UI;
 /// <summary>
 /// Logic for pausing and unpausing the menu/game
 /// </summary>
-public class PauseMenu : MonoBehaviour
+public class InGameUI : MonoBehaviour
 {
     // Start is called before the first frame update
     private static bool GameIsPaused = false;
 
     [SerializeField] private GameObject pauseMenuUI;
 
+    [SerializeField] private Image restartUI;
+
     [SerializeField] private Button ResumeButton;
 
 
     private void Start()
     {
+        restartUI.enabled = false;
         if (ResumeButton) { ResumeButton.onClick.AddListener( () => { Resume(); } ); }
     }
 
