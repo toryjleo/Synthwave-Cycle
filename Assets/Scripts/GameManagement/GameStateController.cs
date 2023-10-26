@@ -16,7 +16,7 @@ public class GameStateController : MonoBehaviour
     /// </summary>
     private static GameStateController Instance;
 
-    private GameState currentState;
+    private static GameState currentState;
 
     private BikeScript bike;
 
@@ -28,7 +28,7 @@ public class GameStateController : MonoBehaviour
     {
         if (Instance) // Covering case where Gamestatecontroller gets called before it is initialized
         {
-            return Instance.currentState == GameState.Playing;
+            return currentState == GameState.Playing;
         }
         else
         {
@@ -40,7 +40,7 @@ public class GameStateController : MonoBehaviour
     {
         if (Instance)
         {
-            return Instance.currentState == GameState.Spawning;
+            return currentState == GameState.Spawning;
         }
         else 
         {
@@ -50,7 +50,20 @@ public class GameStateController : MonoBehaviour
 
     public static GameState GetGameState()
     {
-        return Instance.currentState; 
+        return currentState;
+    }
+
+    public static GameState WorldState
+    {
+        get { return currentState; }
+        set {
+                switch (value)
+                {
+                    default:
+                        currentState = value;
+                        break;
+                }
+            }
     }
 
     #endregion
