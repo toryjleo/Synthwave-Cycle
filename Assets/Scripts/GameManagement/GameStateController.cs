@@ -1,16 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
+public delegate void NotifyGSC();
 
 public class GameStateController : MonoBehaviour
 {
     /// <summary>
     /// The GameStateController is a singleton that holds the current state (playing/menu/etc.) of the game
     /// so other game objects can know how to act at any time
+    /// 
+    /// Requires Prefabs in same scene:
+    /// 
     /// </summary>
     private static GameStateController Instance;
 
     private GameState currentState;
+
+    private BikeScript bike;
 
 
     #region static functions
@@ -53,6 +61,7 @@ public class GameStateController : MonoBehaviour
         currentState = GameState.Playing;
     }
 
+    #region MonoBehavior
     private void Awake()
     {
         // If there is an instance, and it's not me, delete myself.
@@ -63,6 +72,50 @@ public class GameStateController : MonoBehaviour
         else
         {
             Instance = this;
+        }
+
+        FindBike();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R) && ((currentState == GameState.Playing) || (currentState == GameState.Spawning)))
+        {
+            GameReset();
+        }
+
+        else if (bike.Energy <= 0)
+        {
+            // Lose Condition
+            Debug.Log("Player ran out of health");
+            GameReset();
+        }
+    }
+    #endregion
+
+    /// <summary>
+    /// Calls ResetGameObject() on every IResettable object in the game world
+    /// </summary>
+    private void GameReset()
+    {
+        Debug.Log("Resetting!");
+        List<IResettable> resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
+        foreach (IResettable r in resetObjects)
+        {
+            r.ResetGameObject();
+        }
+    }
+
+    private void FindBike()
+    {
+        BikeScript[] bikeScripts = Object.FindObjectsOfType<BikeScript>();
+        if (bikeScripts.Length <= 0)
+        {
+            Debug.LogError("WorldGenerator did not find any BikeScripts in scene");
+        }
+        else
+        {
+            bike = bikeScripts[0];
         }
     }
 
