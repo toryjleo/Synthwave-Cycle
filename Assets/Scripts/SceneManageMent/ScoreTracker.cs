@@ -34,8 +34,8 @@ public class ScoreTracker : MonoBehaviour, IResettable
 
     private void Awake()
     {
-        //Init();
-        //FindBike();
+        Init();
+        FindBike();
     }
 
     // Update is called once per frame
