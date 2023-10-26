@@ -117,6 +117,7 @@ public class GameStateController : MonoBehaviour
         {
             r.ResetGameObject();
         }
+        currentState = GameState.Playing;
     }
 
 
