@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public delegate void NotifyGSC();
+// Delegate to 
+public delegate void GameStateHandler(GameState previousState, GameState newState);
 
 public class GameStateController : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class GameStateController : MonoBehaviour
     private static GameStateController Instance;
 
     private static GameState currentState;
+
+    public static event GameStateHandler notifyListenersGameStateHasChanged;
 
 
     #region static functions
@@ -61,6 +64,9 @@ public class GameStateController : MonoBehaviour
             }
             else
             {
+                // Holding previous state to notify listeners of switch.
+                GameState previousState = currentState;
+
                 switch (value)
                 {
                     case GameState.Spawning:
@@ -74,6 +80,8 @@ public class GameStateController : MonoBehaviour
                         currentState = value;
                         break;
                 }
+
+                notifyListenersGameStateHasChanged?.Invoke(previousState, currentState);
             }
             }
     }

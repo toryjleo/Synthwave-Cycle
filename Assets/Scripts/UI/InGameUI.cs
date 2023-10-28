@@ -18,8 +18,10 @@ public class InGameUI : MonoBehaviour
     [SerializeField] private Button ResumeButton;
 
 
-    private void Start()
+    private void Awake()
     {
+        GameStateController.notifyListenersGameStateHasChanged += HandleGameStateUpdate;
+
         restartUI.enabled = false;
         if (ResumeButton) { ResumeButton.onClick.AddListener( () => { Resume(); } ); }
     }
@@ -39,6 +41,11 @@ public class InGameUI : MonoBehaviour
         }
     }
 
+    void OnDestroy() 
+    {
+        GameStateController.notifyListenersGameStateHasChanged -= HandleGameStateUpdate;
+    }
+
     /// <summary>
     /// Removes the pause menu
     /// </summary>
@@ -55,5 +62,10 @@ public class InGameUI : MonoBehaviour
     {
         pauseMenuUI.SetActive(true);
         GameIsPaused = true;
+    }
+
+    private void HandleGameStateUpdate(GameState previousState, GameState newState)
+    {
+        Debug.Log("Handled gamestate update: " + previousState + " to " + newState);
     }
 }
