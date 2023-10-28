@@ -31,16 +31,11 @@ public class InfantrySquad : Squad
 
     internal override void HandleAction()
     {
-        if (squadMembers.Count < minimumSize)
-        {
-            manager.DisbandInfantrySquad(this);
-            return;
-        }
         switch (currentAction)
         {
             //try to move in between the current position and the target
             case SquadAction.Following:
-                movementLoc = (squadCenter + target.transform.position) / 2;
+                movementLoc = target.transform.position;
                 if (IsConfident())
                 {
                     currentAction = SquadAction.Attacking;

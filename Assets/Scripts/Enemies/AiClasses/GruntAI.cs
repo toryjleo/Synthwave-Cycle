@@ -12,7 +12,7 @@ public class GruntAI : InfantryAI
         StartingHP = 40;
         score = 300;
         dlScore = 5;
-        maxSpeed = 10;
+        maxSpeed = 70;
         attackRange = 7;
         minimumRange = 1;
         speedBoost = 8;

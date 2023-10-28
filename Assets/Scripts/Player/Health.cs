@@ -12,6 +12,7 @@ public class Health : MonoBehaviour
     public NotifyHealth healEvent;
     public NotifyHealth deadEvent;
 
+    public bool isInvulnurable = false;
 
 
     public float HitPoints
@@ -33,6 +34,11 @@ public class Health : MonoBehaviour
     /// <param name="hp">The number of points to subtract from _hitPoints.</param>
     public void TakeDamage(float hp)
     {
+        if (isInvulnurable)
+        {
+            return;
+        }
+
         if (GameStateController.GameIsPlaying())
         {
             _hitPoints -= hp;

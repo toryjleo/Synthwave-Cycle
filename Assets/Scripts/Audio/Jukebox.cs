@@ -13,7 +13,7 @@ public class Jukebox : MonoBehaviour, IResettable
     [SerializeField]
     public List<WaveSequence> soundTracks;
     //The current WaveSequence in play
-    private WaveSequence sequence;
+    public WaveSequence sequence;
     // An audiosource array with 2 members to switch between with "toggle"
     public AudioSource[] audioSourceArray;
     int toggle;
@@ -23,7 +23,10 @@ public class Jukebox : MonoBehaviour, IResettable
 
     void Start()
     {
-        sequence = soundTracks[Random.Range(0, soundTracks.Count)];
+        if (sequence == null)
+        {
+            sequence = soundTracks[Random.Range(0, soundTracks.Count)];
+        }
         sequence.spawner = GameObject.FindObjectOfType<SquadSpawner>();
         toggle = 0;
         sequence.UpdateCurrentWave();
@@ -80,6 +83,7 @@ public class Jukebox : MonoBehaviour, IResettable
         {
             audioSourceArray[i].Stop();
         }
+        sequence = soundTracks[Random.Range(0, soundTracks.Count)];
         Start();
     }
 }

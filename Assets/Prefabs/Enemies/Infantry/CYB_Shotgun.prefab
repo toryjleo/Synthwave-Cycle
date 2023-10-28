@@ -1441,6 +1441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInvulnurable: 0
 --- !u!1 &7830052354036537715
 GameObject:
   m_ObjectHideFlags: 0
@@ -1586,7 +1587,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  animationStateController: {fileID: 6128039659088265392}
   rb: {fileID: 2114404339180774918}
   myGun: {fileID: 4935205766387807532}
   hp: {fileID: 0}
@@ -1595,8 +1595,12 @@ MonoBehaviour:
   maxSpeed: 0
   maxForce: 0
   score: 0
+  dlScore: 0
   attackRange: 0
+  minimumRange: 0
   alive: 0
+  speedBoost: 0
+  animationStateController: {fileID: 6128039659088265392}
   muzzleLocation: {fileID: 0}
 --- !u!54 &2114404339180774918
 Rigidbody:
@@ -1952,7 +1956,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7860270618891034725, guid: b911d6d79ffd8bf45bbda8011a59c134, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.642
       objectReference: {fileID: 0}
     - target: {fileID: 7860270618891034725, guid: b911d6d79ffd8bf45bbda8011a59c134, type: 3}
       propertyPath: m_LocalPosition.z

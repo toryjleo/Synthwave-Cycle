@@ -38,6 +38,7 @@ public class SquadSpawner : MonoBehaviour
         {
             VehicleSquad squad = new VehicleSquad(squadManager);
             squad.SetTarget(player);
+            enemyAi.SetTarget(player);
             squad.AddToSquad(enemyAi);
             squadManager.currentEnemies.Add(enemyAi);
             return squad;

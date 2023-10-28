@@ -22,7 +22,10 @@ namespace Assets.Scripts.Bullets
                 {
                     Debug.LogError("Object does not have Health component: " + gameObject.name);
                 }
-                otherHealth.TakeDamage(damageDealt);
+                else
+                {
+                    otherHealth.TakeDamage(damageDealt);
+                }
                 if (!overPenetrates)
                 {
                     OnDespawn();

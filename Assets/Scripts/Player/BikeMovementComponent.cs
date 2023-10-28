@@ -44,6 +44,9 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
 
     private const float MIN_ACCELERATION = 40.0f;
 
+    [SerializeField]
+    public bool Debug_Invulnurability = false;
+
     /// <summary>
     /// The current acceleration of the bike. Is dependant on health
     /// </summary>
