@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-// Delegate to 
+// Delegate method template to handle switching from a previous state to a new state.
 public delegate void GameStateHandler(GameState previousState, GameState newState);
 
 public class GameStateController : MonoBehaviour
@@ -23,7 +23,6 @@ public class GameStateController : MonoBehaviour
 
 
     #region static functions
-
 
     public static bool GameIsPlaying()
     {
@@ -54,6 +53,9 @@ public class GameStateController : MonoBehaviour
         return currentState;
     }
 
+    /// <summary>
+    /// A Proprty which handles the changing of game states and notifies listeners.
+    /// </summary>
     public static GameState WorldState
     {
         get { return currentState; }
@@ -70,9 +72,6 @@ public class GameStateController : MonoBehaviour
                 switch (value)
                 {
                     case GameState.Spawning:
-                        if (currentState == GameState.Playing) 
-                            { // TODO: Make sure that all UI is updated to respawn
-                            }
                         currentState = value;
                         break;
                     case GameState.Playing:

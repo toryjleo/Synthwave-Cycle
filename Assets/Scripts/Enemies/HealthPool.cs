@@ -75,6 +75,11 @@ public class HealthPool : SelfDespawn
         }
     }
 
+    private void OnDestroy()
+    {
+        GameStateController.notifyListenersGameStateHasChanged -= HandleGameStateUpdate;
+    }
+
     /// <summary>Reinitializes and turns on this HealthPool gameObject.</summary>
     /// <param name="shrinkPerSecond">The amount at which the scale is reduced per second.</param>
     /// <param name="startScale">The scale at which this healthpool starts at.</param>
@@ -175,6 +180,9 @@ public class HealthPool : SelfDespawn
         return spawnVector;
     }
 
+    /// <summary>
+    /// Sets this healthpool to have a fresh spawn location.
+    /// </summary>
     private void SpawnNewLocation() 
     {
         this.transform.position = GetSpawnVector(player.ForwardVector(), SpawnAngleRandomNess, currentSpawnDistance);
@@ -204,6 +212,11 @@ public class HealthPool : SelfDespawn
         currentPlayerHealAmount += PLAYER_HEAL_AMNT_INCREASE;
     }
 
+    /// <summary>
+    /// Handles an update from the GameStateController
+    /// </summary>
+    /// <param name="previousState">The state that was just in effect</param>
+    /// <param name="newState">The gamestate which will take effect this frame</param>
     private void HandleGameStateUpdate(GameState previousState, GameState newState)
     {
         if (previousState == GameState.Spawning && newState == GameState.Playing)

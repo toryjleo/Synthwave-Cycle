@@ -64,6 +64,11 @@ public class InGameUI : MonoBehaviour
         GameIsPaused = true;
     }
 
+    /// <summary>
+    /// Handles an update from the GameStateController
+    /// </summary>
+    /// <param name="previousState">The state that was just in effect</param>
+    /// <param name="newState">The gamestate which will take effect this frame</param>
     private void HandleGameStateUpdate(GameState previousState, GameState newState)
     {
         if (previousState == GameState.Playing && newState == GameState.Spawning) 

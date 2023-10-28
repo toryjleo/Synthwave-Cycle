@@ -71,7 +71,7 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
 
     private void FixedUpdate()
     {
-        if (GameStateController.WorldState == GameState.Playing)
+        if (GameStateController.GameIsPlaying())
         {
             ApplyForces();
             rb.rotation = new Quaternion(0, rb.rotation.y, 0, rb.rotation.w);
