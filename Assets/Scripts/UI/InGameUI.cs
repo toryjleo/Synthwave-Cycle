@@ -74,6 +74,5 @@ public class InGameUI : MonoBehaviour
         {
             restartUI.gameObject.SetActive(false);
         }
-        Debug.Log("Handled gamestate update: " + previousState + " to " + newState);
     }
 }
