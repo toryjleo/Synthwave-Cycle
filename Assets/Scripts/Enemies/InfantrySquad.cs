@@ -36,7 +36,6 @@ public class InfantrySquad : Squad
             //try to move in between the current position and the target
             case SquadAction.Following:
                 movementLoc = target.transform.position;
-                //movementLoc = (squadCenter + target.transform.position) / 2;// (try to move half way between player and squad member
                 if (IsConfident())
                 {
                     currentAction = SquadAction.Attacking;

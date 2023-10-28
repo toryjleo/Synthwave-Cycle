@@ -46,11 +46,19 @@ public class GameManager : EditorWindow
 
     private void OnGUI()
     {
+        HandleGodMode();
+        HandleForceSoundtrack();
+    }
+    private void HandleGodMode()
+    {
         godModeEnabled = EditorGUILayout.Toggle("God Mode Enabled", godModeEnabled);
-        if (godModeEnabled != playerhealth.isInvulnurable) 
+        if (godModeEnabled != playerhealth.isInvulnurable)
         {
             playerhealth.isInvulnurable = godModeEnabled;
         }
+    }
+    private void HandleForceSoundtrack()
+    {
         forceSoundtrack = EditorGUILayout.Toggle("Force Soundtrack?", forceSoundtrack);
         if (forceSoundtrack)
         {
@@ -62,6 +70,5 @@ public class GameManager : EditorWindow
                 jukebox.ResetGameObject();
             }
         }
-
     }
 }

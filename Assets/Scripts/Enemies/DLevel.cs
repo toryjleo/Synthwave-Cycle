@@ -33,10 +33,9 @@ public class DLevel : MonoBehaviour, IResettable
     /// <param name="e"></param>
     private void XTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
-        dangerLevel--;
-        if (dangerLevel < 1)
+        if (dangerLevel > 1)
         {
-            dangerLevel = 1;
+            dangerLevel--;
         }
     }
 
