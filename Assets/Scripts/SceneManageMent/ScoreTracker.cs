@@ -10,13 +10,12 @@ using System.Linq;
 /// Expects there to be an object with BikeScript in the scene.
 public class ScoreTracker : MonoBehaviour, IResettable
 {
-    private const float MAX_TIME = 90;
-    private float currentTime;
     private int currentScore;
     private float _currentEnergy;
     public TextMeshProUGUI timeLeftText;
     public TextMeshProUGUI currentScoreText;
     public TextMeshProUGUI currentHPText;
+
 
     public List<PlayerWeaponType> weaponPool;
 
@@ -44,44 +43,14 @@ public class ScoreTracker : MonoBehaviour, IResettable
     {
         UpdateUIEnergy();
         UpdateText();
-        if (currentTime <= 0)
-        {
-            GameReset();
-        }
-        else if (_currentEnergy <=0)
-        {
-            // Lose Condition
-            Debug.Log("Player ran out of health");
-            GameReset();
-        }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            GameReset();
-        }
     }
 
     public void Init()
     {
-        currentTime = MAX_TIME;
         currentScore = 0;
     }
 
-    private void FindBike()
-    {
-        BikeScript[] bikeScripts = Object.FindObjectsOfType<BikeScript>();
-        if (bikeScripts.Length <= 0)
-        {
-            Debug.LogError("WorldGenerator did not find any BikeScripts in scene");
-        }
-        else
-        {
-            bike = bikeScripts[0];
-        }
-    }
+
 
     void OnDisable()
     {
@@ -99,9 +68,6 @@ public class ScoreTracker : MonoBehaviour, IResettable
     /// <summary>Updates the UI displayed on screen.</summary>
     private void UpdateText()
     {
-        currentTime -= Time.deltaTime;
-
-        timeLeftText.text = currentTime.ToString("0.00"); // Formats to 2 decimal points
         currentScoreText.text = currentScore.ToString();
         currentHPText.text = "Energy: " + _currentEnergy.ToString("0.00");
     }
@@ -125,19 +91,6 @@ public class ScoreTracker : MonoBehaviour, IResettable
         currentScore += points;
     }
 
-    /// <summary>
-    /// Calls ResetGameObject() on every IResettable object in the game world
-    /// </summary>
-    private void GameReset()
-    {
-        Debug.Log("Resetting!");
-        List<IResettable> resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
-        foreach (IResettable r in resetObjects)
-        {
-            r.ResetGameObject();
-        }
-    }
-
     /// <summary>Updates this class's Energy to the bike's energy.</summary>
     private void UpdateUIEnergy()
     {
@@ -150,6 +103,19 @@ public class ScoreTracker : MonoBehaviour, IResettable
             Energy = bike.Energy;
         }
 
+    }
+
+    private void FindBike()
+    {
+        BikeScript[] bikeScripts = Object.FindObjectsOfType<BikeScript>();
+        if (bikeScripts.Length <= 0)
+        {
+            Debug.LogError("WorldGenerator did not find any BikeScripts in scene");
+        }
+        else
+        {
+            bike = bikeScripts[0];
+        }
     }
 
     public void ResetGameObject()

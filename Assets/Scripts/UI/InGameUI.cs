@@ -6,18 +6,23 @@ using UnityEngine.UI;
 /// <summary>
 /// Logic for pausing and unpausing the menu/game
 /// </summary>
-public class PauseMenu : MonoBehaviour
+public class InGameUI : MonoBehaviour
 {
     // Start is called before the first frame update
     private static bool GameIsPaused = false;
 
     [SerializeField] private GameObject pauseMenuUI;
 
+    [SerializeField] private Image restartUI;
+
     [SerializeField] private Button ResumeButton;
 
 
-    private void Start()
+    private void Awake()
     {
+        GameStateController.notifyListenersGameStateHasChanged += HandleGameStateUpdate;
+
+        restartUI.gameObject.SetActive(false);
         if (ResumeButton) { ResumeButton.onClick.AddListener( () => { Resume(); } ); }
     }
 
@@ -36,6 +41,11 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    void OnDestroy() 
+    {
+        GameStateController.notifyListenersGameStateHasChanged -= HandleGameStateUpdate;
+    }
+
     /// <summary>
     /// Removes the pause menu
     /// </summary>
@@ -52,5 +62,22 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenuUI.SetActive(true);
         GameIsPaused = true;
+    }
+
+    /// <summary>
+    /// Handles an update from the GameStateController
+    /// </summary>
+    /// <param name="previousState">The state that was just in effect</param>
+    /// <param name="newState">The gamestate which will take effect this frame</param>
+    private void HandleGameStateUpdate(GameState previousState, GameState newState)
+    {
+        if (previousState == GameState.Playing && newState == GameState.Spawning) 
+        {
+            restartUI.gameObject.SetActive(true);
+        }
+        else if (previousState == GameState.Spawning && newState == GameState.Playing)
+        {
+            restartUI.gameObject.SetActive(false);
+        }
     }
 }

@@ -48,8 +48,11 @@ public class HealthPool : SelfDespawn
 
     private void Start()
     {
+        GameStateController.notifyListenersGameStateHasChanged += HandleGameStateUpdate;
+
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         player = playerObject.GetComponent<BikeScript>();
+
         currentSpawnDistance = INITIAL_SPAWN_DISTANCE;
         currentPlayerHealAmount = INITIAL_PLAYER_HEAL_AMNT;
         Init(RateOfDecay, SizeofCylinder);
@@ -72,6 +75,11 @@ public class HealthPool : SelfDespawn
         }
     }
 
+    private void OnDestroy()
+    {
+        GameStateController.notifyListenersGameStateHasChanged -= HandleGameStateUpdate;
+    }
+
     /// <summary>Reinitializes and turns on this HealthPool gameObject.</summary>
     /// <param name="shrinkPerSecond">The amount at which the scale is reduced per second.</param>
     /// <param name="startScale">The scale at which this healthpool starts at.</param>
@@ -84,9 +92,7 @@ public class HealthPool : SelfDespawn
 
         SetScale(startScale);
 
-        this.transform.position = SpawnVector(player.ForwardVector(), SpawnAngleRandomNess, currentSpawnDistance);
-
-        this.gameObject.SetActive(true);
+        SpawnNewLocation();
     }
 
     protected override void OnDespawn() 
@@ -156,7 +162,7 @@ public class HealthPool : SelfDespawn
     /// <param name="angle"> the range of degrees that the vector can be rotated to ( 0 to 180 ) </param>
     /// <param name="distance"> the desired lenght of the spawn vector </param>
     /// <returns></returns>
-    public Vector3 SpawnVector(Vector3 bias, int angle, int distance)
+    private Vector3 GetSpawnVector(Vector3 bias, int angle, int distance)
     {
         if (bias == new Vector3(0, 0, 0))// defaut case if bike isn't moving 
         {
@@ -172,6 +178,16 @@ public class HealthPool : SelfDespawn
         spawnVector *= distance;
         spawnVector += player.transform.position;
         return spawnVector;
+    }
+
+    /// <summary>
+    /// Sets this healthpool to have a fresh spawn location.
+    /// </summary>
+    private void SpawnNewLocation() 
+    {
+        this.transform.position = GetSpawnVector(player.ForwardVector(), SpawnAngleRandomNess, currentSpawnDistance);
+
+        this.gameObject.SetActive(true);
     }
     #endregion
 
@@ -194,5 +210,19 @@ public class HealthPool : SelfDespawn
     private void IncreaseHealthOutput() 
     {
         currentPlayerHealAmount += PLAYER_HEAL_AMNT_INCREASE;
+    }
+
+    /// <summary>
+    /// Handles an update from the GameStateController
+    /// </summary>
+    /// <param name="previousState">The state that was just in effect</param>
+    /// <param name="newState">The gamestate which will take effect this frame</param>
+    private void HandleGameStateUpdate(GameState previousState, GameState newState)
+    {
+        if (previousState == GameState.Spawning && newState == GameState.Playing)
+        {
+            // Just respawning case
+            Init(RateOfDecay, SizeofCylinder);
+        }
     }
 }
