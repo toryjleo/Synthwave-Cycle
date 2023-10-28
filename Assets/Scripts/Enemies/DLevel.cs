@@ -13,7 +13,7 @@ public class DLevel : MonoBehaviour, IResettable
     {
         //This timer increases the danger level and is used for determining the amount and difficulty of enemies being spawned
         dangerTimer = new Timer(3000);
-        dangerLevel = 0;
+        dangerLevel = 1;
         dangerTimer.AutoReset = true;
         dangerTimer.Enabled = true;
         dangerTimer.Elapsed += XTimer_Elapsed;
@@ -34,9 +34,9 @@ public class DLevel : MonoBehaviour, IResettable
     private void XTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
         dangerLevel--;
-        if (dangerLevel < 0)
+        if (dangerLevel < 1)
         {
-            dangerLevel = 0;
+            dangerLevel = 1;
         }
     }
 

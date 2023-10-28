@@ -63,9 +63,16 @@ public class SquadManager : MonoBehaviour, IResettable
     // Update is called once per frame
     void Update()
     {
-        foreach (Squad s in squads) 
+        for (int i = squads.Count-1; i >= 0; i--)
         {
-            s.Update();
+            if (squads[i].HasMembers())
+            {
+                squads[i].Update();
+            }
+            else
+            {
+                squads.RemoveAt(i);
+            }    
         }
     }
 }

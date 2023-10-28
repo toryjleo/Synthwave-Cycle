@@ -118,4 +118,9 @@ public abstract class Squad
     {
         currentAction = action;
     }
+
+    internal bool HasMembers()
+    {
+        return squadMembers.Count > 0;
+    }
 }
