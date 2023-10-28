@@ -73,9 +73,11 @@ public class GameStateController : MonoBehaviour
                         if (currentState == GameState.Playing) 
                             { // TODO: Make sure that all UI is updated to respawn
                             }
-                        currentState = GameState.Spawning;
+                        currentState = value;
                         break;
-                    
+                    case GameState.Playing:
+                        currentState = value;
+                        break;
                     default:
                         currentState = value;
                         break;
@@ -125,7 +127,7 @@ public class GameStateController : MonoBehaviour
         {
             r.ResetGameObject();
         }
-        currentState = GameState.Playing;
+        WorldState = GameState.Playing;
     }
 
 

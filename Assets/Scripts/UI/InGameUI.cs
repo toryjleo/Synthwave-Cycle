@@ -22,7 +22,7 @@ public class InGameUI : MonoBehaviour
     {
         GameStateController.notifyListenersGameStateHasChanged += HandleGameStateUpdate;
 
-        restartUI.enabled = false;
+        restartUI.gameObject.SetActive(false);
         if (ResumeButton) { ResumeButton.onClick.AddListener( () => { Resume(); } ); }
     }
 
@@ -66,6 +66,14 @@ public class InGameUI : MonoBehaviour
 
     private void HandleGameStateUpdate(GameState previousState, GameState newState)
     {
+        if (previousState == GameState.Playing && newState == GameState.Spawning) 
+        {
+            restartUI.gameObject.SetActive(true);
+        }
+        else if (previousState == GameState.Spawning && newState == GameState.Playing)
+        {
+            restartUI.gameObject.SetActive(false);
+        }
         Debug.Log("Handled gamestate update: " + previousState + " to " + newState);
     }
 }
