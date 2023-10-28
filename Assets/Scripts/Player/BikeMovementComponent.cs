@@ -21,7 +21,7 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
     public Rigidbody rb;
 
     // Dictates movement speed
-    private Health health;
+    public Health health;
 
 
     public float MoveSpeed = 100; //The speed of the bike 
@@ -74,8 +74,11 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
 
     private void FixedUpdate()
     {
-        ApplyForces();
-        rb.rotation = new Quaternion(0, rb.rotation.y, 0, rb.rotation.w);
+        if (GameStateController.GameIsPlaying())
+        {
+            ApplyForces();
+            rb.rotation = new Quaternion(0, rb.rotation.y, 0, rb.rotation.w);
+        }
     }
 
     public void TakeDamage(float damageTaken)

@@ -62,7 +62,7 @@ public class InfantrySquad : Squad
     {
         foreach (Ai ai in squadMembers)
         {
-            if (target == null || !GameStateController.IsGamePlaying())
+            if (target == null || !GameStateController.GameIsPlaying())
             {
                 ai.Wander();
             }

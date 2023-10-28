@@ -69,22 +69,23 @@ public class TurretScript : Gun
     // Update is called once per frame
     void Update()
     {
-
-        // Logic for Having turret track the Mouse. 
-        Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(r, out RaycastHit raycastHit))
+        if (GameStateController.GameIsPlaying())
         {
-            mouse = raycastHit.point;
+            // Logic for Having turret track the Mouse. 
+            Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(r, out RaycastHit raycastHit))
+            {
+                mouse = raycastHit.point;
 
-            //Debug.Log(mouse +"   "+this.transform.position);
+                //Debug.Log(mouse +"   "+this.transform.position);
 
-            mouse -= this.transform.position; 
+                mouse -= this.transform.position;
+            }
+            //mouse = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
+            var angle = Mathf.Atan2(mouse.x, mouse.z) * Mathf.Rad2Deg;
+
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+            //transform.Rotate(Vector3.up, steerRate);
         }
-        //mouse = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
-        var angle = Mathf.Atan2(mouse.x, mouse.z) * Mathf.Rad2Deg;
-
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
-        //transform.Rotate(Vector3.up, steerRate);
-
     }
 }

@@ -81,7 +81,7 @@ public class BikeScript : MonoBehaviour, IResettable
 
     private void Update()
     {
-        if (GameStateController.IsGamePlaying())
+        if (GameStateController.GameIsPlaying())
         {
             UpdateBikeEmission();
         }
@@ -90,7 +90,7 @@ public class BikeScript : MonoBehaviour, IResettable
 
     private void FixedUpdate()
     {
-        if (GameStateController.IsGamePlaying())
+        if (GameStateController.GameIsPlaying())
         {
             // Handle primary and secondary fire inputs
             if (Input.GetKey(KeyCode.Mouse0))
@@ -119,15 +119,29 @@ public class BikeScript : MonoBehaviour, IResettable
         }
     }
 
+    void OnDestroy() 
+    {
+        movementComponent.health.deadEvent -= Dead;
+
+        if (GetComponentInChildren<TurretScript>() != null)
+        {
+            turret.BulletShot -= movementComponent.bl_ProcessCompleted;
+        }
+    }
+
+    #endregion
+
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
     private void Init()
     {
         emissiveBike = GetComponentInChildren<EmmissiveBikeScript>();
         movementComponent = GetComponent<BikeMovementComponent>();
 
+        movementComponent.health.deadEvent += Dead;
+
 
         //Initializes Turret 
-        if(GetComponentInChildren<TurretScript>() != null) { 
+        if (GetComponentInChildren<TurretScript>() != null) { 
             turret = GetComponentInChildren<TurretScript>();
             turret.Init();
             turret.BulletShot += movementComponent.bl_ProcessCompleted;
@@ -137,7 +151,6 @@ public class BikeScript : MonoBehaviour, IResettable
         consecutiveDistanceToHP = 0;
     }
 
-    #endregion
 
     #region Health Related
     /// <summary>Checks to see if a HealthPool is in front of the bike.</summary>
@@ -182,6 +195,12 @@ public class BikeScript : MonoBehaviour, IResettable
     {
         Init();
         movementComponent.transform.position = new Vector3(0, 0, 0);
+    }
+
+    private void Dead() 
+    {
+        GameStateController.WorldState = GameState.Spawning;
+        Debug.Log("Dead Event Called!");
     }
     #endregion
 }
