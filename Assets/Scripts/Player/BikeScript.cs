@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -201,6 +202,11 @@ public class BikeScript : MonoBehaviour, IResettable
     {
         GameStateController.WorldState = GameState.Spawning;
         Debug.Log("Dead Event Called!");
+    }
+
+    internal void SpeedBoost(float boostAmount)
+    {
+        movementComponent.rb.AddForce(movementComponent.ForwardVector() * boostAmount, ForceMode.VelocityChange);
     }
     #endregion
 }
