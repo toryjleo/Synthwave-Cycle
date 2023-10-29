@@ -36,7 +36,8 @@ public class Wave : ScriptableObject
         return TrackVariation;
     }
 
-    internal List<Enemy> GetWaveAi()
+    //activates wave properties and returns a list of wave enemies
+    internal virtual List<Enemy> GetWaveInfo()
     {
         return waveEnemies;
     }
