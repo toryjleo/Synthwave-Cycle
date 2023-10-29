@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,10 +34,18 @@ public class WaveSequence : ScriptableObject
         {
             if (!sequence[index].IsOverThreshold())
             {
-                Debug.Log("Current Wave: " + (index) + "/" + (sequence.Count - 1) + "\nDanger Level: " + DLevel.Instance.GetDangerLevel());
-                CurrentWave = index;
+                CurrentWave = Mathf.Clamp(index - 1, 0, sequence.Count - 1);
+                //Log the wave + 1 because the index starts at 0, but the tracks start at 1
+                Debug.Log("Current Wave: " + (CurrentWave + 1) + "/" + (sequence.Count) + "\nDanger Level: " + DLevel.Instance.GetDangerLevel());
                 break;
             }
         }
+    }
+
+    internal void Init(SquadSpawner squadSpawner)
+    {
+        spawner = squadSpawner;
+        CurrentWave = 0;
+        previousWave = -1;
     }
 }

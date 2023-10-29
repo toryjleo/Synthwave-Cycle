@@ -27,7 +27,7 @@ public class Jukebox : MonoBehaviour, IResettable
         {
             sequence = soundTracks[Random.Range(0, soundTracks.Count)];
         }
-        sequence.spawner = GameObject.FindObjectOfType<SquadSpawner>();
+        sequence.Init(GameObject.FindObjectOfType<SquadSpawner>());
         toggle = 0;
         AudioClip clip = sequence.GetCurrentTrackVariation();
         // Schedule the first track
