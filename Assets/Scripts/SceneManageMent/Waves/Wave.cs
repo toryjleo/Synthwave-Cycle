@@ -19,6 +19,10 @@ public class Wave : ScriptableObject
     [SerializeField]
     public AudioClip TrackVariation;
 
+    //If the track has more than one music loop, we need to spawn in waves multiple times
+    [SerializeField]
+    public int wavesInTrack = 1;
+
     //A collection of enemy types, each loop, a squad of each type is spawned
     [SerializeField]
     public List<Enemy> waveEnemies;

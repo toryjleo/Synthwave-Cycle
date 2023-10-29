@@ -18,7 +18,8 @@ public class Jukebox : MonoBehaviour, IResettable
     public AudioSource[] audioSourceArray;
     int toggle;
 
-    double nextStartTime;
+    double nextAudioLoopTime;
+    double nextWaveSpawnTime;
 
 
     void Start()
@@ -34,7 +35,8 @@ public class Jukebox : MonoBehaviour, IResettable
         audioSourceArray[toggle].clip = clip;
 
         double startTime  = AudioSettings.dspTime + 0.2;
-        nextStartTime = startTime;
+        nextAudioLoopTime = startTime;
+        nextWaveSpawnTime = startTime;
 
         audioSourceArray[toggle].PlayScheduled(startTime);
         toggle = 1 - toggle;
@@ -43,12 +45,16 @@ public class Jukebox : MonoBehaviour, IResettable
     private void Update()
     {
         // Schedule next track 1 second before this track ends
-        if (AudioSettings.dspTime > nextStartTime - 1) 
+        if (AudioSettings.dspTime > nextAudioLoopTime - 1) 
         {
-            sequence.CheckForWaveSpawn();
             QueueNextSong();
         }
-        
+        if(AudioSettings.dspTime > nextWaveSpawnTime)
+        {
+            sequence.CheckForWaveSpawn();
+            nextWaveSpawnTime = sequence.GetNextWaveTime(nextWaveSpawnTime);
+        }
+
     }
 
     /// <summary>
@@ -59,10 +65,10 @@ public class Jukebox : MonoBehaviour, IResettable
         AudioClip clipToPlay = sequence.GetCurrentTrackVariation();
         // Loads the next Clip to play and schedules when it will start
         audioSourceArray[toggle].clip = clipToPlay;
-        audioSourceArray[toggle].PlayScheduled(nextStartTime);
+        audioSourceArray[toggle].PlayScheduled(nextAudioLoopTime);
         // Checks how long the Clip will last and updates the Next Start Time with a new value
         double duration = (double)clipToPlay.samples / clipToPlay.frequency;
-        nextStartTime = nextStartTime + duration;
+        nextAudioLoopTime = nextAudioLoopTime + duration;
         // Switches the toggle to use the other Audio Source next
         toggle = 1 - toggle;
     }

@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DLThreshold: 40
   TrackVariation: {fileID: 8300000, guid: a74993030f36e96448a8ee4b8d688ada, type: 3}
+  wavesInTrack: 2
   waveEnemies: 0200000001000000
