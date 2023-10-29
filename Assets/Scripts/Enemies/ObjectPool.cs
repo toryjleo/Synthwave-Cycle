@@ -34,13 +34,13 @@ public class ObjectPool : MonoBehaviour
     {
         public Enemy tag;
         public GameObject prefab;
-        public int size;
+        public int poolSize;
 
         public Pool(Enemy Tag, GameObject Prefab, int Size)
         {
             tag = Tag;
             prefab = Prefab;
-            size = Size;
+            poolSize = Size;
         }
     }
 
@@ -69,7 +69,7 @@ public class ObjectPool : MonoBehaviour
             Queue<GameObject> objectPool = new Queue<GameObject>();
 
             //instantiate the objects with 
-            for(int i =0; i< pool.size; i++)
+            for(int i =0; i< pool.poolSize; i++)
             {   
                 GameObject obj = Instantiate(pool.prefab); 
                 obj.SetActive(false);
