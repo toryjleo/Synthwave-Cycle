@@ -18,8 +18,8 @@ public class HealthPool : SelfDespawn
     private const float DEFULAT_SCALE_SHRINK_PER_SECOND = 20f;
     private const float INITIAL_PLAYER_HEAL_AMNT = 200f;
 
-    private const int SPAWN_DISTANCE_INCREASE = 100;
-    private const float PLAYER_HEAL_AMNT_INCREASE = 100f;
+    private const int SPAWN_DISTANCE_INCREASE = 150;
+    private const float PLAYER_HEAL_AMNT_INCREASE = 50f;
     private const float PLAYER_SPEED_BOOST_AMNT = 10f;
 
     private float minScale;
