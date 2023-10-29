@@ -124,7 +124,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
         // When hitting a player, get the arsenal and equip the selected gun
         if (other.tag == "Player")
         {
-            Debug.Log("Player hit pickup!");
+            //Debug.Log("Player hit pickup!");
             Arsenal arsenal = other.gameObject.GetComponentInChildren<Arsenal>();
             if (arsenal == null)
             {
@@ -132,7 +132,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
             }
             else
             {
-                Debug.Log("Equipping gun type: " + gunType);
+                //Debug.Log("Equipping gun type: " + gunType);
                 arsenal.EquipGun(gunType);
                 OnDespawn();
             }
