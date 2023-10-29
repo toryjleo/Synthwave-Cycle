@@ -56,8 +56,8 @@ public class WaveSequence : ScriptableObject
 
     internal double GetNextWaveTime(double currentTime)
     {
-        AudioClip clipToPlay = sequence[CurrentWave].GetTrackVariation();
+        AudioClip clipToPlay = sequence[currentWave].GetTrackVariation();
         double duration = (double)clipToPlay.samples / clipToPlay.frequency;
-        return currentTime + (duration / sequence[CurrentWave].wavesInTrack);
+        return currentTime + (duration / sequence[currentWave].wavesInTrack);
     }
 }
