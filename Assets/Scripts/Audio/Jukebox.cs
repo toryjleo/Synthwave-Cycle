@@ -29,18 +29,18 @@ public class Jukebox : MonoBehaviour, IResettable
         }
         sequence.spawner = GameObject.FindObjectOfType<SquadSpawner>();
         toggle = 0;
-        sequence.UpdateCurrentWave();
         AudioClip clip = sequence.GetCurrentTrackVariation();
         // Schedule the first track
         audioSourceArray[toggle].clip = clip;
 
+        sequence.CheckForWaveSpawn();
+
         double startTime  = AudioSettings.dspTime + 0.2;
-        double introDuration = GetClipDuration(clip);
-        nextStartTime = startTime + introDuration;
+        //double introDuration = GetClipDuration(clip);
+        nextStartTime = startTime;// + introDuration;
 
         audioSourceArray[toggle].PlayScheduled(startTime);
         toggle = 1 - toggle;
-
     }
 
     private void Update()
