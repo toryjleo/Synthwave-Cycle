@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: InTheirFinalMomentsWave2
   m_EditorClassIdentifier: 
   DLThreshold: 50
-  TrackVariation: {fileID: 8300000, guid: c1ef04b1e32f3f641b7eb74571b6e121, type: 3}
+  TrackVariation: {fileID: 8300000, guid: a74993030f36e96448a8ee4b8d688ada, type: 3}
   waveEnemies: 0100000001000000
