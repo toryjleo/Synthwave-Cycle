@@ -138,14 +138,14 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
 
         
         //Latteral movement inputs, q and e add side force to the bike 
-        if (Input.GetKey(KeyCode.E))
-        {
-            rb.AddForce(RightVector() * SideForce);
-        }
-        if (Input.GetKey(KeyCode.Q))
-        {
-            rb.AddForce(LeftVector() * SideForce);
-        }
+        //if (Input.GetKey(KeyCode.E))
+        //{
+        //    rb.AddForce(RightVector() * SideForce);
+        //}
+        //if (Input.GetKey(KeyCode.Q))
+        //{
+        //    rb.AddForce(LeftVector() * SideForce);
+        //}
 
         //Debug.Log(Input.GetAxis("Horizontal"));
         //Steering Takes Horizontal Input and rotates both 
