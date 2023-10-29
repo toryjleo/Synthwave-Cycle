@@ -38,7 +38,7 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
 
     private const float ACCELERATION_SCALE = 10.0f;
 
-    private const float MAX_SPEED_SCALE = 10;
+    private const float MAX_SPEED_SCALE = 20;
 
     private const float STARTING_HEALTH = 200.0f;
 
@@ -64,7 +64,7 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
     {
         get 
         {
-            return (HitPoints / ACCELERATION_SCALE);
+            return (HitPoints / MAX_SPEED_SCALE) * 100;
         }
     }
 
@@ -80,11 +80,6 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
     private void Awake()
     {
         Init();
-    }
-
-    private void Update()
-    {
-        rb.velocity = (Vector2)Vector3.ClampMagnitude(rb.velocity, MaxSpeed);
     }
 
     private void FixedUpdate()
@@ -167,6 +162,7 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         */
         //Lerp from actual vector to desired vector 
         appliedForce = Vector3.Lerp(appliedForce.normalized, ForwardVector().normalized, Traction * Time.fixedDeltaTime) * appliedForce.magnitude;
+        appliedForce = Vector3.ClampMagnitude(appliedForce, MaxSpeed * Time.fixedDeltaTime);
         rb.AddForce(appliedForce);
     }
 
