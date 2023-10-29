@@ -38,6 +38,8 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
 
     private const float ACCELERATION_SCALE = 10.0f;
 
+    private const float MAX_SPEED_SCALE = 10;
+
     private const float STARTING_HEALTH = 200.0f;
 
     private const float MAX_ACCELERATION = 1000.0f;
@@ -58,10 +60,18 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         }
     }
 
-    // Number of player hit points
-    public float HitPoints 
+    public float MaxSpeed 
     {
         get 
+        {
+            return (HitPoints / ACCELERATION_SCALE);
+        }
+    }
+
+    // Number of player hit points
+    public float HitPoints
+    {
+        get
         {
             return health.HitPoints;
         }
@@ -70,6 +80,11 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
     private void Awake()
     {
         Init();
+    }
+
+    private void Update()
+    {
+        rb.velocity = (Vector2)Vector3.ClampMagnitude(rb.velocity, MaxSpeed);
     }
 
     private void FixedUpdate()
