@@ -14,8 +14,8 @@ public class RiflemanAi : InfantryAI
         score = 100;
         dlScore = 10;
         maxSpeed = 80;
-        attackRange = 60;
-        minimumRange = 0;
+        attackRange = 70;
+        minimumRange = 10;
         speedBoost = 20;
 
         hp = GetComponentInChildren<Health>();
