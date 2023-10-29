@@ -11,21 +11,21 @@ using UnityEngine;
 public class WaveSequence : ScriptableObject
 {
     private int previousWave = -1;
-    private int CurrentWave = 0;
+    private int currentWave = 0;
     [SerializeField]
     public List<Wave> sequence;
     internal SquadSpawner spawner;
 
     public AudioClip GetCurrentTrackVariation()
     {
-        return sequence[CurrentWave].GetTrackVariation();
+        return sequence[currentWave].GetTrackVariation();
     }
 
     public void CheckForWaveSpawn()
     {
         UpdateCurrentWave();
-        spawner.SpawnWave(sequence[CurrentWave].GetWaveAi());
-        previousWave = CurrentWave;
+        spawner.SpawnWave(sequence[currentWave].GetWaveAi());
+        previousWave = currentWave;
     }
 
     internal void UpdateCurrentWave()
@@ -34,18 +34,23 @@ public class WaveSequence : ScriptableObject
         {
             if (!sequence[index].IsOverThreshold())
             {
-                CurrentWave = Mathf.Clamp(index - 1, 0, sequence.Count - 1);
+                currentWave = Mathf.Clamp(index - 1, 0, sequence.Count - 1);
                 //Log the wave + 1 because the index starts at 0, but the tracks start at 1
-                Debug.Log("Current Wave: " + (CurrentWave + 1) + "/" + (sequence.Count) + "\nDanger Level: " + DLevel.Instance.GetDangerLevel());
+                Debug.Log("Current Wave: " + (currentWave + 1) + "/" + (sequence.Count) + "\nDanger Level: " + DLevel.Instance.GetDangerLevel());
                 break;
             }
         }
     }
 
+    public bool IsLastWaveSequence() 
+    {
+        return currentWave == sequence.Count - 1;
+    }
+
     internal void Init(SquadSpawner squadSpawner)
     {
         spawner = squadSpawner;
-        CurrentWave = 0;
+        currentWave = 0;
         previousWave = -1;
     }
 }
