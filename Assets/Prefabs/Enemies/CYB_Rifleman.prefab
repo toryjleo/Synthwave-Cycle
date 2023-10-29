@@ -540,6 +540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInvulnurable: 0
 --- !u!1 &3874834856226785690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1330,7 +1331,7 @@ GameObject:
   - component: {fileID: 412237147971708079}
   - component: {fileID: 3940266983991501729}
   m_Layer: 0
-  m_Name: CYB
+  m_Name: CYB_Rifleman
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1366,19 +1367,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  animationStateController: {fileID: 0}
   rb: {fileID: 3874834857555224720}
   myGun: {fileID: 250586739251281370}
   hp: {fileID: 0}
   activeConditions: []
-  StartingHP: 0
-  maxSpeed: 0
+  StartingHP: 20
+  maxSpeed: 15
   maxForce: 0
-  score: 0
-  attackRange: 0
-  minimumRange: 0
-  alive: 0
-  speedBoost: 0
+  score: 100
+  dlScore: 10
+  attackRange: 70
+  minimumRange: 10
+  alive: 1
+  speedBoost: 20
+  animationStateController: {fileID: 0}
   muzzleLocation: {fileID: 0}
 --- !u!54 &3874834857555224720
 Rigidbody:

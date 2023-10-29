@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GruntAI : InfantryAI
+public class Shotgunner : InfantryAI
 {
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
 
     public override void Init()
     {
         alive = true;
-        StartingHP = 40;
+        /*StartingHP = 40;
         score = 300;
         dlScore = 5;
         maxSpeed = 10;
         attackRange = 7;
         minimumRange = 1;
-        speedBoost = 8;
+        speedBoost = 8;*/
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
