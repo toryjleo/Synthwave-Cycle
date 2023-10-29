@@ -11,8 +11,8 @@ public class SquadSpawner : MonoBehaviour
     public ObjectPool ops;
 
     //Spawning Variables
-    public int spawnDistance;
-    public int spawnBiasAngle;
+    [SerializeField] private int spawnDistance;
+    [SerializeField] private int spawnBiasAngle;
 
     internal SquadManager squadManager;
 
