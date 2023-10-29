@@ -33,11 +33,8 @@ public class Jukebox : MonoBehaviour, IResettable
         // Schedule the first track
         audioSourceArray[toggle].clip = clip;
 
-        sequence.CheckForWaveSpawn();
-
         double startTime  = AudioSettings.dspTime + 0.2;
-        //double introDuration = GetClipDuration(clip);
-        nextStartTime = startTime;// + introDuration;
+        nextStartTime = startTime;
 
         audioSourceArray[toggle].PlayScheduled(startTime);
         toggle = 1 - toggle;
@@ -82,6 +79,7 @@ public class Jukebox : MonoBehaviour, IResettable
         for (int i = 0; i < audioSourceArray.Length; i++)
         {
             audioSourceArray[i].Stop();
+            audioSourceArray[i].clip = null;
         }
         sequence = soundTracks[Random.Range(0, soundTracks.Count)];
         Start();
