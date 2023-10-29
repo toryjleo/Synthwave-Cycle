@@ -80,7 +80,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
     /// <returns>The selected PlayerGunType</returns>
     public PlayerWeaponType SetRandomGunType()
     {
-        PlayerWeaponType typeToAssign = (PlayerWeaponType) Random.Range((int)PlayerWeaponType.DefaultGun, (int)PlayerWeaponType.INVALID - 1);
+        PlayerWeaponType typeToAssign = (PlayerWeaponType) Random.Range((int)PlayerWeaponType.OctoLMG, (int)PlayerWeaponType.DefaultGun);
         SetGunType(typeToAssign);
         return typeToAssign;
     }
