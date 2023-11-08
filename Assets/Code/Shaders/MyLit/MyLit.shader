@@ -5,6 +5,8 @@ Shader "Custom/MyLit"
     {
         [Header(Surface options)] // Creates a text header
 
+        [Toggle(_ADDITIONAL_LIGHTS)] _EnableMultipleLights("Enable Multiple Lights", Float) = 1.0
+
         // Format the properties like so: <_PropertyName>(<Material Inspector Name>, <DataType>) <DefaultVal>
         // Convention states that property names start with an underscore
         _ColorTint("Tint", Color) = (1, 1, 1, 1)
@@ -67,6 +69,7 @@ Shader "Custom/MyLit"
 
             #define _NORMALMAP
             #define _CLEARCOATMAP
+            #pragma shader_feature_local _ADDITIONAL_LIGHTS
             #pragma shader_feature_local _ALPHA_CUTOUT
             #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
             #pragma shader_feature_local _SPECULAR_SETUP
