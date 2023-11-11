@@ -112,7 +112,6 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
             {
                 desiredVec *= dMag;
 
-            //Attack();
             }
             else
             {

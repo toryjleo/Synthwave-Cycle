@@ -20,14 +20,19 @@ public class WaveSequence : ScriptableObject
     {
         return sequence[currentWave].GetTrackVariation();
     }
-
-    public void CheckForWaveSpawn()
+    /// <summary>
+    /// Updates the wave and spawns in wave according to danger level
+    /// </summary>
+    public void SpawnNewWave()
     {
         UpdateCurrentWave();
         spawner.SpawnWave(sequence[currentWave].GetWaveAi());
         previousWave = currentWave;
     }
 
+    /// <summary>
+    /// Sets the currentWave number based on Danger Level
+    /// </summary>
     internal void UpdateCurrentWave()
     {
         for (int index = sequence.Count - 1; index >= 0 ; index--)
@@ -43,18 +48,16 @@ public class WaveSequence : ScriptableObject
         }
     }
 
-    public bool IsLastWaveSequence() 
-    {
-        return currentWave == sequence.Count - 1;
-    }
-
     internal void Init(SquadSpawner squadSpawner)
     {
         spawner = squadSpawner;
         currentWave = 0;
         previousWave = -1;
     }
-
+    /// <summary>
+    /// Gets the universal time that the next wave will spawn at,
+    /// according to the waves per loop and loop duration
+    /// </summary>
     internal double GetNextWaveTime(double currentTime)
     {
         AudioClip clipToPlay = sequence[currentWave].GetTrackVariation();

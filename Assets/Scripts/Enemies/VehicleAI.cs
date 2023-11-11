@@ -112,7 +112,6 @@ public class VehicleAI : Ai
             Vector3 bumpForce = Vector3.ClampMagnitude((vehicleController.carVelocity - 
                 bike.movementComponent.appliedForce) * RamModifier, MAX_RAM_MAGNITUDE);
 
-            //bikeRB.AddForce(bumpForce, ForceMode.Impulse);
             bikeRB.AddTorque(Vector3.up * Random.Range(-MAX_RANDOM_TORQUE, MAX_RANDOM_TORQUE), ForceMode.Impulse);
         }
     }
