@@ -300,11 +300,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundTracks:
-  - {fileID: 11400000, guid: d013408af9df3e6429dc40a964c4cfd9, type: 2}
-  - {fileID: 11400000, guid: cc1039780e25ceb44a9bfd4e75df24ce, type: 2}
-  - {fileID: 11400000, guid: ad0bee00411d87841b552d29576c15c7, type: 2}
   - {fileID: 11400000, guid: 56457c03c2aef1d40a2684598b951353, type: 2}
-  - {fileID: 11400000, guid: e25f9cb4948bc2447b66f70d797ba582, type: 2}
+  sequence: {fileID: 0}
   audioSourceArray:
   - {fileID: 281125569}
   - {fileID: 1805576751}

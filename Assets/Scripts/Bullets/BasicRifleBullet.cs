@@ -10,6 +10,6 @@ public class BasicRifleBullet : EnemyBullet
     {
         muzzleVelocity = 60;
         mass = .5f;
-        damageDealt = 60;
+        damageDealt = 70;
     }
 }

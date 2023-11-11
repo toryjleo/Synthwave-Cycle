@@ -32,17 +32,19 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
 
     public float SideForce = 100; //The force imparted on the bike to allow for lateral movement 
 
-    private float dragCoefficient = .98f; // A linear scale of how much drag will be applied to the bike
+    private float dragCoefficient = .99f; // A linear scale of how much drag will be applied to the bike
 
     private float maxLean = 40.0f;
 
     private const float ACCELERATION_SCALE = 10.0f;
 
+    private const float MAX_SPEED_SCALE = 20;
+
     private const float STARTING_HEALTH = 200.0f;
 
     private const float MAX_ACCELERATION = 1000.0f;
 
-    private const float MIN_ACCELERATION = 40.0f;
+    private const float MIN_ACCELERATION = 10.0f;
 
     [SerializeField]
     public bool Debug_Invulnurability = false;
@@ -58,10 +60,18 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         }
     }
 
-    // Number of player hit points
-    public float HitPoints 
+    public float MaxSpeed 
     {
         get 
+        {
+            return (HitPoints / MAX_SPEED_SCALE) * 100;
+        }
+    }
+
+    // Number of player hit points
+    public float HitPoints
+    {
+        get
         {
             return health.HitPoints;
         }
@@ -127,17 +137,6 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         appliedForce += ForwardVector().normalized * Acceleration * Input.GetAxis("Vertical") * Time.fixedDeltaTime;
 
         
-        //Latteral movement inputs, q and e add side force to the bike 
-        if (Input.GetKey(KeyCode.E))
-        {
-            rb.AddForce(RightVector() * SideForce);
-        }
-        if (Input.GetKey(KeyCode.Q))
-        {
-            rb.AddForce(LeftVector() * SideForce);
-        }
-
-        //Debug.Log(Input.GetAxis("Horizontal"));
         //Steering Takes Horizontal Input and rotates both 
         float steerInput = Input.GetAxis("Horizontal");
         bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInput, 0, 0);
@@ -152,6 +151,7 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         */
         //Lerp from actual vector to desired vector 
         appliedForce = Vector3.Lerp(appliedForce.normalized, ForwardVector().normalized, Traction * Time.fixedDeltaTime) * appliedForce.magnitude;
+        appliedForce = Vector3.ClampMagnitude(appliedForce, MaxSpeed * Time.fixedDeltaTime);
         rb.AddForce(appliedForce);
     }
 

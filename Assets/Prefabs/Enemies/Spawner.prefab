@@ -50,16 +50,16 @@ MonoBehaviour:
   pools:
   - tag: 1
     prefab: {fileID: 3874834857555224733, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
-    size: 30
+    poolSize: 30
   - tag: 0
     prefab: {fileID: 7978806473477363408, guid: 96ce3a25c9aa3fb40a86136e9660d45c, type: 3}
-    size: 30
+    poolSize: 30
   - tag: 2
     prefab: {fileID: 6749199786922221708, guid: 7577d168a208c5445a7f8ec18fb2eadf, type: 3}
-    size: 30
+    poolSize: 30
   - tag: 7
     prefab: {fileID: 2279930514937360740, guid: 89ba535868233dd438d5e9151af1a050, type: 3}
-    size: 30
+    poolSize: 30
 --- !u!114 &609589167
 MonoBehaviour:
   m_ObjectHideFlags: 0

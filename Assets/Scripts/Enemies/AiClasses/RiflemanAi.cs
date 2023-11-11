@@ -10,13 +10,6 @@ public class RiflemanAi : InfantryAI
     public override void Init()
     {
         alive = true;
-        StartingHP = 20;
-        score = 100;
-        dlScore = 5;
-        maxSpeed = 80;
-        attackRange = 60;
-        minimumRange = 0;
-        speedBoost = 20;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();

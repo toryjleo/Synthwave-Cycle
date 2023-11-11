@@ -112,8 +112,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
             {
                 desiredVec *= dMag;
 
-            //Attack();
-        }
+            }
             else
             {
                 desiredVec *= maxSpeed + (speedBoosted? speedBoost : 0f);

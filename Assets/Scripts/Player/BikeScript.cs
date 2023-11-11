@@ -200,7 +200,28 @@ public class BikeScript : MonoBehaviour, IResettable
     private void Dead() 
     {
         GameStateController.WorldState = GameState.Spawning;
+        //Ragdoll();
         Debug.Log("Dead Event Called!");
+    }
+
+    private void RagDoll()
+    {
+        //will make bike "ragdoll" but the camera has an anneurism so we'll leave it out for now
+
+        movementComponent.rb.constraints = RigidbodyConstraints.None;
+        float minMaxTorque = 1800f;
+        movementComponent.rb.angularDrag = 1;
+        movementComponent.rb.constraints = RigidbodyConstraints.None;
+        movementComponent.rb.AddForce(new Vector3(0, 20f, 0), ForceMode.Impulse);
+        movementComponent.rb.AddTorque(new Vector3(Random.Range(-minMaxTorque, minMaxTorque),
+                                Random.Range(-minMaxTorque, minMaxTorque),
+                                Random.Range(-minMaxTorque, minMaxTorque)),
+                                ForceMode.Impulse);
+    }
+
+    internal void SpeedBoost(float boostAmount)
+    {
+        movementComponent.rb.AddForce(movementComponent.ForwardVector() * boostAmount, ForceMode.VelocityChange);
     }
     #endregion
 }

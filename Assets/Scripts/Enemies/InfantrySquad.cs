@@ -17,7 +17,7 @@ public class InfantrySquad : Squad
     public int attackSize = 6; //if the squad has at least this many units, it will charge
 
     [SerializeField]
-    public float weakPlayerHealthAmount = 75; //If the player's energy falls below this number, they will be considered weak and AI will attack
+    public float weakPlayerHealthAmount = 1000; //If the player's energy falls below this number, they will be considered weak and AI will attack
 
     //pot shot variables
     [SerializeField]

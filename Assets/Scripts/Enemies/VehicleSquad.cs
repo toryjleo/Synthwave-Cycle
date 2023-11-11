@@ -39,7 +39,7 @@ public class VehicleSquad : Squad
             //if car is confident, ATTACK PLAYER 
             if (ai.IsConfident())
             {
-                UnityEngine.Debug.Log("ATTACK!");
+                //UnityEngine.Debug.Log("ATTACK!");
                 ai.SetMovementTarget(bikeScript.gameObject);
             }
             else

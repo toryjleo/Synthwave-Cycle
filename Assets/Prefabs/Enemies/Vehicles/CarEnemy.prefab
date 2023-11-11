@@ -5867,7 +5867,7 @@ MonoBehaviour:
   drivableSurface:
     serializedVersion: 2
     m_Bits: 4294967295
-  MaxSpeed: 120
+  MaxSpeed: 200
   accelaration: 15
   turn: 60
   rb: {fileID: 2279930515495505838}
@@ -6171,6 +6171,7 @@ MonoBehaviour:
   maxSpeed: 150
   maxForce: 500
   score: 200
+  dlScore: 0
   attackRange: 100
   minimumRange: 100
   alive: 1
@@ -6191,6 +6192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInvulnurable: 0
 --- !u!1 &2279930514973692283
 GameObject:
   m_ObjectHideFlags: 0
