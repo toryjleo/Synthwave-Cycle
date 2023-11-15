@@ -109,7 +109,9 @@ float4 Fragment(Interpolators input
 	smoothnessSample = 1 - smoothnessSample;
 #endif
 	surfaceInput.smoothness = smoothnessSample;
+#ifdef _EmissionMap
 	surfaceInput.emission   = SAMPLE_TEXTURE2D(_EmissionMap, sampler_EmissionMap, uv).rgb * _EmissionTint;
+#endif
 #ifdef _CCMask
 	surfaceInput.clearCoatMask = SAMPLE_TEXTURE2D(_ClearCoatMask, sampler_ClearCoatMask, uv).r * _ClearCoatStrength;
 #endif

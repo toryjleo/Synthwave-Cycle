@@ -78,6 +78,7 @@ Shader "Custom/MyLit"
             #pragma shader_feature_local _ParMap
             #pragma shader_feature_local _CCMask
             #pragma shader_feature_local _CCSMask
+            #pragma shader_feature_local _EmissionMap
 
 
 #if UNITY_VERSION >= 202120
