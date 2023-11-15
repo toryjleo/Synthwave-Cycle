@@ -174,7 +174,8 @@ public class MyLitCustomInspector : ShaderGUI
     
         // --- Further Optimizations ---
         EnableDisableKeyword(material, "_ParallaxMap", "_ParMap");
-        
+        EnableDisableKeyword(material, "_ClearCoatMask", "_CCMask");
+        EnableDisableKeyword(material, "_ClearCoatSmoothnessMask", "_CCSMask");
     }
 
     private void EnableDisableKeyword(Material material, string mapName, string compilerPragma)

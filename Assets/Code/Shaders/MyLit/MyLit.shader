@@ -76,6 +76,8 @@ Shader "Custom/MyLit"
             #pragma shader_feature_local _ROUGHNESS_SETUP
             #pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
             #pragma shader_feature_local _ParMap
+            #pragma shader_feature_local _CCMask
+            #pragma shader_feature_local _CCSMask
 
 
 #if UNITY_VERSION >= 202120

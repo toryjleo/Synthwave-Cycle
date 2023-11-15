@@ -110,8 +110,12 @@ float4 Fragment(Interpolators input
 #endif
 	surfaceInput.smoothness = smoothnessSample;
 	surfaceInput.emission   = SAMPLE_TEXTURE2D(_EmissionMap, sampler_EmissionMap, uv).rgb * _EmissionTint;
+#ifdef _CCMask
 	surfaceInput.clearCoatMask = SAMPLE_TEXTURE2D(_ClearCoatMask, sampler_ClearCoatMask, uv).r * _ClearCoatStrength;
+#endif
+#ifdef _CCSMask
 	surfaceInput.clearCoatSmoothness = SAMPLE_TEXTURE2D(_ClearCoatSmoothnessMask, sampler_ClearCoatSmoothnessMask, uv).r * _ClearCoatSmoothness;
+#endif
 
 	return UniversalFragmentPBR(lightingInput, surfaceInput);
 }
