@@ -173,13 +173,19 @@ public class MyLitCustomInspector : ShaderGUI
         }
     
         // --- Further Optimizations ---
-        if(material.GetTexture("_ParallaxMap") == null)
+        EnableDisableKeyword(material, "_ParallaxMap", "_ParMap");
+        
+    }
+
+    private void EnableDisableKeyword(Material material, string mapName, string compilerPragma)
+    {
+        if(material.GetTexture(mapName) == null)
         {
-            material.DisableKeyword("_ParMap");
+            material.DisableKeyword(compilerPragma);
         }
         else
         {
-            material.EnableKeyword("_ParMap");
+            material.EnableKeyword(compilerPragma);
         }
     }
 
