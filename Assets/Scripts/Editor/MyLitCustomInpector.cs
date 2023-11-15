@@ -179,6 +179,12 @@ public class MyLitCustomInspector : ShaderGUI
         EnableDisableKeyword(material, "_EmissionMap", "_EmissionMap");
     }
 
+/// <summary>
+/// Disables functionality for a given map if it is not assigned in-editor
+/// </summary>
+/// <param name="material">Material to be impacted</param>
+/// <param name="mapName">Name of the map to check</param>
+/// <param name="compilerPragma">Name of the compiler directive to enable/disable</param>
     private void EnableDisableKeyword(Material material, string mapName, string compilerPragma)
     {
         if(material.GetTexture(mapName) == null)
