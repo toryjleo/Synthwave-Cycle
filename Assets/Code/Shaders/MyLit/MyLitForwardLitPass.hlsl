@@ -67,7 +67,10 @@ float4 Fragment(Interpolators input
 
 	// Height Map Calculation
 	float2 uv = input.uv;
+#ifdef _ParMap
 	uv += ParallaxMapping(TEXTURE2D_ARGS(_ParallaxMap, sampler_ParallaxMap), viewDirTS, _ParallaxStrength, uv);
+#endif
+
 
 	// Get Normal map
 	float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, uv), _NormalStrength);
