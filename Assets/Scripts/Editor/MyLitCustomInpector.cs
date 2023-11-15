@@ -28,7 +28,7 @@ public class MyLitCustomInspector : ShaderGUI
 
         if (newShader.name == "Unlit/MyLit")
         {
-            UpdateSurfaceType(material);
+            UpdateSurfaceTypeMyLit(material);
         }
     }
 
@@ -46,22 +46,25 @@ public class MyLitCustomInspector : ShaderGUI
         var faceProp    = BaseShaderGUI.FindProperty("_FaceRenderingMode", properties, true);
 
         EditorGUI.BeginChangeCheck();
+
         surfaceProp.floatValue = (int)(SurfaceType)EditorGUILayout.EnumPopup("Surface type", (SurfaceType)surfaceProp.floatValue);
         blendProp.floatValue = (int)(BlendType)EditorGUILayout.EnumPopup("Blend Type", (BlendType)blendProp.floatValue);
         faceProp.floatValue    = (int)(FaceRenderingMode)EditorGUILayout.EnumPopup("Face rendering mode", (FaceRenderingMode)faceProp.floatValue);
+        
+        base.OnGUI(materialEditor, properties);
+        
         if (EditorGUI.EndChangeCheck())
         {
-            UpdateSurfaceType(material);
+            UpdateSurfaceTypeMyLit(material);
         }
 
-        base.OnGUI(materialEditor, properties);
     }
 
     /// <summary>
     /// Sets various surface properties of the shader, using dropdown menues
     /// </summary>
     /// <param name="material">Material to be impacted</param>
-    private void UpdateSurfaceType(Material material)
+    private void UpdateSurfaceTypeMyLit(Material material)
     {
         //--- SurfaceType ---
         SurfaceType surface = (SurfaceType)material.GetFloat("_SurfaceType");
@@ -167,6 +170,30 @@ public class MyLitCustomInspector : ShaderGUI
         else
         {
             material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        }
+    
+        // --- Further Optimizations ---
+        EnableDisableKeyword(material, "_ParallaxMap", "_ParMap");
+        EnableDisableKeyword(material, "_ClearCoatMask", "_CCMask");
+        EnableDisableKeyword(material, "_ClearCoatSmoothnessMask", "_CCSMask");
+        EnableDisableKeyword(material, "_EmissionMap", "_EmissionMap");
+    }
+
+/// <summary>
+/// Disables functionality for a given map if it is not assigned in-editor
+/// </summary>
+/// <param name="material">Material to be impacted</param>
+/// <param name="mapName">Name of the map to check</param>
+/// <param name="compilerPragma">Name of the compiler directive to enable/disable</param>
+    private void EnableDisableKeyword(Material material, string mapName, string compilerPragma)
+    {
+        if(material.GetTexture(mapName) == null)
+        {
+            material.DisableKeyword(compilerPragma);
+        }
+        else
+        {
+            material.EnableKeyword(compilerPragma);
         }
     }
 
