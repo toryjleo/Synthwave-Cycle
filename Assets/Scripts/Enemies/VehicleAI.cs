@@ -14,7 +14,7 @@ public class VehicleAI : Ai
 
     //How much additional force does a ram apply
     [SerializeField] 
-    public float RamModifier = 1.0f;
+    public float RamModifier = 0.2f;
 
     [SerializeField]
     public GameObject itemDrop;
@@ -112,7 +112,6 @@ public class VehicleAI : Ai
             Vector3 bumpForce = Vector3.ClampMagnitude((vehicleController.carVelocity - 
                 bike.movementComponent.appliedForce) * RamModifier, MAX_RAM_MAGNITUDE);
 
-            bikeRB.AddForce(bumpForce, ForceMode.Impulse);
             bikeRB.AddTorque(Vector3.up * Random.Range(-MAX_RANDOM_TORQUE, MAX_RANDOM_TORQUE), ForceMode.Impulse);
         }
     }

@@ -1441,6 +1441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInvulnurable: 0
 --- !u!1 &7830052354036537715
 GameObject:
   m_ObjectHideFlags: 0
@@ -1586,17 +1587,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  animationStateController: {fileID: 6128039659088265392}
   rb: {fileID: 2114404339180774918}
   myGun: {fileID: 4935205766387807532}
   hp: {fileID: 0}
   activeConditions: []
-  StartingHP: 0
-  maxSpeed: 0
+  StartingHP: 40
+  maxSpeed: 10
   maxForce: 0
-  score: 0
-  attackRange: 0
-  alive: 0
+  score: 300
+  dlScore: 5
+  attackRange: 7
+  minimumRange: 1
+  alive: 1
+  speedBoost: 8
+  animationStateController: {fileID: 6128039659088265392}
   muzzleLocation: {fileID: 0}
 --- !u!54 &2114404339180774918
 Rigidbody:

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15125cb873be8194b8dd68d612076abd, type: 3}
   m_Name: InTheirFinalMomentsWave2
   m_EditorClassIdentifier: 
-  DLThreshold: 50
-  TrackVariation: {fileID: 8300000, guid: c1ef04b1e32f3f641b7eb74571b6e121, type: 3}
-  waveEnemies: 0100000001000000
+  DLThreshold: 40
+  TrackVariation: {fileID: 8300000, guid: a74993030f36e96448a8ee4b8d688ada, type: 3}
+  wavesInTrack: 2
+  waveEnemies: 0200000001000000

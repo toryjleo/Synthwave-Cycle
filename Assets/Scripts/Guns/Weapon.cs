@@ -6,10 +6,10 @@ using UnityEngine;
 // Ensure that DefaultGun is always the first and INVALID is always last.
 public enum PlayerWeaponType
 {
-    DefaultGun,
     OctoLMG,
-    VulkanV64AutoCannons,
     Shotty,
+    DefaultGun, // Not fully implemented
+    VulkanV64AutoCannons, // Not fully implemented
     INVALID
 }
 

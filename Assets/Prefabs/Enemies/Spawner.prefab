@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3780906798646803480}
   - component: {fileID: 609589166}
-  - component: {fileID: 609589167}
   - component: {fileID: 609589168}
   - component: {fileID: 1202201957}
   - component: {fileID: 1202201958}
@@ -50,30 +49,16 @@ MonoBehaviour:
   pools:
   - tag: 1
     prefab: {fileID: 3874834857555224733, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
-    size: 30
+    poolSize: 30
   - tag: 0
     prefab: {fileID: 7978806473477363408, guid: 96ce3a25c9aa3fb40a86136e9660d45c, type: 3}
-    size: 30
+    poolSize: 30
   - tag: 2
     prefab: {fileID: 6749199786922221708, guid: 7577d168a208c5445a7f8ec18fb2eadf, type: 3}
-    size: 30
+    poolSize: 30
   - tag: 7
     prefab: {fileID: 2279930514937360740, guid: 89ba535868233dd438d5e9151af1a050, type: 3}
-    size: 30
---- !u!114 &609589167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3780906798646803492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 805e732bce560f74ca43a7a8f5ac0bef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  guns: []
-  enemyPrefabs: []
+    poolSize: 30
 --- !u!114 &609589168
 MonoBehaviour:
   m_ObjectHideFlags: 0
