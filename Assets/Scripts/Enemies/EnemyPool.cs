@@ -16,7 +16,11 @@ public enum Enemy
     Car
 }
 
-
+/// <summary>
+/// EnemyPool holds collections of all the AI we might end up spawning in. 
+/// They are instead enabled and put into place when they are ready to be used so we don't have to
+/// spawn a new enemy in every time we need one
+/// </summary>
 public class EnemyPool : MonoBehaviour
 {
     /// <summary>
@@ -68,8 +72,6 @@ public class EnemyPool : MonoBehaviour
             for(int i =0; i< pool.poolSize; i++)
             {   
                 Ai obj = Instantiate(pool.prefab); 
-                //obj.SetActive(false);
-                //Ai objAi = obj.GetComponent<Ai>();
                 obj.Despawn += ObjAi_Despawn;
                 objectPool.Enqueue(obj);
             }
