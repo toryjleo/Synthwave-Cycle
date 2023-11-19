@@ -52,5 +52,8 @@ public class RangerAI : InfantryAI
         base.Update();
     }
 
-
+    public override Enemy GetEnemyType()
+    {
+        return Enemy.Ranger;
+    }
 }
