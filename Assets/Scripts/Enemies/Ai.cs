@@ -7,6 +7,7 @@ public delegate void NotifyRespawn();
 
 public abstract class Ai : SelfWorldBoundsDespawn, IResettable
 {
+    public abstract Enemy GetEnemyType();
 
     // THis is the method that sets the entity to Deactive and bascially is uesd to kill the entitiy
     public void op_ProcessCompleted(SelfDespawn entity)

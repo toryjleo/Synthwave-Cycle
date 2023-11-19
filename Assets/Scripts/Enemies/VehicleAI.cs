@@ -130,4 +130,9 @@ public class VehicleAI : Ai
         vehicleController.enabled = false;
         Instantiate(itemDrop, this.transform.position, Quaternion.identity);
     }
+
+    public override Enemy GetEnemyType()
+    {
+        return Enemy.Car;
+    }
 }

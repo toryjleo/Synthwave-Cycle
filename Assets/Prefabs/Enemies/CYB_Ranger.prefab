@@ -1020,7 +1020,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6018061728693238261}
-  - component: {fileID: 4070182995101003308}
+  - component: {fileID: -5485121639866341136}
   - component: {fileID: 2579800540101835106}
   - component: {fileID: 7599756711848871223}
   - component: {fileID: 8520023899093707183}
@@ -1048,7 +1048,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4070182995101003308
+--- !u!114 &-5485121639866341136
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1057,21 +1057,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 6749199786922221708}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6675fd315cbde074a8ff6f7be406ac4a, type: 3}
+  m_Script: {fileID: 11500000, guid: 641d9f33bd220814f81f3ca112de2bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  animationStateController: {fileID: 0}
   rb: {fileID: 2579800540101835106}
-  myGun: {fileID: 5850231802911460637}
+  myGun: {fileID: -5146753335091157031, guid: 7088fbbd6fe8b7d45ac649ee3bd8aae2, type: 3}
   hp: {fileID: 0}
   activeConditions: []
   StartingHP: 0
   maxSpeed: 0
   maxForce: 0
   score: 0
+  dlScore: 0
   attackRange: 0
+  minimumRange: 0
   alive: 0
+  speedBoost: 0
+  animationStateController: {fileID: 0}
   muzzleLocation: {fileID: 0}
 --- !u!54 &2579800540101835106
 Rigidbody:
@@ -1462,6 +1465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInvulnurable: 0
 --- !u!1 &8097093611727876453
 GameObject:
   m_ObjectHideFlags: 0
@@ -1745,7 +1749,7 @@ PrefabInstance:
     - target: {fileID: 6576306846341962809, guid: c8abc8ffee0571a49a4fca12d9b2fb01, type: 3}
       propertyPath: ai
       value: 
-      objectReference: {fileID: 4070182995101003308}
+      objectReference: {fileID: 0}
     - target: {fileID: 8661839680055520689, guid: c8abc8ffee0571a49a4fca12d9b2fb01, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1859,14 +1863,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7860270618891034725, guid: 7088fbbd6fe8b7d45ac649ee3bd8aae2, type: 3}
   m_PrefabInstance: {fileID: 7611995726292101828}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5850231802911460637 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -5146753335091157031, guid: 7088fbbd6fe8b7d45ac649ee3bd8aae2, type: 3}
-  m_PrefabInstance: {fileID: 7611995726292101828}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13dd56a01b9c8c64594a5b40c354298d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

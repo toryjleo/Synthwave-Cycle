@@ -59,5 +59,8 @@ public class GruntAI : InfantryAI
         base.Update();
     }
 
-
+    public override Enemy GetEnemyType()
+    {
+        return Enemy.Shotgun;
+    }
 }
