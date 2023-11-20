@@ -47,7 +47,7 @@ public class WorldGenerator : MonoBehaviour
         BikeScript[] bikeScripts = Object.FindObjectsOfType<BikeScript>();
         if (bikeScripts.Length <= 0) 
         {
-            Debug.LogError("WorldGenerator did not find any BikeScripts in scene");
+            Debug.LogWarning("WorldGenerator did not find any BikeScripts in scene");
         }
         else 
         {
