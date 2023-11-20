@@ -123,5 +123,5 @@ Shader "Custom/MyMix"
             ENDHLSL
         }
     }
-    CustomEditor "MyLitCustomInspector"
+    CustomEditor "MyMixCustomInspector"
 }
