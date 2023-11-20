@@ -9,11 +9,11 @@ Shader "Custom/MyMix"
 
         // Format the properties like so: <_PropertyName>(<Material Inspector Name>, <DataType>) <DefaultVal>
         // Convention states that property names start with an underscore
-        _ColorTint("Tint", Color) = (1, 1, 1, 1)
-        _ColorMap("Color Map", 2D)    = "white" {}
+        _ColorTint1("[1] Tint", Color) = (1, 1, 1, 1)
+        _ColorMap1("[1] Color Map", 2D)    = "white" {}
         
-        [NoScaleOffset][Normal] _NormalMap("Normal Map", 2D) = "bump" {} // Uses OpenGL bitangent Convention
-        _NormalStrength("Normal strength", Range(0, 1)) = 1
+        [NoScaleOffset][Normal] _NormalMap1("Normal Map", 2D) = "bump" {} // Uses OpenGL bitangent Convention
+        _NormalStrength1("Normal strength", Range(0, 1)) = 1
         
         [NoScaleOffset] _MetalnessMap("Metalness Map", 2D) = "white" {} // Make sure srgb is turned off in the import settings for textures that are Metalness Map
         _MetalnessStrength("Metalness strength", Range(0, 1)) = 0
@@ -34,8 +34,8 @@ Shader "Custom/MyMix"
         [NoScaleOffset] _ClearCoatSmoothnessMask("Clear coat smoothness mask", 2D) = "white" {}
         _ClearCoatSmoothness("Clear coat smoothness", Range(0, 1)) = 0
 
-        [NoScaleOffset] _ParallaxMap("Height/parallax/displacement map", 2D) = "white" {}
-        _ParallaxStrength("Parallax strength", Range(0, 1)) = 0.005
+        [NoScaleOffset] _ParallaxMap1("[1] Height/parallax/displacement map", 2D) = "white" {}
+        _ParallaxStrength1("Parallax strength", Range(0, 1)) = 0.005
 
         [HideInInspector] _Cull("Cull mode", Float) = 2
         
@@ -75,7 +75,7 @@ Shader "Custom/MyMix"
             #pragma shader_feature_local _SPECULAR_SETUP
             #pragma shader_feature_local _ROUGHNESS_SETUP
             #pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature_local _ParMap
+            #pragma shader_feature_local _ParMap1
             #pragma shader_feature_local _CCMask
             #pragma shader_feature_local _CCSMask
             #pragma shader_feature_local _EmissionMap

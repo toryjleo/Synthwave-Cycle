@@ -38,7 +38,7 @@ Interpolators Vertex(Attributes input)
 
 	// Pass position and orientation data to the fragment function
 	output.positionCS = posnInputs.positionCS;
-	output.uv = TRANSFORM_TEX(input.uv, _ColorMap); // Also applies offset variables (<name>_ST)
+	output.uv = TRANSFORM_TEX(input.uv, _ColorMap1); // Also applies offset variables (<name>_ST)
 	output.positionWS = posnInputs.positionWS;
 	output.normalWS = normInputs.normalWS;
 	output.tangentWS = float4(normInputs.tangentWS, input.tangentOS.w);
@@ -67,19 +67,19 @@ float4 Fragment(Interpolators input
 
 	// Height Map Calculation
 	float2 uv = input.uv;
-#ifdef _ParMap
-	uv += ParallaxMapping(TEXTURE2D_ARGS(_ParallaxMap, sampler_ParallaxMap), viewDirTS, _ParallaxStrength, uv);
+#ifdef _ParMap1
+	uv += ParallaxMapping(TEXTURE2D_ARGS(_ParallaxMap1, sampler_ParallaxMap1), viewDirTS, _ParallaxStrength1, uv);
 #endif
 
 
 	// Get Normal map
-	float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, uv), _NormalStrength);
+	float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_NormalMap1, sampler_NormalMap1, uv), _NormalStrength1);
 	float3x3 tangentToWorld = CreateTangentToWorld(normalWS, input.tangentWS.xyz, input.tangentWS.w);
 	normalWS = normalize(TransformTangentToWorld(normalTS, tangentToWorld));
 	//return float4((normalWS + 1) * 0.5, 1); // Returns normals TEST
 
 	// Color Sample
-	float4 colorSample = SAMPLE_TEXTURE2D(_ColorMap, sampler_ColorMap, uv);
+	float4 colorSample = SAMPLE_TEXTURE2D(_ColorMap1, sampler_ColorMap1, uv);
 	TestAlphaClip(colorSample);
 
 	// Update lighting input data for lighting calculations
@@ -94,8 +94,8 @@ float4 Fragment(Interpolators input
 #endif
 
 	SurfaceData surfaceInput = (SurfaceData)0;
-	surfaceInput.albedo = colorSample.rgb * _ColorTint.rgb;
-	surfaceInput.alpha = colorSample.a * _ColorTint.a;
+	surfaceInput.albedo = colorSample.rgb * _ColorTint1.rgb;
+	surfaceInput.alpha = colorSample.a * _ColorTint1.a;
 	surfaceInput.specular = 1;
 	surfaceInput.normalTS = normalTS;
 #ifdef _SPECULAR_SETUP
@@ -120,4 +120,30 @@ float4 Fragment(Interpolators input
 #endif
 
 	return UniversalFragmentPBR(lightingInput, surfaceInput);
+}
+
+float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler, 
+                       Texture2D normalMap, SamplerState normalMapSampler, float normalStrength, 
+                       Texture2D parallaxMap, SamplerState parallaxMapSampler, float parallaxStrength, 
+                       float2 uv, float3 normalWS, float3 positionWS, float4 tangentWS)
+{
+	// Normal
+#ifdef _DOUBLE_SIDED_NORMALS
+	normalWS *= IS_FRONT_VFACE(frontFace, 1, -1); // Multiply Normal vector by 1 or -1 depending if this face is facing the camera
+#endif
+	
+	// View Direction
+    float3 viewDirWS = GetWorldSpaceNormalizeViewDir(positionWS); // In ShaderVariablesFunctions.hlsl
+    float3 viewDirTS = GetViewDirectionTangentSpace(tangentWS, normalWS, viewDirWS); // In ParallaxMapping.hlsl, normal must NOT be normalized
+
+	// Height Map Calculation
+#ifdef _ParMap1
+	uv += ParallaxMapping(TEXTURE2D_ARGS(parallaxMap, parallaxMapSampler), viewDirTS, parallaxStrength, uv);
+#endif
+	
+	// Get Normal map
+    float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(normalMap, normalMapSampler, uv), normalStrength);
+    float3x3 tangentToWorld = CreateTangentToWorld(normalWS, tangentWS.xyz, tangentWS.w);
+    normalWS = normalize(TransformTangentToWorld(normalTS, tangentToWorld));
+	//return float4((normalWS + 1) * 0.5, 1); // Returns normals TEST
 }
