@@ -104,7 +104,7 @@ float4 Fragment(Interpolators input
 #else
 	surfaceInput.metallic = SAMPLE_TEXTURE2D(_MetalnessMap1, sampler_MetalnessMap1, uv).r * _MetalnessStrength1;
 #endif
-	float smoothnessSample = SAMPLE_TEXTURE2D(_SmoothnessMask, sampler_SmoothnessMask, uv).r * _Smoothness;
+	float smoothnessSample = SAMPLE_TEXTURE2D(_SmoothnessMask1, sampler_SmoothnessMask1, uv).r * _Smoothness1;
 #ifdef _ROUGHNESS_SETUP
 	smoothnessSample = 1 - smoothnessSample;
 #endif
@@ -125,9 +125,10 @@ float4 Fragment(Interpolators input
 float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler,  float4 colorTint,
                        Texture2D normalMap, SamplerState normalMapSampler, float normalStrength,
 					   Texture2D metalnessMap, SamplerState metalnessMapSampler, float metalnessStrength,
+				       Texture2D smoothnessMap, SamplerState smoothnessMapSampler, float smoothnessStrength,
                        Texture2D parallaxMap, SamplerState parallaxMapSampler, float parallaxStrength,
 					   Texture2D specularMap, SamplerState specularMapSampler, float3 specularTint,
-                       float2 uv, float3 normalWS, float3 positionWS, float4 tangentWS)
+                       float2 uv, float3 normalWS, float3 positionWS, float4 tangentWS, float4 positionCS)
 {
 	// Normal
 #ifdef _DOUBLE_SIDED_NORMALS
@@ -160,7 +161,7 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler,  float4
     lightingInput.viewDirectionWS = viewDirWS;
     lightingInput.shadowCoord = TransformWorldToShadowCoord(positionWS); // Sample the shadow coord from the shadow map
 #if UNITY_VERSION >= 202120
-	lightingInput.positionCS = input.positionCS;
+	lightingInput.positionCS = positionCS;
 	lightingInput.tangentToWorld = tangentToWorld;
 #endif
 	
@@ -176,4 +177,9 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler,  float4
 #else
     surfaceInput.metallic = SAMPLE_TEXTURE2D(metalnessMap, metalnessMapSampler, uv).r * metalnessStrength;
 #endif
+    float smoothnessSample = SAMPLE_TEXTURE2D(smoothnessMap, smoothnessMapSampler, uv).r * smoothnessStrength;
+#ifdef _ROUGHNESS_SETUP
+	smoothnessSample = 1 - smoothnessSample;
+#endif
+    surfaceInput.smoothness = smoothnessSample;
 }

@@ -12,7 +12,7 @@ float  _Cutoff;
 float  _NormalStrength1;
 float  _MetalnessStrength1;
 float3 _SpecularTint1;
-float  _Smoothness;
+float  _Smoothness1;
 float3 _EmissionTint;
 float  _ParallaxStrength1;
 float _ClearCoatStrength;
@@ -22,7 +22,7 @@ TEXTURE2D(_ColorMap1);  SAMPLER(sampler_ColorMap1); // Sampler variables must be
 TEXTURE2D(_NormalMap1); SAMPLER(sampler_NormalMap1);
 TEXTURE2D(_MetalnessMap1); SAMPLER(sampler_MetalnessMap1);
 TEXTURE2D(_SpecularMap1); SAMPLER(sampler_SpecularMap1);
-TEXTURE2D(_SmoothnessMask); SAMPLER(sampler_SmoothnessMask);
+TEXTURE2D(_SmoothnessMask1); SAMPLER(sampler_SmoothnessMask1);
 TEXTURE2D(_EmissionMap);    SAMPLER(sampler_EmissionMap);
 TEXTURE2D(_ParallaxMap1);    SAMPLER(sampler_ParallaxMap1);
 TEXTURE2D(_ClearCoatMask); SAMPLER(sampler_ClearCoatMask);

@@ -12,19 +12,19 @@ Shader "Custom/MyMix"
         _ColorTint1("[1] Tint", Color) = (1, 1, 1, 1)
         _ColorMap1("[1] Color Map", 2D)    = "white" {}
         
-        [NoScaleOffset][Normal] _NormalMap1("Normal Map", 2D) = "bump" {} // Uses OpenGL bitangent Convention
-        _NormalStrength1("Normal strength", Range(0, 1)) = 1
+        [NoScaleOffset][Normal] _NormalMap1("[1] Normal Map", 2D) = "bump" {} // Uses OpenGL bitangent Convention
+        _NormalStrength1("[1] Normal strength", Range(0, 1)) = 1
         
         [NoScaleOffset] _MetalnessMap1("[1] Metalness Map", 2D) = "white" {} // Make sure srgb is turned off in the import settings for textures that are Metalness Map
         _MetalnessStrength1("[1] Metalness strength", Range(0, 1)) = 0
         
         [Toggle(_SPECULAR_SETUP)] _SpecularSetupToggle("Use specular workflow", Float) = 0
-        [NoScaleOffset] _SpecularMap1("Specular map", 2D) = "white" {}
-        _SpecularTint1("Specular tint", Color) = (1, 1, 1, 1)
+        [NoScaleOffset] _SpecularMap1("[1] Specular map", 2D) = "white" {}
+        _SpecularTint1("[1] Specular tint", Color) = (1, 1, 1, 1)
 
         [Toggle(_ROUGHNESS_SETUP)] _RoughnessMapToggle("Use roughness map", Float) = 0
-        [NoScaleOffset] _SmoothnessMask("Smoothness mask", 2D) = "white" {}
-        _Smoothness("Smoothness multiplier", Range(0, 1)) = 0.5
+        [NoScaleOffset] _SmoothnessMask1("[1] Smoothness mask", 2D) = "white" {}
+        _Smoothness1("[1] Smoothness multiplier", Range(0, 1)) = 0.5
 
         [NoScaleOffset] _EmissionMap("Emission map", 2D) = "white" {}
         [HDR]           _EmissionTint("Emission tint", Color) = (0, 0, 0, 0)
