@@ -26,13 +26,13 @@ Shader "Custom/MyMix"
         [NoScaleOffset] _SmoothnessMask1("[1] Smoothness mask", 2D) = "white" {}
         _Smoothness1("[1] Smoothness multiplier", Range(0, 1)) = 0.5
 
-        [NoScaleOffset] _EmissionMap("Emission map", 2D) = "white" {}
-        [HDR]           _EmissionTint("Emission tint", Color) = (0, 0, 0, 0)
+        [NoScaleOffset] _EmissionMap1("[1] Emission map", 2D) = "white" {}
+        [HDR]           _EmissionTint1("[1] Emission tint", Color) = (0, 0, 0, 0)
 
-        [NoScaleOffset] _ClearCoatMask("Clear coat mask", 2D) = "white" {}
-        _ClearCoatStrength("Clear coat strength", Range(0, 1)) = 0
-        [NoScaleOffset] _ClearCoatSmoothnessMask("Clear coat smoothness mask", 2D) = "white" {}
-        _ClearCoatSmoothness("Clear coat smoothness", Range(0, 1)) = 0
+        [NoScaleOffset] _ClearCoatMask1("[1] Clear coat mask", 2D) = "white" {}
+        _ClearCoatStrength1("[1] Clear coat strength", Range(0, 1)) = 0
+        [NoScaleOffset] _ClearCoatSmoothnessMask1("[1] Clear coat smoothness mask", 2D) = "white" {}
+        _ClearCoatSmoothness("[1] Clear coat smoothness", Range(0, 1)) = 0
 
         [NoScaleOffset] _ParallaxMap1("[1] Height/parallax/displacement map", 2D) = "white" {}
         _ParallaxStrength1("Parallax strength", Range(0, 1)) = 0.005

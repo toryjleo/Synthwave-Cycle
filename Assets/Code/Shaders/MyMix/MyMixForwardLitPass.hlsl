@@ -110,13 +110,13 @@ float4 Fragment(Interpolators input
 #endif
 	surfaceInput.smoothness = smoothnessSample;
 #ifdef _EmissionMap
-	surfaceInput.emission   = SAMPLE_TEXTURE2D(_EmissionMap, sampler_EmissionMap, uv).rgb * _EmissionTint;
+	surfaceInput.emission   = SAMPLE_TEXTURE2D(_EmissionMap1, sampler_EmissionMap1, uv).rgb * _EmissionTint1;
 #endif
 #ifdef _CCMask
-	surfaceInput.clearCoatMask = SAMPLE_TEXTURE2D(_ClearCoatMask, sampler_ClearCoatMask, uv).r * _ClearCoatStrength;
+	surfaceInput.clearCoatMask = SAMPLE_TEXTURE2D(_ClearCoatMask1, sampler_ClearCoatMask1, uv).r * _ClearCoatStrength1;
 #endif
 #ifdef _CCSMask
-	surfaceInput.clearCoatSmoothness = SAMPLE_TEXTURE2D(_ClearCoatSmoothnessMask, sampler_ClearCoatSmoothnessMask, uv).r * _ClearCoatSmoothness;
+	surfaceInput.clearCoatSmoothness = SAMPLE_TEXTURE2D(_ClearCoatSmoothnessMask1, sampler_ClearCoatSmoothnessMask1, uv).r * _ClearCoatSmoothness;
 #endif
 
 	return UniversalFragmentPBR(lightingInput, surfaceInput);
@@ -128,6 +128,9 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler,  float4
 				       Texture2D smoothnessMap, SamplerState smoothnessMapSampler, float smoothnessStrength,
                        Texture2D parallaxMap, SamplerState parallaxMapSampler, float parallaxStrength,
 					   Texture2D specularMap, SamplerState specularMapSampler, float3 specularTint,
+					   Texture2D emissionMap, SamplerState emissionMapSampler, float4 emissionTint,
+					   Texture2D clearCoatMask, SamplerState clearCoatSampler, float clearCoatStrength,
+					   Texture2D clearCoatSmoothnessMask, SamplerState clearCoatSmoothnessSampler, float clearCoatSmoothnessStrength,
                        float2 uv, float3 normalWS, float3 positionWS, float4 tangentWS, float4 positionCS)
 {
 	// Normal
@@ -182,4 +185,14 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler,  float4
 	smoothnessSample = 1 - smoothnessSample;
 #endif
     surfaceInput.smoothness = smoothnessSample;
+#ifdef _EmissionMap
+	surfaceInput.emission   = SAMPLE_TEXTURE2D(emissionMap, emissionMapSampler, uv).rgb * emissionTint;
+#endif
+#ifdef _CCMask
+	surfaceInput.clearCoatMask = SAMPLE_TEXTURE2D(clearCoatMask, clearCoatSampler, uv).r * clearCoatStrength;
+#endif
+#ifdef _CCSMask
+	surfaceInput.clearCoatSmoothness = SAMPLE_TEXTURE2D(clearCoatSmoothnessMask, clearCoatSmoothnessSampler, uv).r * clearCoatSmoothnessStrength;
+#endif
+    return UniversalFragmentPBR(lightingInput, surfaceInput);
 }
