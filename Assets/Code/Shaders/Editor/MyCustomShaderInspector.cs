@@ -168,6 +168,10 @@ public abstract class MyCustomShaderInspector : ShaderGUI
         ShaderOptimizations(material);
     }
 
+    /// <summary>
+    /// Perform whatever tasks necessary for per-shader optimizations
+    /// </summary>
+    /// <param name="material">Material linked with this shader's code</param>
     protected abstract void ShaderOptimizations(Material material);
 
     /// <summary>

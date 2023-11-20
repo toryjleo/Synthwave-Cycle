@@ -98,7 +98,7 @@ Shader "Custom/MyMix"
             #pragma fragment Fragment // Register my custom fragment shader function
 
             // Inlcude my custom HLSL code
-            #include "../MyLit/MyLitForwardLitPass.hlsl"
+            #include "MyMixForwardLitPass.hlsl"
             ENDHLSL
         }
 
