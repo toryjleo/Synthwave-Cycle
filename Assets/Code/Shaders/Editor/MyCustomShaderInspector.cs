@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class MyCustomShaderInspector : ShaderGUI
+public abstract class MyCustomShaderInspector : ShaderGUI
 {
     public enum SurfaceType
     {
@@ -165,11 +165,10 @@ public class MyCustomShaderInspector : ShaderGUI
         }
 
         // --- Further Optimizations ---
-        EnableDisableKeyword(material, "_ParallaxMap", "_ParMap");
-        EnableDisableKeyword(material, "_ClearCoatMask", "_CCMask");
-        EnableDisableKeyword(material, "_ClearCoatSmoothnessMask", "_CCSMask");
-        EnableDisableKeyword(material, "_EmissionMap", "_EmissionMap");
+        ShaderOptimizations(material);
     }
+
+    protected abstract void ShaderOptimizations(Material material);
 
     /// <summary>
     /// Disables functionality for a given map if it is not assigned in-editor
@@ -177,7 +176,7 @@ public class MyCustomShaderInspector : ShaderGUI
     /// <param name="material">Material to be impacted</param>
     /// <param name="mapName">Name of the map to check</param>
     /// <param name="compilerPragma">Name of the compiler directive to enable/disable</param>
-    private void EnableDisableKeyword(Material material, string mapName, string compilerPragma)
+    protected void EnableDisableKeyword(Material material, string mapName, string compilerPragma)
     {
         if (material.GetTexture(mapName) == null)
         {
