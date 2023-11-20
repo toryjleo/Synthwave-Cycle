@@ -10,8 +10,8 @@ float4 _ColorMap1_ST; // Offset variables must be declared as <_TextureVarName>_
 float4 _ColorTint1;
 float  _Cutoff;
 float  _NormalStrength1;
-float  _MetalnessStrength;
-float3 _SpecularTint;
+float  _MetalnessStrength1;
+float3 _SpecularTint1;
 float  _Smoothness;
 float3 _EmissionTint;
 float  _ParallaxStrength1;
@@ -20,8 +20,8 @@ float _ClearCoatSmoothness;
 
 TEXTURE2D(_ColorMap1);  SAMPLER(sampler_ColorMap1); // Sampler variables must be declared as sample_<_TextureVarName>
 TEXTURE2D(_NormalMap1); SAMPLER(sampler_NormalMap1);
-TEXTURE2D(_MetalnessMap); SAMPLER(sampler_MetalnessMap);
-TEXTURE2D(_SpecularMap); SAMPLER(sampler_SpecularMap);
+TEXTURE2D(_MetalnessMap1); SAMPLER(sampler_MetalnessMap1);
+TEXTURE2D(_SpecularMap1); SAMPLER(sampler_SpecularMap1);
 TEXTURE2D(_SmoothnessMask); SAMPLER(sampler_SmoothnessMask);
 TEXTURE2D(_EmissionMap);    SAMPLER(sampler_EmissionMap);
 TEXTURE2D(_ParallaxMap1);    SAMPLER(sampler_ParallaxMap1);

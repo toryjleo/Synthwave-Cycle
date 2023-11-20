@@ -16,7 +16,7 @@ public class MyMixCustomInspector : MyCustomShaderInspector
 
     protected override void ShaderOptimizations(Material material)
     {
-        EnableDisableKeyword(material, "_ParallaxMap", "_ParMap");
+        EnableDisableKeyword(material, "_ParallaxMap1", "_ParMap1");
         EnableDisableKeyword(material, "_ClearCoatMask", "_CCMask");
         EnableDisableKeyword(material, "_ClearCoatSmoothnessMask", "_CCSMask");
         EnableDisableKeyword(material, "_EmissionMap", "_EmissionMap");

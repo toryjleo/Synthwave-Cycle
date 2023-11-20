@@ -99,10 +99,10 @@ float4 Fragment(Interpolators input
 	surfaceInput.specular = 1;
 	surfaceInput.normalTS = normalTS;
 #ifdef _SPECULAR_SETUP
-	surfaceInput.specular = SAMPLE_TEXTURE2D(_SpecularMap, sampler_SpecularMap, uv).rgb * _SpecularTint;
+	surfaceInput.specular = SAMPLE_TEXTURE2D(_SpecularMap1, sampler_SpecularMap1, uv).rgb * _SpecularTint1;
 	surfaceInput.metallic = 0;
 #else
-	surfaceInput.metallic = SAMPLE_TEXTURE2D(_MetalnessMap, sampler_MetalnessMap, uv).r * _MetalnessStrength;
+	surfaceInput.metallic = SAMPLE_TEXTURE2D(_MetalnessMap1, sampler_MetalnessMap1, uv).r * _MetalnessStrength1;
 #endif
 	float smoothnessSample = SAMPLE_TEXTURE2D(_SmoothnessMask, sampler_SmoothnessMask, uv).r * _Smoothness;
 #ifdef _ROUGHNESS_SETUP
@@ -122,9 +122,11 @@ float4 Fragment(Interpolators input
 	return UniversalFragmentPBR(lightingInput, surfaceInput);
 }
 
-float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler, 
-                       Texture2D normalMap, SamplerState normalMapSampler, float normalStrength, 
-                       Texture2D parallaxMap, SamplerState parallaxMapSampler, float parallaxStrength, 
+float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler,  float4 colorTint,
+                       Texture2D normalMap, SamplerState normalMapSampler, float normalStrength,
+					   Texture2D metalnessMap, SamplerState metalnessMapSampler, float metalnessStrength,
+                       Texture2D parallaxMap, SamplerState parallaxMapSampler, float parallaxStrength,
+					   Texture2D specularMap, SamplerState specularMapSampler, float3 specularTint,
                        float2 uv, float3 normalWS, float3 positionWS, float4 tangentWS)
 {
 	// Normal
@@ -146,4 +148,32 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler,
     float3x3 tangentToWorld = CreateTangentToWorld(normalWS, tangentWS.xyz, tangentWS.w);
     normalWS = normalize(TransformTangentToWorld(normalTS, tangentToWorld));
 	//return float4((normalWS + 1) * 0.5, 1); // Returns normals TEST
+	
+	// Color Sample
+    float4 colorSample = SAMPLE_TEXTURE2D(colorMap, colorMapSampler, uv);
+    TestAlphaClip(colorSample);
+	
+	// Update lighting input data for lighting calculations
+    InputData lightingInput = (InputData) 0;
+    lightingInput.positionWS = positionWS;
+    lightingInput.normalWS = normalWS;
+    lightingInput.viewDirectionWS = viewDirWS;
+    lightingInput.shadowCoord = TransformWorldToShadowCoord(positionWS); // Sample the shadow coord from the shadow map
+#if UNITY_VERSION >= 202120
+	lightingInput.positionCS = input.positionCS;
+	lightingInput.tangentToWorld = tangentToWorld;
+#endif
+	
+    SurfaceData surfaceInput = (SurfaceData) 0;
+    surfaceInput.albedo = colorSample.rgb * colorTint.rgb;
+    surfaceInput.alpha = colorSample.a * colorTint.a;
+    surfaceInput.specular = 1;
+    surfaceInput.normalTS = normalTS;
+	
+#ifdef _SPECULAR_SETUP
+	surfaceInput.specular = SAMPLE_TEXTURE2D(specularMap, specularMapSampler, uv).rgb * specularTint;
+	surfaceInput.metallic = 0;
+#else
+    surfaceInput.metallic = SAMPLE_TEXTURE2D(metalnessMap, metalnessMapSampler, uv).r * metalnessStrength;
+#endif
 }

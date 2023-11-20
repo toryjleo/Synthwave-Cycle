@@ -15,12 +15,12 @@ Shader "Custom/MyMix"
         [NoScaleOffset][Normal] _NormalMap1("Normal Map", 2D) = "bump" {} // Uses OpenGL bitangent Convention
         _NormalStrength1("Normal strength", Range(0, 1)) = 1
         
-        [NoScaleOffset] _MetalnessMap("Metalness Map", 2D) = "white" {} // Make sure srgb is turned off in the import settings for textures that are Metalness Map
-        _MetalnessStrength("Metalness strength", Range(0, 1)) = 0
+        [NoScaleOffset] _MetalnessMap1("[1] Metalness Map", 2D) = "white" {} // Make sure srgb is turned off in the import settings for textures that are Metalness Map
+        _MetalnessStrength1("[1] Metalness strength", Range(0, 1)) = 0
         
         [Toggle(_SPECULAR_SETUP)] _SpecularSetupToggle("Use specular workflow", Float) = 0
-        [NoScaleOffset] _SpecularMap("Specular map", 2D) = "white" {}
-        _SpecularTint("Specular tint", Color) = (1, 1, 1, 1)
+        [NoScaleOffset] _SpecularMap1("Specular map", 2D) = "white" {}
+        _SpecularTint1("Specular tint", Color) = (1, 1, 1, 1)
 
         [Toggle(_ROUGHNESS_SETUP)] _RoughnessMapToggle("Use roughness map", Float) = 0
         [NoScaleOffset] _SmoothnessMask("Smoothness mask", 2D) = "white" {}
