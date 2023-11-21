@@ -16,7 +16,7 @@ float  _Smoothness1;
 float3 _EmissionTint1;
 float  _ParallaxStrength1;
 float _ClearCoatStrength1;
-float _ClearCoatSmoothness;
+float _ClearCoatSmoothness1;
 
 TEXTURE2D(_ColorMap1);  SAMPLER(sampler_ColorMap1); // Sampler variables must be declared as sample_<_TextureVarName>
 TEXTURE2D(_NormalMap1); SAMPLER(sampler_NormalMap1);

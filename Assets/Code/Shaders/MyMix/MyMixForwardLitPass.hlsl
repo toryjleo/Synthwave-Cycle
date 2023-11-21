@@ -46,6 +46,7 @@ Interpolators Vertex(Attributes input)
 	return output;
 }
 
+
 // The fragment function. This runs once per fragment, which you can think of as a pixel on the screen
 // It must output the final color of this pixel
 float4 Fragment(Interpolators input
@@ -116,19 +117,22 @@ float4 Fragment(Interpolators input
 	surfaceInput.clearCoatMask = SAMPLE_TEXTURE2D(_ClearCoatMask1, sampler_ClearCoatMask1, uv).r * _ClearCoatStrength1;
 #endif
 #ifdef _CCSMask
-	surfaceInput.clearCoatSmoothness = SAMPLE_TEXTURE2D(_ClearCoatSmoothnessMask1, sampler_ClearCoatSmoothnessMask1, uv).r * _ClearCoatSmoothness;
+	surfaceInput.clearCoatSmoothness = SAMPLE_TEXTURE2D(_ClearCoatSmoothnessMask1, sampler_ClearCoatSmoothnessMask1, uv).r * _ClearCoatSmoothness1;
 #endif
 
 	return UniversalFragmentPBR(lightingInput, surfaceInput);
 }
 
-float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler,  float4 colorTint,
+
+
+float4 RunUniversalPBR(Texture2D colorMap,
+SamplerState colorMapSampler, float4 colorTint,
                        Texture2D normalMap, SamplerState normalMapSampler, float normalStrength,
 					   Texture2D metalnessMap, SamplerState metalnessMapSampler, float metalnessStrength,
 				       Texture2D smoothnessMap, SamplerState smoothnessMapSampler, float smoothnessStrength,
                        Texture2D parallaxMap, SamplerState parallaxMapSampler, float parallaxStrength,
 					   Texture2D specularMap, SamplerState specularMapSampler, float3 specularTint,
-					   Texture2D emissionMap, SamplerState emissionMapSampler, float4 emissionTint,
+					   Texture2D emissionMap, SamplerState emissionMapSampler, float3 emissionTint,
 					   Texture2D clearCoatMask, SamplerState clearCoatSampler, float clearCoatStrength,
 					   Texture2D clearCoatSmoothnessMask, SamplerState clearCoatSmoothnessSampler, float clearCoatSmoothnessStrength,
                        float2 uv, float3 normalWS, float3 positionWS, float4 tangentWS, float4 positionCS
@@ -137,10 +141,6 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler,  float4
 #endif
 )
 {
-	// Normal
-#ifdef _DOUBLE_SIDED_NORMALS
-	normalWS *= IS_FRONT_VFACE(frontFace, 1, -1); // Multiply Normal vector by 1 or -1 depending if this face is facing the camera
-#endif
 	
 	// View Direction
     float3 viewDirWS = GetWorldSpaceNormalizeViewDir(positionWS); // In ShaderVariablesFunctions.hlsl
@@ -200,3 +200,30 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler,  float4
 #endif
     return UniversalFragmentPBR(lightingInput, surfaceInput);
 }
+/*
+// The fragment function. This runs once per fragment, which you can think of as a pixel on the screen
+// It must output the final color of this pixel
+float4 Fragment(Interpolators input
+#ifdef _DOUBLE_SIDED_NORMALS
+	, FRONT_FACE_TYPE frontFace : FRONT_FACE_SEMANTIC
+#endif
+) : SV_TARGET
+{
+	// Normal flipping
+#ifdef _DOUBLE_SIDED_NORMALS
+	input.normalWS *= IS_FRONT_VFACE(frontFace, 1, -1); // Multiply Normal vector by 1 or -1 depending if this face is facing the camera
+#endif
+    float4 rgba = RunUniversalPBR(_ColorMap1,
+	sampler_ColorMap1, _ColorTint1,
+	_NormalMap1, sampler_NormalMap1, _NormalStrength1,
+	_MetalnessMap1, sampler_MetalnessMap1, _MetalnessStrength1,
+	_SmoothnessMask1, sampler_SmoothnessMask1, _Smoothness1,
+	_ParallaxStrength1, sampler_ParallaxMap1, _ParallaxStrength1,
+	_SpecularMap1, sampler_SpecularMap1, _SpecularTint1,
+	_EmissionMap1, sampler_EmissionMap1, _EmissionTint1,
+	_ClearCoatMask1, sampler_ClearCoatMask1, _ClearCoatStrength1, 
+	_ClearCoatSmoothnessMask1, sampler_ClearCoatSmoothnessMask1, _ClearCoatSmoothness1,
+	input.uv, input.normalWS, input.positionWS, input.tangentWS);
+    return rgba;
+}
+*/

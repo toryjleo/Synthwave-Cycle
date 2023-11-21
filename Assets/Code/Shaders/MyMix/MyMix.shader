@@ -32,7 +32,7 @@ Shader "Custom/MyMix"
         [NoScaleOffset] _ClearCoatMask1("[1] Clear coat mask", 2D) = "white" {}
         _ClearCoatStrength1("[1] Clear coat strength", Range(0, 1)) = 0
         [NoScaleOffset] _ClearCoatSmoothnessMask1("[1] Clear coat smoothness mask", 2D) = "white" {}
-        _ClearCoatSmoothness("[1] Clear coat smoothness", Range(0, 1)) = 0
+        _ClearCoatSmoothness1("[1] Clear coat smoothness", Range(0, 1)) = 0
 
         [NoScaleOffset] _ParallaxMap1("[1] Height/parallax/displacement map", 2D) = "white" {}
         _ParallaxStrength1("Parallax strength", Range(0, 1)) = 0.005
