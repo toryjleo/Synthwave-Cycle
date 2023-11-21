@@ -69,7 +69,7 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler, float4 
     float3 viewDirTS = GetViewDirectionTangentSpace(tangentWS, normalWS, viewDirWS); // In ParallaxMapping.hlsl, normal must NOT be normalized
 
 	// Height Map Calculation
-#ifdef _ParMap1
+#ifdef _PARALLAX_MAP
 	uv += ParallaxMapping(TEXTURE2D_ARGS(parallaxMap, parallaxMapSampler), viewDirTS, parallaxStrength, uv);
 #endif
 	
@@ -111,13 +111,13 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler, float4 
 	smoothnessSample = 1 - smoothnessSample;
 #endif
     surfaceInput.smoothness = smoothnessSample;
-#ifdef _EmissionMap
+#ifdef _EMISSION_MAP
 	surfaceInput.emission   = SAMPLE_TEXTURE2D(emissionMap, emissionMapSampler, uv).rgb * emissionTint;
 #endif
-#ifdef _CCMask
+#ifdef _CC_MASK
 	surfaceInput.clearCoatMask = SAMPLE_TEXTURE2D(clearCoatMask, clearCoatSampler, uv).r * clearCoatStrength;
 #endif
-#ifdef _CCSMask
+#ifdef _CCS_MASK
 	surfaceInput.clearCoatSmoothness = SAMPLE_TEXTURE2D(clearCoatSmoothnessMask, clearCoatSmoothnessSampler, uv).r * clearCoatSmoothnessStrength;
 #endif
     return UniversalFragmentPBR(lightingInput, surfaceInput);

@@ -35,7 +35,7 @@ Shader "Custom/MyMix"
         _ClearCoatSmoothness1("[1] Clear coat smoothness", Range(0, 1)) = 0
 
         [NoScaleOffset] _ParallaxMap1("[1] Height/parallax/displacement map", 2D) = "white" {}
-        _ParallaxStrength1("Parallax strength", Range(0, 1)) = 0.005
+        _ParallaxStrength1("[1] Parallax strength", Range(0, 1)) = 0.005
 
         [HideInInspector] _Cull("Cull mode", Float) = 2
         
@@ -75,10 +75,10 @@ Shader "Custom/MyMix"
             #pragma shader_feature_local _SPECULAR_SETUP
             #pragma shader_feature_local _ROUGHNESS_SETUP
             #pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature_local _ParMap1
-            #pragma shader_feature_local _CCMask
-            #pragma shader_feature_local _CCSMask
-            #pragma shader_feature_local _EmissionMap
+            #pragma shader_feature_local _PARALLAX_MAP
+            #pragma shader_feature_local _CC_MASK
+            #pragma shader_feature_local _CCS_MASK
+            #pragma shader_feature_local _EMISSION_MAP
 
 
 #if UNITY_VERSION >= 202120
