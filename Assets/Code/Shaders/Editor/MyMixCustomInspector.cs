@@ -5,28 +5,18 @@ using UnityEngine;
 
 public class MyMixCustomInspector : MyCustomShaderInspector
 {
-    protected bool foldedOut = true;
-    string[] PropertyNames = { "_ColorMap1", "_ColorTint1", "_NormalMap1", "_NormalStrength1", "_MetalnessMap1", 
-        "_MetalnessStrength1", "_SpecularMap1", "_SpecularTint1", "_SmoothnessMask1", "_Smoothness1", "_EmissionMap1",
-    "_EmissionTint1", "_ClearCoatMask1", "_ClearCoatStrength1", "_ClearCoatSmoothnessMask1", "_ClearCoatSmoothness1",
-    "_ParallaxMap1", "_ParallaxStrength1"};
+    string[] PropertyNames = { "_ColorMap", "_ColorTint", "_NormalMap", "_NormalStrength", "_MetalnessMap",
+    "_MetalnessStrength", "_SpecularMap", "_SpecularTint", "_SmoothnessMask", "_Smoothness", "_EmissionMap",
+    "_EmissionTint", "_ClearCoatMask", "_ClearCoatStrength", "_ClearCoatSmoothnessMask", "_ClearCoatSmoothness",
+    "_ParallaxMap", "_ParallaxStrength"};
+
+    protected bool foldedOutMat1 = false;
+    
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
         base.OnGUI(materialEditor, properties);
 
-        foldedOut = EditorGUILayout.BeginFoldoutHeaderGroup(foldedOut, "Properties for Material 1");
-        if (foldedOut)
-        { 
-            
-            foreach (string Reference in PropertyNames)
-            {
-                MaterialProperty SunReference = ShaderGUI.FindProperty(Reference, properties);
-                materialEditor.ShaderProperty(SunReference, SunReference.displayName);
-
-                //EditorGUILayout.Separator();
-            }
-        }
-        EditorGUILayout.EndFoldoutHeaderGroup();
+        foldedOutMat1 = CreateMaterialDropdown(materialEditor, properties, '1', foldedOutMat1);
     }
     public override void AssignNewShaderToMaterial(Material material, Shader oldShader, Shader newShader)
     {
@@ -36,6 +26,24 @@ public class MyMixCustomInspector : MyCustomShaderInspector
         {
             UpdateSurfaceType(material);
         }
+    }
+
+    private bool CreateMaterialDropdown(MaterialEditor materialEditor, MaterialProperty[] properties, char groupNum, bool foldedOut) 
+    {
+        bool retVal = EditorGUILayout.BeginFoldoutHeaderGroup(foldedOut, "Properties for Material " + groupNum);
+        if (retVal)
+        {
+
+            foreach (string Reference in PropertyNames)
+            {
+                MaterialProperty Property = ShaderGUI.FindProperty(Reference + groupNum, properties);
+                materialEditor.ShaderProperty(Property, Property.displayName);
+
+                //EditorGUILayout.Separator();
+            }
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+        return retVal;
     }
 
     protected override void ShaderOptimizations(Material material)
