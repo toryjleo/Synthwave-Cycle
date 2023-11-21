@@ -6,7 +6,7 @@ using UnityEngine;
 public class MyMixCustomInspector : MyCustomShaderInspector
 {
     string[] PropertyNames = { "_ColorMap", "_ColorTint", "_NormalMap", "_NormalStrength", "_MetalnessMap",
-    "_MetalnessStrength", "_SpecularMap", "_SpecularTint", "_SmoothnessMask", "_Smoothness", "_EmissionMap",
+    "_MetalnessStrength", "_SmoothnessMask", "_Smoothness", "_SpecularMap", "_SpecularTint", "_EmissionMap",
     "_EmissionTint", "_ClearCoatMask", "_ClearCoatStrength", "_ClearCoatSmoothnessMask", "_ClearCoatSmoothness",
     "_ParallaxMap", "_ParallaxStrength"};
 
