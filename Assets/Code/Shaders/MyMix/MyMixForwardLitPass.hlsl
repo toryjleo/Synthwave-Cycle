@@ -131,7 +131,11 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler,  float4
 					   Texture2D emissionMap, SamplerState emissionMapSampler, float4 emissionTint,
 					   Texture2D clearCoatMask, SamplerState clearCoatSampler, float clearCoatStrength,
 					   Texture2D clearCoatSmoothnessMask, SamplerState clearCoatSmoothnessSampler, float clearCoatSmoothnessStrength,
-                       float2 uv, float3 normalWS, float3 positionWS, float4 tangentWS, float4 positionCS)
+                       float2 uv, float3 normalWS, float3 positionWS, float4 tangentWS, float4 positionCS
+#ifdef _DOUBLE_SIDED_NORMALS
+	, FRONT_FACE_TYPE frontFace : FRONT_FACE_SEMANTIC
+#endif
+)
 {
 	// Normal
 #ifdef _DOUBLE_SIDED_NORMALS
