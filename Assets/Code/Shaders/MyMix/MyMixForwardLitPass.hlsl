@@ -46,7 +46,7 @@ Interpolators Vertex(Attributes input)
 	return output;
 }
 
-
+/*
 // The fragment function. This runs once per fragment, which you can think of as a pixel on the screen
 // It must output the final color of this pixel
 float4 Fragment(Interpolators input
@@ -121,12 +121,11 @@ float4 Fragment(Interpolators input
 #endif
 
 	return UniversalFragmentPBR(lightingInput, surfaceInput);
-}
+}*/
 
 
 
-float4 RunUniversalPBR(Texture2D colorMap,
-SamplerState colorMapSampler, float4 colorTint,
+float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler, float4 colorTint,
                        Texture2D normalMap, SamplerState normalMapSampler, float normalStrength,
 					   Texture2D metalnessMap, SamplerState metalnessMapSampler, float metalnessStrength,
 				       Texture2D smoothnessMap, SamplerState smoothnessMapSampler, float smoothnessStrength,
@@ -199,8 +198,9 @@ SamplerState colorMapSampler, float4 colorTint,
 	surfaceInput.clearCoatSmoothness = SAMPLE_TEXTURE2D(clearCoatSmoothnessMask, clearCoatSmoothnessSampler, uv).r * clearCoatSmoothnessStrength;
 #endif
     return UniversalFragmentPBR(lightingInput, surfaceInput);
+    return float4(1, 1, 1, 1);
 }
-/*
+
 // The fragment function. This runs once per fragment, which you can think of as a pixel on the screen
 // It must output the final color of this pixel
 float4 Fragment(Interpolators input
@@ -213,17 +213,16 @@ float4 Fragment(Interpolators input
 #ifdef _DOUBLE_SIDED_NORMALS
 	input.normalWS *= IS_FRONT_VFACE(frontFace, 1, -1); // Multiply Normal vector by 1 or -1 depending if this face is facing the camera
 #endif
-    float4 rgba = RunUniversalPBR(_ColorMap1,
-	sampler_ColorMap1, _ColorTint1,
+    float4 rgba = RunUniversalPBR(_ColorMap1, sampler_ColorMap1, _ColorTint1,
 	_NormalMap1, sampler_NormalMap1, _NormalStrength1,
 	_MetalnessMap1, sampler_MetalnessMap1, _MetalnessStrength1,
 	_SmoothnessMask1, sampler_SmoothnessMask1, _Smoothness1,
-	_ParallaxStrength1, sampler_ParallaxMap1, _ParallaxStrength1,
+	_ParallaxMap1, sampler_ParallaxMap1, _ParallaxStrength1,
 	_SpecularMap1, sampler_SpecularMap1, _SpecularTint1,
 	_EmissionMap1, sampler_EmissionMap1, _EmissionTint1,
 	_ClearCoatMask1, sampler_ClearCoatMask1, _ClearCoatStrength1, 
 	_ClearCoatSmoothnessMask1, sampler_ClearCoatSmoothnessMask1, _ClearCoatSmoothness1,
-	input.uv, input.normalWS, input.positionWS, input.tangentWS);
+	input.uv, input.normalWS, input.positionWS, input.tangentWS, input.positionCS);
     return rgba;
 }
-*/
+
