@@ -136,7 +136,7 @@ float4 Fragment(Interpolators input
 #ifdef _DOUBLE_SIDED_NORMALS
 	input.normalWS *= IS_FRONT_VFACE(frontFace, 1, -1); // Multiply Normal vector by 1 or -1 depending if this face is facing the camera
 #endif
-    float4 rgba = RunUniversalPBR(_ColorMap1, sampler_ColorMap1, _ColorTint1,
+    float4 rgba1 = RunUniversalPBR(_ColorMap1, sampler_ColorMap1, _ColorTint1,
 	_NormalMap1, sampler_NormalMap1, _NormalStrength1,
 	_MetalnessMap1, sampler_MetalnessMap1, _MetalnessStrength1,
 	_SmoothnessMask1, sampler_SmoothnessMask1, _Smoothness1,
@@ -146,6 +146,18 @@ float4 Fragment(Interpolators input
 	_ClearCoatMask1, sampler_ClearCoatMask1, _ClearCoatStrength1, 
 	_ClearCoatSmoothnessMask1, sampler_ClearCoatSmoothnessMask1, _ClearCoatSmoothness1,
 	input.uv, input.normalWS, input.positionWS, input.tangentWS, input.positionCS);
-    return rgba;
+	
+    float4 rgba2 = RunUniversalPBR(_ColorMap2, sampler_ColorMap2, _ColorTint2,
+	_NormalMap2, sampler_NormalMap2, _NormalStrength2,
+	_MetalnessMap2, sampler_MetalnessMap2, _MetalnessStrength2,
+	_SmoothnessMask2, sampler_SmoothnessMask2, _Smoothness2,
+	_ParallaxMap2, sampler_ParallaxMap2, _ParallaxStrength2,
+	_SpecularMap2, sampler_SpecularMap2, _SpecularTint2,
+	_EmissionMap2, sampler_EmissionMap2, _EmissionTint2,
+	_ClearCoatMask2, sampler_ClearCoatMask2, _ClearCoatStrength2,
+	_ClearCoatSmoothnessMask2, sampler_ClearCoatSmoothnessMask2, _ClearCoatSmoothness2,
+	input.uv, input.normalWS, input.positionWS, input.tangentWS, input.positionCS);
+	
+    return rgba2;
 }
 

@@ -11,13 +11,16 @@ public class MyMixCustomInspector : MyCustomShaderInspector
     "_ParallaxMap", "_ParallaxStrength"};
 
     protected bool foldedOutMat1 = false;
+    protected bool foldedOutMat2 = false;
     
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
         base.OnGUI(materialEditor, properties);
 
         foldedOutMat1 = CreateMaterialDropdown(materialEditor, properties, '1', foldedOutMat1);
+        foldedOutMat2 = CreateMaterialDropdown(materialEditor, properties, '2', foldedOutMat2);
     }
+
     public override void AssignNewShaderToMaterial(Material material, Shader oldShader, Shader newShader)
     {
         base.AssignNewShaderToMaterial(material, oldShader, newShader);

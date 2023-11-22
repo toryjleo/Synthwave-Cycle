@@ -11,31 +11,51 @@ Shader "Custom/MyMix"
         // Convention states that property names start with an underscore
         [HideInInspector] _ColorTint1("[1] Tint", Color) = (1, 1, 1, 1)
         [HideInInspector] _ColorMap1("[1] Color Map", 2D)    = "white" {}
+        [HideInInspector] _ColorTint2("[2] Tint", Color) = (1, 1, 1, 1)
+        [HideInInspector] _ColorMap2("[2] Color Map", 2D)    = "white" {}
         
         [HideInInspector] [NoScaleOffset][Normal] _NormalMap1("[1] Normal Map", 2D) = "bump" {} // Uses OpenGL bitangent Convention
         [HideInInspector] _NormalStrength1("[1] Normal strength", Range(0, 1)) = 1
+        [HideInInspector] [NoScaleOffset][Normal] _NormalMap2("[2] Normal Map", 2D) = "bump" {} // Uses OpenGL bitangent Convention
+        [HideInInspector] _NormalStrength2("[2] Normal strength", Range(0, 1)) = 1
         
         [HideInInspector] [NoScaleOffset] _MetalnessMap1("[1] Metalness Map", 2D) = "white" {} // Make sure srgb is turned off in the import settings for textures that are Metalness Map
         [HideInInspector] _MetalnessStrength1("[1] Metalness strength", Range(0, 1)) = 0
+        [HideInInspector] [NoScaleOffset] _MetalnessMap2("[2] Metalness Map", 2D) = "white" {} // Make sure srgb is turned off in the import settings for textures that are Metalness Map
+        [HideInInspector] _MetalnessStrength2("[2] Metalness strength", Range(0, 1)) = 0
         
         [Toggle(_SPECULAR_SETUP)] _SpecularSetupToggle("Use specular workflow", Float) = 0
+
         [HideInInspector] [NoScaleOffset] _SpecularMap1("[1] Specular map", 2D) = "white" {}
         [HideInInspector] _SpecularTint1("[1] Specular tint", Color) = (1, 1, 1, 1)
+        [HideInInspector] [NoScaleOffset] _SpecularMap2("[2] Specular map", 2D) = "white" {}
+        [HideInInspector] _SpecularTint2("[2] Specular tint", Color) = (1, 1, 1, 1)
 
         [Toggle(_ROUGHNESS_SETUP)] _RoughnessMapToggle("Use roughness map", Float) = 0
+
         [HideInInspector] [NoScaleOffset] _SmoothnessMask1("[1] Smoothness mask", 2D) = "white" {}
         [HideInInspector] _Smoothness1("[1] Smoothness multiplier", Range(0, 1)) = 0.5
+        [HideInInspector] [NoScaleOffset] _SmoothnessMask2("[2] Smoothness mask", 2D) = "white" {}
+        [HideInInspector] _Smoothness2("[2] Smoothness multiplier", Range(0, 1)) = 0.5
 
         [HideInInspector] [NoScaleOffset] _EmissionMap1("[1] Emission map", 2D) = "white" {}
         [HideInInspector] [HDR]           _EmissionTint1("[1] Emission tint", Color) = (0, 0, 0, 0)
+        [HideInInspector] [NoScaleOffset] _EmissionMap2("[2] Emission map", 2D) = "white" {}
+        [HideInInspector] [HDR]           _EmissionTint2("[2] Emission tint", Color) = (0, 0, 0, 0)
 
         [HideInInspector] [NoScaleOffset] _ClearCoatMask1("[1] Clear coat mask", 2D) = "white" {}
         [HideInInspector] _ClearCoatStrength1("[1] Clear coat strength", Range(0, 1)) = 0
         [HideInInspector] [NoScaleOffset] _ClearCoatSmoothnessMask1("[1] Clear coat smoothness mask", 2D) = "white" {}
         [HideInInspector] _ClearCoatSmoothness1("[1] Clear coat smoothness", Range(0, 1)) = 0
+        [HideInInspector] [NoScaleOffset] _ClearCoatMask2("[2] Clear coat mask", 2D) = "white" {}
+        [HideInInspector] _ClearCoatStrength2("[2] Clear coat strength", Range(0, 1)) = 0
+        [HideInInspector] [NoScaleOffset] _ClearCoatSmoothnessMask2("[2] Clear coat smoothness mask", 2D) = "white" {}
+        [HideInInspector] _ClearCoatSmoothness2("[2] Clear coat smoothness", Range(0, 1)) = 0
 
         [HideInInspector] [NoScaleOffset] _ParallaxMap1("[1] Height/parallax/displacement map", 2D) = "white" {}
         [HideInInspector] _ParallaxStrength1("[1] Parallax strength", Range(0, 1)) = 0.005
+        [HideInInspector] [NoScaleOffset] _ParallaxMap2("[2] Height/parallax/displacement map", 2D) = "white" {}
+        [HideInInspector] _ParallaxStrength2("[2] Parallax strength", Range(0, 1)) = 0.005
 
         [HideInInspector] _Cull("Cull mode", Float) = 2
         
