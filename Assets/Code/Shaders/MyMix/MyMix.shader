@@ -23,13 +23,7 @@ Shader "Custom/MyMix"
         [HideInInspector] _MetalnessStrength1("[1] Metalness strength", Range(0, 1)) = 0
         [HideInInspector] [NoScaleOffset] _MetalnessMap2("[2] Metalness Map", 2D) = "white" {} // Make sure srgb is turned off in the import settings for textures that are Metalness Map
         [HideInInspector] _MetalnessStrength2("[2] Metalness strength", Range(0, 1)) = 0
-        
-        [Toggle(_SPECULAR_SETUP)] _SpecularSetupToggle("Use specular workflow", Float) = 0
 
-        [HideInInspector] [NoScaleOffset] _SpecularMap1("[1] Specular map", 2D) = "white" {}
-        [HideInInspector] _SpecularTint1("[1] Specular tint", Color) = (1, 1, 1, 1)
-        [HideInInspector] [NoScaleOffset] _SpecularMap2("[2] Specular map", 2D) = "white" {}
-        [HideInInspector] _SpecularTint2("[2] Specular tint", Color) = (1, 1, 1, 1)
 
         [Toggle(_ROUGHNESS_SETUP1)] _RoughnessMapToggle1("Use roughness map", Float) = 0
         [Toggle(_ROUGHNESS_SETUP2)] _RoughnessMapToggle2("Use roughness map", Float) = 0
@@ -93,7 +87,6 @@ Shader "Custom/MyMix"
             #pragma shader_feature_local _ADDITIONAL_LIGHTS
             #pragma shader_feature_local _ALPHA_CUTOUT
             #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
-            #pragma shader_feature_local _SPECULAR_SETUP
             #pragma shader_feature_local _ROUGHNESS_SETUP1
             #pragma shader_feature_local _ROUGHNESS_SETUP2
             #pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON

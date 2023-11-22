@@ -56,7 +56,6 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler, float4 
                        Texture2D normalMap, SamplerState normalMapSampler, float normalStrength,
 					   Texture2D metalnessMap, SamplerState metalnessMapSampler, float metalnessStrength,
 				       float smoothnessSample,
-					   Texture2D specularMap, SamplerState specularMapSampler, float3 specularTint,
 					   Texture2D emissionMap, SamplerState emissionMapSampler, float3 emissionTint,
 					   Texture2D clearCoatMask, SamplerState clearCoatSampler, float clearCoatStrength,
 					   Texture2D clearCoatSmoothnessMask, SamplerState clearCoatSmoothnessSampler, float clearCoatSmoothnessStrength,
@@ -95,12 +94,8 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler, float4 
     surfaceInput.specular = 1;
     surfaceInput.normalTS = normalTS;
 	
-#ifdef _SPECULAR_SETUP
-	surfaceInput.specular = SAMPLE_TEXTURE2D(specularMap, specularMapSampler, uv).rgb * specularTint;
-	surfaceInput.metallic = 0;
-#else
     surfaceInput.metallic = SAMPLE_TEXTURE2D(metalnessMap, metalnessMapSampler, uv).r * metalnessStrength;
-#endif
+	
     surfaceInput.smoothness = smoothnessSample;
 	surfaceInput.emission   = SAMPLE_TEXTURE2D(emissionMap, emissionMapSampler, uv).rgb * emissionTint;
 	surfaceInput.clearCoatMask = SAMPLE_TEXTURE2D(clearCoatMask, clearCoatSampler, uv).r * clearCoatStrength;
@@ -141,7 +136,6 @@ float4 Fragment(Interpolators input
 	_NormalMap1, sampler_NormalMap1, _NormalStrength1,
 	_MetalnessMap1, sampler_MetalnessMap1, _MetalnessStrength1,
 	smoothnessSample1,
-	_SpecularMap1, sampler_SpecularMap1, _SpecularTint1,
 	_EmissionMap1, sampler_EmissionMap1, _EmissionTint1,
 	_ClearCoatMask1, sampler_ClearCoatMask1, _ClearCoatStrength1, 
 	_ClearCoatSmoothnessMask1, sampler_ClearCoatSmoothnessMask1, _ClearCoatSmoothness1,
@@ -161,7 +155,6 @@ float4 Fragment(Interpolators input
 	_NormalMap2, sampler_NormalMap2, _NormalStrength2,
 	_MetalnessMap2, sampler_MetalnessMap2, _MetalnessStrength2,
 	smoothnessSample2,
-	_SpecularMap2, sampler_SpecularMap2, _SpecularTint2,
 	_EmissionMap2, sampler_EmissionMap2, _EmissionTint2,
 	_ClearCoatMask2, sampler_ClearCoatMask2, _ClearCoatStrength2,
 	_ClearCoatSmoothnessMask2, sampler_ClearCoatSmoothnessMask2, _ClearCoatSmoothness2,
