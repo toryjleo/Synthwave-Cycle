@@ -95,10 +95,6 @@ Shader "Custom/MyMix"
             #pragma shader_feature_local _SPECULAR_SETUP
             #pragma shader_feature_local _ROUGHNESS_SETUP
             #pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature_local _PARALLAX_MAP
-            #pragma shader_feature_local _CC_MASK
-            #pragma shader_feature_local _CCS_MASK
-            #pragma shader_feature_local _EMISSION_MAP
 
 
 #if UNITY_VERSION >= 202120
