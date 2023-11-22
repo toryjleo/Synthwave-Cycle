@@ -104,6 +104,57 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler, float4 
     return float4(1, 1, 1, 1);
 }
 
+float4 GetColorsMaterial1(Interpolators input)
+{
+    float3 viewDirWS = GetWorldSpaceNormalizeViewDir(input.positionWS); // In ShaderVariablesFunctions.hlsl
+    float3 viewDirTS = GetViewDirectionTangentSpace(input.tangentWS, input.normalWS, viewDirWS); // In ParallaxMapping.hlsl, normal must NOT be normalized
+
+	
+	// Height Map Calculation For First Material
+    float2 uv1 = input.uv;
+    uv1 += ParallaxMapping(TEXTURE2D_ARGS(_ParallaxMap1, sampler_ParallaxMap1), viewDirTS, _ParallaxStrength1, uv1);
+	
+	// Smoothness Map Calculation For First Material
+    float smoothnessSample1 = SampleSmoothness(_SmoothnessMask1, sampler_SmoothnessMask1, _Smoothness1, uv1);
+#ifdef _ROUGHNESS_SETUP1
+	smoothnessSample1 = 1 - smoothnessSample1;
+#endif
+	
+    return RunUniversalPBR(_ColorMap1, sampler_ColorMap1, _ColorTint1,
+	_NormalMap1, sampler_NormalMap1, _NormalStrength1,
+	_MetalnessMap1, sampler_MetalnessMap1, _MetalnessStrength1,
+	smoothnessSample1,
+	_EmissionMap1, sampler_EmissionMap1, _EmissionTint1,
+	_ClearCoatMask1, sampler_ClearCoatMask1, _ClearCoatStrength1,
+	_ClearCoatSmoothnessMask1, sampler_ClearCoatSmoothnessMask1, _ClearCoatSmoothness1,
+	uv1, input.normalWS, input.positionWS, input.tangentWS, input.positionCS, viewDirWS);
+}
+
+float4 GetColorsMaterial2(Interpolators input)
+{
+    float3 viewDirWS = GetWorldSpaceNormalizeViewDir(input.positionWS); // In ShaderVariablesFunctions.hlsl
+    float3 viewDirTS = GetViewDirectionTangentSpace(input.tangentWS, input.normalWS, viewDirWS); // In ParallaxMapping.hlsl, normal must NOT be normalized
+
+	// Height Map Calculation For Second Material
+    float2 uv2 = input.uv;
+    uv2 += ParallaxMapping(TEXTURE2D_ARGS(_ParallaxMap2, sampler_ParallaxMap2), viewDirTS, _ParallaxStrength2, uv2);
+	
+	// Smoothness Map Calculation For Second Material
+    float smoothnessSample2 = SampleSmoothness(_SmoothnessMask2, sampler_SmoothnessMask2, _Smoothness2, uv2);
+#ifdef _ROUGHNESS_SETUP2
+	smoothnessSample2 = 1 - smoothnessSample2;
+#endif
+	
+    return RunUniversalPBR(_ColorMap2, sampler_ColorMap2, _ColorTint2,
+	_NormalMap2, sampler_NormalMap2, _NormalStrength2,
+	_MetalnessMap2, sampler_MetalnessMap2, _MetalnessStrength2,
+	smoothnessSample2,
+	_EmissionMap2, sampler_EmissionMap2, _EmissionTint2,
+	_ClearCoatMask2, sampler_ClearCoatMask2, _ClearCoatStrength2,
+	_ClearCoatSmoothnessMask2, sampler_ClearCoatSmoothnessMask2, _ClearCoatSmoothness2,
+	uv2, input.normalWS, input.positionWS, input.tangentWS, input.positionCS, viewDirWS);
+}
+
 // The fragment function. This runs once per fragment, which you can think of as a pixel on the screen
 // It must output the final color of this pixel
 float4 Fragment(Interpolators input
@@ -117,48 +168,10 @@ float4 Fragment(Interpolators input
 	input.normalWS *= IS_FRONT_VFACE(frontFace, 1, -1); // Multiply Normal vector by 1 or -1 depending if this face is facing the camera
 #endif
 	
-	// View Direction
-    float3 viewDirWS = GetWorldSpaceNormalizeViewDir(input.positionWS); // In ShaderVariablesFunctions.hlsl
-    float3 viewDirTS = GetViewDirectionTangentSpace(input.tangentWS, input.normalWS, viewDirWS); // In ParallaxMapping.hlsl, normal must NOT be normalized
-
-	
-	// Height Map Calculation
-    float2 uv1 = input.uv;
-    uv1 += ParallaxMapping(TEXTURE2D_ARGS(_ParallaxMap1, sampler_ParallaxMap1), viewDirTS, _ParallaxStrength1, uv1);
-	
-	// Smoothness Map Calculation
-    float smoothnessSample1 = SampleSmoothness(_SmoothnessMask1, sampler_SmoothnessMask1, _Smoothness1, uv1);
-#ifdef _ROUGHNESS_SETUP1
-	smoothnessSample1 = 1 - smoothnessSample1;
-#endif
-	
-    float4 rgba1 = RunUniversalPBR(_ColorMap1, sampler_ColorMap1, _ColorTint1,
-	_NormalMap1, sampler_NormalMap1, _NormalStrength1,
-	_MetalnessMap1, sampler_MetalnessMap1, _MetalnessStrength1,
-	smoothnessSample1,
-	_EmissionMap1, sampler_EmissionMap1, _EmissionTint1,
-	_ClearCoatMask1, sampler_ClearCoatMask1, _ClearCoatStrength1, 
-	_ClearCoatSmoothnessMask1, sampler_ClearCoatSmoothnessMask1, _ClearCoatSmoothness1,
-	uv1, input.normalWS, input.positionWS, input.tangentWS, input.positionCS, viewDirWS);
-	
-	// Height Map Calculation
-    float2 uv2 = input.uv;
-    uv2 += ParallaxMapping(TEXTURE2D_ARGS(_ParallaxMap2, sampler_ParallaxMap2), viewDirTS, _ParallaxStrength2, uv1);
+    float4 rgba1 = GetColorsMaterial1(input);
 	
 	
-    float smoothnessSample2 = SampleSmoothness(_SmoothnessMask2, sampler_SmoothnessMask2, _Smoothness2, uv2);
-#ifdef _ROUGHNESS_SETUP2
-	smoothnessSample2 = 1 - smoothnessSample2;
-#endif
-	
-    float4 rgba2 = RunUniversalPBR(_ColorMap2, sampler_ColorMap2, _ColorTint2,
-	_NormalMap2, sampler_NormalMap2, _NormalStrength2,
-	_MetalnessMap2, sampler_MetalnessMap2, _MetalnessStrength2,
-	smoothnessSample2,
-	_EmissionMap2, sampler_EmissionMap2, _EmissionTint2,
-	_ClearCoatMask2, sampler_ClearCoatMask2, _ClearCoatStrength2,
-	_ClearCoatSmoothnessMask2, sampler_ClearCoatSmoothnessMask2, _ClearCoatSmoothness2,
-	uv2, input.normalWS, input.positionWS, input.tangentWS, input.positionCS, viewDirWS);
+    float4 rgba2 = GetColorsMaterial2(input);
 	
     return rgba2;
 }
