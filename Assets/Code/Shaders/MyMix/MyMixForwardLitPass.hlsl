@@ -133,7 +133,7 @@ float4 Fragment(Interpolators input
 	
 	// Smoothness Map Calculation
     float smoothnessSample1 = SampleSmoothness(_SmoothnessMask1, sampler_SmoothnessMask1, _Smoothness1, uv1);
-#ifdef _ROUGHNESS_SETUP
+#ifdef _ROUGHNESS_SETUP1
 	smoothnessSample1 = 1 - smoothnessSample1;
 #endif
 	
@@ -153,7 +153,7 @@ float4 Fragment(Interpolators input
 	
 	
     float smoothnessSample2 = SampleSmoothness(_SmoothnessMask2, sampler_SmoothnessMask2, _Smoothness2, uv2);
-#ifdef _ROUGHNESS_SETUP
+#ifdef _ROUGHNESS_SETUP2
 	smoothnessSample2 = 1 - smoothnessSample2;
 #endif
 	
@@ -167,6 +167,6 @@ float4 Fragment(Interpolators input
 	_ClearCoatSmoothnessMask2, sampler_ClearCoatSmoothnessMask2, _ClearCoatSmoothness2,
 	uv2, input.normalWS, input.positionWS, input.tangentWS, input.positionCS, viewDirWS);
 	
-    return rgba1;
+    return rgba2;
 }
 

@@ -31,7 +31,8 @@ Shader "Custom/MyMix"
         [HideInInspector] [NoScaleOffset] _SpecularMap2("[2] Specular map", 2D) = "white" {}
         [HideInInspector] _SpecularTint2("[2] Specular tint", Color) = (1, 1, 1, 1)
 
-        [Toggle(_ROUGHNESS_SETUP)] _RoughnessMapToggle("Use roughness map", Float) = 0
+        [Toggle(_ROUGHNESS_SETUP1)] _RoughnessMapToggle1("Use roughness map", Float) = 0
+        [Toggle(_ROUGHNESS_SETUP2)] _RoughnessMapToggle2("Use roughness map", Float) = 0
 
         [HideInInspector] [NoScaleOffset] _SmoothnessMask1("[1] Smoothness mask", 2D) = "white" {}
         [HideInInspector] _Smoothness1("[1] Smoothness multiplier", Range(0, 1)) = 0.5
@@ -93,7 +94,8 @@ Shader "Custom/MyMix"
             #pragma shader_feature_local _ALPHA_CUTOUT
             #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
             #pragma shader_feature_local _SPECULAR_SETUP
-            #pragma shader_feature_local _ROUGHNESS_SETUP
+            #pragma shader_feature_local _ROUGHNESS_SETUP1
+            #pragma shader_feature_local _ROUGHNESS_SETUP2
             #pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
 
 
