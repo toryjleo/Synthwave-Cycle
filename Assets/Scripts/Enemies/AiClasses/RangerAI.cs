@@ -9,13 +9,6 @@ public class RangerAI : InfantryAI
     public override void Init()
     {
         alive = true;
-        /*StartingHP = 20;
-        score = 300;
-        dlScore = 5;
-        maxSpeed = 20;
-        attackRange = 15;
-        minimumRange = 5;
-        speedBoost = 30;*/
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
@@ -59,5 +52,8 @@ public class RangerAI : InfantryAI
         base.Update();
     }
 
-
+    public override Enemy GetEnemyType()
+    {
+        return Enemy.Ranger;
+    }
 }

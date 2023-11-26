@@ -5,6 +5,8 @@ Shader "Custom/MyLit"
     {
         [Header(Surface options)] // Creates a text header
 
+        [Toggle(_ADDITIONAL_LIGHTS)] _EnableMultipleLights("Enable Multiple Lights", Float) = 1.0
+
         // Format the properties like so: <_PropertyName>(<Material Inspector Name>, <DataType>) <DefaultVal>
         // Convention states that property names start with an underscore
         _ColorTint("Tint", Color) = (1, 1, 1, 1)
@@ -32,7 +34,7 @@ Shader "Custom/MyLit"
         [NoScaleOffset] _ClearCoatSmoothnessMask("Clear coat smoothness mask", 2D) = "white" {}
         _ClearCoatSmoothness("Clear coat smoothness", Range(0, 1)) = 0
 
-        [NoScaleOffset] _ParallaxMap("Height/displacement map", 2D) = "white" {}
+        [NoScaleOffset] _ParallaxMap("Height/parallax/displacement map", 2D) = "white" {}
         _ParallaxStrength("Parallax strength", Range(0, 1)) = 0.005
 
         [HideInInspector] _Cull("Cull mode", Float) = 2
@@ -42,7 +44,7 @@ Shader "Custom/MyLit"
         [HideInInspector] _ZWrite("ZWrite", Float) = 0
 
         [HideInInspector] _SurfaceType("Surface type", Float) = 0
-        [HideInInspector] _BlendType("Bland type", Float) = 0
+        [HideInInspector] _BlendType("Blend type", Float) = 0
         [HideInInspector] _FaceRenderingMode("Face rendering type", Float) = 0
     }
     // SubShaaders allow for different behavior and optionf for different pipelines and platforms
@@ -67,11 +69,16 @@ Shader "Custom/MyLit"
 
             #define _NORMALMAP
             #define _CLEARCOATMAP
+            #pragma shader_feature_local _ADDITIONAL_LIGHTS
             #pragma shader_feature_local _ALPHA_CUTOUT
             #pragma shader_feature_local _DOUBLE_SIDED_NORMALS
             #pragma shader_feature_local _SPECULAR_SETUP
             #pragma shader_feature_local _ROUGHNESS_SETUP
             #pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local _ParMap
+            #pragma shader_feature_local _CCMask
+            #pragma shader_feature_local _CCSMask
+            #pragma shader_feature_local _EmissionMap
 
 
 #if UNITY_VERSION >= 202120

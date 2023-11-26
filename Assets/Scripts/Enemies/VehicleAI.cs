@@ -6,7 +6,7 @@ using UnityEngine;
 /// VehicleAI holds all the code that makes an enemy Vehicle different form other enemy types
 public class VehicleAI : Ai
 {
-    ArcadeAiVehicleController vehicleController;
+    public ArcadeAiVehicleController vehicleController;
 
     //How much damage ramming deals
     [SerializeField]
@@ -48,30 +48,28 @@ public class VehicleAI : Ai
     public override void Update()
     {
         base.Update();
-        Vector3 aimLoc = target.transform.position;
-        aimLoc += target.transform.forward * 10;
-        myGun?.transform.LookAt(aimLoc);
-        if(IsConfident() && Vector3.Distance(transform.position, target.transform.position) <= attackRange)
+        if(movementTarget != null)
         {
-            Attack();
-        }
-        if(Vector3.Distance(transform.position, movementTarget.transform.position) <= CONFIDENCE_BUILD_DISTANCE)
-        {
-            timeByTarget += Time.deltaTime;
-        }
-        else
-        {
-            timeByTarget -= Time.deltaTime;
-        }
-        if(timeByTarget < 0)
-        {
-            timeByTarget = 0;
-        }
-        else if(timeByTarget > TIME_BY_TARGET_TO_ATTACK)
-        {
-            timeByTarget = TIME_BY_TARGET_TO_ATTACK;
+            if (Vector3.Distance(transform.position, movementTarget.transform.position) <= CONFIDENCE_BUILD_DISTANCE)
+            {
+                timeByTarget += Time.deltaTime;
+            }
+            else
+            {
+                timeByTarget -= Time.deltaTime;
+            }
+            if (timeByTarget < 0)
+            {
+                timeByTarget = 0;
+            }
+            else if (timeByTarget > TIME_BY_TARGET_TO_ATTACK)
+            {
+                timeByTarget = TIME_BY_TARGET_TO_ATTACK;
+            }
         }
     }
+
+
 
     //If Car has spent enough time by the player, ATTACK!
     public bool IsConfident()
@@ -81,13 +79,18 @@ public class VehicleAI : Ai
 
     public override void Init()
     {
+        alive = true;
+        hp = GetComponentInChildren<Health>();
         vehicleController = GetComponent<ArcadeAiVehicleController>();
+        vehicleController.enabled = false;
         DeadEvent += CarDeath;
+        this.Despawn += op_ProcessCompleted;
+        hp.Init(StartingHP);
     }
 
     public override void SetTarget(GameObject targ)
     {
-        //vehicleController.enabled = true;
+        vehicleController.enabled = true;
         base.SetTarget(targ);
     }
 
@@ -112,7 +115,6 @@ public class VehicleAI : Ai
             Vector3 bumpForce = Vector3.ClampMagnitude((vehicleController.carVelocity - 
                 bike.movementComponent.appliedForce) * RamModifier, MAX_RAM_MAGNITUDE);
 
-            //bikeRB.AddForce(bumpForce, ForceMode.Impulse);
             bikeRB.AddTorque(Vector3.up * Random.Range(-MAX_RANDOM_TORQUE, MAX_RANDOM_TORQUE), ForceMode.Impulse);
         }
     }
@@ -129,5 +131,10 @@ public class VehicleAI : Ai
                                 ForceMode.Impulse);
         vehicleController.enabled = false;
         Instantiate(itemDrop, this.transform.position, Quaternion.identity);
+    }
+
+    public override Enemy GetEnemyType()
+    {
+        return Enemy.Car;
     }
 }

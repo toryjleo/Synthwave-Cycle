@@ -11,7 +11,7 @@ public class ShottyPellet : PlayerBullet
     {
         muzzleVelocity = 90;
         mass = .2f;
-        damageDealt = 4;
+        damageDealt = 240;
         boost = 2f;
     }
 

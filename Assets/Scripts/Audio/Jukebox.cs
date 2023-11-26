@@ -44,6 +44,7 @@ public class Jukebox : MonoBehaviour, IResettable
 
     private void Update()
     {
+
         // Schedule next track 1 second before this track ends
         if (AudioSettings.dspTime > nextAudioLoopTime - 1) 
         {
@@ -51,7 +52,7 @@ public class Jukebox : MonoBehaviour, IResettable
         }
         if(AudioSettings.dspTime > nextWaveSpawnTime)
         {
-            sequence.CheckForWaveSpawn();
+            sequence.SpawnNewWave();
             nextWaveSpawnTime = sequence.GetNextWaveTime(nextWaveSpawnTime);
         }
 
@@ -71,6 +72,7 @@ public class Jukebox : MonoBehaviour, IResettable
         nextAudioLoopTime = nextAudioLoopTime + duration;
         // Switches the toggle to use the other Audio Source next
         toggle = 1 - toggle;
+
     }
 
 

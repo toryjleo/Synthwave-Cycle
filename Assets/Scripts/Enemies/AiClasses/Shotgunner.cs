@@ -9,13 +9,6 @@ public class Shotgunner : InfantryAI
     public override void Init()
     {
         alive = true;
-        /*StartingHP = 40;
-        score = 300;
-        dlScore = 5;
-        maxSpeed = 10;
-        attackRange = 7;
-        minimumRange = 1;
-        speedBoost = 8;*/
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
@@ -59,5 +52,8 @@ public class Shotgunner : InfantryAI
         base.Update();
     }
 
-
+    public override Enemy GetEnemyType()
+    {
+        return Enemy.Shotgun;
+    }
 }

@@ -10,13 +10,6 @@ public class RiflemanAi : InfantryAI
     public override void Init()
     {
         alive = true;
-        //StartingHP = 20;
-        //score = 100;
-        //dlScore = 10;
-        //maxSpeed = 15;
-        //attackRange = 70;
-        //minimumRange = 10;
-        //speedBoost = 20;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
@@ -70,5 +63,10 @@ public class RiflemanAi : InfantryAI
         }
         // This gameObject will be a child of muzzleLocation
         myGun = Instantiate<Gun>(gun, muzzleLocation.transform);
+    }
+
+    public override Enemy GetEnemyType()
+    {
+        return Enemy.Rifleman;
     }
 }

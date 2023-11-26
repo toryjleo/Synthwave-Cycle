@@ -137,17 +137,6 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         appliedForce += ForwardVector().normalized * Acceleration * Input.GetAxis("Vertical") * Time.fixedDeltaTime;
 
         
-        //Latteral movement inputs, q and e add side force to the bike 
-        //if (Input.GetKey(KeyCode.E))
-        //{
-        //    rb.AddForce(RightVector() * SideForce);
-        //}
-        //if (Input.GetKey(KeyCode.Q))
-        //{
-        //    rb.AddForce(LeftVector() * SideForce);
-        //}
-
-        //Debug.Log(Input.GetAxis("Horizontal"));
         //Steering Takes Horizontal Input and rotates both 
         float steerInput = Input.GetAxis("Horizontal");
         bikeMeshChild.transform.localRotation = Quaternion.Euler(maxLean * steerInput, 0, 0);

@@ -11,32 +11,38 @@ using UnityEngine;
 public class WaveSequence : ScriptableObject
 {
     private int previousWave = -1;
-    private int CurrentWave = 0;
+    private int currentWave = 0;
     [SerializeField]
     public List<Wave> sequence;
     internal SquadSpawner spawner;
 
     public AudioClip GetCurrentTrackVariation()
     {
-        return sequence[CurrentWave].GetTrackVariation();
+        return sequence[currentWave].GetTrackVariation();
     }
-
-    public void CheckForWaveSpawn()
+    /// <summary>
+    /// Updates the wave and spawns in wave according to danger level
+    /// </summary>
+    public void SpawnNewWave()
     {
         UpdateCurrentWave();
-        spawner.SpawnWave(sequence[CurrentWave].GetWaveInfo());
-        previousWave = CurrentWave;
+        spawner.SpawnWave(sequence[currentWave].GetWaveAi());
+        previousWave = currentWave;
     }
 
+    /// <summary>
+    /// Sets the currentWave number based on Danger Level
+    /// </summary>
     internal void UpdateCurrentWave()
     {
-        for (int index = 0; index < sequence.Count; index++)
+        for (int index = sequence.Count - 1; index >= 0 ; index--)
         {
-            if (!sequence[index].IsOverThreshold())
+            // Iterate backwards and spawn in the waves for the highest danger level
+            if (sequence[index].IsOverThreshold())
             {
-                CurrentWave = Mathf.Clamp(index - 1, 0, sequence.Count - 1);
+                currentWave = index;
                 //Log the wave + 1 because the index starts at 0, but the tracks start at 1
-                Debug.Log("Current Wave: " + (CurrentWave + 1) + "/" + (sequence.Count) + "\nDanger Level: " + DLevel.Instance.GetDangerLevel());
+                Debug.Log("Current Wave: " + (currentWave + 1) + "/" + (sequence.Count) + "\nDanger Level: " + DLevel.Instance.GetDangerLevel());
                 break;
             }
         }
@@ -45,14 +51,17 @@ public class WaveSequence : ScriptableObject
     internal void Init(SquadSpawner squadSpawner)
     {
         spawner = squadSpawner;
-        CurrentWave = 0;
+        currentWave = 0;
         previousWave = -1;
     }
-
+    /// <summary>
+    /// Gets the universal time that the next wave will spawn at,
+    /// according to the waves per loop and loop duration
+    /// </summary>
     internal double GetNextWaveTime(double currentTime)
     {
-        AudioClip clipToPlay = sequence[CurrentWave].GetTrackVariation();
+        AudioClip clipToPlay = sequence[currentWave].GetTrackVariation();
         double duration = (double)clipToPlay.samples / clipToPlay.frequency;
-        return currentTime + (duration / sequence[CurrentWave].wavesInTrack);
+        return currentTime + (duration / sequence[currentWave].wavesInTrack);
     }
 }

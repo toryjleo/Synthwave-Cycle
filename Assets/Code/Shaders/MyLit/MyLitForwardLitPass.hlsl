@@ -67,7 +67,10 @@ float4 Fragment(Interpolators input
 
 	// Height Map Calculation
 	float2 uv = input.uv;
+#ifdef _ParMap
 	uv += ParallaxMapping(TEXTURE2D_ARGS(_ParallaxMap, sampler_ParallaxMap), viewDirTS, _ParallaxStrength, uv);
+#endif
+
 
 	// Get Normal map
 	float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, uv), _NormalStrength);
@@ -106,9 +109,15 @@ float4 Fragment(Interpolators input
 	smoothnessSample = 1 - smoothnessSample;
 #endif
 	surfaceInput.smoothness = smoothnessSample;
+#ifdef _EmissionMap
 	surfaceInput.emission   = SAMPLE_TEXTURE2D(_EmissionMap, sampler_EmissionMap, uv).rgb * _EmissionTint;
+#endif
+#ifdef _CCMask
 	surfaceInput.clearCoatMask = SAMPLE_TEXTURE2D(_ClearCoatMask, sampler_ClearCoatMask, uv).r * _ClearCoatStrength;
+#endif
+#ifdef _CCSMask
 	surfaceInput.clearCoatSmoothness = SAMPLE_TEXTURE2D(_ClearCoatSmoothnessMask, sampler_ClearCoatSmoothnessMask, uv).r * _ClearCoatSmoothness;
+#endif
 
 	return UniversalFragmentPBR(lightingInput, surfaceInput);
 }
