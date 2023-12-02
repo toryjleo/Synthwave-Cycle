@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MyMix
   m_Shader: {fileID: 4800000, guid: d6dcada0948c5da4793f0a9a4cd19961, type: 3}
-  m_ShaderKeywords: _ADDITIONAL_LIGHTS _ROUGHNESS_SETUP
+  m_ShaderKeywords: _ADDITIONAL_LIGHTS _ROUGHNESS_SETUP _ROUGHNESS_SETUP1
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -36,11 +36,19 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ClearCoatMask2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ClearCoatSmoothnessMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ClearCoatSmoothnessMask1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ClearCoatSmoothnessMask2:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -50,6 +58,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ColorMap1:
         m_Texture: {fileID: 2800000, guid: cafd9e57d71dc7440ac2b3fb43ad535d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ColorMap2:
+        m_Texture: {fileID: 2800000, guid: 07ea4b6d32595be4daadb20ad7732ea1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -72,6 +84,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _EmissionMap2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -88,12 +104,20 @@ Material:
         m_Texture: {fileID: 2800000, guid: 5c466171973f67d43a9c7d4172a7c6af, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MetalnessMap2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalMap:
         m_Texture: {fileID: 2800000, guid: edd23f96a8fc0c04aac72803587ed849, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap1:
         m_Texture: {fileID: 2800000, guid: edd23f96a8fc0c04aac72803587ed849, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap2:
+        m_Texture: {fileID: 2800000, guid: cd6998650c94d864bb3e07790f126372, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -108,12 +132,20 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ParallaxMap2:
+        m_Texture: {fileID: 2800000, guid: ae5f9c2ee2a2dd046bde24b724d5c3f4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SmoothnessMask:
         m_Texture: {fileID: 2800000, guid: 0121cc3871de2e04b8b8170e2c29a478, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SmoothnessMask1:
         m_Texture: {fileID: 2800000, guid: 0121cc3871de2e04b8b8170e2c29a478, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SmoothnessMask2:
+        m_Texture: {fileID: 2800000, guid: bfa82adcedd82ab4295071d93fdbc539, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -125,6 +157,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularMap1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecularMap2:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -148,8 +184,10 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ClearCoatSmoothness1: 0
+    - _ClearCoatSmoothness2: 0
     - _ClearCoatStrength: 0
     - _ClearCoatStrength1: 0
+    - _ClearCoatStrength2: 0
     - _Cull: 2
     - _Cutoff: 0.5
     - _DestBlend: 0
@@ -164,18 +202,24 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _MetalnessStrength: 0
-    - _MetalnessStrength1: 0.05
+    - _MetalnessStrength1: 0.09
+    - _MetalnessStrength2: 0
     - _NormalStrength: 1
     - _NormalStrength1: 1
+    - _NormalStrength2: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _ParallaxStrength: 0.005
     - _ParallaxStrength1: 0.005
+    - _ParallaxStrength2: 0.06
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RoughnessMapToggle: 1
+    - _RoughnessMapToggle1: 1
+    - _RoughnessMapToggle2: 0
     - _Smoothness: 0.5
-    - _Smoothness1: 0.5
+    - _Smoothness1: 0.1
+    - _Smoothness2: 0.09
     - _SmoothnessTextureChannel: 0
     - _SourceBlend: 1
     - _SpecularHighlights: 1
@@ -190,12 +234,15 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorTint: {r: 1, g: 1, b: 1, a: 1}
     - _ColorTint1: {r: 1, g: 1, b: 1, a: 0.3254902}
+    - _ColorTint2: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionTint: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionTint1: {r: 0, g: 0, b: 0, a: 0}
+    - _EmissionTint2: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SpecularTint: {r: 1, g: 1, b: 1, a: 1}
     - _SpecularTint1: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecularTint2: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &2549997462893448327
 MonoBehaviour:
