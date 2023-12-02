@@ -53,7 +53,7 @@ public class Wave : ScriptableObject
         switch (waveType)
         {
             case WaveType.HostileWave:
-                return waveEnemies;
+                break;
             case WaveType.ReturnToMenu:
                 SceneManager.LoadScene("MainMenu");
                 break;
