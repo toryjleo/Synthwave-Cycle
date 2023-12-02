@@ -53,10 +53,6 @@ public class HealthFieldManager : MonoBehaviour
                 DisableEffect();
             }
         }
-        if (Input.GetKeyDown(KeyCode.Space)) 
-        {
-            PlayEffect();
-        }
     }
 
     /// <summary>

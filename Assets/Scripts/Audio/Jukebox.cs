@@ -37,9 +37,6 @@ public class Jukebox : MonoBehaviour, IResettable
         double startTime  = AudioSettings.dspTime + 0.2;
         nextAudioLoopTime = startTime;
         nextWaveSpawnTime = startTime;
-
-        audioSourceArray[toggle].PlayScheduled(startTime);
-        toggle = 1 - toggle;
     }
 
     private void Update()
@@ -50,7 +47,8 @@ public class Jukebox : MonoBehaviour, IResettable
         {
             QueueNextSong();
         }
-        if(AudioSettings.dspTime > nextWaveSpawnTime)
+        // Logic for spawning in next wave
+        if (AudioSettings.dspTime > nextWaveSpawnTime)
         {
             sequence.SpawnNewWave();
             nextWaveSpawnTime = sequence.GetNextWaveTime(nextWaveSpawnTime);
