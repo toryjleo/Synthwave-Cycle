@@ -137,8 +137,8 @@ public class OctoBarrelLMG : LeveledGun
     /// </summary>
     private void ResetRotation()
     {
-        muzzle1.transform.rotation = Quaternion.AngleAxis(MIN_ROTATION_ANGLE, Vector3.up);
-        muzzle2.transform.rotation = Quaternion.AngleAxis(MIN_ROTATION_ANGLE, Vector3.up);
+        muzzle1.transform.localRotation = Quaternion.AngleAxis(MIN_ROTATION_ANGLE, Vector3.up);
+        muzzle2.transform.localRotation = Quaternion.AngleAxis(MIN_ROTATION_ANGLE, Vector3.up);
         rotateOutward = true;
         currentRotationFromMin = 0.0f;
     }
