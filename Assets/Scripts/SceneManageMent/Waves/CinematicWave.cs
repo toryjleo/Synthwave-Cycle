@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum CinematicWaveType
 {
@@ -11,7 +12,7 @@ public enum CinematicWaveType
 /// <summary>
 /// A wave that has additional controls
 /// </summary>
-[CreateAssetMenu(menuName = "Wave/Wave", fileName = "New Cinematic Wave")]
+[CreateAssetMenu(menuName = "Wave/CinematicWave", fileName = "New Cinematic Wave")]
 public class CinematicWave : Wave
 {
     [SerializeField]
@@ -22,7 +23,7 @@ public class CinematicWave : Wave
         switch (waveType)
         {
             case CinematicWaveType.ReturnToMenu:
-                //TODO add return to main menu code here
+                SceneManager.LoadScene("MainMenu");
                 break;
         }
         return new List<Enemy>();
