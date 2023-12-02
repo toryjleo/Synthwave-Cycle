@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b733f19d7101f9a4687c5e3009c4cd19, type: 3}
+  m_Script: {fileID: 11500000, guid: 15125cb873be8194b8dd68d612076abd, type: 3}
   m_Name: InTheirFinalMomentsWaveEnd
   m_EditorClassIdentifier: 
   DLThreshold: 300
-  TrackVariation: {fileID: 8300000, guid: d2fce4fecccddc04eb56111a6e9f682a, type: 3}
-  wavesInTrack: 0
+  TrackVariation: {fileID: 8300000, guid: 4b8b97debd7b1c54d942e4e40e3b76c3, type: 3}
+  wavesInTrack: 1
   waveEnemies: 
   waveType: 1

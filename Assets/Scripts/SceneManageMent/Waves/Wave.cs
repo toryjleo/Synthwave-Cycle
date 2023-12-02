@@ -2,6 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public enum WaveType
+{
+    HostileWave, ReturnToMenu, PlayAudioLog
+};
 
 /// <summary>
 /// A wave holds the information for one "Wave Level" of enemies
@@ -26,6 +32,11 @@ public class Wave : ScriptableObject
     //A collection of enemy types, each loop, a squad of each type is spawned
     [SerializeField]
     public List<Enemy> waveEnemies;
+
+    //Default: HostileWave, this determines if the wave has any special functionality
+    [SerializeField]
+    public WaveType waveType;
+
     public bool IsOverThreshold()
     {
         return DLevel.Instance.GetDangerLevel() > DLThreshold;
@@ -36,9 +47,17 @@ public class Wave : ScriptableObject
         return TrackVariation;
     }
 
-    //activates wave properties and returns a list of wave enemies
+    // Activates wave properties and returns a list of wave enemies
     internal virtual List<Enemy> GetWaveInfo()
     {
+        switch (waveType)
+        {
+            case WaveType.HostileWave:
+                return waveEnemies;
+            case WaveType.ReturnToMenu:
+                SceneManager.LoadScene("MainMenu");
+                break;
+        }
         return waveEnemies;
     }
 }
