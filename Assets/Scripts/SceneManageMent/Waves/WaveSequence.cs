@@ -26,7 +26,7 @@ public class WaveSequence : ScriptableObject
     public void SpawnNewWave()
     {
         UpdateCurrentWave();
-        spawner.SpawnWave(sequence[currentWave].GetWaveAi());
+        spawner.SpawnWave(sequence[currentWave].GetWaveInfo());
         previousWave = currentWave;
     }
 
