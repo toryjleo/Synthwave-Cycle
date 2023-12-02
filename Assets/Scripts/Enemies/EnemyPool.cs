@@ -5,7 +5,6 @@ using UnityEngine;
 
 public enum Enemy
 {
-    Grunt,
     Rifleman,
     Ranger,
     Shotgun,
