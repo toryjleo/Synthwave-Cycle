@@ -1,7 +1,8 @@
 // Pull in custom common toolbox
 #include "MyMixCommon.hlsl"
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/ParallaxMapping.hlsl"
-
+#include "Packages/jp.keijiro.noiseshader/Shader/ClassicNoise2D.hlsl"
+#include "Packages/jp.keijiro.noiseshader/Shader/SimplexNoise2D.hlsl"
 
 /*------------------------------ Shader ------------------------------*/
 // Common unity semantics: https://hackingwithunity.com/semantics-in-shader-unity/
@@ -173,6 +174,6 @@ float4 Fragment(Interpolators input
 	
     float4 rgba2 = GetColorsMaterial2(input);
 	
-    return rgba2;
+    return SimplexNoise(input.uv * 10);
 }
 
