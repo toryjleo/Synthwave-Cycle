@@ -176,9 +176,6 @@ float4 Fragment(Interpolators input
     noiseMask += ClassicNoise(input.uv * _ClassicNoiseScale) * _ClassicNoiseStrength;
     noiseMask = clamp(noiseMask, 0, 1);
 	
-	
-	
-    //float4 result = Unity_Blend_Overlay_float4(rgba1, rgba2, noiseMask);
     float4 result = lerp(rgba1, rgba2, noiseMask);
 	
     return result;
