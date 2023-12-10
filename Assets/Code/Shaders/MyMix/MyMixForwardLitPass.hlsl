@@ -174,8 +174,7 @@ float4 Fragment(Interpolators input
     float noiseMask = 0.0f;
     noiseMask += SimplexNoise(input.uv * _SimpleNoiseScale) * _SimpleNoiseStrength;
     noiseMask += ClassicNoise(input.uv * _ClassicNoiseScale) * _ClassicNoiseStrength;
-    noiseMask = min(1, noiseMask);
-    noiseMask = max(0, noiseMask);
+    noiseMask = clamp(noiseMask, 0, 1);
 	
 	
 	
