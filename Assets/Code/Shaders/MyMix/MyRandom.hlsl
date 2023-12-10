@@ -25,3 +25,12 @@ void Unity_GradientNoise_float(float2 UV, float Scale, out float Out)
     Out = unity_gradientNoise(UV * Scale) + 0.5;
 }
 
+float4 Unity_Blend_Overlay_float4(float4 Base, float4 Blend, float Opacity)
+{
+    float4 result1 = 1.0 - 2.0 * (1.0 - Base) * (1.0 - Blend);
+    float4 result2 = 2.0 * Base * Blend;
+    float4 zeroOrOne = step(Base, 0.5);
+    float4 Out = result2 * zeroOrOne + (1 - zeroOrOne) * result1;
+    Out = lerp(Base, Out, Opacity);
+    return Out;
+}

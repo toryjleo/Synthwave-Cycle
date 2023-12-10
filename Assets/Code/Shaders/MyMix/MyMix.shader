@@ -40,12 +40,8 @@ Shader "Custom/MyMix"
 
         [HideInInspector] [NoScaleOffset] _ClearCoatMask1("[1] Clear coat mask", 2D) = "white" {}
         [HideInInspector] _ClearCoatStrength1("[1] Clear coat strength", Range(0, 1)) = 0
-        [HideInInspector] [NoScaleOffset] _ClearCoatSmoothnessMask1("[1] Clear coat smoothness mask", 2D) = "white" {}
-        [HideInInspector] _ClearCoatSmoothness1("[1] Clear coat smoothness", Range(0, 1)) = 0
         [HideInInspector] [NoScaleOffset] _ClearCoatMask2("[2] Clear coat mask", 2D) = "white" {}
         [HideInInspector] _ClearCoatStrength2("[2] Clear coat strength", Range(0, 1)) = 0
-        [HideInInspector] [NoScaleOffset] _ClearCoatSmoothnessMask2("[2] Clear coat smoothness mask", 2D) = "white" {}
-        [HideInInspector] _ClearCoatSmoothness2("[2] Clear coat smoothness", Range(0, 1)) = 0
 
         [HideInInspector] [NoScaleOffset] _ParallaxMap1("[1] Height/parallax/displacement map", 2D) = "white" {}
         [HideInInspector] _ParallaxStrength1("[1] Parallax strength", Range(0, 1)) = 0.005
@@ -61,6 +57,12 @@ Shader "Custom/MyMix"
         [HideInInspector] _SurfaceType("Surface type", Float) = 0
         [HideInInspector] _BlendType("Blend type", Float) = 0
         [HideInInspector] _FaceRenderingMode("Face rendering type", Float) = 0
+
+        _SimpleNoiseScale("Simple Noise Scale", Float) = 1
+        _SimpleNoiseStrength("Simple Noise Strength", Float) = 0
+
+        _ClassicNoiseScale("Classic Noise Scale", Float) = 1
+        _ClassicNoiseStrength("Classic Noise Strength", Float) = 0
     }
     // SubShaaders allow for different behavior and optionf for different pipelines and platforms
     SubShader

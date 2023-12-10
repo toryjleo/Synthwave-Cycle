@@ -1,5 +1,6 @@
 // Pull in custom common toolbox
 #include "MyMixCommon.hlsl"
+#include "MyRandom.hlsl"
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/ParallaxMapping.hlsl"
 #include "Packages/jp.keijiro.noiseshader/Shader/ClassicNoise2D.hlsl"
 #include "Packages/jp.keijiro.noiseshader/Shader/SimplexNoise2D.hlsl"
@@ -59,7 +60,6 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler, float4 
 				       float smoothnessSample,
 					   Texture2D emissionMap, SamplerState emissionMapSampler, float3 emissionTint,
 					   Texture2D clearCoatMask, SamplerState clearCoatSampler, float clearCoatStrength,
-					   Texture2D clearCoatSmoothnessMask, SamplerState clearCoatSmoothnessSampler, float clearCoatSmoothnessStrength,
                        float2 uv, float3 normalWS, float3 positionWS, float4 tangentWS, float4 positionCS, float3 viewDirWS
 					   
 #ifdef _DOUBLE_SIDED_NORMALS
@@ -100,7 +100,6 @@ float4 RunUniversalPBR(Texture2D colorMap, SamplerState colorMapSampler, float4 
     surfaceInput.smoothness = smoothnessSample;
 	surfaceInput.emission   = SAMPLE_TEXTURE2D(emissionMap, emissionMapSampler, uv).rgb * emissionTint;
 	surfaceInput.clearCoatMask = SAMPLE_TEXTURE2D(clearCoatMask, clearCoatSampler, uv).r * clearCoatStrength;
-	surfaceInput.clearCoatSmoothness = SAMPLE_TEXTURE2D(clearCoatSmoothnessMask, clearCoatSmoothnessSampler, uv).r * clearCoatSmoothnessStrength;
     return UniversalFragmentPBR(lightingInput, surfaceInput);
     return float4(1, 1, 1, 1);
 }
@@ -127,7 +126,6 @@ float4 GetColorsMaterial1(Interpolators input)
 	smoothnessSample1,
 	_EmissionMap1, sampler_EmissionMap1, _EmissionTint1,
 	_ClearCoatMask1, sampler_ClearCoatMask1, _ClearCoatStrength1,
-	_ClearCoatSmoothnessMask1, sampler_ClearCoatSmoothnessMask1, _ClearCoatSmoothness1,
 	uv1, input.normalWS, input.positionWS, input.tangentWS, input.positionCS, viewDirWS);
 }
 
@@ -152,7 +150,6 @@ float4 GetColorsMaterial2(Interpolators input)
 	smoothnessSample2,
 	_EmissionMap2, sampler_EmissionMap2, _EmissionTint2,
 	_ClearCoatMask2, sampler_ClearCoatMask2, _ClearCoatStrength2,
-	_ClearCoatSmoothnessMask2, sampler_ClearCoatSmoothnessMask2, _ClearCoatSmoothness2,
 	uv2, input.normalWS, input.positionWS, input.tangentWS, input.positionCS, viewDirWS);
 }
 
@@ -174,6 +171,17 @@ float4 Fragment(Interpolators input
 	
     float4 rgba2 = GetColorsMaterial2(input);
 	
-    return SimplexNoise(input.uv * 10);
+    float noiseMask = 0.0f;
+    noiseMask += SimplexNoise(input.uv * _SimpleNoiseScale) * _SimpleNoiseStrength;
+    noiseMask += ClassicNoise(input.uv * _ClassicNoiseScale) * _ClassicNoiseStrength;
+    noiseMask = min(1, noiseMask);
+    noiseMask = max(0, noiseMask);
+	
+	
+	
+    //float4 result = Unity_Blend_Overlay_float4(rgba1, rgba2, noiseMask);
+    float4 result = lerp(rgba1, rgba2, noiseMask);
+	
+    return result;
 }
 

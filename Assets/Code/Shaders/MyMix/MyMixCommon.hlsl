@@ -26,6 +26,11 @@ float  _ClearCoatStrength2;
 float  _ClearCoatSmoothness1;
 float  _ClearCoatSmoothness2;
 
+float _SimpleNoiseScale;
+float _SimpleNoiseStrength;
+float _ClassicNoiseScale;
+float _ClassicNoiseStrength;
+
 TEXTURE2D(_ColorMap1);  SAMPLER(sampler_ColorMap1); // Sampler variables must be declared as sample_<_TextureVarName>
 TEXTURE2D(_ColorMap2);  SAMPLER(sampler_ColorMap2);
 TEXTURE2D(_NormalMap1); SAMPLER(sampler_NormalMap1);
@@ -39,9 +44,7 @@ TEXTURE2D(_EmissionMap2);    SAMPLER(sampler_EmissionMap2);
 TEXTURE2D(_ParallaxMap1);    SAMPLER(sampler_ParallaxMap1);
 TEXTURE2D(_ParallaxMap2);    SAMPLER(sampler_ParallaxMap2);
 TEXTURE2D(_ClearCoatMask1); SAMPLER(sampler_ClearCoatMask1);
-TEXTURE2D(_ClearCoatSmoothnessMask1); SAMPLER(sampler_ClearCoatSmoothnessMask1);
 TEXTURE2D(_ClearCoatMask2); SAMPLER(sampler_ClearCoatMask2);
-TEXTURE2D(_ClearCoatSmoothnessMask2); SAMPLER(sampler_ClearCoatSmoothnessMask2);
 
 void TestAlphaClip(float4 colorSample)
 {

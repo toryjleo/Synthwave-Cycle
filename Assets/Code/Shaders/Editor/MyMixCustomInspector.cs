@@ -7,7 +7,7 @@ public class MyMixCustomInspector : MyCustomShaderInspector
 {
     string[] PropertyNames = { "_ColorMap", "_ColorTint", "_NormalMap", "_NormalStrength", "_MetalnessMap",
     "_MetalnessStrength", "_RoughnessMapToggle", "_SmoothnessMask", "_Smoothness", "_EmissionMap",
-    "_EmissionTint", "_ClearCoatMask", "_ClearCoatStrength", "_ClearCoatSmoothnessMask", "_ClearCoatSmoothness",
+    "_EmissionTint", "_ClearCoatMask", "_ClearCoatStrength",
     "_ParallaxMap", "_ParallaxStrength"};
 
     protected bool foldedOutMat1 = false;
