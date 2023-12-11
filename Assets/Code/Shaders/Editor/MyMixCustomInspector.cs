@@ -5,13 +5,16 @@ using UnityEngine;
 
 public class MyMixCustomInspector : MyCustomShaderInspector
 {
-    string[] PropertyNames = { "_ColorMap", "_ColorTint", "_NormalMap", "_NormalStrength", "_MetalnessMap",
+    string[] MaterialPropertyNames = { "_ColorMap", "_ColorTint", "_NormalMap", "_NormalStrength", "_MetalnessMap",
     "_MetalnessStrength", "_RoughnessMapToggle", "_SmoothnessMask", "_Smoothness", "_EmissionMap",
     "_EmissionTint", "_ClearCoatMask", "_ClearCoatStrength",
     "_ParallaxMap", "_ParallaxStrength"};
+    string[] RandomPropertyNames = { "_SimpleNoiseStrength", "_SimpleNoiseScaleX", "_SimpleNoiseScaleZ",
+    "_ClassicNoiseStrength", "_ClassicNoiseScaleX", "_ClassicNoiseScaleZ", "_CurrentTileX", "_CurrentTileZ" };
 
     protected bool foldedOutMat1 = false;
     protected bool foldedOutMat2 = false;
+    protected bool foldedOutRando = false;
     
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
@@ -19,6 +22,7 @@ public class MyMixCustomInspector : MyCustomShaderInspector
 
         foldedOutMat1 = CreateMaterialDropdown(materialEditor, properties, '1', foldedOutMat1);
         foldedOutMat2 = CreateMaterialDropdown(materialEditor, properties, '2', foldedOutMat2);
+        foldedOutRando = CreateRandoAlgoDropdown(materialEditor, properties, foldedOutRando);
     }
 
     public override void AssignNewShaderToMaterial(Material material, Shader oldShader, Shader newShader)
@@ -37,7 +41,7 @@ public class MyMixCustomInspector : MyCustomShaderInspector
         if (retVal)
         {
 
-            foreach (string Reference in PropertyNames)
+            foreach (string Reference in MaterialPropertyNames)
             {
                 MaterialProperty Property = ShaderGUI.FindProperty(Reference + groupNum, properties);
                 materialEditor.ShaderProperty(Property, Property.displayName);
@@ -49,14 +53,25 @@ public class MyMixCustomInspector : MyCustomShaderInspector
         return retVal;
     }
 
+    private bool CreateRandoAlgoDropdown(MaterialEditor materialEditor, MaterialProperty[] properties, bool foldedOut)
+    {
+        bool retVal = EditorGUILayout.BeginFoldoutHeaderGroup(foldedOut, "Random Algorithm Adjustments");
+        if (retVal)
+        {
+
+            foreach (string Reference in RandomPropertyNames)
+            {
+                MaterialProperty Property = ShaderGUI.FindProperty(Reference, properties);
+                materialEditor.ShaderProperty(Property, Property.displayName);
+
+                //EditorGUILayout.Separator();
+            }
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+        return retVal;
+    }
+
     protected override void ShaderOptimizations(Material material)
     {
-        // Only enables based on first material's properties
-        /*
-        EnableDisableKeyword(material, "_ParallaxMap1", "_PARALLAX_MAP1");
-        EnableDisableKeyword(material, "_ClearCoatMask1", "_CC_MASK");
-        EnableDisableKeyword(material, "_ClearCoatSmoothnessMask1", "_CCS_MASK");
-        EnableDisableKeyword(material, "_EmissionMap1", "_EMISSION_MAP");
-        */
     }
 }

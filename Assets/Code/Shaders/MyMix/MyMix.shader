@@ -59,16 +59,16 @@ Shader "Custom/MyMix"
         [HideInInspector] _FaceRenderingMode("Face rendering type", Float) = 0
 
         // Noise properties
-        _SimpleNoiseScaleX("Simple Noise Scale X-axis", Float) = 1
-        _SimpleNoiseScaleZ("Simple Noise Scale Z-axis", Float) = 1
-        _SimpleNoiseStrength("Simple Noise Strength", Float) = 0
+        [HideInInspector] _SimpleNoiseScaleX("Simple Noise Scale X-axis", Float) = 1
+        [HideInInspector] _SimpleNoiseScaleZ("Simple Noise Scale Z-axis", Float) = 1
+        [HideInInspector] _SimpleNoiseStrength("Simple Noise Strength", Float) = 0
 
-        _ClassicNoiseScaleX("Perlin Noise Scale X-axis", Float) = 1
-        _ClassicNoiseScaleZ("Perlin Noise Scale Z-axis", Float) = 1
-        _ClassicNoiseStrength("Perlin Noise Strength", Float) = 0
+        [HideInInspector] _ClassicNoiseScaleX("Perlin Noise Scale X-axis", Float) = 1
+        [HideInInspector] _ClassicNoiseScaleZ("Perlin Noise Scale Z-axis", Float) = 1
+        [HideInInspector] _ClassicNoiseStrength("Perlin Noise Strength", Float) = 0
 
-        _CurrentTileX("The x-axis of the current tile", Float) = 0
-        _CurrentTileZ("The z-axis of the current tile", Float) = 0
+        [HideInInspector] _CurrentTileX("The x-axis of the current tile", Float) = 0
+        [HideInInspector] _CurrentTileZ("The z-axis of the current tile", Float) = 0
     }
     // SubShaaders allow for different behavior and optionf for different pipelines and platforms
     SubShader
