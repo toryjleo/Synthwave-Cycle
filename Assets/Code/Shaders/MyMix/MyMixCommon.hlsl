@@ -26,9 +26,11 @@ float  _ClearCoatStrength2;
 float  _ClearCoatSmoothness1;
 float  _ClearCoatSmoothness2;
 
-float _SimpleNoiseScale;
+float _SimpleNoiseScaleX;
+float _SimpleNoiseScaleZ;
 float _SimpleNoiseStrength;
-float _ClassicNoiseScale;
+float _ClassicNoiseScaleX;
+float _ClassicNoiseScaleZ;
 float _ClassicNoiseStrength;
 float _CurrentTileX;
 float _CurrentTileZ;

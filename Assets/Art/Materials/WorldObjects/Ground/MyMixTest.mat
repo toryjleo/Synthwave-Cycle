@@ -151,14 +151,17 @@ Material:
     - _BlendType: 0
     - _BumpScale: 1
     - _ClassicNoiseScale: 49.46
+    - _ClassicNoiseScaleX: 37.3
+    - _ClassicNoiseScaleZ: 12.51
     - _ClassicNoiseStrength: -0.56
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ClearCoatStrength1: 0
     - _ClearCoatStrength2: 0
     - _Cull: 2
-    - _CurrentTileX: 0
-    - _CurrentTileY: 0
+    - _CurrentTileX: 0.2
+    - _CurrentTileY: -0.92
+    - _CurrentTileZ: 0
     - _Cutoff: 0.5
     - _DestBlend: 0
     - _DetailAlbedoMapScale: 1
@@ -184,6 +187,8 @@ Material:
     - _RoughnessMapToggle1: 1
     - _RoughnessMapToggle2: 1
     - _SimpleNoiseScale: 0.34
+    - _SimpleNoiseScaleX: 1
+    - _SimpleNoiseScaleZ: 1
     - _SimpleNoiseStrength: 3.63
     - _Smoothness: 0.5
     - _Smoothness1: 0.817

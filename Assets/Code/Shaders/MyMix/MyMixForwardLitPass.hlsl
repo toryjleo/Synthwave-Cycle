@@ -173,8 +173,10 @@ float4 Fragment(Interpolators input
 	
     float noiseMask = 0.0f;
     float2 currentTileCoords = float2(-_CurrentTileX, -_CurrentTileZ);
-    noiseMask += SimplexNoise((input.uv + currentTileCoords) * _SimpleNoiseScale) * _SimpleNoiseStrength;
-    noiseMask += ClassicNoise((input.uv + currentTileCoords) * _ClassicNoiseScale) * _ClassicNoiseStrength;
+    float2 SimpleNoiseScale = float2(_SimpleNoiseScaleX, _SimpleNoiseScaleZ);
+    float2 ClassicNoiseScale = float2(_ClassicNoiseScaleX, _ClassicNoiseScaleZ);
+    noiseMask += SimplexNoise((input.uv + currentTileCoords) * SimpleNoiseScale) * _SimpleNoiseStrength;
+    noiseMask += ClassicNoise((input.uv + currentTileCoords) * ClassicNoiseScale) * _ClassicNoiseStrength;
     noiseMask = clamp(noiseMask, 0, 1);
 	
     float4 result = lerp(rgba1, rgba2, noiseMask);

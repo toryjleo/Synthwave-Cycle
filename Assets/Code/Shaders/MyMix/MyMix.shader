@@ -25,8 +25,8 @@ Shader "Custom/MyMix"
         [HideInInspector] _MetalnessStrength2("[2] Metalness strength", Range(0, 1)) = 0
 
 
-        [Toggle(_ROUGHNESS_SETUP1)] _RoughnessMapToggle1("Use roughness map", Float) = 0
-        [Toggle(_ROUGHNESS_SETUP2)] _RoughnessMapToggle2("Use roughness map", Float) = 0
+        [HideInInspector] [Toggle(_ROUGHNESS_SETUP1)] _RoughnessMapToggle1("Use roughness map", Float) = 0
+        [HideInInspector] [Toggle(_ROUGHNESS_SETUP2)] _RoughnessMapToggle2("Use roughness map", Float) = 0
 
         [HideInInspector] [NoScaleOffset] _SmoothnessMask1("[1] Smoothness mask", 2D) = "white" {}
         [HideInInspector] _Smoothness1("[1] Smoothness multiplier", Range(0, 1)) = 0.5
@@ -59,11 +59,13 @@ Shader "Custom/MyMix"
         [HideInInspector] _FaceRenderingMode("Face rendering type", Float) = 0
 
         // Noise properties
-        _SimpleNoiseScale("Simple Noise Scale", Float) = 1
+        _SimpleNoiseScaleX("Simple Noise Scale X-axis", Float) = 1
+        _SimpleNoiseScaleZ("Simple Noise Scale Z-axis", Float) = 1
         _SimpleNoiseStrength("Simple Noise Strength", Float) = 0
 
-        _ClassicNoiseScale("Classic Noise Scale", Float) = 1
-        _ClassicNoiseStrength("Classic Noise Strength", Float) = 0
+        _ClassicNoiseScaleX("Perlin Noise Scale X-axis", Float) = 1
+        _ClassicNoiseScaleZ("Perlin Noise Scale Z-axis", Float) = 1
+        _ClassicNoiseStrength("Perlin Noise Strength", Float) = 0
 
         _CurrentTileX("The x-axis of the current tile", Float) = 0
         _CurrentTileZ("The z-axis of the current tile", Float) = 0
