@@ -58,11 +58,15 @@ Shader "Custom/MyMix"
         [HideInInspector] _BlendType("Blend type", Float) = 0
         [HideInInspector] _FaceRenderingMode("Face rendering type", Float) = 0
 
+        // Noise properties
         _SimpleNoiseScale("Simple Noise Scale", Float) = 1
         _SimpleNoiseStrength("Simple Noise Strength", Float) = 0
 
         _ClassicNoiseScale("Classic Noise Scale", Float) = 1
         _ClassicNoiseStrength("Classic Noise Strength", Float) = 0
+
+        _CurrentTileX("The x-axis of the current tile", Float) = 0
+        _CurrentTileY("The y-axis of the current tile", Float) = 0
     }
     // SubShaaders allow for different behavior and optionf for different pipelines and platforms
     SubShader

@@ -83,6 +83,11 @@ public class WorldGenerator : MonoBehaviour
                 Vector3 spawnLocation = new Vector3(groundHeight * (i - 1), groundTileSpawnHeight, groundWidth * (j - 1));
                 goundTile.transform.position = spawnLocation;
                 groundTiles[i, j] = goundTile;
+
+                // Update material and make a copy
+                Renderer renderer = goundTile.GetComponent<Renderer>();
+                renderer.material = new Material(renderer.material);
+                UpdateGroundMaterial(goundTile);
             }
         }
         UpdateMiddleTileMinMax();
@@ -136,6 +141,15 @@ public class WorldGenerator : MonoBehaviour
         WorldBounds.worldBoundsVericalMinMax = new Vector2(WorldBounds.currentTileVericalMinMax.x - WorldBounds.GroundTileHeight, WorldBounds.currentTileVericalMinMax.y + WorldBounds.GroundTileHeight);
     }
 
+    private void UpdateGroundMaterial(GameObject groundTile)
+    {
+        MaterialPropertyBlock m_PropertyBlock = new MaterialPropertyBlock();
+        Renderer renderer = groundTile.GetComponent<Renderer>();
+        m_PropertyBlock.SetFloat("_CurrentTileX", -groundTile.transform.position.x / (groundTile.transform.localScale.x * 10));
+        m_PropertyBlock.SetFloat("_CurrentTileY", -groundTile.transform.position.z / (groundTile.transform.localScale.z * 10));
+        renderer.SetPropertyBlock(m_PropertyBlock);
+    }
+
     /// <summary>
     /// Checks if the groundTiles array needs to be updated and updates it if needed
     /// </summary>
@@ -168,8 +182,11 @@ public class WorldGenerator : MonoBehaviour
         {
             for (int j = 0; j < GROUND_ARRAY_WIDTH; j++)
             {
-                Vector3 newPosition = groundTiles[i, j].transform.position + new Vector3(xDiff * WorldBounds.groundTileSize.x, 0, yDiff * WorldBounds.groundTileSize.z);
-                groundTiles[i, j].transform.position = newPosition;
+                // Update position
+                GameObject groundTile = groundTiles[i, j];
+                Vector3 newPosition = groundTile.transform.position + new Vector3(xDiff * WorldBounds.groundTileSize.x, 0, yDiff * WorldBounds.groundTileSize.z);
+                groundTile.transform.position = newPosition;
+                UpdateGroundMaterial(groundTile);
             }
         }
         // Update WorldBounds object
