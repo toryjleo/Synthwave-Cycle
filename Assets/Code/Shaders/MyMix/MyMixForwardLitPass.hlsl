@@ -172,7 +172,7 @@ float4 Fragment(Interpolators input
     float4 rgba2 = GetColorsMaterial2(input);
 	
     float noiseMask = 0.0f;
-    float2 currentTileCoords = float2(_CurrentTileX, _CurrentTileY);
+    float2 currentTileCoords = float2(-_CurrentTileX, -_CurrentTileZ);
     noiseMask += SimplexNoise((input.uv + currentTileCoords) * _SimpleNoiseScale) * _SimpleNoiseStrength;
     noiseMask += ClassicNoise((input.uv + currentTileCoords) * _ClassicNoiseScale) * _ClassicNoiseStrength;
     noiseMask = clamp(noiseMask, 0, 1);

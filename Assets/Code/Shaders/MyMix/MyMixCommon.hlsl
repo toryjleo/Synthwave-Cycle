@@ -31,7 +31,7 @@ float _SimpleNoiseStrength;
 float _ClassicNoiseScale;
 float _ClassicNoiseStrength;
 float _CurrentTileX;
-float _CurrentTileY;
+float _CurrentTileZ;
 
 TEXTURE2D(_ColorMap1);  SAMPLER(sampler_ColorMap1); // Sampler variables must be declared as sample_<_TextureVarName>
 TEXTURE2D(_ColorMap2);  SAMPLER(sampler_ColorMap2);

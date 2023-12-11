@@ -145,8 +145,8 @@ public class WorldGenerator : MonoBehaviour
     {
         MaterialPropertyBlock m_PropertyBlock = new MaterialPropertyBlock();
         Renderer renderer = groundTile.GetComponent<Renderer>();
-        m_PropertyBlock.SetFloat("_CurrentTileX", -groundTile.transform.position.x / (groundTile.transform.localScale.x * 10));
-        m_PropertyBlock.SetFloat("_CurrentTileY", -groundTile.transform.position.z / (groundTile.transform.localScale.z * 10));
+        m_PropertyBlock.SetFloat("_CurrentTileX", groundTile.transform.position.x / (groundTile.transform.localScale.x * 10));
+        m_PropertyBlock.SetFloat("_CurrentTileZ", groundTile.transform.position.z / (groundTile.transform.localScale.z * 10));
         renderer.SetPropertyBlock(m_PropertyBlock);
     }
 
