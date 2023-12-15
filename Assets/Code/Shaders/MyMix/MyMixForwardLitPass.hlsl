@@ -23,11 +23,12 @@ struct Interpolators
 	float4 positionCS : SV_POSITION;
 	// The following variables will retain their values from the vertex stage, except the
 	// rasterizer will interpolate them between vertices
-	float2 uv1         : TEXCOORD0; // Material1 texture UVs
-    float2 uv2         : TEXCOORD1; // Material2 texture UVs
+	float2 uv1        : TEXCOORD0; // Material1 texture UVs
+    float2 uv2        : TEXCOORD1; // Material2 texture UVs
 	float3 positionWS : TEXCOORD2;
 	float3 normalWS   : TEXCOORD3;
 	float4 tangentWS  : TEXCOORD4;
+    float2 uv         : TEXCOORD5; // Overall material's UVs
 };
 
 Interpolators Vertex(Attributes input)
@@ -43,6 +44,7 @@ Interpolators Vertex(Attributes input)
 	output.positionCS = posnInputs.positionCS;
 	output.uv1 = TRANSFORM_TEX(input.uv, _ColorMap1); // Also applies offset variables (<name>_ST)
     output.uv2 = TRANSFORM_TEX(input.uv, _ColorMap2);
+    output.uv = input.uv;
 	output.positionWS = posnInputs.positionWS;
 	output.normalWS = normInputs.normalWS;
 	output.tangentWS = float4(normInputs.tangentWS, input.tangentOS.w);
@@ -177,8 +179,8 @@ float4 Fragment(Interpolators input
     float2 currentTileCoords = float2(-_CurrentTileX, -_CurrentTileZ);
     float2 SimpleNoiseScale = float2(_SimpleNoiseScaleX, _SimpleNoiseScaleZ);
     float2 ClassicNoiseScale = float2(_ClassicNoiseScaleX, _ClassicNoiseScaleZ);
-    noiseMask += SimplexNoise((input.uv1 + currentTileCoords) * SimpleNoiseScale) * _SimpleNoiseStrength;
-    noiseMask += ClassicNoise((input.uv1 + currentTileCoords) * ClassicNoiseScale) * _ClassicNoiseStrength;
+    noiseMask += SimplexNoise((input.uv + currentTileCoords) * SimpleNoiseScale) * _SimpleNoiseStrength;
+    noiseMask += ClassicNoise((input.uv + currentTileCoords) * ClassicNoiseScale) * _ClassicNoiseStrength;
     noiseMask = clamp(noiseMask, 0, 1);
 	
     float4 result = lerp(rgba1, rgba2, noiseMask);
