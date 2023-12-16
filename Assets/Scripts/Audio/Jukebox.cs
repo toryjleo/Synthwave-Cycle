@@ -18,7 +18,7 @@ public class Jukebox : MonoBehaviour, IResettable
     double nextAudioLoopTime;
     double nextWaveSpawnTime;
 
-
+    //Resets the jukebox and starts a new Wave Sequence
     public void StartSong(WaveSequence seq)
     {
         sequence = seq;
