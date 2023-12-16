@@ -64,4 +64,9 @@ public class RiflemanAi : InfantryAI
         // This gameObject will be a child of muzzleLocation
         myGun = Instantiate<Gun>(gun, muzzleLocation.transform);
     }
+
+    public override Enemy GetEnemyType()
+    {
+        return Enemy.Rifleman;
+    }
 }

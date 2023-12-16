@@ -8,7 +8,7 @@ using UnityEngine;
 public class SquadSpawner : MonoBehaviour
 {
     public GameObject player;
-    public ObjectPool ops;
+    public EnemyPool ops;
 
     //Spawning Variables
     [SerializeField] private int spawnDistance;
@@ -20,7 +20,7 @@ public class SquadSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ops = ObjectPool.Instance;
+        ops = EnemyPool.Instance;
         player = GameObject.FindGameObjectWithTag("Player");
         squadManager = GameObject.FindObjectOfType<SquadManager>();
     }
@@ -101,15 +101,13 @@ public class SquadSpawner : MonoBehaviour
     /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enenemy Type, AI type, and Gun loadout
     public Ai SpawnNewEnemy(Enemy type)
     {
-        GameObject enemy;
-        Ai enemyAI;
+        Ai enemy;
 
         enemy = ops.SpawnFromPool(type, biasSpawnVector(), Quaternion.identity);
 
         //Init Enemy
-        enemyAI = enemy.GetComponent<Ai>();
-        enemyAI.NewLife();
-        return enemyAI;
+        enemy.NewLife();
+        return enemy;
     }
 
 

@@ -5,26 +5,22 @@ using UnityEngine;
 
 public enum Enemy
 {
-    Shotgun,
     Rifleman,
     Ranger,
+    Shotgun,
     Bike,
     Sniper,
     Dog,
     Cactus,
     Car
 }
-public enum Guns
-{
-    Rifle,
-    Shotgun,
-    PulseRifle,
-    Rangers,
-    Barrett
-}
 
-
-public class ObjectPool : MonoBehaviour
+/// <summary>
+/// EnemyPool holds collections of all the AI we might end up spawning in. 
+/// They are instead enabled and put into place when they are ready to be used so we don't have to
+/// spawn a new enemy in every time we need one
+/// </summary>
+public class EnemyPool : MonoBehaviour
 {
     /// <summary>
     /// Creates a single Pool of objects for Enemies, each with their own Enemy Tag, prefab, and predetermined size.
@@ -32,19 +28,22 @@ public class ObjectPool : MonoBehaviour
     [System.Serializable]
     public class Pool //One individual pool of objects that has a tag, a prefab, and a size 
     {
-        public Enemy tag;
-        public GameObject prefab;
+        public Ai prefab;
         public int poolSize;
 
-        public Pool(Enemy Tag, GameObject Prefab, int Size)
+        public Pool(Ai Prefab, int Size)
         {
-            tag = Tag;
             prefab = Prefab;
             poolSize = Size;
         }
+
+        public Enemy GetTag()
+        {
+            return prefab.GetEnemyType();
+        }
     }
 
-    public static ObjectPool Instance;
+    public static EnemyPool Instance;
 
     private void Awake()
     {
@@ -53,32 +52,30 @@ public class ObjectPool : MonoBehaviour
 
 
     public List<Pool> pools; //Pools
-    public Dictionary<Enemy,Queue<GameObject>> poolDictionary; //These are the keys 
+    public Dictionary<Enemy,Queue<Ai>> poolDictionary; //These are the keys 
 
 
     //Creates Pools for each object type 
     void Start()
     {   
         //Create Dictionary of tags for each if the pools
-        poolDictionary = new Dictionary<Enemy, Queue<GameObject>>();
+        poolDictionary = new Dictionary<Enemy, Queue<Ai>>();
 
         
 
         foreach (Pool pool in pools)
         {
-            Queue<GameObject> objectPool = new Queue<GameObject>();
+            Queue<Ai> objectPool = new Queue<Ai>();
 
             //instantiate the objects with 
             for(int i =0; i< pool.poolSize; i++)
             {   
-                GameObject obj = Instantiate(pool.prefab); 
-                obj.SetActive(false);
-                Ai objAi = obj.GetComponent<Ai>();
-                objAi.Despawn += ObjAi_Despawn;
+                Ai obj = Instantiate(pool.prefab); 
+                obj.Despawn += ObjAi_Despawn;
                 objectPool.Enqueue(obj);
             }
 
-            poolDictionary.Add(pool.tag, objectPool);
+            poolDictionary.Add(pool.GetTag(), objectPool);
         }
     }
 
@@ -91,7 +88,7 @@ public class ObjectPool : MonoBehaviour
         //Debug.Log("Despawned, Size of queue: " + bulletQueue.Count);
     }
 
-    public GameObject SpawnFromPool(Enemy tag, Vector3 position, Quaternion rotation)
+    public Ai SpawnFromPool(Enemy tag, Vector3 position, Quaternion rotation)
     {
         if (!poolDictionary.ContainsKey(tag))
         {
@@ -99,11 +96,11 @@ public class ObjectPool : MonoBehaviour
             return null;
         }
 
-        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
+        Ai objectToSpawn = poolDictionary[tag].Dequeue();
 
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
-        objectToSpawn.SetActive(true);
+        objectToSpawn.gameObject.SetActive(true);
 
         poolDictionary[tag].Enqueue(objectToSpawn);
 

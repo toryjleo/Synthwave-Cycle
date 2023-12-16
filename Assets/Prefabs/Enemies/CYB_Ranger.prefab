@@ -1020,7 +1020,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6018061728693238261}
-  - component: {fileID: 4409918286226174020}
+  - component: {fileID: -5485121639866341136}
   - component: {fileID: 2579800540101835106}
   - component: {fileID: 7599756711848871223}
   - component: {fileID: 8520023899093707183}
@@ -1048,7 +1048,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4409918286226174020
+--- !u!114 &-5485121639866341136
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1065,16 +1065,16 @@ MonoBehaviour:
   myGun: {fileID: -5146753335091157031, guid: 7088fbbd6fe8b7d45ac649ee3bd8aae2, type: 3}
   hp: {fileID: 0}
   activeConditions: []
-  StartingHP: 20
-  maxSpeed: 20
+  StartingHP: 15
+  maxSpeed: 25
   maxForce: 0
-  score: 300
-  dlScore: 5
-  attackRange: 15
-  minimumRange: 5
+  score: 100
+  dlScore: 10
+  attackRange: 90
+  minimumRange: 10
   alive: 1
-  speedBoost: 30
-  animationStateController: {fileID: 8520023899093707183}
+  speedBoost: 60
+  animationStateController: {fileID: 0}
   muzzleLocation: {fileID: 0}
 --- !u!54 &2579800540101835106
 Rigidbody:
@@ -1749,7 +1749,7 @@ PrefabInstance:
     - target: {fileID: 6576306846341962809, guid: c8abc8ffee0571a49a4fca12d9b2fb01, type: 3}
       propertyPath: ai
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: -5485121639866341136}
     - target: {fileID: 8661839680055520689, guid: c8abc8ffee0571a49a4fca12d9b2fb01, type: 3}
       propertyPath: m_RootOrder
       value: 2

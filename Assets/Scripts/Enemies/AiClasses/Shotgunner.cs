@@ -52,5 +52,8 @@ public class Shotgunner : InfantryAI
         base.Update();
     }
 
-
+    public override Enemy GetEnemyType()
+    {
+        return Enemy.Shotgun;
+    }
 }
