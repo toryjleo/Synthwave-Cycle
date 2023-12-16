@@ -68,7 +68,7 @@ public class CinematicCamera : MonoBehaviour
         topTransposer = virtualCameraTop.GetCinemachineComponent<CinemachineTransposer>();
 
         virtualCameraTop.LookAt = playerBike.transform;
-        virtualCameraTop.Follow = playerBike.CameraFollower;
+        virtualCameraTop.Follow = playerBike.transform;
         playerBike.FollowerHeight = BODY_MIN_Y_OFFSET;
     }
 }
