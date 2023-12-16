@@ -9,11 +9,8 @@ using UnityEngine;
 /// </summary>
 public class Jukebox : MonoBehaviour, IResettable
 {
-    //The list of each possible WaveSequence, to be randomly selected on reset
-    [SerializeField]
-    public List<WaveSequence> soundTracks;
     //The current WaveSequence in play
-    public WaveSequence sequence;
+    private WaveSequence sequence;
     // An audiosource array with 2 members to switch between with "toggle"
     public AudioSource[] audioSourceArray;
     int toggle;
@@ -21,20 +18,17 @@ public class Jukebox : MonoBehaviour, IResettable
     double nextAudioLoopTime;
     double nextWaveSpawnTime;
 
-
-    void Start()
+    //Resets the jukebox and starts a new Wave Sequence
+    public void StartSong(WaveSequence seq)
     {
-        if (sequence == null)
-        {
-            sequence = soundTracks[Random.Range(0, soundTracks.Count)];
-        }
+        sequence = seq;
         sequence.Init(GameObject.FindObjectOfType<SquadSpawner>());
         toggle = 0;
         AudioClip clip = sequence.GetCurrentTrackVariation();
         // Schedule the first track
         audioSourceArray[toggle].clip = clip;
 
-        double startTime  = AudioSettings.dspTime + 0.2;
+        double startTime = AudioSettings.dspTime + 0.2;
         nextAudioLoopTime = startTime;
         nextWaveSpawnTime = startTime;
     }
@@ -87,7 +81,5 @@ public class Jukebox : MonoBehaviour, IResettable
             audioSourceArray[i].Stop();
             audioSourceArray[i].clip = null;
         }
-        sequence = soundTracks[Random.Range(0, soundTracks.Count)];
-        Start();
     }
 }

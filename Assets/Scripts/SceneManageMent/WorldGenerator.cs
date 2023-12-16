@@ -42,7 +42,7 @@ public class WorldGenerator : MonoBehaviour
     #endregion
 
     // Start is called before the first frame update
-    void Awake()
+    public  void CreateGround(Material mat)
     {
         BikeScript[] bikeScripts = Object.FindObjectsOfType<BikeScript>();
         if (bikeScripts.Length <= 0) 
@@ -54,7 +54,7 @@ public class WorldGenerator : MonoBehaviour
             bike = bikeScripts[0];
         }
 
-        InitializeGround();
+        InitializeGround(mat);
     }
 
     // Update is called once per frame
@@ -67,7 +67,7 @@ public class WorldGenerator : MonoBehaviour
     /// <summary>
     /// Spawns in ground gameObjects into groundTiles array and initializes the WorldBounds class
     /// </summary>
-    private void InitializeGround()
+    private void InitializeGround(Material groundMat)
     {
         WorldBounds.groundTileSize = ground.GetComponent<Renderer>().bounds.size;
         float groundWidth = WorldBounds.GroundTileWidth;
@@ -86,7 +86,7 @@ public class WorldGenerator : MonoBehaviour
 
                 // Update material and make a copy
                 Renderer renderer = goundTile.GetComponent<Renderer>();
-                renderer.material = new Material(renderer.material);
+                renderer.material = groundMat;
                 UpdateGroundMaterialProperties(goundTile);
             }
         }

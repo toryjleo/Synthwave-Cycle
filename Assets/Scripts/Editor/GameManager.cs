@@ -20,7 +20,7 @@ public class GameManager : EditorWindow
     private void Update()
     {
         // Make sure to keep a reference to player health
-        if (playerhealth == null)
+        if (playerhealth == null && GameStateController.GameIsPlaying())
         {
             playerhealth = GameObject.FindObjectOfType<BikeScript>().GetComponentInChildren<Health>();
             if (playerhealth == null) 
@@ -28,7 +28,7 @@ public class GameManager : EditorWindow
                 Debug.LogError("Player health not found in level!");
             }
         }
-        if (jukebox == null)
+        if (jukebox == null && GameStateController.GameIsPlaying())
         {
             jukebox = GameObject.FindObjectOfType<Jukebox>();
             if (jukebox == null) 
@@ -47,7 +47,6 @@ public class GameManager : EditorWindow
     private void OnGUI()
     {
         HandleGodMode();
-        HandleForceSoundtrack();
     }
     private void HandleGodMode()
     {
@@ -55,20 +54,6 @@ public class GameManager : EditorWindow
         if (godModeEnabled != playerhealth.isInvulnurable)
         {
             playerhealth.isInvulnurable = godModeEnabled;
-        }
-    }
-    private void HandleForceSoundtrack()
-    {
-        forceSoundtrack = EditorGUILayout.Toggle("Force Soundtrack?", forceSoundtrack);
-        if (forceSoundtrack)
-        {
-            soundtrackIndex = EditorGUILayout.IntField(soundtrackIndex);
-
-            if (jukebox.sequence != jukebox.soundTracks[soundtrackIndex])
-            {
-                jukebox.sequence = jukebox.soundTracks[soundtrackIndex];
-                jukebox.ResetGameObject();
-            }
         }
     }
 }
