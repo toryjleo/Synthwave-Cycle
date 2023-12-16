@@ -87,7 +87,7 @@ public class WorldGenerator : MonoBehaviour
                 // Update material and make a copy
                 Renderer renderer = goundTile.GetComponent<Renderer>();
                 renderer.material = new Material(renderer.material);
-                UpdateGroundMaterial(goundTile);
+                UpdateGroundMaterialProperties(goundTile);
             }
         }
         UpdateMiddleTileMinMax();
@@ -141,7 +141,7 @@ public class WorldGenerator : MonoBehaviour
         WorldBounds.worldBoundsVericalMinMax = new Vector2(WorldBounds.currentTileVericalMinMax.x - WorldBounds.GroundTileHeight, WorldBounds.currentTileVericalMinMax.y + WorldBounds.GroundTileHeight);
     }
 
-    private void UpdateGroundMaterial(GameObject groundTile)
+    private void UpdateGroundMaterialProperties(GameObject groundTile)
     {
         MaterialPropertyBlock m_PropertyBlock = new MaterialPropertyBlock();
         Renderer renderer = groundTile.GetComponent<Renderer>();
@@ -186,7 +186,7 @@ public class WorldGenerator : MonoBehaviour
                 GameObject groundTile = groundTiles[i, j];
                 Vector3 newPosition = groundTile.transform.position + new Vector3(xDiff * WorldBounds.groundTileSize.x, 0, yDiff * WorldBounds.groundTileSize.z);
                 groundTile.transform.position = newPosition;
-                UpdateGroundMaterial(groundTile);
+                UpdateGroundMaterialProperties(groundTile);
             }
         }
         // Update WorldBounds object
