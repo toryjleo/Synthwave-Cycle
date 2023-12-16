@@ -56,8 +56,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 33, z: -0}
+  m_BindingMode: 3
+  m_FollowOffset: {x: 0, y: 50, z: -0}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
