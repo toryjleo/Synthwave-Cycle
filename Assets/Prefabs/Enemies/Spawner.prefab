@@ -55,6 +55,8 @@ MonoBehaviour:
     poolSize: 30
   - prefab: {fileID: 2279930514937360738, guid: 89ba535868233dd438d5e9151af1a050, type: 3}
     poolSize: 30
+  - prefab: {fileID: 0}
+    poolSize: 30
 --- !u!114 &609589168
 MonoBehaviour:
   m_ObjectHideFlags: 0

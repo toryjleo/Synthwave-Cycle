@@ -12,7 +12,8 @@ public enum Enemy
     Sniper,
     Dog,
     Cactus,
-    Car
+    RamCar,
+    SBomber
 }
 
 /// <summary>

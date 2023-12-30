@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>Class<c>VehicleAI</c> 
 /// VehicleAI holds all the code that makes an enemy Vehicle different form other enemy types
-public class VehicleAI : Ai
+public abstract class VehicleAI : Ai
 {
     public ArcadeAiVehicleController vehicleController;
 
@@ -131,10 +131,5 @@ public class VehicleAI : Ai
                                 ForceMode.Impulse);
         vehicleController.enabled = false;
         Instantiate(itemDrop, this.transform.position, Quaternion.identity);
-    }
-
-    public override Enemy GetEnemyType()
-    {
-        return Enemy.Car;
     }
 }
