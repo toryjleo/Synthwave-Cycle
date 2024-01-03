@@ -42,6 +42,8 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
 
     private const float STARTING_HEALTH = 200.0f;
 
+    private const float MAX_HEALTH       = 1300.0f;
+
     private const float MAX_ACCELERATION = 1000.0f;
 
     private const float MIN_ACCELERATION = 10.0f;
@@ -105,7 +107,7 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         health = GetComponentInChildren<Health>();
 
 
-        health.Init(STARTING_HEALTH);
+        health.Init(STARTING_HEALTH, MAX_HEALTH);
     }
 
 
