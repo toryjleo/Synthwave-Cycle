@@ -9,6 +9,7 @@ public delegate void NotifyHealth();
 public class Health : MonoBehaviour
 {
     private float _hitPoints;
+    private float _maxHitPoints;
     public NotifyHealth healEvent;
     public NotifyHealth deadEvent;
 
@@ -24,9 +25,11 @@ public class Health : MonoBehaviour
     //Whem do I call this method and why? Do I have to call it every time? 
     /// <summary>An itialization method.</summary>
     /// <param name="initialHealth">The number of hit points to start with.</param>
-    public void Init(float initialHealth) 
+    /// <param name="maxHealth">The maximum amount of hitpoints which this entity will not surpass.</param>
+    public void Init(float initialHealth, float maxHealth = float.MaxValue) 
     {
-        _hitPoints = initialHealth;
+        _hitPoints    = initialHealth;
+        _maxHitPoints = maxHealth;
     }
 
 
@@ -58,10 +61,15 @@ public class Health : MonoBehaviour
         healEvent?.Invoke();
 
         // Ensure we do not overflow
-        if (_hitPoints+hp < _hitPoints) 
+        if (_hitPoints + hp < _hitPoints) 
         {
             _hitPoints = float.MaxValue;
         }
-        _hitPoints += hp;
+        else 
+        {
+            // Ensure that _hitPoints does not go over the stated maximum
+            _hitPoints = Mathf.Min(_hitPoints + hp, _maxHitPoints);
+        }
+        Debug.Log(_hitPoints);
     }
 }
