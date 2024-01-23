@@ -13,7 +13,7 @@ public enum Enemy
     Dog,
     Cactus,
     RamCar,
-    SBomber
+    TrailerCar
 }
 
 /// <summary>

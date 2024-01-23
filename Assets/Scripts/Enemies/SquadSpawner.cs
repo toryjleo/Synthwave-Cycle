@@ -63,29 +63,29 @@ public class SquadSpawner : MonoBehaviour
     }
 
     //TODO: Make this smarter, perhaps using the Wave.cs class
-    public InfantrySquad SpawnInfantrySquad(Enemy type)
-    {
-        InfantrySquad s = new InfantrySquad(squadManager);
-        s.SetTarget(player);
-        for(int i = 0; i < 5; i++) //for now, a squad will always have 5 units
-        {
-            InfantryAI ai = SpawnNewEnemy(type) as InfantryAI;
-            s.AddToSquad(ai);
-            squadManager.currentEnemies.Add(ai);
-        }
-        return s;
-    }
+    //public InfantrySquad SpawnInfantrySquad(Enemy type)
+    //{
+    //    InfantrySquad s = new InfantrySquad(squadManager);
+    //    s.SetTarget(player);
+    //    for(int i = 0; i < 5; i++) //for now, a squad will always have 5 units
+    //    {
+    //        InfantryAI ai = SpawnNewEnemy(type) as InfantryAI;
+    //        s.AddToSquad(ai);
+    //        squadManager.currentEnemies.Add(ai);
+    //    }
+    //    return s;
+    //}
 
-    public VehicleSquad SpawnVehicleSquad(Enemy type)
-    {
-        VehicleSquad s = new VehicleSquad(squadManager);
-        s.SetTarget(player);
+    //public VehicleSquad SpawnVehicleSquad(Enemy type)
+    //{
+    //    VehicleSquad s = new VehicleSquad(squadManager);
+    //    s.SetTarget(player);
 
-        VehicleAI ai = SpawnNewEnemy(type) as VehicleAI;
-        s.AddToSquad(ai);
-        squadManager.currentEnemies.Add(ai);
-        return s;
-    }
+    //    VehicleAI ai = SpawnNewEnemy(type) as VehicleAI;
+    //    s.AddToSquad(ai);
+    //    squadManager.currentEnemies.Add(ai);
+    //    return s;
+    //}
 
     internal void SpawnWave(List<Enemy> ais)
     {
