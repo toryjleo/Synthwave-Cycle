@@ -12,7 +12,6 @@ public class ChangeScene : MonoBehaviour
     [SerializeField] private Button PlayButton;
     [SerializeField] private Button QuitButton;
     [SerializeField] private Button ReturnMainMenuButton;
-    [SerializeField] private VolumeScript volumeScript;
 
     private bool returningToMainMenu;
 

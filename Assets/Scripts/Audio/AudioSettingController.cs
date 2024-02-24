@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class loadAudioSettings : MonoBehaviour
+public class AudioSettingController : MonoBehaviour
 {
     private const string MASTER_VOLUME = "masterVolume";
     // Start is called before the first frame update
@@ -25,10 +25,17 @@ public class loadAudioSettings : MonoBehaviour
         AudioListener.volume = PlayerPrefs.GetFloat(MASTER_VOLUME);
     }
 
-    /*
-    private void Save()
+    public float GetMasterVolume()
     {
-        PlayerPrefs.SetFloat(MASTER_VOLUME, _volumeSlider.value);
+        return AudioListener.volume;
     }
-    */
+
+    public void SetMasterVolume(float newVolume)
+    {
+        // set audio listener
+        AudioListener.volume = newVolume;
+        // update player prefs
+        PlayerPrefs.SetFloat(MASTER_VOLUME, newVolume);
+    }
+
 }

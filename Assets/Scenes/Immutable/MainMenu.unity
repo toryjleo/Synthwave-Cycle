@@ -2276,7 +2276,6 @@ MonoBehaviour:
   PlayButton: {fileID: 1303171935}
   QuitButton: {fileID: 1668630739}
   ReturnMainMenuButton: {fileID: 0}
-  volumeScript: {fileID: 0}
 --- !u!1 &1629228069
 GameObject:
   m_ObjectHideFlags: 0
@@ -2858,6 +2857,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _volumeSlider: {fileID: 1829787917}
   _sliderText: {fileID: 1815209161}
+  _audioSettingController: {fileID: 2013656075}
 --- !u!1 &2013656072
 GameObject:
   m_ObjectHideFlags: 0
