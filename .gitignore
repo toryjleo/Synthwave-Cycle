@@ -69,3 +69,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+
+# Arcade Vehicle Ai Physics material is updated via script
+/Assets/3rd_Party_Packages/Arcade Vehicle Ai/Materials
