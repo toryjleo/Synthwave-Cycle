@@ -25,7 +25,10 @@ public abstract class LeveledGun : Gun
 
     public override void Init()
     {
-        gunLevels = new Dictionary<PlayerWeaponType, int>();
+        if (gunLevels == null) 
+        {
+            gunLevels = new Dictionary<PlayerWeaponType, int>();
+        }
         base.Init();
     }
 
