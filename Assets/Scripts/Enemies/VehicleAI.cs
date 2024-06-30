@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>Class<c>VehicleAI</c> 
 /// VehicleAI holds all the code that makes an enemy Vehicle different form other enemy types
-public class VehicleAI : Ai
+public abstract class VehicleAI : Ai
 {
     public ArcadeAiVehicleController vehicleController;
 
@@ -22,28 +22,14 @@ public class VehicleAI : Ai
     public GameObject movementTarget;
 
     //How much directional/rotational force effects the player on a ram
-    private const float MAX_RANDOM_TORQUE = 4500f;
-    private const float MAX_RAM_MAGNITUDE = 200f;
+    internal const float MAX_RANDOM_TORQUE = 4500f;
+    internal const float MAX_RAM_MAGNITUDE = 200f;
 
     //This is the time the Vehicle has spent within CONFIDENCE_BUILD_DISTANCE to it's target
     //When it exceeds TIME_BY_TARGET_TO_ATTACK the car is ready to attack
-    private float timeByTarget = 0;
-    private float TIME_BY_TARGET_TO_ATTACK;
-    private const float CONFIDENCE_BUILD_DISTANCE = 25f;
-
-    public override void NewLife()
-    {
-        TIME_BY_TARGET_TO_ATTACK = Random.Range(3, 11);
-        base.NewLife();
-    }
-
-    public override void Attack() 
-    {
-        if (myGun != null && myGun.CanShootAgain() && alive)
-        {
-            this.myGun.PrimaryFire(target.transform.position);
-        }
-    }
+    internal float timeByTarget = 0;
+    internal float TIME_BY_TARGET_TO_ATTACK;
+    internal const float CONFIDENCE_BUILD_DISTANCE = 25f;
 
     public override void Update()
     {
@@ -131,10 +117,5 @@ public class VehicleAI : Ai
                                 ForceMode.Impulse);
         vehicleController.enabled = false;
         Instantiate(itemDrop, this.transform.position, Quaternion.identity);
-    }
-
-    public override Enemy GetEnemyType()
-    {
-        return Enemy.Car;
     }
 }

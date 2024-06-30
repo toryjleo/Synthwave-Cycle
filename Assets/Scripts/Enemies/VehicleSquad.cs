@@ -36,14 +36,14 @@ public class VehicleSquad : Squad
         BikeScript bikeScript = target.GetComponent<BikeScript>();
         foreach (VehicleAI ai in squadMembers)
         {
-            Vector3 aimLoc = target.transform.position;
-            aimLoc += target.transform.forward * 10;
-            ai.myGun?.transform.LookAt(aimLoc);
+            Vector3 aimloc = target.transform.position + (target.GetComponentInChildren<Rigidbody>().velocity);// - ai.rb.velocity);
+            UnityEngine.Debug.DrawLine(ai.transform.position, aimloc, Color.red);
+            UnityEngine.Debug.DrawLine(ai.myGun.transform.position, (ai.myGun.transform.position + ai.myGun.transform.forward * 5), Color.green);
+            aimloc += target.transform.forward * 10;
+            ai.myGun?.transform.LookAt(aimloc);
             //if car is confident, ATTACK PLAYER 
             if (ai.IsConfident())
             {
-                //UnityEngine.Debug.Log("ATTACK!");
-                ai.SetMovementTarget(bikeScript.gameObject);
                 if( Vector3.Distance(ai.transform.position, target.transform.position) <= ai.attackRange)
                 {
                     ai.Attack();

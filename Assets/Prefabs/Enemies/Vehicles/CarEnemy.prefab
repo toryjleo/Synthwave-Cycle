@@ -6159,7 +6159,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2279930514937360740}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7159be56941d9b8418f93482a3e0b62d, type: 3}
+  m_Script: {fileID: 11500000, guid: f3aceabf2a22eeb439dbeb9e7af1f16b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
@@ -6171,11 +6171,12 @@ MonoBehaviour:
   maxSpeed: 150
   maxForce: 500
   score: 200
-  dlScore: 0
+  dlScore: 8
   attackRange: 100
   minimumRange: 100
   alive: 1
   speedBoost: 10
+  vehicleController: {fileID: 0}
   DamageMultiplyer: 1
   RamModifier: 1
   itemDrop: {fileID: 2157447271029124370, guid: f07931c8c60cd724e8844ab074e56069, type: 3}
