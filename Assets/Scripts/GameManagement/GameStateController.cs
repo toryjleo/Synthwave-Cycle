@@ -6,6 +6,16 @@ using System.Linq;
 // Delegate method template to handle switching from a previous state to a new state.
 public delegate void GameStateHandler(GameState previousState, GameState newState);
 
+enum StateTrigger
+{
+    LoadingComplete,
+    StartGame,
+    LevelComplete,
+    ZeroHP,
+    Reset,
+    MainMenu,
+}
+
 public class GameStateController : MonoBehaviour
 {
     /// <summary>
@@ -17,18 +27,19 @@ public class GameStateController : MonoBehaviour
     /// </summary>
     private static GameStateController Instance;
 
-    private static GameState currentState;
+    private static GameState state;
 
     public static event GameStateHandler notifyListenersGameStateHasChanged;
 
 
     #region static functions
 
+    // TODO: Remove when you have a game paused and playing state
     public static bool GameIsPlaying()
     {
         if (Instance) // Covering case where Gamestatecontroller gets called before it is initialized
         {
-            return currentState == GameState.Playing;
+            return state == GameState.Playing;
         }
         else
         {
@@ -36,53 +47,42 @@ public class GameStateController : MonoBehaviour
         }
     }
 
-    public static bool PlayerIsSpawning()
-    {
-        if (Instance)
-        {
-            return currentState == GameState.Spawning;
-        }
-        else 
-        {
-            return false;
-        }
-    }
-
     public static GameState GetGameState()
     {
-        return currentState;
+        return state;
     }
 
+    // TODO: Update code to call objects instead of having listeners
     /// <summary>
     /// A Proprty which handles the changing of game states and notifies listeners.
     /// </summary>
     public static GameState WorldState
     {
-        get { return currentState; }
+        get { return state; }
         set {
-            if (value == currentState)
+            if (value == state)
             {
                 Debug.Log("Trying to set state to '" + value + "' but world is already in that state.");
             }
             else
             {
                 // Holding previous state to notify listeners of switch.
-                GameState previousState = currentState;
+                GameState previousState = state;
 
                 switch (value)
                 {
                     case GameState.Spawning:
-                        currentState = value;
+                        state = value;
                         break;
                     case GameState.Playing:
-                        currentState = value;
+                        state = value;
                         break;
                     default:
-                        currentState = value;
+                        state = value;
                         break;
                 }
 
-                notifyListenersGameStateHasChanged?.Invoke(previousState, currentState);
+                notifyListenersGameStateHasChanged?.Invoke(previousState, state);
             }
             }
     }
@@ -103,23 +103,26 @@ public class GameStateController : MonoBehaviour
         }
 
         //The game should start in the menu, but for now, we start it in a playing state
-        currentState = GameState.Playing;
+        state = GameState.Playing;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && ((currentState == GameState.Playing) || (currentState == GameState.Spawning)))
+        // TODO: Call trigger instead
+        if (Input.GetKeyDown(KeyCode.R) && ((state == GameState.Playing) || (state == GameState.Spawning)))
         {
             GameReset();
         }
     }
     #endregion
 
+    // 
     /// <summary>
     /// Calls ResetGameObject() on every IResettable object in the game world
     /// </summary>
     private void GameReset()
     {
+        // TODO: Move logic to level loader
         Debug.Log("Resetting!");
         List<IResettable> resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
         DLevel.Instance.dangerLevel = 0;//make sure we don't start at the same level
