@@ -69,13 +69,13 @@ public class InGameUI : MonoBehaviour
     /// </summary>
     /// <param name="previousState">The state that was just in effect</param>
     /// <param name="newState">The gamestate which will take effect this frame</param>
-    private void HandleGameStateUpdate(GameState previousState, GameState newState)
+    private void HandleGameStateUpdate(GameStateEnum previousState, GameStateEnum newState)
     {
-        if (previousState == GameState.Playing && newState == GameState.Spawning) 
+        if (previousState == GameStateEnum.Playing && newState == GameStateEnum.Spawning) 
         {
             restartUI.gameObject.SetActive(true);
         }
-        else if (previousState == GameState.Spawning && newState == GameState.Playing)
+        else if (previousState == GameStateEnum.Spawning && newState == GameStateEnum.Playing)
         {
             restartUI.gameObject.SetActive(false);
         }

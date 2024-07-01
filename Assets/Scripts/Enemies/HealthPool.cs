@@ -217,9 +217,9 @@ public class HealthPool : SelfDespawn
     /// </summary>
     /// <param name="previousState">The state that was just in effect</param>
     /// <param name="newState">The gamestate which will take effect this frame</param>
-    private void HandleGameStateUpdate(GameState previousState, GameState newState)
+    private void HandleGameStateUpdate(GameStateEnum previousState, GameStateEnum newState)
     {
-        if (previousState == GameState.Spawning && newState == GameState.Playing)
+        if (previousState == GameStateEnum.Spawning && newState == GameStateEnum.Playing)
         {
             // Just respawning case
             Init(RateOfDecay, SizeofCylinder);

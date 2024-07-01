@@ -4,17 +4,27 @@ using UnityEngine;
 using System.Linq;
 
 // Delegate method template to handle switching from a previous state to a new state.
-public delegate void GameStateHandler(GameState previousState, GameState newState);
+public delegate void GameStateHandler(GameStateEnum previousState, GameStateEnum newState);
 
-enum StateTrigger
+public enum StateTrigger
 {
     LoadingComplete,
     StartGame,
     LevelComplete,
     ZeroHP,
     Reset,
-    MainMenu,
+    TransitionFromLevel,
 }
+
+public enum GameStateEnum
+{
+    Uninitialized,
+    Menu,
+    Spawning,
+    Playing,
+    Resetting
+}
+
 
 public class GameStateController : MonoBehaviour
 {
@@ -27,19 +37,29 @@ public class GameStateController : MonoBehaviour
     /// </summary>
     private static GameStateController Instance;
 
-    private static GameState state;
+    private static GameStateEnum state;
 
     public static event GameStateHandler notifyListenersGameStateHasChanged;
 
+    public static GameStateEnum State()
+    {
+        return state;
+    }
+
 
     #region static functions
+
+    public static void HandleTrigger(StateTrigger trigger) 
+    {
+    
+    }
 
     // TODO: Remove when you have a game paused and playing state
     public static bool GameIsPlaying()
     {
         if (Instance) // Covering case where Gamestatecontroller gets called before it is initialized
         {
-            return state == GameState.Playing;
+            return state == GameStateEnum.Playing;
         }
         else
         {
@@ -47,16 +67,11 @@ public class GameStateController : MonoBehaviour
         }
     }
 
-    public static GameState GetGameState()
-    {
-        return state;
-    }
-
     // TODO: Update code to call objects instead of having listeners
     /// <summary>
     /// A Proprty which handles the changing of game states and notifies listeners.
     /// </summary>
-    public static GameState WorldState
+    public static GameStateEnum WorldState
     {
         get { return state; }
         set {
@@ -67,14 +82,14 @@ public class GameStateController : MonoBehaviour
             else
             {
                 // Holding previous state to notify listeners of switch.
-                GameState previousState = state;
+                GameStateEnum previousState = state;
 
                 switch (value)
                 {
-                    case GameState.Spawning:
+                    case GameStateEnum.Spawning:
                         state = value;
                         break;
-                    case GameState.Playing:
+                    case GameStateEnum.Playing:
                         state = value;
                         break;
                     default:
@@ -103,13 +118,13 @@ public class GameStateController : MonoBehaviour
         }
 
         //The game should start in the menu, but for now, we start it in a playing state
-        state = GameState.Playing;
+        state = GameStateEnum.Playing;
     }
 
     private void Update()
     {
         // TODO: Call trigger instead
-        if (Input.GetKeyDown(KeyCode.R) && ((state == GameState.Playing) || (state == GameState.Spawning)))
+        if (Input.GetKeyDown(KeyCode.R) && ((state == GameStateEnum.Playing) || (state == GameStateEnum.Spawning)))
         {
             GameReset();
         }
@@ -130,17 +145,8 @@ public class GameStateController : MonoBehaviour
         {
             r.ResetGameObject();
         }
-        WorldState = GameState.Playing;
+        WorldState = GameStateEnum.Playing;
     }
 
 
-}
-
-public enum GameState
-{
-    Uninitialized,
-    Menu,
-    Spawning,
-    Playing,
-    Resetting
 }
