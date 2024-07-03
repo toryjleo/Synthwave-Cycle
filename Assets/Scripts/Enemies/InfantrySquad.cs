@@ -26,7 +26,14 @@ public class InfantrySquad : Squad
     float potShotVarianceMS = 1000; //range of +/- MS between pot shots (so they aren't on an exact interval)
     float nextShot = 0; //the time for the next shot, is reset to the current time in MS when a pot shot is taken
 
-    public InfantrySquad(SquadManager _manager) : base(_manager) { }
+
+
+    public InfantrySquad(SquadManager _manager) : base(_manager) 
+    {
+        GameStateController.playerDead.notifyListenersEnter += HandleDeadEvent;
+    }
+
+
 
 
     internal override void HandleAction()
@@ -61,7 +68,7 @@ public class InfantrySquad : Squad
     {
         foreach (Ai ai in squadMembers)
         {
-            if (target == null || !GameStateController.GameIsPlaying())
+            if (target == null)
             {
                 ai.Wander();
             }
@@ -85,6 +92,11 @@ public class InfantrySquad : Squad
                 }
             }
         }
+    }
+
+    private void HandleDeadEvent()
+    {
+        target = null;
     }
 
 }
