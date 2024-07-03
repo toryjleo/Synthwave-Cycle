@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices.WindowsRuntime;
+
 public delegate void StateChangeHandler();
 
 
@@ -6,7 +8,7 @@ public abstract class GameState
     public event StateChangeHandler notifyListenersEnter;
     public event StateChangeHandler notifyListenersExit;
 
-    public abstract GameState HandleTrigger(StateTrigger trigger, GameStateController c);
+    public abstract GameState HandleTrigger(StateTrigger trigger);
 
     public void Enter()
     {
@@ -21,11 +23,12 @@ public abstract class GameState
 
 public class Loading : GameState
 {
-    public override GameState HandleTrigger(StateTrigger trigger, GameStateController c)
+    public override GameState HandleTrigger(StateTrigger trigger)
     {
         if (trigger == StateTrigger.LoadingComplete) 
         {
-            // TODO: Return GameStartPaused
+            Exit();
+            return GameStateController.gamesStartPaused;
         }
         return null;
     }
@@ -33,11 +36,12 @@ public class Loading : GameState
 
 public class GameStartPaused : GameState
 {
-    public override GameState HandleTrigger(StateTrigger trigger, GameStateController c)
+    public override GameState HandleTrigger(StateTrigger trigger)
     {
         if (trigger == StateTrigger.StartGame) 
         {
-            // TODO: Return Playing
+            Exit();
+            return GameStateController.playing;
         }
         return null;
     }
@@ -45,11 +49,12 @@ public class GameStartPaused : GameState
 
 public class GamePlayPaused : GameState
 {
-    public override GameState HandleTrigger(StateTrigger trigger, GameStateController c)
+    public override GameState HandleTrigger(StateTrigger trigger)
     {
         if (trigger == StateTrigger.StartGame) 
         {
-            // TODO: Return Playing
+            Exit();
+            return GameStateController.playing;
         }
         return null;
     }
@@ -57,20 +62,22 @@ public class GamePlayPaused : GameState
 
 public class Playing : GameState
 {
-    public override GameState HandleTrigger(StateTrigger trigger, GameStateController c)
+    public override GameState HandleTrigger(StateTrigger trigger)
     {
         if (trigger == StateTrigger.StartGame) 
         {
-            // TODO: return GamePlayPaused
-            //
+            Exit();
+            return GameStateController.gamePlayPaused;
         }
         else if (trigger == StateTrigger.ZeroHP) 
         {
-            // TODO: Return playerdead
+            Exit();
+            return GameStateController.playerDead;
         }
         else if (trigger == StateTrigger.LevelComplete) 
         {
-            // TODO: return level complete
+            Exit();
+            return GameStateController.levelComplete;
         }
         return null;
     }
@@ -78,11 +85,12 @@ public class Playing : GameState
 
 public class PlayerDead : GameState
 {
-    public override GameState HandleTrigger(StateTrigger trigger, GameStateController c)
+    public override GameState HandleTrigger(StateTrigger trigger)   
     {
         if (trigger == StateTrigger.Reset) 
         {
-            // Return resetting
+            Exit();
+            return GameStateController.resetting;
         }
         return null;
     }
@@ -90,11 +98,12 @@ public class PlayerDead : GameState
 
 public class Resetting : GameState
 {
-    public override GameState HandleTrigger(StateTrigger trigger, GameStateController c)
+    public override GameState HandleTrigger(StateTrigger trigger)
     {
         if (trigger == StateTrigger.LoadingComplete) 
         {
-            // return gamestartpaused
+            Exit();
+            return GameStateController.gamesStartPaused;
         }
         return null;
     }
@@ -102,15 +111,17 @@ public class Resetting : GameState
 
 public class LevelComplete : GameState
 {
-    public override GameState HandleTrigger(StateTrigger trigger, GameStateController c)
+    public override GameState HandleTrigger(StateTrigger trigger)
     {
         if(trigger == StateTrigger.Reset) 
         {
-            // return resetting
+            Exit();
+            return GameStateController.resetting;
         }
         else if (trigger == StateTrigger.TransitionFromLevel) 
         {
-            // return loading
+            Exit();
+            return GameStateController.loading;
         }
         return null;
     }

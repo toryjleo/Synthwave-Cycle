@@ -42,7 +42,14 @@ public class GameStateController : MonoBehaviour
 
     public static void HandleTrigger(StateTrigger trigger) 
     {
-    
+        Debug.Log("Received Trigger: " + trigger);
+        GameState newState = state.HandleTrigger(trigger);
+        if (newState != null) 
+        {
+            Debug.Log("Entering State: " + newState);
+            state = newState;
+            newState.Enter();
+        }
     }
 
     // TODO: Remove when you have a game paused and playing state. Change logic to use events
@@ -97,8 +104,35 @@ public class GameStateController : MonoBehaviour
             HandleTrigger(StateTrigger.Reset);
             GameReset();
         }
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Alpha1)) 
+        {
+            HandleTrigger(StateTrigger.LoadingComplete);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            HandleTrigger(StateTrigger.StartGame);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            HandleTrigger(StateTrigger.LevelComplete);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            HandleTrigger(StateTrigger.ZeroHP);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            HandleTrigger(StateTrigger.Reset);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            HandleTrigger(StateTrigger.TransitionFromLevel);
+        }
+#endif
     }
-    #endregion
+#endregion
 
     // 
     /// <summary>
