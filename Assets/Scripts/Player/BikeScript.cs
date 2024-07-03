@@ -199,10 +199,8 @@ public class BikeScript : MonoBehaviour, IResettable
 
     private void Dead() 
     {
-        // TODO: Update to call trigger
-        GameStateController.WorldState = GameStateEnum.Spawning;
+        GameStateController.HandleTrigger(StateTrigger.ZeroHP);
         //Ragdoll();
-        Debug.Log("Dead Event Called!");
     }
 
     private void RagDoll()
