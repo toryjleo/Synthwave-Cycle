@@ -10,12 +10,12 @@ public abstract class GameState
 
     public void Enter()
     {
-        notifyListenersEnter();
+        notifyListenersEnter?.Invoke();
     }
 
     public void Exit()
     {
-        notifyListenersExit();
+        notifyListenersExit?.Invoke();
     }
 }
 

@@ -74,9 +74,18 @@ public class GameStateController : MonoBehaviour
         {
             instance = this;
         }
+        loading = new Loading();
+        gamesStartPaused = new GameStartPaused();
+        gamePlayPaused = new GamePlayPaused();
+        playing = new Playing();
+        playerDead = new PlayerDead();
+        resetting = new Resetting();
+        levelComplete = new LevelComplete();
 
-        //The game should start in the menu, but for now, we start it in a playing state
-        state = loading;
+
+
+    //The game should start in the menu, but for now, we start it in a playing state
+    state = loading;
         state.Enter();
     }
 

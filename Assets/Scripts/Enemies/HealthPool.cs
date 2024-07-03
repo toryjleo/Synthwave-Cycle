@@ -49,7 +49,7 @@ public class HealthPool : SelfDespawn
 
     private void Start()
     {
-        GameStateController.notifyListenersGameStateHasChanged += HandleGameStateUpdate;
+        GameStateController.resetting.notifyListenersEnter += HandleGameStateUpdate;
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         player = playerObject.GetComponent<BikeScript>();
@@ -78,7 +78,7 @@ public class HealthPool : SelfDespawn
 
     private void OnDestroy()
     {
-        GameStateController.notifyListenersGameStateHasChanged -= HandleGameStateUpdate;
+        GameStateController.resetting.notifyListenersEnter -= HandleGameStateUpdate;
     }
 
     /// <summary>Reinitializes and turns on this HealthPool gameObject.</summary>
@@ -215,14 +215,8 @@ public class HealthPool : SelfDespawn
     /// <summary>
     /// Handles an update from the GameStateController
     /// </summary>
-    /// <param name="previousState">The state that was just in effect</param>
-    /// <param name="newState">The gamestate which will take effect this frame</param>
-    private void HandleGameStateUpdate(GameStateEnum previousState, GameStateEnum newState)
+    private void HandleGameStateUpdate()
     {
-        if (previousState == GameStateEnum.Spawning && newState == GameStateEnum.Playing)
-        {
-            // Just respawning case
-            Init(RateOfDecay, SizeofCylinder);
-        }
+        Init(RateOfDecay, SizeofCylinder);
     }
 }
