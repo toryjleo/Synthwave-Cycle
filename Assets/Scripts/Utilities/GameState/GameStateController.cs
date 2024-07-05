@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEditor.PackageManager;
+using System;
 
 public enum StateTrigger
 {
@@ -35,6 +36,8 @@ public class GameStateController : MonoBehaviour
     public static PlayerDead playerDead;
     public static Resetting resetting;
     public static LevelComplete levelComplete;
+
+    private bool initialEnter = false;
 
 
 
@@ -70,6 +73,9 @@ public class GameStateController : MonoBehaviour
     #endregion
 
     #region MonoBehavior
+    /// <summary>
+    /// Object referencing a gamestate should hook up events in OnEnable()
+    /// </summary>
     private void Awake()
     {
         // If there is an instance, and it's not me, delete myself.
@@ -89,17 +95,19 @@ public class GameStateController : MonoBehaviour
         resetting = new Resetting();
         levelComplete = new LevelComplete();
 
-    }
-
-    private void Start() 
-    {
-        //The game should start in the menu, but for now, we start it in a playing state
         state = loading;
-        state.Enter();
+        initialEnter = false;
+
     }
 
     private void Update()
     {
+        if (!initialEnter) 
+        {
+            initialEnter = true;
+            state.Enter();
+        }
+
         // TODO: Call trigger instead
         if (Input.GetKeyDown(KeyCode.R))
         {
