@@ -89,10 +89,12 @@ public class GameStateController : MonoBehaviour
         resetting = new Resetting();
         levelComplete = new LevelComplete();
 
+    }
 
-
-    //The game should start in the menu, but for now, we start it in a playing state
-    state = loading;
+    private void Start() 
+    {
+        //The game should start in the menu, but for now, we start it in a playing state
+        state = loading;
         state.Enter();
     }
 
