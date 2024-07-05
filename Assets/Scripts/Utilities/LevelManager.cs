@@ -28,5 +28,6 @@ public class LevelManager : MonoBehaviour, IResettable
     {
         jukebox.StartSong(currentLevel.WaveSequence);
         worldGenerator.CreateGround(currentLevel.GroundMat);
+        GameStateController.HandleTrigger(StateTrigger.LoadingComplete);
     }
 }
