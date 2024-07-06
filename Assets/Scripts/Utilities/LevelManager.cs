@@ -21,13 +21,28 @@ public class LevelManager : MonoBehaviour, IResettable
     // Start is called before the first frame update
     void Start()
     {
+        GameStateController.playing.notifyListenersEnter += StartTimeScale;
+        GameStateController.playing.notifyListenersExit += StopTimeScale;
+
+        jukebox.Init(currentLevel.WaveSequence);
+        worldGenerator.CreateGround(currentLevel.GroundMat);
+
+                                                             
         Initialize();
+    }
+
+    private void StartTimeScale() 
+    {
+        Time.timeScale = 1;
+    }
+
+    private void StopTimeScale()
+    {
+        Time.timeScale = 0;
     }
 
     private void Initialize()
     {
-        jukebox.Init(currentLevel.WaveSequence);
-        worldGenerator.CreateGround(currentLevel.GroundMat);
         GameStateController.HandleTrigger(StateTrigger.LoadingComplete);
     }
 }
