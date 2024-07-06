@@ -45,11 +45,11 @@ public class GameStateController : MonoBehaviour
 
     public static void HandleTrigger(StateTrigger trigger) 
     {
-        Debug.Log("Received Trigger: " + trigger);
+        //Debug.Log("Received Trigger: " + trigger);
         GameState newState = state.HandleTrigger(trigger);
         if (newState != null) 
         {
-            Debug.Log("Entering State: " + newState);
+            //Debug.Log("Entering State: " + newState);
             state = newState;
             newState.Enter();
         }

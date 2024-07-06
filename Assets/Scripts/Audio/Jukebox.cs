@@ -19,6 +19,7 @@ public class Jukebox : MonoBehaviour, IResettable
     double nextWaveSpawnTime;
 
     private bool canPlay;
+    double nextAudioLoopDifference;
 
     //Resets the jukebox and starts a new Wave Sequence
     public void Init(WaveSequence seq)
@@ -29,19 +30,36 @@ public class Jukebox : MonoBehaviour, IResettable
         AudioClip clip = sequence.GetCurrentTrackVariation();
 
         canPlay = false;
+        nextAudioLoopDifference = 0;
 
         GameStateController.playing.notifyListenersEnter += HandlePlayingEnter;
-
-        // TODO: Trigger on play enter
+        GameStateController.playing.notifyListenersExit += HandlePlayingExit;
     }
 
     private void HandlePlayingEnter() 
     {
+        audioSourceArray[1 - toggle].Play();
+
         double startTime = AudioSettings.dspTime + 0.2;
+
+        if (nextAudioLoopDifference != 0)
+        {
+            startTime = AudioSettings.dspTime + nextAudioLoopDifference;
+        }
+
         nextAudioLoopTime = startTime;
         nextWaveSpawnTime = startTime;
 
         canPlay = true;
+    }
+
+    private void HandlePlayingExit()
+    {
+        audioSourceArray[1 - toggle].Pause();
+
+        nextAudioLoopDifference = nextAudioLoopTime - AudioSettings.dspTime;
+
+        canPlay = false;
     }
 
     private void Update()
