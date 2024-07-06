@@ -18,34 +18,47 @@ public class Jukebox : MonoBehaviour, IResettable
     double nextAudioLoopTime;
     double nextWaveSpawnTime;
 
+    private bool canPlay;
+
     //Resets the jukebox and starts a new Wave Sequence
-    public void StartSong(WaveSequence seq)
+    public void Init(WaveSequence seq)
     {
         sequence = seq;
         sequence.Init(GameObject.FindObjectOfType<SquadSpawner>());
         toggle = 0;
         AudioClip clip = sequence.GetCurrentTrackVariation();
-        // Schedule the first track
-        audioSourceArray[toggle].clip = clip;
 
+        canPlay = false;
+
+        GameStateController.playing.notifyListenersEnter += HandlePlayingEnter;
+
+        // TODO: Trigger on play enter
+    }
+
+    private void HandlePlayingEnter() 
+    {
         double startTime = AudioSettings.dspTime + 0.2;
         nextAudioLoopTime = startTime;
         nextWaveSpawnTime = startTime;
+
+        canPlay = true;
     }
 
     private void Update()
     {
-
-        // Schedule next track 1 second before this track ends
-        if (AudioSettings.dspTime > nextAudioLoopTime - 1) 
+        if (canPlay)
         {
-            QueueNextSong();
-        }
-        // Logic for spawning in next wave
-        if (AudioSettings.dspTime > nextWaveSpawnTime)
-        {
-            sequence.SpawnNewWave();
-            nextWaveSpawnTime = sequence.GetNextWaveTime(nextWaveSpawnTime);
+            // Schedule next track 1 second before this track ends
+            if (AudioSettings.dspTime > nextAudioLoopTime - 1)
+            {
+                QueueNextSong();
+            }
+            // Logic for spawning in next wave
+            if (AudioSettings.dspTime > nextWaveSpawnTime)
+            {
+                sequence.SpawnNewWave();
+                nextWaveSpawnTime = sequence.GetNextWaveTime(nextWaveSpawnTime);
+            }
         }
 
     }
