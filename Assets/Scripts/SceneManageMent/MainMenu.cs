@@ -6,24 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public Button startButton;
-    public Button quitButton;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        startButton.onClick.AddListener(StartOnClick);
-        quitButton.onClick.AddListener(QuitOnClick);
-    }
 
     /// <summary>Will load the game.</summary>
-    private void StartOnClick() 
+    public void StartOnClick() 
     {
-        StartCoroutine(LoadYourAsyncScene("TestScene"));
+        StartCoroutine(LoadYourAsyncScene("TrueScene"));
     }
 
     /// <summary>Will quit the application.</summary>
-    private void QuitOnClick() 
+    public void QuitOnClick() 
     {
         Application.Quit();
     }
