@@ -7,6 +7,10 @@ public class MenuManager : MonoBehaviour
   [SerializeField] public GameObject loadingScreen;
   [SerializeField] public GameObject loadingFinishedScreen;
 
+  [SerializeField] public GameObject pauseScreen;
+
+  [SerializeField] public GameObject gameplayUI;
+
   void Start()
   {
     if (GameStateController.loading == null)
@@ -18,12 +22,31 @@ public class MenuManager : MonoBehaviour
 
     GameStateController.gamesStartPaused.notifyListenersEnter += HandleLoadingFinishedEnter;
     GameStateController.gamesStartPaused.notifyListenersExit += HandleLoadingFinishedExit;
+
+    GameStateController.playing.notifyListenersEnter += HandlePlayingEnter;
+    GameStateController.playing.notifyListenersExit += StopTimeScale;
+
+    GameStateController.gamePlayPaused.notifyListenersEnter += HandlePausingFinishedEnter;
+    GameStateController.gamePlayPaused.notifyListenersExit += HandlePausingFinishedExit;
   }
 
   // Update is called once per frame
   void Update()
   {
+    if (Input.GetKeyDown(KeyCode.Escape))
+    {
+      GameStateController.HandleTrigger(StateTrigger.StartGame);
+    }
+  }
 
+  private void StartTimeScale()
+  {
+    Time.timeScale = 1;
+  }
+
+  private void StopTimeScale()
+  {
+    Time.timeScale = 0;
   }
 
   private void HandleLoadingEnter()
@@ -44,5 +67,21 @@ public class MenuManager : MonoBehaviour
   private void HandleLoadingFinishedExit()
   {
     loadingFinishedScreen.SetActive(false);
+  }
+
+  private void HandlePausingFinishedEnter()
+  {
+    pauseScreen.SetActive(true);
+  }
+
+  private void HandlePausingFinishedExit()
+  {
+    pauseScreen.SetActive(false);
+  }
+
+  private void HandlePlayingEnter()
+  {
+    gameplayUI.SetActive(true);
+    StartTimeScale();
   }
 }
