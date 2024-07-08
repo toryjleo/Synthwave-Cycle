@@ -108,13 +108,6 @@ public class GameStateController : MonoBehaviour
             state.Enter();
         }
 
-        // TODO: Call trigger instead
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            HandleTrigger(StateTrigger.Reset);
-            GameReset();
-        }
-
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Alpha1)) 
         {

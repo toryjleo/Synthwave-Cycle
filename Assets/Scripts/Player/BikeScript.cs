@@ -200,7 +200,6 @@ public class BikeScript : MonoBehaviour, IResettable
     private void Dead() 
     {
         GameStateController.HandleTrigger(StateTrigger.ZeroHP);
-        //Ragdoll();
     }
 
     private void RagDoll()
