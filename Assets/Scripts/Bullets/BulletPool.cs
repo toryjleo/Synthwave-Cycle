@@ -82,6 +82,7 @@ public class BulletPool : MonoBehaviour, IResettable
         for (int i = 0; i < usedBullets.Count; i++) 
         {
             Bullet b = (Bullet) usedBullets[i];
+            b.ResetBullet();
             usedBullets.Remove(b);
             bulletQueue.Enqueue(b);
         }
