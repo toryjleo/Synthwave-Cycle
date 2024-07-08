@@ -44,22 +44,17 @@ public class Arsenal : MonoBehaviour, IResettable
     public void Init() 
     {
         playerBike = GetComponentInParent<BikeScript>();
-        if (weapons == null)
+
+        weapons = new Dictionary<PlayerWeaponType, Weapon>();
+        Weapon[] arsenalWeapons = this.GetComponentsInChildren<Weapon>();
+        //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
+        for (int i = 0; i < arsenalWeapons.Length; i++)
         {
-            weapons = new Dictionary<PlayerWeaponType, Weapon>();
-            Weapon[] arsenalWeapons = this.GetComponentsInChildren<Weapon>();
-            //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
-            for (int i = 0; i < arsenalWeapons.Length; i++)
-            {
-                arsenalWeapons[i].gameObject.transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
-                arsenalWeapons[i].gameObject.SetActive(false);
-                weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
-            }
+            arsenalWeapons[i].gameObject.transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
+            arsenalWeapons[i].gameObject.SetActive(false);
+            weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
         }
-        else
-        {
-            DisableAllWeapons();
-        }
+
     }
 
     private void DisableAllWeapons() 
