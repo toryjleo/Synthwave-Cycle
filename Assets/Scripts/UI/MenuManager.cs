@@ -13,27 +13,33 @@ public class MenuManager : MonoBehaviour
 
   void Start()
   {
-    if (GameStateController.loading == null)
-    {
-      Debug.LogError("NO LOADING STATE");
-    }
+    //Loading
     GameStateController.loading.notifyListenersEnter += HandleLoadingEnter;
     GameStateController.loading.notifyListenersExit += HandleLoadingExit;
 
+    //Loading complete/GameStartPaused
     GameStateController.gamesStartPaused.notifyListenersEnter += HandleLoadingFinishedEnter;
     GameStateController.gamesStartPaused.notifyListenersExit += HandleLoadingFinishedExit;
 
+    //Playing
     GameStateController.playing.notifyListenersEnter += HandlePlayingEnter;
     GameStateController.playing.notifyListenersExit += StopTimeScale;
 
+    //Paused
     GameStateController.gamePlayPaused.notifyListenersEnter += HandlePausingFinishedEnter;
     GameStateController.gamePlayPaused.notifyListenersExit += HandlePausingFinishedExit;
 
+    //Player dead
     GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
     GameStateController.playerDead.notifyListenersExit += HandlePlayerDeadExit;
 
+    //Level Complete
     GameStateController.levelComplete.notifyListenersEnter += HandleLevelCompleteEnter;
     GameStateController.levelComplete.notifyListenersExit += HandleLevelCompleteExit;
+
+    //Reset
+    GameStateController.resetting.notifyListenersEnter += HandleLoadingEnter;
+    GameStateController.resetting.notifyListenersExit += HandleLoadingExit;
   }
 
   // Update is called once per frame
