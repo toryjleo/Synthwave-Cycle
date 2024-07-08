@@ -10,7 +10,7 @@ using UnityEngine;
 public class SquadManager : MonoBehaviour, IResettable
 {
     public SquadSpawner squadSpawner; //Reference to Script in charge of spawning Enemies    
-    public DLevel dl; //Danger Level Timer 
+    public DangerLevel dl; //Danger Level Timer 
     public ScoreTracker scoreKeeper;
 
     public List<Ai> currentEnemies; //This is a list of Ai that are currently active in the scene. 
@@ -57,7 +57,7 @@ public class SquadManager : MonoBehaviour, IResettable
     // Start is called before the first frame update
     void Start()
     {
-        dl = DLevel.Instance;
+        dl = DangerLevel.Instance;
     }
 
     // Update is called once per frame

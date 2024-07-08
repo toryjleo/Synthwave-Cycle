@@ -5,7 +5,7 @@ using System.Timers;
 using UnityEngine;
 
 
-public class DLevel : MonoBehaviour, IResettable
+public class DangerLevel : MonoBehaviour, IResettable
 {
     public Timer dangerTimer;
     public int dangerLevel;
@@ -19,7 +19,7 @@ public class DLevel : MonoBehaviour, IResettable
         dangerTimer.Elapsed += XTimer_Elapsed;
     }
 
-    public static DLevel Instance;
+    public static DangerLevel Instance;
 
     private void Awake()
     {

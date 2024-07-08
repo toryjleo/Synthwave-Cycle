@@ -73,7 +73,7 @@ public abstract class Squad
                 squadMembers.Remove(ai);
                 manager.currentEnemies.Remove(ai);
                 manager.scoreKeeper.AddToScore((int)ai.GetScore());
-                DLevel.Instance.IncreaseDangerLevel((int)ai.dlScore);
+                DangerLevel.Instance.IncreaseDangerLevel((int)ai.dlScore);
                 break;
             }
 

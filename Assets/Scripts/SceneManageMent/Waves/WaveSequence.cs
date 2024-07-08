@@ -42,7 +42,7 @@ public class WaveSequence : ScriptableObject, IResettable
             {
                 currentWave = index;
                 //Log the wave + 1 because the index starts at 0, but the tracks start at 1
-                Debug.Log("Current Wave: " + (currentWave + 1) + "/" + (sequence.Count) + "\nDanger Level: " + DLevel.Instance.GetDangerLevel());
+                Debug.Log("Current Wave: " + (currentWave + 1) + "/" + (sequence.Count) + "\nDanger Level: " + DangerLevel.Instance.GetDangerLevel());
                 break;
             }
         }
