@@ -39,7 +39,7 @@ public class BulletPool : MonoBehaviour, IResettable
         Bullet newObject = Instantiate(bulletPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         newObject.Init();
         newObject.gameObject.SetActive(false);
-        newObject.Despawn += bl_ProcessCompleted;
+        newObject.Despawn += DespawnBullet;
         return newObject;
     }
 
@@ -70,12 +70,11 @@ public class BulletPool : MonoBehaviour, IResettable
     /// <summary>Handles newObject.Despawn. Sets bullet to inactive and adds it to queue.</summary>
     /// <param name="bullet">The object which called Despawn that passes itself into the Despawn method that needs to 
     /// be added back to the pool.</param>
-    public void bl_ProcessCompleted(SelfDespawn bullet)
+    public void DespawnBullet(SelfDespawn bullet)
     {
         bullet.gameObject.SetActive(false);
         usedBullets.Remove((bullet as Bullet));
         bulletQueue.Enqueue(bullet as Bullet); // Make sure this is bullet in the future
-        //Debug.Log("Despawned, Size of queue: " + bulletQueue.Count);
     }
 
     public void ResetGameObject()
