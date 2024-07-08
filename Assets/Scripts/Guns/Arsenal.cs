@@ -58,10 +58,16 @@ public class Arsenal : MonoBehaviour, IResettable
         }
         else
         {
-            foreach (Weapon weapon in weapons.Values)
-            {
-                weapon.gameObject.SetActive(false);
-            }
+            DisableAllWeapons();
+        }
+    }
+
+    private void DisableAllWeapons() 
+    {
+        currentWeapon = null;
+        foreach (Weapon weapon in weapons.Values)
+        {
+            weapon.gameObject.SetActive(false);
         }
     }
 
@@ -149,7 +155,6 @@ public class Arsenal : MonoBehaviour, IResettable
 
     public void ResetGameObject()
     {
-        currentWeapon = null;
-        Init();
+        DisableAllWeapons();
     }
 }
