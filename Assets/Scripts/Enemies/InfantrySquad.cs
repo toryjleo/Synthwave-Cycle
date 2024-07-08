@@ -30,7 +30,6 @@ public class InfantrySquad : Squad
 
     public InfantrySquad(SquadManager _manager) : base(_manager) 
     {
-        GameStateController.playerDead.notifyListenersEnter += HandleDeadEvent;
     }
 
 
@@ -55,6 +54,8 @@ public class InfantrySquad : Squad
                     currentAction = SquadAction.Following;
                 }
                 movementLoc = target.transform.position;
+                break;
+            case SquadAction.Wandering:
                 break;
         }
     }
@@ -92,11 +93,6 @@ public class InfantrySquad : Squad
                 }
             }
         }
-    }
-
-    private void HandleDeadEvent()
-    {
-        target = null;
     }
 
 }

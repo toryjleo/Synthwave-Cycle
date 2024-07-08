@@ -28,6 +28,20 @@ public abstract class Squad
     public Squad(SquadManager _manager)
     {
         this.manager = _manager;
+
+        GameStateController.playerDead.notifyListenersEnter += HandleDeadEnter;
+        GameStateController.playerDead.notifyListenersExit += HandleDeadExit;
+    }
+
+    private void HandleDeadEnter() 
+    {
+        currentAction = SquadAction.Wandering;
+
+        target = null;
+    }
+    private void HandleDeadExit() 
+    {
+        currentAction = SquadAction.Attacking;
     }
 
     // Update is called once per frame
