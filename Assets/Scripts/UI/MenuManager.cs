@@ -6,12 +6,10 @@ public class MenuManager : MonoBehaviour
 {
   [SerializeField] public GameObject loadingScreen;
   [SerializeField] public GameObject loadingFinishedScreen;
-
   [SerializeField] public GameObject pauseScreen;
-
   [SerializeField] public GameObject gameplayUI;
-
   [SerializeField] public GameObject playerDeadScreen;
+  [SerializeField] public GameObject levelCompleteScreen;
 
   void Start()
   {
@@ -33,6 +31,9 @@ public class MenuManager : MonoBehaviour
 
     GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
     GameStateController.playerDead.notifyListenersExit += HandlePlayerDeadExit;
+
+    GameStateController.levelComplete.notifyListenersEnter += HandleLevelCompleteEnter;
+    GameStateController.levelComplete.notifyListenersExit += HandleLevelCompleteExit;
   }
 
   // Update is called once per frame
@@ -106,5 +107,16 @@ public class MenuManager : MonoBehaviour
   {
     playerDeadScreen.SetActive(false);
     StopTimeScale();
+  }
+
+  private void HandleLevelCompleteEnter()
+  {
+    gameplayUI.SetActive(false);
+    levelCompleteScreen.SetActive(true);
+  }
+
+  private void HandleLevelCompleteExit()
+  {
+    levelCompleteScreen.SetActive(false);
   }
 }
