@@ -63,16 +63,19 @@ public class HealthPool : SelfDespawn
 
     private void Update()
     {
-        if (curScale <= minScale)
+        if (GameStateController.GameIsPlaying())
         {
-            OnDespawn();
-        }
-        else
-        {
-            // Shrink if player is in the pool
-            Shrink(shrinkPerSecond * Time.deltaTime);
-            float leeway = 3.0f; // Make the circle a little larger than the hitbox
-            circleRenderer.DrawCircle(transform.position, 80, (transform.localScale.x / 2) + leeway);
+            if (curScale <= minScale)
+            {
+                OnDespawn();
+            }
+            else
+            {
+                // Shrink if player is in the pool
+                Shrink(shrinkPerSecond * Time.deltaTime);
+                float leeway = 3.0f; // Make the circle a little larger than the hitbox
+                circleRenderer.DrawCircle(transform.position, 80, (transform.localScale.x / 2) + leeway);
+            }
         }
     }
 
