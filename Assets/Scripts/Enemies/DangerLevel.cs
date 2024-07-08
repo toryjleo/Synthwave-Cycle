@@ -7,23 +7,32 @@ using UnityEngine;
 
 public class DangerLevel : MonoBehaviour, IResettable
 {
+    public static DangerLevel Instance;
+
     public Timer dangerTimer;
     public int dangerLevel;
-    private void Start()
-    {
-        //This timer increases the danger level and is used for determining the amount and difficulty of enemies being spawned
-        dangerTimer = new Timer(3000);
-        dangerLevel = 1;
-        dangerTimer.AutoReset = true;
-        dangerTimer.Enabled = true;
-        dangerTimer.Elapsed += XTimer_Elapsed;
-    }
 
-    public static DangerLevel Instance;
+    const int START_LEVEL = 1;
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        dangerLevel = START_LEVEL;
+        StartTimer();
+    }
+
+    private void StartTimer() 
+    {
+        // This timer increases the danger level and is used for determining the amount and difficulty of enemies being
+        // spawned
+        dangerTimer = new Timer(3000);
+        dangerTimer.AutoReset = true;
+        dangerTimer.Enabled = true;
+        dangerTimer.Elapsed += XTimer_Elapsed;
     }
 
     /// <summary>
@@ -54,6 +63,7 @@ public class DangerLevel : MonoBehaviour, IResettable
 
     public void ResetGameObject()
     {
-        dangerLevel = 0;
+        dangerLevel = START_LEVEL;
+        StartTimer();
     }
 }
