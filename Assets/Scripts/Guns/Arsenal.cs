@@ -53,6 +53,11 @@ public class Arsenal : MonoBehaviour, IResettable
             arsenalWeapons[i].gameObject.transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
             arsenalWeapons[i].gameObject.SetActive(false);
             weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
+
+            if (arsenalWeapons[i] is Gun)
+            {
+                ((Gun)arsenalWeapons[i]).BulletShot += playerBike.movementComponent.bl_ProcessCompleted;
+            }
         }
 
     }
@@ -125,10 +130,6 @@ public class Arsenal : MonoBehaviour, IResettable
             currentWeapon.Init();
             weaponPickupSFX.clip = currentWeapon.PickupSound;
             weaponPickupSFX.Play();
-            if (currentWeapon is Gun)
-            {
-                ((Gun)currentWeapon).BulletShot += playerBike.movementComponent.bl_ProcessCompleted;
-            }
             currentWeapon.gameObject.SetActive(true);
         }
     }
@@ -140,10 +141,6 @@ public class Arsenal : MonoBehaviour, IResettable
         {
             ((LeveledGun)currentWeapon).BigBoom();
             ((LeveledGun)currentWeapon).LevelUp();
-        }
-        if (gunToDiscard is Gun)
-        {
-            ((Gun)gunToDiscard).BulletShot -= playerBike.movementComponent.bl_ProcessCompleted;
         }
         gunToDiscard.gameObject.SetActive(false);
     }
