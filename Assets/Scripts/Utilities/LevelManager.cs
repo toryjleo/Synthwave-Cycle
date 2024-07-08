@@ -1,35 +1,53 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour, IResettable
+public class LevelManager : MonoBehaviour
 {
-  [SerializeField]
-  public Jukebox jukebox;
-  [SerializeField]
-  public WorldGenerator worldGenerator;
+    [SerializeField]
+    public Jukebox jukebox;
+    [SerializeField]
+    public WorldGenerator worldGenerator;
 
-  [SerializeField]
-  public GameLevel currentLevel;
+    [SerializeField]
+    public GameLevel currentLevel;
 
-  public void ResetGameObject()
-  {
-    Initialize();
-  }
+    List<IResettable> resetObjects;
 
-  // Start is called before the first frame update
-  void Start()
-  {
-    jukebox.Init(currentLevel.WaveSequence);
-    worldGenerator.CreateGround(currentLevel.GroundMat);
+    // Start is called before the first frame update
+    void Start()
+    {
+        jukebox.Init(currentLevel.WaveSequence);
+        worldGenerator.CreateGround(currentLevel.GroundMat);
+        resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
+
+        GameStateController.resetting.notifyListenersEnter += GameReset;
 
 
-    Initialize();
-  }
+        Initialize();
+    }
 
-  private void Initialize()
-  {
-    GameStateController.HandleTrigger(StateTrigger.LoadingComplete);
-  }
+    private void Initialize()
+    {
+        GameStateController.HandleTrigger(StateTrigger.LoadingComplete);
+    }
+
+
+    /// <summary>
+    /// Calls ResetGameObject() on every IResettable object in the game world
+    /// </summary>
+    private void GameReset()
+    {
+        Debug.Log("Resetting!");
+        resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
+        DLevel.Instance.dangerLevel = 0;//make sure we don't start at the same level
+        foreach (IResettable r in resetObjects)
+        {
+            r.ResetGameObject();
+        }
+        currentLevel.WaveSequence.ResetGameObject();
+        Initialize();
+    }
 }

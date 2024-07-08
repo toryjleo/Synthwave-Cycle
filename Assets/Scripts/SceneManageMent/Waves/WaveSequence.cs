@@ -8,7 +8,7 @@ using UnityEngine;
 /// the Jukebox with the current TrackVariation audio clip
 /// </summary>
 [CreateAssetMenu(menuName = "Wave/WaveSequence", fileName = "New Wave Sequence")]
-public class WaveSequence : ScriptableObject
+public class WaveSequence : ScriptableObject, IResettable
 {
     private int previousWave = -1;
     private int currentWave = 0;
@@ -63,5 +63,10 @@ public class WaveSequence : ScriptableObject
         AudioClip clipToPlay = sequence[currentWave].GetTrackVariation();
         double duration = (double)clipToPlay.samples / clipToPlay.frequency;
         return currentTime + (duration / sequence[currentWave].wavesInTrack);
+    }
+
+    public void ResetGameObject()
+    {
+        currentWave = 0;
     }
 }

@@ -136,24 +136,6 @@ public class GameStateController : MonoBehaviour
 #endif
     }
 #endregion
-    // TODO: Move elsewhere
-    // 
-    /// <summary>
-    /// Calls ResetGameObject() on every IResettable object in the game world
-    /// </summary>
-    private void GameReset()
-    {
-        // TODO: Move logic to level loader
-        Debug.Log("Resetting!");
-        List<IResettable> resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
-        DLevel.Instance.dangerLevel = 0;//make sure we don't start at the same level
-        foreach (IResettable r in resetObjects)
-        {
-            r.ResetGameObject();
-        }
-        GameStateController.HandleTrigger(StateTrigger.LoadingComplete);
-
-    }
 
 
 }

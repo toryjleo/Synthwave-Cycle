@@ -27,7 +27,6 @@ public class Jukebox : MonoBehaviour, IResettable
         sequence = seq;
         sequence.Init(GameObject.FindObjectOfType<SquadSpawner>());
         toggle = 0;
-        AudioClip clip = sequence.GetCurrentTrackVariation();
 
         canPlay = false;
         nextAudioLoopDifference = 0;
@@ -112,5 +111,10 @@ public class Jukebox : MonoBehaviour, IResettable
             audioSourceArray[i].Stop();
             audioSourceArray[i].clip = null;
         }
+
+        toggle = 0;
+
+        canPlay = false;
+        nextAudioLoopDifference = 0;
     }
 }
