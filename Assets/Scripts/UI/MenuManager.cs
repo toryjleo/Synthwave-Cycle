@@ -42,6 +42,11 @@ public class MenuManager : MonoBehaviour
     {
       GameStateController.HandleTrigger(StateTrigger.StartGame);
     }
+
+    if (Input.GetKeyDown(KeyCode.R))
+    {
+      GameStateController.HandleTrigger(StateTrigger.Reset);
+    }
   }
 
   private void StartTimeScale()
@@ -93,6 +98,7 @@ public class MenuManager : MonoBehaviour
   private void HandlePlayerDeadEnter()
   {
     playerDeadScreen.SetActive(true);
+    gameplayUI.SetActive(false);
     StartTimeScale();
   }
 

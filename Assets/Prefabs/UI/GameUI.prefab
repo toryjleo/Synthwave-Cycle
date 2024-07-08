@@ -959,7 +959,7 @@ MonoBehaviour:
   loadingFinishedScreen: {fileID: 3269430929109466335}
   pauseScreen: {fileID: 2809377133440490459}
   gameplayUI: {fileID: 5011692414330122418}
-  playerDeadScreen: {fileID: 0}
+  playerDeadScreen: {fileID: 3852609468686351999}
 --- !u!1 &3852609468686351999
 GameObject:
   m_ObjectHideFlags: 0
