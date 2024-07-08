@@ -11,6 +11,8 @@ public class MenuManager : MonoBehaviour
 
   [SerializeField] public GameObject gameplayUI;
 
+  [SerializeField] public GameObject playerDeadScreen;
+
   void Start()
   {
     if (GameStateController.loading == null)
@@ -28,6 +30,9 @@ public class MenuManager : MonoBehaviour
 
     GameStateController.gamePlayPaused.notifyListenersEnter += HandlePausingFinishedEnter;
     GameStateController.gamePlayPaused.notifyListenersExit += HandlePausingFinishedExit;
+
+    GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
+    GameStateController.playerDead.notifyListenersExit += HandlePlayerDeadExit;
   }
 
   // Update is called once per frame
@@ -83,5 +88,17 @@ public class MenuManager : MonoBehaviour
   {
     gameplayUI.SetActive(true);
     StartTimeScale();
+  }
+
+  private void HandlePlayerDeadEnter()
+  {
+    playerDeadScreen.SetActive(true);
+    StartTimeScale();
+  }
+
+  private void HandlePlayerDeadExit()
+  {
+    playerDeadScreen.SetActive(false);
+    StopTimeScale();
   }
 }
