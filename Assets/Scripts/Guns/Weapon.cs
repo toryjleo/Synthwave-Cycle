@@ -28,13 +28,7 @@ public abstract class Weapon : MonoBehaviour, IResettable
     {
         Init();
     }
-    /// <summary>
-    /// Used to deInit the weapon 
-    /// </summary>
-    protected virtual void OnDestroy()
-    {
-        DeInit();
-    }
+
     /// <summary>Initializes veriables. Specifically must initialize lastFired and fireRate variables.</summary>
     public abstract void Init();
 

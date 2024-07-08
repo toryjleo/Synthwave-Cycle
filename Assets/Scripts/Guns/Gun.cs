@@ -31,12 +31,6 @@ public abstract class Gun : Weapon, IResettable
         bulletPool.Init(bulletPrefab, bulletPoolSize);
         lastFired = 0;
     }
-
-    /// <summary>Basically a destructor. Calls bulletPool.DeInit().</summary>
-    public override void DeInit() 
-    {
-        bulletPool.DeInit();
-    }
     
     /// <summary>Calls OnBulletShot. Will apply variable recoil based on bullet's mass and muzzle velocity</summary>
     /// <param name="directionOfBullet">Non-normalized direction bullet is travelling.</param>
