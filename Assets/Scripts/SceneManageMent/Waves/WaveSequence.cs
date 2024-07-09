@@ -68,5 +68,6 @@ public class WaveSequence : ScriptableObject, IResettable
     public void ResetGameObject()
     {
         currentWave = 0;
+        previousWave = -1;
     }
 }
