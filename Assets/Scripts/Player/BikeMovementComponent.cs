@@ -168,6 +168,7 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         rb.velocity = new Vector3(0, 0, 0);
         rb.transform.rotation= Quaternion.Euler(new Vector3(0f, 0f, 0f));
         appliedForce = new Vector3(0, 0, 0);
+        transform.position = new Vector3(0, 0, 0);
 
         health.Init(STARTING_HEALTH, MAX_HEALTH);
     }
