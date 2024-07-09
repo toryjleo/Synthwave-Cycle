@@ -35,32 +35,6 @@ public class Jukebox : MonoBehaviour, IResettable
         GameStateController.playing.notifyListenersExit += HandlePlayingExit;
     }
 
-    private void HandlePlayingEnter() 
-    {
-        audioSourceArray[1 - toggle].Play();
-
-        double startTime = AudioSettings.dspTime + 0.2;
-
-        if (nextAudioLoopDifference != 0)
-        {
-            startTime = AudioSettings.dspTime + nextAudioLoopDifference;
-        }
-
-        nextAudioLoopTime = startTime;
-        nextWaveSpawnTime = startTime;
-
-        canPlay = true;
-    }
-
-    private void HandlePlayingExit()
-    {
-        audioSourceArray[1 - toggle].Pause();
-
-        nextAudioLoopDifference = nextAudioLoopTime - AudioSettings.dspTime;
-
-        canPlay = false;
-    }
-
     private void Update()
     {
         if (canPlay)
@@ -116,5 +90,31 @@ public class Jukebox : MonoBehaviour, IResettable
 
         canPlay = false;
         nextAudioLoopDifference = 0;
+    }
+
+    private void HandlePlayingEnter()
+    {
+        audioSourceArray[1 - toggle].Play();
+
+        double startTime = AudioSettings.dspTime + 0.2;
+
+        if (nextAudioLoopDifference != 0)
+        {
+            startTime = AudioSettings.dspTime + nextAudioLoopDifference;
+        }
+
+        nextAudioLoopTime = startTime;
+        nextWaveSpawnTime = startTime;
+
+        canPlay = true;
+    }
+
+    private void HandlePlayingExit()
+    {
+        audioSourceArray[1 - toggle].Pause();
+
+        nextAudioLoopDifference = nextAudioLoopTime - AudioSettings.dspTime;
+
+        canPlay = false;
     }
 }
