@@ -79,7 +79,7 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         // The bike will begin at rest
         appliedForce = new Vector3(0, 0, 0);
