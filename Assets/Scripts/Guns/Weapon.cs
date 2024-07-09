@@ -33,10 +33,7 @@ public abstract class Weapon : MonoBehaviour
     public abstract void Init();
 
     /// <summary>Basically a destructor. Calls bulletPool.DeInit().</summary>
-    public virtual void DeInit()
-    {
-       //TODO: add more featuers? Thoughts
-    }
+    public virtual void DeInit() { }
 
     /// <summary>Fires the bullet from the muzzle of the gun. Is responsible for calling OnBulletShot and getting 
     /// bullet from the object pool.</summary>

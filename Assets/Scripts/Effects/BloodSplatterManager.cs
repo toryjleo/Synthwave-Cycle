@@ -36,11 +36,6 @@ public class BloodSplatterManager : MonoBehaviour
         }*/
     }
 
-    protected virtual void OnDestroy()
-    {
-        DeInit();
-    }
-
     /// <summary>
     /// Initialization function to be used by Despawn calls.
     /// </summary>
@@ -53,17 +48,6 @@ public class BloodSplatterManager : MonoBehaviour
     public virtual void Init() 
     {
         bloodSplatter.HideBlood();
-    }
-
-    /// <summary>
-    /// Deinitializes this instance.
-    /// </summary>
-    public virtual void DeInit()
-    {
-        if (ai != null)
-        {
-            ai.DeadEvent -= ShowBlood;
-        }
     }
 
     /// <summary>
