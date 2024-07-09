@@ -29,19 +29,8 @@ public abstract class Squad
     {
         this.manager = _manager;
 
-        GameStateController.playerDead.notifyListenersEnter += HandleDeadEnter;
-        GameStateController.playerDead.notifyListenersExit += HandleDeadExit;
-    }
-
-    private void HandleDeadEnter() 
-    {
-        currentAction = SquadAction.Wandering;
-
-        target = null;
-    }
-    private void HandleDeadExit() 
-    {
-        currentAction = SquadAction.Attacking;
+        GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
+        GameStateController.playerDead.notifyListenersExit += HandlePlayerDeadExit;
     }
 
     // Update is called once per frame
@@ -136,5 +125,16 @@ public abstract class Squad
     internal bool HasMembers()
     {
         return squadMembers.Count > 0;
+    }
+
+    private void HandlePlayerDeadEnter()
+    {
+        currentAction = SquadAction.Wandering;
+
+        target = null;
+    }
+    private void HandlePlayerDeadExit()
+    {
+        currentAction = SquadAction.Attacking;
     }
 }

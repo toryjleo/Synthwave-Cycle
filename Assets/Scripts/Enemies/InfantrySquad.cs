@@ -26,13 +26,7 @@ public class InfantrySquad : Squad
     float potShotVarianceMS = 1000; //range of +/- MS between pot shots (so they aren't on an exact interval)
     float nextShot = 0; //the time for the next shot, is reset to the current time in MS when a pot shot is taken
 
-
-
-    public InfantrySquad(SquadManager _manager) : base(_manager) 
-    {
-    }
-
-
+    public InfantrySquad(SquadManager _manager) : base(_manager) { }
 
 
     internal override void HandleAction()

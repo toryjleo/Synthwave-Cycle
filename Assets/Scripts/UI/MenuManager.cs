@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages the menus in our main gameplay scene
+/// </summary>
 public class MenuManager : MonoBehaviour
 {
   [SerializeField] public GameObject loadingScreen;

@@ -218,7 +218,7 @@ public class HealthPool : SelfDespawn
     /// <summary>
     /// Handles an update from the GameStateController
     /// </summary>
-    private void HandleGameStateUpdate()
+    private void HandleResettingEnter()
     {
         Init(RateOfDecay, SizeofCylinder);
     }
