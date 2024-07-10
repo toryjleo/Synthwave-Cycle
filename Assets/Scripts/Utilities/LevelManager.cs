@@ -42,7 +42,7 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log("Resetting!");
         resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
-        DLevel.Instance.dangerLevel = 0;//make sure we don't start at the same level
+        DangerLevel.Instance.dangerLevel = 0;//make sure we don't start at the same level
         foreach (IResettable r in resetObjects)
         {
             r.ResetGameObject();

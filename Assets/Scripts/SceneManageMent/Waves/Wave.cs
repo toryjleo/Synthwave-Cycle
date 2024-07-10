@@ -39,7 +39,7 @@ public class Wave : ScriptableObject
 
     public bool IsOverThreshold()
     {
-        return DLevel.Instance.GetDangerLevel() > DLThreshold;
+        return DangerLevel.Instance.GetDangerLevel() > DLThreshold;
     }
 
     internal AudioClip GetTrackVariation()
