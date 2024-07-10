@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 inputDirection = Vector3.zero;
 
     private float rotationSpeed = 5;
+    private float theta = 20;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        DrawTheta();
         inputDirection = GetInputDir();
 
         if (inputDirection != Vector3.zero) 
@@ -57,5 +59,14 @@ public class PlayerMovement : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + (desiredDirectionNormalized * magnitude), Color.magenta);
 
         return desiredDirectionNormalized * magnitude;
+    }
+
+    private void DrawTheta() 
+    {
+        Vector3 endLine1 = Quaternion.Euler(0, theta, 0) * transform.forward;
+        Vector3 endLine2 = Quaternion.Euler(0, -theta, 0) * transform.forward;
+
+        Debug.DrawLine(transform.position, transform.position + endLine1, Color.green);
+        Debug.DrawLine(transform.position, transform.position + endLine2, Color.green);
     }
 }
