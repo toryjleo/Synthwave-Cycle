@@ -49,7 +49,7 @@ public class HealthPool : SelfDespawn
 
     private void Start()
     {
-        GameStateController.resetting.notifyListenersEnter += HandleGameStateUpdate;
+        GameStateController.resetting.notifyListenersEnter += HandleResettingEnter;
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         player = playerObject.GetComponent<BikeScript>();
@@ -81,7 +81,7 @@ public class HealthPool : SelfDespawn
 
     private void OnDestroy()
     {
-        GameStateController.resetting.notifyListenersEnter -= HandleGameStateUpdate;
+        GameStateController.resetting.notifyListenersEnter -= HandleResettingEnter;
     }
 
     /// <summary>Reinitializes and turns on this HealthPool gameObject.</summary>
