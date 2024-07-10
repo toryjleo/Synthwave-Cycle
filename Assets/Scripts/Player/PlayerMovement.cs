@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -14,8 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 start_position = new Vector3(0, 1, 0);
     private Vector3 inputDirection = Vector3.zero;
 
-    private float rotationSpeed = 5;
-    private float theta = 20;
+    public float rotationSpeed = 5;
+    public float theta = 20;
 
     // Start is called before the first frame update
     void Start()
@@ -26,8 +29,8 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DrawTheta();
         inputDirection = GetInputDir();
+        DrawTheta(inputDirection);
 
         if (inputDirection != Vector3.zero) 
         {
@@ -55,18 +58,47 @@ public class PlayerMovement : MonoBehaviour
         float magnitude = Mathf.Clamp(desiredDirection.magnitude, 0, 1);
 
 
-        Debug.DrawLine(transform.position, transform.position + transform.forward, Color.red);
-        Debug.DrawLine(transform.position, transform.position + (desiredDirectionNormalized * magnitude), Color.magenta);
+        Debug.DrawLine(transform.position, transform.position + transform.forward, UnityEngine.Color.red);
+        Debug.DrawLine(transform.position, transform.position + (desiredDirectionNormalized * magnitude), UnityEngine.Color.magenta);
 
         return desiredDirectionNormalized * magnitude;
     }
 
-    private void DrawTheta() 
+    private void DrawTheta(Vector3 desiredDirection) 
     {
         Vector3 endLine1 = Quaternion.Euler(0, theta, 0) * transform.forward;
         Vector3 endLine2 = Quaternion.Euler(0, -theta, 0) * transform.forward;
 
-        Debug.DrawLine(transform.position, transform.position + endLine1, Color.green);
-        Debug.DrawLine(transform.position, transform.position + endLine2, Color.green);
+        UnityEngine.Color color = UnityEngine.Color.red;
+
+        if (inputDirection != Vector3.zero) 
+        {
+            float dot = Vector3.Dot(transform.forward, desiredDirection) / (transform.forward.magnitude * desiredDirection.magnitude);
+            float angle = Mathf.Acos(dot);
+
+            if (AngleLessThanTheta(angle, theta)) // Convert to radians
+            {
+                // Are pressing a direction and within that direction (can accelerate)
+                color = UnityEngine.Color.green;
+            }
+        }
+
+        Debug.DrawLine(transform.position, transform.position + endLine1, color);
+        Debug.DrawLine(transform.position, transform.position + endLine2, color);
+    }
+
+    /// <summary>
+    /// Returns if a given angle, in radians, is less than theta in degrees.
+    /// </summary>
+    /// <param name="angle">In radians</param>
+    /// <param name="theta">in Degrees</param>
+    /// <returns>A boolean stating if angle < theta</returns>
+    private bool AngleLessThanTheta(float angle, float theta) 
+    {
+        if (Mathf.Abs(angle) < (theta * Mathf.PI / 180)) // Convert to radians
+        {
+            return true;
+        }
+        return false;
     }
 }
