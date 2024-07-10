@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 start_position = new Vector3(0, 1, 0);
     private Vector3 inputDirection = Vector3.zero;
 
+    private float rotationSpeed = 5;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,10 +27,19 @@ public class PlayerMovement : MonoBehaviour
     {
         inputDirection = GetInputDir();
 
+        if (inputDirection != Vector3.zero) 
+        {
+            Quaternion newRotation = Quaternion.LookRotation(inputDirection, transform.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * rotationSpeed);
+        }
+
+
+
     }
     private void FixedUpdate()
     {
-        rigidBody.AddForce(inputDirection);
+        //rigidBody.AddForce(inputDirection);
+
     }
 
     private Vector3 GetInputDir() 
