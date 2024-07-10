@@ -571,6 +571,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e326fbe13d1f6fe449dfd124ba169273, type: 3}
+--- !u!114 &1582217479 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5820863472217360598, guid: 60a9006d03365304ab467c6a9a64e661, type: 3}
+  m_PrefabInstance: {fileID: 3269430929037312308}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1588835167
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,6 +763,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1528128275866373529, guid: 60a9006d03365304ab467c6a9a64e661, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2809377133440490459, guid: 60a9006d03365304ab467c6a9a64e661, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3269430930711782449, guid: 60a9006d03365304ab467c6a9a64e661, type: 3}
       propertyPath: m_Name
       value: GameUI
@@ -840,5 +859,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7433559210638367650, guid: 60a9006d03365304ab467c6a9a64e661, type: 3}
+      propertyPath: levelManager
+      value: 
+      objectReference: {fileID: 1588835169}
+    - target: {fileID: 7433559210638367650, guid: 60a9006d03365304ab467c6a9a64e661, type: 3}
+      propertyPath: songDisplayText
+      value: 
+      objectReference: {fileID: 1582217479}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60a9006d03365304ab467c6a9a64e661, type: 3}
