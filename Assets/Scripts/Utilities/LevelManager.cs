@@ -16,6 +16,11 @@ public class LevelManager : MonoBehaviour
 
     List<IResettable> resetObjects;
 
+    public string SongName 
+    {
+        get => currentLevel.WaveSequence.songName;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
