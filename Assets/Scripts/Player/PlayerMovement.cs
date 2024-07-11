@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float rotationSpeed = 5;
     public float theta = 20;
+    public float forceToApplyPerSecond = 100;
 
     // Start is called before the first frame update
     void Start()
@@ -81,6 +82,20 @@ public class PlayerMovement : MonoBehaviour
             {
                 // Are pressing a direction and within that direction (can accelerate)
                 color = UnityEngine.Color.green;
+            }
+
+            if ((desiredDirection.sqrMagnitude > 0)) 
+            {
+                if (AngleLessThanTheta(angle, theta)) 
+                {
+                    rigidBody.AddForce(desiredDirection * forceToApplyPerSecond);
+                }
+            }
+            else 
+            {
+                // decelerate quickly
+                Vector3 dir = rigidBody.velocity;
+                rigidBody.AddForce(-dir * forceToApplyPerSecond);
             }
         }
 
