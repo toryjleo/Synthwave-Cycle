@@ -30,7 +30,6 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         inputDirection = GetInputDir();
-        DrawTheta(inputDirection);
 
         if (inputDirection != Vector3.zero) 
         {
@@ -43,6 +42,8 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
+
+        DrawTheta(inputDirection);
         //rigidBody.AddForce(inputDirection);
 
     }
