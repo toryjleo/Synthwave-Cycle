@@ -47,16 +47,13 @@ public class WaveSequence : ScriptableObject, IResettable
         Debug.Log("Current Wave: " + (currentWave + 1) + "/" + (sequence.Count) + "\nDanger Level: " + DangerLevel.Instance.GetDangerLevel());
         break;
       }
-      for (int index = sequence.Count - 1; index >= 0; index--)
+      // Iterate backwards and spawn in the waves for the highest danger level
+      if (sequence[index].IsOverThreshold())
       {
-        // Iterate backwards and spawn in the waves for the highest danger level
-        if (sequence[index].IsOverThreshold())
-        {
-          currentWave = index;
-          //Log the wave + 1 because the index starts at 0, but the tracks start at 1
-          Debug.Log("Current Wave: " + (currentWave + 1) + "/" + (sequence.Count) + "\nDanger Level: " + DangerLevel.Instance.GetDangerLevel());
-          break;
-        }
+        currentWave = index;
+        //Log the wave + 1 because the index starts at 0, but the tracks start at 1
+        Debug.Log("Current Wave: " + (currentWave + 1) + "/" + (sequence.Count) + "\nDanger Level: " + DangerLevel.Instance.GetDangerLevel());
+        break;
       }
     }
   }
