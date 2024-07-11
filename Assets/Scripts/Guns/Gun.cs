@@ -7,7 +7,7 @@ public delegate void NotifyShot(Vector3 force);  // delegate
 public delegate void NotifyOutOfAmmo(Gun self);
 
 /// <summary>Class <c>Bullet</c> A Unity Component which spawns bullets.</summary>
-public abstract class Gun : Weapon, IResettable
+public abstract class Gun : Weapon
 {
     public Bullet bulletPrefab;
     protected BulletPool bulletPool;
@@ -30,12 +30,6 @@ public abstract class Gun : Weapon, IResettable
         }
         bulletPool.Init(bulletPrefab, bulletPoolSize);
         lastFired = 0;
-    }
-
-    /// <summary>Basically a destructor. Calls bulletPool.DeInit().</summary>
-    public override void DeInit() 
-    {
-        bulletPool.DeInit();
     }
     
     /// <summary>Calls OnBulletShot. Will apply variable recoil based on bullet's mass and muzzle velocity</summary>
@@ -68,11 +62,6 @@ public abstract class Gun : Weapon, IResettable
     public bool CanShootAgain() 
     {
         return this.isActiveAndEnabled && (Time.time - lastFired > 1 / fireRate);
-    }
-    public new void ResetGameObject()
-    {
-        BulletShot = null;
-        base.ResetGameObject();
     }
 
 }

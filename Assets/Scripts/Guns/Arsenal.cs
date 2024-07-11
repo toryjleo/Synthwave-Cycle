@@ -44,24 +44,30 @@ public class Arsenal : MonoBehaviour, IResettable
     public void Init() 
     {
         playerBike = GetComponentInParent<BikeScript>();
-        if (weapons == null)
+
+        weapons = new Dictionary<PlayerWeaponType, Weapon>();
+        Weapon[] arsenalWeapons = this.GetComponentsInChildren<Weapon>();
+        //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
+        for (int i = 0; i < arsenalWeapons.Length; i++)
         {
-            weapons = new Dictionary<PlayerWeaponType, Weapon>();
-            Weapon[] arsenalWeapons = this.GetComponentsInChildren<Weapon>();
-            //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
-            for (int i = 0; i < arsenalWeapons.Length; i++)
+            arsenalWeapons[i].gameObject.transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
+            arsenalWeapons[i].gameObject.SetActive(false);
+            weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
+
+            if (arsenalWeapons[i] is Gun)
             {
-                arsenalWeapons[i].gameObject.transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
-                arsenalWeapons[i].gameObject.SetActive(false);
-                weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
+                ((Gun)arsenalWeapons[i]).BulletShot += playerBike.movementComponent.bl_ProcessCompleted;
             }
         }
-        else
+
+    }
+
+    private void DisableAllWeapons() 
+    {
+        currentWeapon = null;
+        foreach (Weapon weapon in weapons.Values)
         {
-            foreach (Weapon weapon in weapons.Values)
-            {
-                weapon.gameObject.SetActive(false);
-            }
+            weapon.gameObject.SetActive(false);
         }
     }
 
@@ -124,10 +130,6 @@ public class Arsenal : MonoBehaviour, IResettable
             currentWeapon.Init();
             weaponPickupSFX.clip = currentWeapon.PickupSound;
             weaponPickupSFX.Play();
-            if (currentWeapon is Gun)
-            {
-                ((Gun)currentWeapon).BulletShot += playerBike.movementComponent.bl_ProcessCompleted;
-            }
             currentWeapon.gameObject.SetActive(true);
         }
     }
@@ -140,16 +142,11 @@ public class Arsenal : MonoBehaviour, IResettable
             ((LeveledGun)currentWeapon).BigBoom();
             ((LeveledGun)currentWeapon).LevelUp();
         }
-        if (gunToDiscard is Gun)
-        {
-            ((Gun)gunToDiscard).BulletShot -= playerBike.movementComponent.bl_ProcessCompleted;
-        }
         gunToDiscard.gameObject.SetActive(false);
     }
 
     public void ResetGameObject()
     {
-        currentWeapon = null;
-        Init();
+        DisableAllWeapons();
     }
 }

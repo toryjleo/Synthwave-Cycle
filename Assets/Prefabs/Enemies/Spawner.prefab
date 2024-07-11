@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3780906798646803480}
   - component: {fileID: 609589166}
-  - component: {fileID: 609589168}
+  - component: {fileID: 1166159769048400175}
   - component: {fileID: 1202201957}
   - component: {fileID: 1202201958}
   m_Layer: 0
@@ -55,7 +55,7 @@ MonoBehaviour:
     poolSize: 30
   - prefab: {fileID: 2279930514937360738, guid: 89ba535868233dd438d5e9151af1a050, type: 3}
     poolSize: 30
---- !u!114 &609589168
+--- !u!114 &1166159769048400175
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -64,10 +64,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3780906798646803492}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1f3ac1d6b9da654a83819e6638f0b19, type: 3}
+  m_Script: {fileID: 11500000, guid: b291582c321a7a34e9429991173f0759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dangerLevel: 10
+  dangerLevel: 0
 --- !u!114 &1202201957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,6 +97,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squadSpawner: {fileID: 1202201957}
-  dl: {fileID: 609589168}
+  dl: {fileID: 0}
   scoreKeeper: {fileID: 0}
   currentEnemies: []
