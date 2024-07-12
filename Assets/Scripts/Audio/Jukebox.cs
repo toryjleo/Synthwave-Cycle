@@ -18,34 +18,38 @@ public class Jukebox : MonoBehaviour, IResettable
     double nextAudioLoopTime;
     double nextWaveSpawnTime;
 
+    private bool canPlay;
+    double nextAudioLoopDifference;
+
     //Resets the jukebox and starts a new Wave Sequence
-    public void StartSong(WaveSequence seq)
+    public void Init(WaveSequence seq)
     {
         sequence = seq;
         sequence.Init(GameObject.FindObjectOfType<SquadSpawner>());
         toggle = 0;
-        AudioClip clip = sequence.GetCurrentTrackVariation();
-        // Schedule the first track
-        audioSourceArray[toggle].clip = clip;
 
-        double startTime = AudioSettings.dspTime + 0.2;
-        nextAudioLoopTime = startTime;
-        nextWaveSpawnTime = startTime;
+        canPlay = false;
+        nextAudioLoopDifference = 0;
+
+        GameStateController.playing.notifyListenersEnter += HandlePlayingEnter;
+        GameStateController.playing.notifyListenersExit += HandlePlayingExit;
     }
 
     private void Update()
     {
-
-        // Schedule next track 1 second before this track ends
-        if (AudioSettings.dspTime > nextAudioLoopTime - 1) 
+        if (canPlay)
         {
-            QueueNextSong();
-        }
-        // Logic for spawning in next wave
-        if (AudioSettings.dspTime > nextWaveSpawnTime)
-        {
-            sequence.SpawnNewWave();
-            nextWaveSpawnTime = sequence.GetNextWaveTime(nextWaveSpawnTime);
+            // Schedule next track 1 second before this track ends
+            if (AudioSettings.dspTime > nextAudioLoopTime - 1)
+            {
+                QueueNextSong();
+            }
+            // Logic for spawning in next wave
+            if (AudioSettings.dspTime > nextWaveSpawnTime)
+            {
+                sequence.SpawnNewWave();
+                nextWaveSpawnTime = sequence.GetNextWaveTime(nextWaveSpawnTime);
+            }
         }
 
     }
@@ -81,5 +85,36 @@ public class Jukebox : MonoBehaviour, IResettable
             audioSourceArray[i].Stop();
             audioSourceArray[i].clip = null;
         }
+
+        toggle = 0;
+
+        canPlay = false;
+        nextAudioLoopDifference = 0;
+    }
+
+    private void HandlePlayingEnter()
+    {
+        audioSourceArray[1 - toggle].Play();
+
+        double startTime = AudioSettings.dspTime + 0.2;
+
+        if (nextAudioLoopDifference != 0)
+        {
+            startTime = AudioSettings.dspTime + nextAudioLoopDifference;
+        }
+
+        nextAudioLoopTime = startTime;
+        nextWaveSpawnTime = startTime;
+
+        canPlay = true;
+    }
+
+    private void HandlePlayingExit()
+    {
+        audioSourceArray[1 - toggle].Pause();
+
+        nextAudioLoopDifference = nextAudioLoopTime - AudioSettings.dspTime;
+
+        canPlay = false;
     }
 }

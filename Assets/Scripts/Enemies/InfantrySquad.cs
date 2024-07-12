@@ -49,6 +49,8 @@ public class InfantrySquad : Squad
                 }
                 movementLoc = target.transform.position;
                 break;
+            case SquadAction.Wandering:
+                break;
         }
     }
     //Returns true if the squad is ready to charge
@@ -61,7 +63,7 @@ public class InfantrySquad : Squad
     {
         foreach (Ai ai in squadMembers)
         {
-            if (target == null || !GameStateController.GameIsPlaying())
+            if (target == null)
             {
                 ai.Wander();
             }

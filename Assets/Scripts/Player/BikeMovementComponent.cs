@@ -81,7 +81,13 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
 
     private void Awake()
     {
-        Init();
+        // The bike will begin at rest
+        appliedForce = new Vector3(0, 0, 0);
+        rb = GetComponent<Rigidbody>();
+        health = GetComponentInChildren<Health>();
+
+
+        health.Init(STARTING_HEALTH, MAX_HEALTH);
     }
 
     private void FixedUpdate()
@@ -97,19 +103,6 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
     {
         health.TakeDamage(damageTaken);
     }
-
-    /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
-    private void Init()
-    {
-        // The bike will begin at rest
-        appliedForce = new Vector3(0, 0, 0);
-        rb = GetComponent<Rigidbody>();
-        health = GetComponentInChildren<Health>();
-
-
-        health.Init(STARTING_HEALTH, MAX_HEALTH);
-    }
-
 
 
     #region Directional Vectors
@@ -175,7 +168,9 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         rb.velocity = new Vector3(0, 0, 0);
         rb.transform.rotation= Quaternion.Euler(new Vector3(0f, 0f, 0f));
         appliedForce = new Vector3(0, 0, 0);
-        Init();
+        transform.position = new Vector3(0, 0, 0);
+
+        health.Init(STARTING_HEALTH, MAX_HEALTH);
     }
 
     #endregion

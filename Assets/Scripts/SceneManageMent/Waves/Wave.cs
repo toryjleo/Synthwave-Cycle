@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public enum WaveType
 {
-    HostileWave, ReturnToMenu, PlayAudioLog
+    HostileWave, LevelComplete, PlayAudioLog
 };
 
 /// <summary>
@@ -39,7 +39,7 @@ public class Wave : ScriptableObject
 
     public bool IsOverThreshold()
     {
-        return DLevel.Instance.GetDangerLevel() > DLThreshold;
+        return DangerLevel.Instance.GetDangerLevel() > DLThreshold;
     }
 
     internal AudioClip GetTrackVariation()
@@ -54,8 +54,8 @@ public class Wave : ScriptableObject
         {
             case WaveType.HostileWave:
                 break;
-            case WaveType.ReturnToMenu:
-                SceneManager.LoadScene("MainMenu");
+            case WaveType.LevelComplete:
+                GameStateController.HandleTrigger(StateTrigger.LevelComplete);
                 break;
         }
         return waveEnemies;

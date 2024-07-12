@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>Class <c>Bullet</c> A Unity Component which moves a gameobject foreward.</summary>
-public abstract class Bullet : SelfWorldBoundsDespawn, IResettable
+public abstract class Bullet : SelfWorldBoundsDespawn
 {
 
     protected Vector3 shootDir;
@@ -92,13 +92,6 @@ public abstract class Bullet : SelfWorldBoundsDespawn, IResettable
     public virtual void ResetBullet()
     {
         initialVelocity = Vector3.zero;
-    }
-
-    public void ResetGameObject()
-    {
-        if (this.gameObject.activeSelf)
-        {
-            Destroy(this.gameObject);
-        }
+        gameObject.SetActive(false);
     }
 }
