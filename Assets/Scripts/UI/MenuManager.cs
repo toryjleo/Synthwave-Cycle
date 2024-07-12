@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// Manages the menus in our main gameplay scene
@@ -14,8 +15,14 @@ public class MenuManager : MonoBehaviour
   [SerializeField] public GameObject playerDeadScreen;
   [SerializeField] public GameObject levelCompleteScreen;
 
+  [SerializeField] public TextMeshProUGUI songDisplayText;
+  private LevelManager levelManager;
+
   void Start()
   {
+    levelManager = FindObjectOfType<LevelManager>();
+    songDisplayText.text = "Current Song: " + levelManager.SongName + " by Shadow Mage";
+
     //Loading
     GameStateController.loading.notifyListenersEnter += HandleLoadingEnter;
     GameStateController.loading.notifyListenersExit += HandleLoadingExit;
