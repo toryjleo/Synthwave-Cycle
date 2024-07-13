@@ -88,7 +88,7 @@ public class EnemyPool : MonoBehaviour
         //Debug.Log("Despawned, Size of queue: " + bulletQueue.Count);
     }
 
-    public Ai SpawnFromPool(Enemy tag, Vector3 position, Quaternion rotation)
+    public Ai SpawnFromPool(Enemy tag, Vector3 position, Vector3 playerLocation)
     {
         if (!poolDictionary.ContainsKey(tag))
         {
@@ -99,7 +99,7 @@ public class EnemyPool : MonoBehaviour
         Ai objectToSpawn = poolDictionary[tag].Dequeue();
 
         objectToSpawn.transform.position = position;
-        objectToSpawn.transform.rotation = rotation;
+        objectToSpawn.transform.rotation = Quaternion.LookRotation(playerLocation - position);
         objectToSpawn.gameObject.SetActive(true);
 
         poolDictionary[tag].Enqueue(objectToSpawn);

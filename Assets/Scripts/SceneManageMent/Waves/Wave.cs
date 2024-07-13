@@ -9,6 +9,19 @@ public enum WaveType
     HostileWave, LevelComplete, PlayAudioLog
 };
 
+
+/// <summary>
+/// Serializable Tuple holding information for how each individual squad will be spawned
+/// Has an enemy type and a position relative to the player for where the squad will spawn in
+/// </summary>
+[Serializable]
+public class WaveEnemyInfo
+{
+    public Enemy enemyType;
+    public SpawnLocation spawnLocation;
+}
+
+
 /// <summary>
 /// A wave holds the information for one "Wave Level" of enemies
 /// When the danger level reches the DLThreshold,
@@ -31,7 +44,7 @@ public class Wave : ScriptableObject
 
     //A collection of enemy types, each loop, a squad of each type is spawned
     [SerializeField]
-    public List<Enemy> waveEnemies;
+    public List<WaveEnemyInfo> waveEnemies;
 
     //Default: HostileWave, this determines if the wave has any special functionality
     [SerializeField]
@@ -48,7 +61,7 @@ public class Wave : ScriptableObject
     }
 
     // Activates wave properties and returns a list of wave enemies
-    internal virtual List<Enemy> GetWaveInfo()
+    internal virtual List<WaveEnemyInfo> GetWaveInfo()
     {
         switch (waveType)
         {

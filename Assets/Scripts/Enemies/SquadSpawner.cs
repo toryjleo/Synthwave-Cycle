@@ -5,6 +5,17 @@ using UnityEngine;
 /// <summary>Class <c>SquadSpawner</c> Handles the object creation side of spawning in a squad</summary>
 /// Currently creates a squad of 5 LMG gunners with the player as a target, will spawn different kinds of squads in the future
 
+
+public enum SpawnLocation
+{
+    Front,
+    Behind,
+    Sides,
+    NotFront,
+    Any
+};
+
+
 public class SquadSpawner : MonoBehaviour
 {
     public GameObject player;
@@ -31,9 +42,9 @@ public class SquadSpawner : MonoBehaviour
         
     }
 
-    private Squad SpawnSquad(Enemy aiType)
+    private Squad SpawnSquad(WaveEnemyInfo aiInfo)
     {
-        Ai enemyAi = SpawnNewEnemy(aiType);
+        Ai enemyAi = SpawnNewEnemy(aiInfo.enemyType, aiInfo.spawnLocation, player.transform.position);
         if(enemyAi is VehicleAI)
         {
             VehicleSquad squad = new VehicleSquad(squadManager);
@@ -50,7 +61,7 @@ public class SquadSpawner : MonoBehaviour
             s.AddToSquad(enemyAi);
             for (int i = 0; i < 4; i++) //for now, a squad will always have 5 units
             {
-                enemyAi = SpawnNewEnemy(aiType) as InfantryAI;
+                enemyAi = SpawnNewEnemy(aiInfo.enemyType, aiInfo.spawnLocation, player.transform.position) as InfantryAI;
                 s.AddToSquad(enemyAi);
                 squadManager.currentEnemies.Add(enemyAi);
             }
@@ -62,36 +73,11 @@ public class SquadSpawner : MonoBehaviour
         }
     }
 
-    //TODO: Make this smarter, perhaps using the Wave.cs class
-    public InfantrySquad SpawnInfantrySquad(Enemy type)
+    internal void SpawnWave(List<WaveEnemyInfo> ais)
     {
-        InfantrySquad s = new InfantrySquad(squadManager);
-        s.SetTarget(player);
-        for(int i = 0; i < 5; i++) //for now, a squad will always have 5 units
+        foreach (WaveEnemyInfo aiInfo in ais)
         {
-            InfantryAI ai = SpawnNewEnemy(type) as InfantryAI;
-            s.AddToSquad(ai);
-            squadManager.currentEnemies.Add(ai);
-        }
-        return s;
-    }
-
-    public VehicleSquad SpawnVehicleSquad(Enemy type)
-    {
-        VehicleSquad s = new VehicleSquad(squadManager);
-        s.SetTarget(player);
-
-        VehicleAI ai = SpawnNewEnemy(type) as VehicleAI;
-        s.AddToSquad(ai);
-        squadManager.currentEnemies.Add(ai);
-        return s;
-    }
-
-    internal void SpawnWave(List<Enemy> ais)
-    {
-        foreach (Enemy aiType in ais)
-        {
-            squadManager.RegisterSquad(SpawnSquad(aiType));
+            squadManager.RegisterSquad(SpawnSquad(aiInfo));
         }
     }
 
@@ -99,11 +85,11 @@ public class SquadSpawner : MonoBehaviour
     /// This will spawn an enemy of a specific type and then returns that enemy
     /// </summary>
     /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enenemy Type, AI type, and Gun loadout
-    public Ai SpawnNewEnemy(Enemy type)
+    public Ai SpawnNewEnemy(Enemy type, SpawnLocation loc, Vector3 targetLocation)
     {
         Ai enemy;
 
-        enemy = ops.SpawnFromPool(type, biasSpawnVector(), Quaternion.identity);
+        enemy = ops.SpawnFromPool(type, biasSpawnVector(loc), targetLocation);
 
         //Init Enemy
         enemy.NewLife();
@@ -116,9 +102,36 @@ public class SquadSpawner : MonoBehaviour
     /// This method returns a vector a set dinstance away from the player in an arc. With conditions specified in this class
     /// </summary>
     /// <returns></returns>
-    public Vector3 biasSpawnVector()
+    public Vector3 biasSpawnVector(SpawnLocation loc)
     {
-        return biasSpawnVector(player.GetComponent<BikeScript>().ForwardVector(), spawnBiasAngle, spawnDistance);
+        Vector3 forwardVector = player.GetComponent<BikeScript>().ForwardVector();
+        List<Vector3> vectors = new List<Vector3>();
+        switch(loc)
+        {
+            case (SpawnLocation.Front):
+                vectors.Add(forwardVector);
+                break;
+            case SpawnLocation.Sides:
+                vectors.Add(Quaternion.AngleAxis(90, Vector3.up) * forwardVector);
+                vectors.Add(Quaternion.AngleAxis(-90, Vector3.up) * forwardVector);
+                break;
+            case SpawnLocation.Behind:
+                vectors.Add(Quaternion.AngleAxis(180, Vector3.up) * forwardVector);
+                break;
+            case SpawnLocation.NotFront:
+                vectors.Add(Quaternion.AngleAxis(90, Vector3.up) * forwardVector);
+                vectors.Add(Quaternion.AngleAxis(-90, Vector3.up) * forwardVector);
+                vectors.Add(Quaternion.AngleAxis(180, Vector3.up) * forwardVector);
+                break;
+            case SpawnLocation.Any:
+                vectors.Add(forwardVector);
+                vectors.Add(Quaternion.AngleAxis(90, Vector3.up) * forwardVector);
+                vectors.Add(Quaternion.AngleAxis(-90, Vector3.up) * forwardVector);
+                vectors.Add(Quaternion.AngleAxis(180, Vector3.up) * forwardVector);
+                break;
+        }
+        return biasSpawnVector(vectors[Random.Range(0, vectors.Count)], spawnBiasAngle, spawnDistance);
+
     }
     /// <summary>
     /// This method returns a vector
