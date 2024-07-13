@@ -12,6 +12,9 @@ public class DangerLevel : MonoBehaviour, IResettable
     public Timer dangerTimer;
     public int dangerLevel;
 
+    private int currentDlThreashold;
+
+    const int DECAY_TICK_MS = 3000;
     const int START_LEVEL = 1;
 
     private void Awake()
@@ -22,6 +25,7 @@ public class DangerLevel : MonoBehaviour, IResettable
     private void Start()
     {
         dangerLevel = START_LEVEL;
+        currentDlThreashold = START_LEVEL;
         StartTimer();
     }
 
@@ -29,22 +33,23 @@ public class DangerLevel : MonoBehaviour, IResettable
     {
         // This timer increases the danger level and is used for determining the amount and difficulty of enemies being
         // spawned
-        dangerTimer = new Timer(3000);
+        dangerTimer = new Timer(DECAY_TICK_MS);
         dangerTimer.AutoReset = true;
         dangerTimer.Enabled = true;
         dangerTimer.Elapsed += XTimer_Elapsed;
     }
 
     /// <summary>
-    /// When xTimer Elapses every 3 seconds, increase the danger level by 1. 
+    /// When xTimer Elapses every {DECAY_TICK_MS} milliseconds, decrease the danger level by 1. 
     /// </summary>
     /// <param name="sender"></param> 
     /// <param name="e"></param>
     private void XTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
-        if (dangerLevel > 1)
+        dangerLevel--;
+        if (dangerLevel < currentDlThreashold)
         {
-            dangerLevel--;
+            dangerLevel = currentDlThreashold;
         }
     }
 
@@ -64,6 +69,13 @@ public class DangerLevel : MonoBehaviour, IResettable
     public void ResetGameObject()
     {
         dangerLevel = START_LEVEL;
+        currentDlThreashold = START_LEVEL;
         StartTimer();
     }
+
+    public void SetDlThreashold(int newMinimum)
+    {
+        currentDlThreashold = newMinimum;
+    }
+
 }
