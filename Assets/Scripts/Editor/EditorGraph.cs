@@ -86,6 +86,7 @@ namespace TLP.Editor
 		/// <param name="_minY">Minimum Y value in graph units.</param>
 		/// <param name="_maxX">Maximum X value in graph units.</param>
 		/// <param name="_maxY">Maximum Y value in graph units.</param>
+		/// 
 		/// <param name="_title">Title of the graph (optional).</param>
 		/// <param name="_title">Resolution of the graphs (how many points are evaluated for each custom function).</param>
 		public EditorGraph(float _minX, float _minY, float _maxX, float _maxY, string _title = "", int _resolution = 48)
@@ -199,11 +200,11 @@ namespace TLP.Editor
 			if (Event.current.type != EventType.Repaint)
 				return;
 
-			// Background
-			DrawRect(minX, minY, maxX, maxY, Colors.Background, Colors.Outline);
+            // Background
+            DrawRect(minX, minY, maxX, maxY, Colors.Background, Colors.Outline);
 
-			// Vertical helper lines
-			if (GridLinesX > 0)
+            // Vertical helper lines
+            if (GridLinesX > 0)
 			{
 				float multiplier = 1;
 				while ((rangeX / (GridLinesX * multiplier)) > (rect.width / 2f))
@@ -245,7 +246,7 @@ namespace TLP.Editor
 				var vcount = 0;
 				while (vcount < res)
 				{
-					var x = this.rangeX * vcount / (res - 1);
+					var x = ((this.rangeX * vcount) + minX);
 					var y = func.Function(x);
 
 					curveVertices[vcount++] = UnitToGraph(x, y);

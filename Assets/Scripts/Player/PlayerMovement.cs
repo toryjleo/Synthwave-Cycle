@@ -21,10 +21,13 @@ public class PlayerMovement : MonoBehaviour
     public float theta = 20;
     public float forceToApplyPerSecond = 100;
 
+    public MotionFunctions motionFunction;
+
     // Start is called before the first frame update
     void Start()
     {
         transform.position = start_position;
+        motionFunction = new LinearVelocity();
     }
 
     // Update is called once per frame
