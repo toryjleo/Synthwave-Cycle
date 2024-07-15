@@ -35,7 +35,7 @@ public class TestEditor : Editor
         graph_velocity.Draw();
 
 
-        TLP.Editor.EditorGraph graph_acceleration = new TLP.Editor.EditorGraph(-10, -10, 10, 10, "Acceleration", 100);
+        TLP.Editor.EditorGraph graph_acceleration = new TLP.Editor.EditorGraph(-1, -10, 1, 10, "Acceleration", 100);
         graph_acceleration.AddLineY(0, Color.white);
         graph_acceleration.AddLineX(0, Color.white);
         if (playerMovement.motionFunction != null)

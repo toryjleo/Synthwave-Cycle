@@ -78,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (inputDirection != Vector3.zero) 
         {
+            // If there is input
             float dot = Vector3.Dot(transform.forward, desiredDirection) / (transform.forward.magnitude * desiredDirection.magnitude);
             float angle = Mathf.Acos(dot);
 
@@ -93,19 +94,30 @@ public class PlayerMovement : MonoBehaviour
                 if (AngleLessThanTheta(angle, theta)) 
                 {
                     // Apply acceleration
-                    rigidBody.AddForce(desiredDirection * forceToApplyPerSecond);
+                    rigidBody.AddForce(desiredDirection * forceToApplyPerSecond * Time.fixedDeltaTime, ForceMode.Acceleration);
                 }
             }
             else 
             {
                 // decelerate quickly
                 Vector3 dir = rigidBody.velocity;
-                rigidBody.AddForce(-dir * forceToApplyPerSecond);
+                rigidBody.AddForce(-dir * forceToApplyPerSecond * Time.fixedDeltaTime);
             }
+
+            // Apply drag to the perpendicular velocity of the inputDirection Vector
+
+            Vector3 inputRight = Quaternion.AngleAxis(90, Vector3.up) * inputDirection.normalized;
+            float inputRightSpeed = Vector3.Dot(inputRight, rigidBody.velocity);
+            Debug.Log("Speed at right: " + inputRightSpeed);
+            rigidBody.AddForce(- inputRight * inputRightSpeed, ForceMode.Acceleration);
+
+            Debug.DrawLine(transform.position, transform.position + inputRight, UnityEngine.Color.blue);
+
+
         }
         else 
         {
-            // Apply drag
+            // Apply drag to current velocity
         }
 
         Debug.DrawLine(transform.position, transform.position + endLine1, color);
