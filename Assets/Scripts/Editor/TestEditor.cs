@@ -30,6 +30,10 @@ public class TestEditor : Editor
 
 
             Foo(t, -1, 1, x => playerMovement.motionFunction.Velocity(x), "Velocity");
+            EditorGUILayout.LabelField("Current velocity: " + playerMovement.rigidBody.velocity);
+            EditorGUILayout.LabelField("Current t: " + t);
+            EditorGUILayout.LabelField("Calculated velocity: " + playerMovement.motionFunction.Velocity(t));
+
 
             Foo(t, -10, 10, x => playerMovement.motionFunction.Acceleration(x), "Acceleration");
         }
@@ -50,6 +54,7 @@ public class TestEditor : Editor
         graph_velocity.AddFunction(func, Color.blue);
 
         graph_velocity.AddLineX(t, Color.red);
+        graph_velocity.AddLineY(func(t), Color.red);
 
         graph_velocity.Draw();
 

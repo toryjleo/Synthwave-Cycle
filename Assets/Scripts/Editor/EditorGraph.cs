@@ -246,8 +246,8 @@ namespace TLP.Editor
 				var vcount = 0;
 				while (vcount < res)
 				{
-					var x = ((this.rangeX * vcount) + minX);
-					var y = func.Function(x);
+                    var x = ((this.rangeX * (float)vcount / res) + minX);
+                    var y = func.Function(x);
 
 					curveVertices[vcount++] = UnitToGraph(x, y);
 				}
