@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.position = start_position;
         motionFunction = new LinearVelocity();
+        rigidBody.drag = 0;
     }
 
     // Update is called once per frame
@@ -105,13 +106,8 @@ public class PlayerMovement : MonoBehaviour
             }
 
             // Apply drag to the perpendicular velocity of the inputDirection Vector
-
             Vector3 inputRight = Quaternion.AngleAxis(90, Vector3.up) * inputDirection.normalized;
-            float inputRightSpeed = Vector3.Dot(inputRight, rigidBody.velocity);
-            Debug.Log("Speed at right: " + inputRightSpeed);
-            rigidBody.AddForce(- inputRight * inputRightSpeed, ForceMode.Acceleration);
-
-            Debug.DrawLine(transform.position, transform.position + inputRight, UnityEngine.Color.blue);
+            ApplyDeceleration(inputRight);
 
 
         }
@@ -122,6 +118,19 @@ public class PlayerMovement : MonoBehaviour
 
         Debug.DrawLine(transform.position, transform.position + endLine1, color);
         Debug.DrawLine(transform.position, transform.position + endLine2, color);
+    }
+
+    /// <summary>
+    /// Decelerates along the normalized axis, axisToDecelerate. Call on FixedUpdate
+    /// </summary>
+    /// <param name="axisToDecelerate">Axis to decelerate normalized</param>
+    /// <param name="decelerationScale">A linear scale amount to decelerate</param>
+    private void ApplyDeceleration(Vector3 axisToDecelerate, float decelerationScale = 35) 
+    {
+        float currentSpeedOnAxis = Vector3.Dot(axisToDecelerate, rigidBody.velocity);
+        rigidBody.AddForce(-axisToDecelerate * currentSpeedOnAxis * decelerationScale * Time.fixedDeltaTime, ForceMode.Acceleration);
+
+        Debug.DrawLine(transform.position, transform.position + axisToDecelerate, UnityEngine.Color.blue);
     }
 
     /// <summary>

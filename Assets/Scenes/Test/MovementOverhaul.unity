@@ -443,7 +443,7 @@ GameObject:
   - component: {fileID: 1914857421}
   - component: {fileID: 1914857422}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: TestPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -550,8 +550,8 @@ Rigidbody:
   m_GameObject: {fileID: 1914857416}
   serializedVersion: 2
   m_Mass: 90
-  m_Drag: 0.62
-  m_AngularDrag: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
