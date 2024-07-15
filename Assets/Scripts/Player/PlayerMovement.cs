@@ -23,6 +23,9 @@ public class PlayerMovement : MonoBehaviour
 
     public MotionFunctions motionFunction;
 
+
+    public float Gett {  get => motionFunction.GettFromVelocity(Vector3.Dot(inputDirection.normalized, rigidBody.velocity)); }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,14 +98,14 @@ public class PlayerMovement : MonoBehaviour
                 if (AngleLessThanTheta(angle, theta)) 
                 {
                     // Apply acceleration
-                    rigidBody.AddForce(desiredDirection * forceToApplyPerSecond * Time.fixedDeltaTime, ForceMode.Acceleration);
+                    rigidBody.AddForce(desiredDirection * motionFunction.Acceleration(Gett) * Time.fixedDeltaTime, ForceMode.Acceleration);
                 }
             }
             else 
             {
                 // decelerate quickly
-                Vector3 dir = rigidBody.velocity;
-                rigidBody.AddForce(-dir * forceToApplyPerSecond * Time.fixedDeltaTime);
+                //Vector3 dir = rigidBody.velocity;
+                //rigidBody.AddForce(-dir * forceToApplyPerSecond * Time.fixedDeltaTime);
             }
 
             // Apply drag to the perpendicular velocity of the inputDirection Vector

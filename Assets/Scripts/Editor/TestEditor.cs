@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using static TLP.Editor.EditorGraph;
 
 [CustomEditor(typeof(PlayerMovement))]
 public class TestEditor : Editor
@@ -23,30 +24,36 @@ public class TestEditor : Editor
 
         // Calls normal inspector
         base.OnInspectorGUI();
-
-        TLP.Editor.EditorGraph graph_velocity = new TLP.Editor.EditorGraph(-1, -1, 1, 1, "Velocity", 100);
-        // Add a horizontal line with different color
-        graph_velocity.AddLineY(0, Color.white);
-        graph_velocity.AddLineX(0, Color.white);
-        if (playerMovement.motionFunction != null) 
-        {
-            graph_velocity.AddFunction(x => playerMovement.motionFunction.Velocity(x), Color.blue);
-        }
-        graph_velocity.Draw();
-
-
-        TLP.Editor.EditorGraph graph_acceleration = new TLP.Editor.EditorGraph(-1, -10, 1, 10, "Acceleration", 100);
-        graph_acceleration.AddLineY(0, Color.white);
-        graph_acceleration.AddLineX(0, Color.white);
         if (playerMovement.motionFunction != null)
         {
-            graph_acceleration.AddFunction(x => playerMovement.motionFunction.Acceleration(x), Color.blue);
-        }
-        graph_acceleration.Draw();
+            float t = playerMovement.Gett;
 
+
+            Foo(t, -1, 1, x => playerMovement.motionFunction.Velocity(x), "Velocity");
+
+            Foo(t, -10, 10, x => playerMovement.motionFunction.Acceleration(x), "Acceleration");
+        }
 
         // Print Current Velocity
 
         // Print Current Acceleration
     }
+
+    public void Foo(float t, float minY, float maxY, GraphFunction func, string name) 
+    {
+
+        TLP.Editor.EditorGraph graph_velocity = new TLP.Editor.EditorGraph(-1, minY, 1, maxY, name, 100);
+        // Add a horizontal line with different color
+        graph_velocity.AddLineY(0, Color.white);
+        graph_velocity.AddLineX(0, Color.white);
+
+        graph_velocity.AddFunction(func, Color.blue);
+
+        graph_velocity.AddLineX(t, Color.red);
+
+        graph_velocity.Draw();
+
+    }
 }
+
+

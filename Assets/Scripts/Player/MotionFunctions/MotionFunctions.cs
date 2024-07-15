@@ -21,12 +21,12 @@ public class LinearVelocity : MotionFunctions
 
     public float Velocity(float t)
     {
-        return t * 5;
+        return t * 5.0f;
     }
 
 
     float MotionFunctions.GettFromVelocity(float y)
     {
-        return y / 5;
+        return y / 5.0f;
     }
 }
