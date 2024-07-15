@@ -12,6 +12,8 @@ public class TestEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        PlayerMovement playerMovement = (PlayerMovement)target;
+
         // Calls normal inspector
         base.OnInspectorGUI();
 

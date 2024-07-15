@@ -86,8 +86,10 @@ public class PlayerMovement : MonoBehaviour
 
             if ((desiredDirection.sqrMagnitude > 0)) 
             {
+                
                 if (AngleLessThanTheta(angle, theta)) 
                 {
+                    // Apply acceleration
                     rigidBody.AddForce(desiredDirection * forceToApplyPerSecond);
                 }
             }
@@ -97,6 +99,10 @@ public class PlayerMovement : MonoBehaviour
                 Vector3 dir = rigidBody.velocity;
                 rigidBody.AddForce(-dir * forceToApplyPerSecond);
             }
+        }
+        else 
+        {
+            // Apply drag
         }
 
         Debug.DrawLine(transform.position, transform.position + endLine1, color);
