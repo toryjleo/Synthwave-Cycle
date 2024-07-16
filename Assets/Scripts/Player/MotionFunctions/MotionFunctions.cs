@@ -33,21 +33,22 @@ public class LinearVelocity : MotionFunctions
 
 public class Sigmoid1 : MotionFunctions
 {
+    float xScale = 4.0f;
     public float Acceleration(float t)
     {
-        float cosht = Unity.Mathematics.math.cosh(2 * t);
+        float cosht = Unity.Mathematics.math.cosh(xScale * t);
         return 1/(cosht * cosht);
     }
 
     public float GettFromVelocity(float y)
     {
         // Need to check this
-        return (.5f * Mathf.Log((1.0f + y) / (1.0f - y))) / 2.0f;
+        return (.5f * Mathf.Log((1.0f + y) / (1.0f - y))) / xScale;
     }
 
     public float Velocity(float t)
     {
-        return Unity.Mathematics.math.tanh(2 * t);
+        return Unity.Mathematics.math.tanh(xScale * t);
     }
 }
 

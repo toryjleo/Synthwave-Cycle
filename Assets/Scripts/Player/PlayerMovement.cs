@@ -23,8 +23,10 @@ public class PlayerMovement : MonoBehaviour
 
     public MotionFunctions motionFunction;
 
+    float yScale = 20.0f;
 
-    public float Gett {  get => motionFunction.GettFromVelocity(Vector3.Dot(inputDirection.normalized, rigidBody.velocity)); }
+
+    public float Gett {  get => motionFunction.GettFromVelocity(Vector3.Dot(inputDirection.normalized, rigidBody.velocity / yScale)); }
 
     // Start is called before the first frame update
     void Start()
@@ -97,9 +99,8 @@ public class PlayerMovement : MonoBehaviour
                 
                 if (AngleLessThanTheta(angle, theta)) 
                 {
-                    float accelerationScale = 20;
                     // Apply acceleration
-                    rigidBody.AddForce(desiredDirection * motionFunction.Acceleration(Gett) * Time.fixedDeltaTime * accelerationScale, ForceMode.Acceleration);
+                    rigidBody.AddForce(desiredDirection * motionFunction.Acceleration(Gett) * Time.fixedDeltaTime * yScale, ForceMode.Acceleration);
                 }
             }
             else 

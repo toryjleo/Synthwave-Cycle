@@ -35,7 +35,7 @@ public class TestEditor : Editor
             EditorGUILayout.LabelField("Calculated velocity: " + playerMovement.motionFunction.Velocity(t));
 
 
-            Foo(t, -10, 10, x => playerMovement.motionFunction.Acceleration(x), "Acceleration");
+            Foo(t, -1, 1, x => playerMovement.motionFunction.Acceleration(x), "Acceleration");
         }
 
         // Print Current Velocity
