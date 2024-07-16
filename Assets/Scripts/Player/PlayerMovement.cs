@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         transform.position = start_position;
-        motionFunction = new Rational1();
+        motionFunction = new LinearVelocity();
         rigidBody.drag = 0;
     }
 
@@ -97,8 +97,9 @@ public class PlayerMovement : MonoBehaviour
                 
                 if (AngleLessThanTheta(angle, theta)) 
                 {
+                    float accelerationScale = 20;
                     // Apply acceleration
-                    rigidBody.AddForce(desiredDirection * motionFunction.Acceleration(Gett) * Time.fixedDeltaTime, ForceMode.Acceleration);
+                    rigidBody.AddForce(desiredDirection * motionFunction.Acceleration(Gett) * Time.fixedDeltaTime * accelerationScale, ForceMode.Acceleration);
                 }
             }
             else 
