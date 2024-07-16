@@ -481,7 +481,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a5b2c24db2729284695208673f5908c7, type: 2}
+  - {fileID: 2100000, guid: fac0da170c744a54bbc11c5cc29c93a9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -541,6 +541,7 @@ MonoBehaviour:
   rotationSpeed: 5
   theta: 13.82
   forceToApplyPerSecond: 184.1
+  yScale: 20
 --- !u!54 &1914857422
 Rigidbody:
   m_ObjectHideFlags: 0
