@@ -12,19 +12,39 @@ public class PlayerMovement : MonoBehaviour
     private const string VERTICAL = "Vertical";
     #endregion
 
+    #region NeverUpdated
     [SerializeField] private Rigidbody rigidBody;
-
+    /// <summary>
+    /// Where to start at game start
+    /// </summary>
     private Vector3 start_position = new Vector3(0, 1, 0);
+    #endregion
+
+    #region UpdatedOnCycle
     private Vector3 inputDirection = Vector3.zero;
-
-    public float rotationSpeed = 5;
-    public float theta = 20;
-    public float forceToApplyPerSecond = 100;
-
-    public MotionFunctions motionFunction;
-
-    public float yScale = 20.0f;
     public Vector3 currentAcceleration = Vector3.zero;
+    #endregion
+
+    #region Tweakable
+    /// <summary>
+    /// How fast to rotate the player when turning
+    /// </summary>
+    public float rotationSpeed = 5;
+    /// <summary>
+    /// Angle off of inputDirection in which to start applying force upon forward vector aligning
+    /// </summary>
+    public float theta = 20;
+    /// <summary>
+    /// Linear scale of velocity and acceleration
+    /// </summary>
+    public float yScale = 20.0f;
+    /// <summary>
+    /// The motion functions defining the velocity and acceleration
+    /// </summary>
+    public MotionFunctions motionFunction;
+    #endregion
+
+    
 
 
     public float GetX {  get => motionFunction.GetXFromVelocity(Vector3.Dot(inputDirection.normalized, Velocity / yScale)); }
@@ -39,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.position = start_position;
         motionFunction = new Sigmoid1();
+        // We will manually assign drag
         rigidBody.drag = 0;
     }
 
