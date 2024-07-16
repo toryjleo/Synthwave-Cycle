@@ -75,7 +75,23 @@ public class BikeScript : MonoBehaviour, IResettable
     #region Monobehavior
     private void Awake()
     {
-        Init();
+        emissiveBike = GetComponentInChildren<EmmissiveBikeScript>();
+        movementComponent = GetComponent<BikeMovementComponent>();
+
+        movementComponent.health.deadEvent += Dead;
+
+
+        turret = GetComponentInChildren<TurretScript>();
+
+        //Initializes Turret 
+        if (turret != null)
+        {
+            turret.Init();
+            turret.BulletShot += movementComponent.bl_ProcessCompleted;
+        }
+
+        healthPoolLayerMask = (1 << healthPoolLayer);
+        consecutiveDistanceToHP = 0;
     }
 
 
@@ -131,26 +147,6 @@ public class BikeScript : MonoBehaviour, IResettable
 
     #endregion
 
-    /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
-    private void Init()
-    {
-        emissiveBike = GetComponentInChildren<EmmissiveBikeScript>();
-        movementComponent = GetComponent<BikeMovementComponent>();
-
-        movementComponent.health.deadEvent += Dead;
-
-
-        //Initializes Turret 
-        if (GetComponentInChildren<TurretScript>() != null) { 
-            turret = GetComponentInChildren<TurretScript>();
-            turret.Init();
-            turret.BulletShot += movementComponent.bl_ProcessCompleted;
-        }
-        
-        healthPoolLayerMask = (1 << healthPoolLayer);
-        consecutiveDistanceToHP = 0;
-    }
-
 
     #region Health Related
     /// <summary>Checks to see if a HealthPool is in front of the bike.</summary>
@@ -193,15 +189,18 @@ public class BikeScript : MonoBehaviour, IResettable
 
     public void ResetGameObject()
     {
-        Init();
-        movementComponent.transform.position = new Vector3(0, 0, 0);
+        //Initializes Turret 
+        if (turret != null)
+        {
+            turret.Init();
+        }
+
+        consecutiveDistanceToHP = 0;
     }
 
     private void Dead() 
     {
-        GameStateController.WorldState = GameState.Spawning;
-        //Ragdoll();
-        Debug.Log("Dead Event Called!");
+        GameStateController.HandleTrigger(StateTrigger.ZeroHP);
     }
 
     private void RagDoll()

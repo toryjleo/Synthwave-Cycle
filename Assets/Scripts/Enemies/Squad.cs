@@ -28,6 +28,9 @@ public abstract class Squad
     public Squad(SquadManager _manager)
     {
         this.manager = _manager;
+
+        GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
+        GameStateController.playerDead.notifyListenersExit += HandlePlayerDeadExit;
     }
 
     // Update is called once per frame
@@ -58,8 +61,7 @@ public abstract class Squad
             {
                 squadMembers.Remove(ai);
                 manager.currentEnemies.Remove(ai);
-                manager.scoreKeeper.AddToScore((int)ai.GetScore());
-                DLevel.Instance.IncreaseDangerLevel((int)ai.dlScore);
+                DangerLevel.Instance.IncreaseDangerLevel((int)ai.dlScore);
                 break;
             }
 
@@ -122,5 +124,16 @@ public abstract class Squad
     internal bool HasMembers()
     {
         return squadMembers.Count > 0;
+    }
+
+    private void HandlePlayerDeadEnter()
+    {
+        currentAction = SquadAction.Wandering;
+
+        target = null;
+    }
+    private void HandlePlayerDeadExit()
+    {
+        currentAction = SquadAction.Attacking;
     }
 }
