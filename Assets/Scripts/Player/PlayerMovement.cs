@@ -27,6 +27,10 @@ public class PlayerMovement : MonoBehaviour
 
     #region Tweakable
     /// <summary>
+    /// The motion functions defining the velocity and acceleration
+    /// </summary>
+    [SerializeField] private MotionFunctions motionFunction;
+    /// <summary>
     /// How fast to rotate the player when turning
     /// </summary>
     [SerializeField] private float rotationSpeed = 5;
@@ -39,12 +43,12 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     [SerializeField] private float yScale = 20.0f;
     /// <summary>
-    /// The motion functions defining the velocity and acceleration
+    /// Linear scale of graph's x
     /// </summary>
-    [SerializeField] private MotionFunctions motionFunction;
+    [SerializeField] private float xScale = 0;
     #endregion
 
-    
+
 
 
     public float GetX {  get => motionFunction.GetXFromVelocity(Vector3.Dot(inputDirection.normalized, Velocity / yScale)); }
@@ -64,6 +68,13 @@ public class PlayerMovement : MonoBehaviour
         motionFunction = new Sigmoid1();
         // We will manually assign drag
         rigidBody.drag = 0;
+
+        if ((Sigmoid1)motionFunction != null) 
+        {
+            xScale = ((Sigmoid1)motionFunction).xScale;
+        }
+
+        
     }
 
     // Update is called once per frame
@@ -77,14 +88,17 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * rotationSpeed);
         }
 
-
+        if ((Sigmoid1)motionFunction != null)
+        {
+            ((Sigmoid1)motionFunction).xScale = xScale;
+        }
 
     }
+
     private void FixedUpdate()
     {
 
-        DrawTheta(inputDirection);
-        //rigidBody.AddForce(inputDirection);
+        ApplyAcceleration(inputDirection);
 
     }
 
@@ -105,14 +119,14 @@ public class PlayerMovement : MonoBehaviour
         return desiredDirectionNormalized * magnitude;
     }
 
-    private void DrawTheta(Vector3 desiredDirection) 
+    private void ApplyAcceleration(Vector3 desiredDirection) 
     {
         Vector3 endLine1 = Quaternion.Euler(0, theta, 0) * transform.forward;
         Vector3 endLine2 = Quaternion.Euler(0, -theta, 0) * transform.forward;
 
         UnityEngine.Color color = UnityEngine.Color.red;
 
-        if (inputDirection != Vector3.zero) 
+        if ((desiredDirection.sqrMagnitude > 0)) 
         {
             // If there is input
             float dot = Vector3.Dot(transform.forward, desiredDirection) / (transform.forward.magnitude * desiredDirection.magnitude);
@@ -122,35 +136,21 @@ public class PlayerMovement : MonoBehaviour
             {
                 // Are pressing a direction and within that direction (can accelerate)
                 color = UnityEngine.Color.green;
-            }
 
-            if ((desiredDirection.sqrMagnitude > 0)) 
-            {
-                
-                if (AngleLessThanTheta(angle, theta)) 
-                {
-                    // Apply acceleration
-                    currentAcceleration = motionFunction.Acceleration(GetX) * desiredDirection;
-                    rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime * yScale, ForceMode.Acceleration);
-                }
+                // Apply acceleration
+                currentAcceleration = motionFunction.Acceleration(GetX) * desiredDirection;
+                rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime * yScale, ForceMode.Acceleration);
             }
-            else 
-            {
-                // decelerate quickly
-                //Vector3 dir = rigidBody.velocity;
-                //rigidBody.AddForce(-dir * forceToApplyPerSecond * Time.fixedDeltaTime);
-            }
-
-            // Apply drag to the perpendicular velocity of the inputDirection Vector
-            Vector3 inputRight = Quaternion.AngleAxis(90, Vector3.up) * inputDirection.normalized;
-            ApplyDeceleration(inputRight);
 
 
         }
         else 
         {
-            // Apply drag to current velocity
+            // Can Apply drag to current velocity
         }
+
+        // Apply drag to the perpendicular velocity of the desiredDirection Vector
+        ApplyDeceleration(transform.right);
 
         Debug.DrawLine(transform.position, transform.position + endLine1, color);
         Debug.DrawLine(transform.position, transform.position + endLine2, color);

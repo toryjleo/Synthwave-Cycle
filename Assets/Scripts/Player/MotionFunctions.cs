@@ -34,7 +34,7 @@ public class LinearVelocity : MotionFunctions
 
 public class Sigmoid1 : MotionFunctions
 {
-    private float xScale = 4.0f;
+    public float xScale = 4.0f;
 
     public float Acceleration(float x)
     {
