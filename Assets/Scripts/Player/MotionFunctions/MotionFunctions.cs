@@ -43,7 +43,7 @@ public class Sigmoid1 : MotionFunctions
     public float GettFromVelocity(float y)
     {
         // Need to check this
-        return (.5f * Mathf.Log((1.0f + y) / (1.0f - y))) / xScale;
+        return Mathf.Clamp((.5f * Mathf.Log((1.0f + y) / (1.0f - y))) / xScale, -1.0f, 1.0f);
     }
 
     public float Velocity(float t)

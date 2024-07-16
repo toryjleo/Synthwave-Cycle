@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     public MotionFunctions motionFunction;
 
-    float yScale = 20.0f;
+    public float yScale = 20.0f;
 
 
     public float Gett {  get => motionFunction.GettFromVelocity(Vector3.Dot(inputDirection.normalized, rigidBody.velocity / yScale)); }
