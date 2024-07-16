@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     public MotionFunctions motionFunction;
 
     public float yScale = 20.0f;
+    public Vector3 currentAcceleration = Vector3.zero;
 
 
     public float Gett {  get => motionFunction.GettFromVelocity(Vector3.Dot(inputDirection.normalized, rigidBody.velocity / yScale)); }
@@ -100,7 +101,8 @@ public class PlayerMovement : MonoBehaviour
                 if (AngleLessThanTheta(angle, theta)) 
                 {
                     // Apply acceleration
-                    rigidBody.AddForce(desiredDirection * motionFunction.Acceleration(Gett) * Time.fixedDeltaTime * yScale, ForceMode.Acceleration);
+                    currentAcceleration = motionFunction.Acceleration(Gett) * desiredDirection;
+                    rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime * yScale, ForceMode.Acceleration);
                 }
             }
             else 
