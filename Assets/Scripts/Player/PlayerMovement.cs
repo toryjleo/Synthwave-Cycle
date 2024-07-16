@@ -22,26 +22,26 @@ public class PlayerMovement : MonoBehaviour
 
     #region UpdatedOnCycle
     private Vector3 inputDirection = Vector3.zero;
-    public Vector3 currentAcceleration = Vector3.zero;
+    private Vector3 currentAcceleration = Vector3.zero;
     #endregion
 
     #region Tweakable
     /// <summary>
     /// How fast to rotate the player when turning
     /// </summary>
-    public float rotationSpeed = 5;
+    [SerializeField] private float rotationSpeed = 5;
     /// <summary>
     /// Angle off of inputDirection in which to start applying force upon forward vector aligning
     /// </summary>
-    public float theta = 20;
+    [SerializeField] private float theta = 20;
     /// <summary>
     /// Linear scale of velocity and acceleration
     /// </summary>
-    public float yScale = 20.0f;
+    [SerializeField] private float yScale = 20.0f;
     /// <summary>
     /// The motion functions defining the velocity and acceleration
     /// </summary>
-    public MotionFunctions motionFunction;
+    [SerializeField] private MotionFunctions motionFunction;
     #endregion
 
     
@@ -52,6 +52,9 @@ public class PlayerMovement : MonoBehaviour
     /// The velocity of the rigidbody this cycle
     /// </summary>
     public Vector3 Velocity { get => rigidBody.velocity; }
+    public Vector3 CurrentAcceleration { get => currentAcceleration; }
+    public float YScale { get => yScale; }
+    public MotionFunctions MotionFunctions { get { return motionFunction; } }
 
 
     // Start is called before the first frame update
