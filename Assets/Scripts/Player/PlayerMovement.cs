@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private const string VERTICAL = "Vertical";
     #endregion
 
-    public Rigidbody rigidBody;
+    [SerializeField] private Rigidbody rigidBody;
 
     private Vector3 start_position = new Vector3(0, 1, 0);
     private Vector3 inputDirection = Vector3.zero;
@@ -27,7 +27,12 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 currentAcceleration = Vector3.zero;
 
 
-    public float Gett {  get => motionFunction.GettFromVelocity(Vector3.Dot(inputDirection.normalized, rigidBody.velocity / yScale)); }
+    public float GetX {  get => motionFunction.GetXFromVelocity(Vector3.Dot(inputDirection.normalized, Velocity / yScale)); }
+    /// <summary>
+    /// The velocity of the rigidbody this cycle
+    /// </summary>
+    public Vector3 Velocity { get => rigidBody.velocity; }
+
 
     // Start is called before the first frame update
     void Start()
@@ -101,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
                 if (AngleLessThanTheta(angle, theta)) 
                 {
                     // Apply acceleration
-                    currentAcceleration = motionFunction.Acceleration(Gett) * desiredDirection;
+                    currentAcceleration = motionFunction.Acceleration(GetX) * desiredDirection;
                     rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime * yScale, ForceMode.Acceleration);
                 }
             }

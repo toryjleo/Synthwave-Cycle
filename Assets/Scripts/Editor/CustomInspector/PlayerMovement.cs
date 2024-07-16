@@ -19,13 +19,13 @@ namespace CustomInspector
             base.OnInspectorGUI();
             if (playerMovement.motionFunction != null)
             {
-                float t = playerMovement.Gett;
+                float t = playerMovement.GetX;
 
 
                 GraphMovement(t, -1, 1, x => playerMovement.motionFunction.Velocity(x), "Velocity");
                 EditorGUILayout.LabelField("Calculated velocity: " + playerMovement.motionFunction.Velocity(t));
-                EditorGUILayout.LabelField("Current velocity: " + (playerMovement.rigidBody.velocity / playerMovement.yScale).ToString("F3"));
-                EditorGUILayout.LabelField("Current velocity, Scaled: " + (playerMovement.yScale * playerMovement.rigidBody.velocity).ToString("F3"));
+                EditorGUILayout.LabelField("Current velocity: " + (playerMovement.Velocity / playerMovement.yScale).ToString("F3"));
+                EditorGUILayout.LabelField("Current velocity, Scaled: " + (playerMovement.yScale * playerMovement.Velocity).ToString("F3"));
                 EditorGUILayout.LabelField("Current t: " + t);
 
 

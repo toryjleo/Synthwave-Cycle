@@ -6,27 +6,27 @@ using UnityEngine;
 public interface MotionFunctions
 {
 
-    public float GettFromVelocity(float y);
+    public float GetXFromVelocity(float y);
 
-    public float Velocity(float t);
+    public float Velocity(float x);
 
-    public float Acceleration(float t);
+    public float Acceleration(float x);
 }
 
 public class LinearVelocity : MotionFunctions
 {
-    public float Acceleration(float t)
+    public float Acceleration(float x)
     {
         return 5;
     }
 
-    public float Velocity(float t)
+    public float Velocity(float x)
     {
-        return t * 5.0f;
+        return x * 5.0f;
     }
 
 
-    float MotionFunctions.GettFromVelocity(float y)
+    float MotionFunctions.GetXFromVelocity(float y)
     {
         return y / 5.0f;
     }
@@ -36,20 +36,19 @@ public class Sigmoid1 : MotionFunctions
 {
     private float xScale = 4.0f;
 
-    public float Acceleration(float t)
+    public float Acceleration(float x)
     {
-        float cosht = Unity.Mathematics.math.cosh(xScale * t);
-        return 1/(cosht * cosht);
+        float coshX = Unity.Mathematics.math.cosh(xScale * x);
+        return 1/(coshX * coshX);
     }
 
-    public float GettFromVelocity(float y)
+    public float GetXFromVelocity(float y)
     {
-        // Need to check this
         return Mathf.Clamp((.5f * Mathf.Log((1.0f + y) / (1.0f - y))) / xScale, -1.0f, 1.0f);
     }
 
-    public float Velocity(float t)
+    public float Velocity(float x)
     {
-        return Unity.Mathematics.math.tanh(xScale * t);
+        return Unity.Mathematics.math.tanh(xScale * x);
     }
 }
