@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         transform.position = start_position;
-        motionFunction = new LinearVelocity();
+        motionFunction = new Sigmoid1();
         rigidBody.drag = 0;
     }
 
