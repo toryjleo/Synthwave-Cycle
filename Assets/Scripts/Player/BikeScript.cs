@@ -78,8 +78,6 @@ public class BikeScript : MonoBehaviour, IResettable
         emissiveBike = GetComponentInChildren<EmmissiveBikeScript>();
         movementComponent = GetComponent<BikeMovementComponent>();
 
-        movementComponent.health.deadEvent += Dead;
-
 
         turret = GetComponentInChildren<TurretScript>();
 
@@ -137,8 +135,6 @@ public class BikeScript : MonoBehaviour, IResettable
 
     void OnDestroy() 
     {
-        movementComponent.health.deadEvent -= Dead;
-
         if (GetComponentInChildren<TurretScript>() != null)
         {
             turret.BulletShot -= movementComponent.bl_ProcessCompleted;
@@ -196,11 +192,6 @@ public class BikeScript : MonoBehaviour, IResettable
         }
 
         consecutiveDistanceToHP = 0;
-    }
-
-    private void Dead() 
-    {
-        GameStateController.HandleTrigger(StateTrigger.ZeroHP);
     }
 
     private void RagDoll()
