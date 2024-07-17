@@ -8,7 +8,7 @@ public delegate void NotifyHealth();
 /// <summary>Class <c>Health</c> A Unity Component which tracks health.</summary>
 public class Health : MonoBehaviour
 {
-    private float _hitPoints;
+    [SerializeField] private float _hitPoints;
     private float _maxHitPoints;
     public NotifyHealth healEvent;
     public NotifyHealth deadEvent;
@@ -48,7 +48,7 @@ public class Health : MonoBehaviour
 
     /// <summary>Adds points to _hitPoints.</summary>
     /// <param name="hp">The number of points to add to _hitPoints.</param>
-    public void Heal(float hp) 
+    public virtual void Heal(float hp) 
     {
         // Notify effects that this is healing
         healEvent?.Invoke();
