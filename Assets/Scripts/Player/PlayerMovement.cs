@@ -179,22 +179,21 @@ public class PlayerMovement : MonoBehaviour
                 color = UnityEngine.Color.green;
 
                 // Apply acceleration
-                Debug.Log("Velocity scaled in yScale dir: " + Vector3.Dot(inputDirection.normalized, Velocity / yScale)); // This is NaN
-                currentAcceleration = motionFunction.Acceleration(GetX) * desiredDirection;
-                rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime * yScale, ForceMode.Acceleration);
+                currentAcceleration = motionFunction.Acceleration(GetX) * desiredDirection * yScale;
+                rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
             }
-
-            // Apply some drag if going over max velocity
-            /*if (rigidBody.velocity.sqrMagnitude > (yScale * yScale)) 
-            {
-                ApplyDeceleration(transform.forward, drag);
-            }*/
 
 
         }
         else 
         {
             // Can Apply drag to current velocity
+        }
+
+        // Apply some drag to the forward vector if going over max velocity
+        if (rigidBody.velocity.sqrMagnitude > (yScale * yScale))
+        {
+            ApplyDeceleration(transform.forward, drag);
         }
 
         // Apply drag to the perpendicular velocity of the desiredDirection Vector
