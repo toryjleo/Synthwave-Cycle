@@ -5,7 +5,7 @@ using UnityEditor;
 
 public class GameManager : EditorWindow
 {
-    Health playerhealth;
+    PlayerHealth playerhealth;
     Jukebox jukebox;
     bool godModeEnabled = false;
     bool forceSoundtrack = false;
@@ -22,7 +22,7 @@ public class GameManager : EditorWindow
         // Make sure to keep a reference to player health
         if (playerhealth == null && GameStateController.GameIsPlaying())
         {
-            playerhealth = GameObject.FindObjectOfType<BikeScript>().GetComponentInChildren<Health>();
+            playerhealth = GameObject.FindObjectOfType<BikeScript>().GetComponentInChildren<PlayerHealth>();
             if (playerhealth == null) 
             {
                 Debug.LogError("Player health not found in level!");
