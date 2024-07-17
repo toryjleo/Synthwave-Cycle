@@ -13,7 +13,8 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region NeverUpdated
-    [SerializeField] private Rigidbody rigidBody;
+    private Rigidbody rigidBody;
+    private PlayerHealth playerHealth;
     /// <summary>
     /// Where to start at game start
     /// </summary>
@@ -52,9 +53,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float xScale = 0;
     #endregion
 
-
-
-
+    #region Properties
     public float GetX {  get => motionFunction.GetXFromVelocity(Vector3.Dot(inputDirection.normalized, Velocity / yScale)); }
     /// <summary>
     /// The velocity of the rigidbody this cycle
@@ -63,21 +62,36 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 CurrentAcceleration { get => currentAcceleration; }
     public float YScale { get => yScale; }
     public MotionFunctions MotionFunctions { get { return motionFunction; } }
+    #endregion
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         transform.position = start_position;
         motionFunction = new Sigmoid1();
-        // We will manually assign drag
-        rigidBody.drag = 0;
 
         if ((Sigmoid1)motionFunction != null) 
         {
             xScale = ((Sigmoid1)motionFunction).xScale;
         }
 
+        playerHealth = GetComponent<PlayerHealth>();
+        if (playerHealth == null) 
+        {
+            Debug.LogWarning("Could not find PlayerHealth on object!");
+        }
+
+        rigidBody = GetComponent<Rigidbody>();
+        if (rigidBody == null)
+        {
+            Debug.LogWarning("Could not find RigidBody on object!");
+        }
+        else 
+        {
+            // We will manually assign drag
+            rigidBody.drag = 0;
+        }
         
     }
 

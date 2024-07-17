@@ -441,6 +441,7 @@ GameObject:
   - component: {fileID: 1914857418}
   - component: {fileID: 1914857417}
   - component: {fileID: 1914857421}
+  - component: {fileID: 1914857423}
   - component: {fileID: 1914857422}
   m_Layer: 0
   m_Name: TestPlayer
@@ -537,11 +538,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0f04c168b2382c45b298589edb32cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidBody: {fileID: 1914857422}
   rotationSpeed: 5
+  drag: 35
   theta: 13.82
-  forceToApplyPerSecond: 184.1
   yScale: 20
+  xScale: 0
 --- !u!54 &1914857422
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -558,3 +559,17 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!114 &1914857423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914857416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4ab0e4894211d4c9a81a2ed4018d68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitPoints: 0
+  isInvulnurable: 0
