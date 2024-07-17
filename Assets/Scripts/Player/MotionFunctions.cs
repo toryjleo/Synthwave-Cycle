@@ -39,16 +39,17 @@ public class Sigmoid1 : MotionFunctions
     public float Acceleration(float x)
     {
         float coshX = Unity.Mathematics.math.cosh(xScale * x);
-        return 1/(coshX * coshX);
+        return Mathf.Clamp(1 /(coshX * coshX), -1.0f, 1.0f);
     }
 
     public float GetXFromVelocity(float y)
     {
-        return Mathf.Clamp((.5f * Mathf.Log((1.0f + y) / (1.0f - y))), -1.0f, 1.0f);
+        float yClamped = Mathf.Clamp(y, -1.0f, 1.0f);
+        return .5f * Mathf.Log((1.0f + yClamped) / (1.0f - yClamped));
     }
 
     public float Velocity(float x)
     {
-        return Unity.Mathematics.math.tanh(xScale * x);
+        return Mathf.Clamp(Unity.Mathematics.math.tanh(xScale * x), -1.0f, 1.0f);
     }
 }

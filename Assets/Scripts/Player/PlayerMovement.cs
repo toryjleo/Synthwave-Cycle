@@ -7,6 +7,22 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    #region Gears
+    private enum GearType 
+    {
+        Gear1,
+        Gear2,
+        Gear3,
+    }
+
+    private GearType maxGear;
+
+    [SerializeField] private GearType currentGear;
+
+    [SerializeField] private List<Gear> gears;
+
+    #endregion
+
     #region InputManagerStrings
     private const string HORIZONTAL = "Horizontal";
     private const string VERTICAL = "Vertical";
@@ -65,7 +81,6 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
 
-    // Start is called before the first frame update
     void Awake()
     {
         transform.position = start_position;
@@ -81,6 +96,10 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.LogWarning("Could not find PlayerHealth on object!");
         }
+        else 
+        {
+            playerHealth.barUpdated += HandleBarUpdate;
+        }
 
         rigidBody = GetComponent<Rigidbody>();
         if (rigidBody == null)
@@ -92,13 +111,17 @@ public class PlayerMovement : MonoBehaviour
             // We will manually assign drag
             rigidBody.drag = 0;
         }
-        
+
+        currentGear = GearType.Gear1;
+        maxGear = GearType.Gear1;
     }
 
     // Update is called once per frame
     void Update()
     {
         inputDirection = GetInputDir();
+
+        HandleGearInput();
 
         if (inputDirection != Vector3.zero) 
         {
@@ -156,9 +179,16 @@ public class PlayerMovement : MonoBehaviour
                 color = UnityEngine.Color.green;
 
                 // Apply acceleration
+                Debug.Log("Velocity scaled in yScale dir: " + Vector3.Dot(inputDirection.normalized, Velocity / yScale)); // This is NaN
                 currentAcceleration = motionFunction.Acceleration(GetX) * desiredDirection;
                 rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime * yScale, ForceMode.Acceleration);
             }
+
+            // Apply some drag if going over max velocity
+            /*if (rigidBody.velocity.sqrMagnitude > (yScale * yScale)) 
+            {
+                ApplyDeceleration(transform.forward, drag);
+            }*/
 
 
         }
@@ -201,4 +231,41 @@ public class PlayerMovement : MonoBehaviour
         }
         return false;
     }
+
+    #region GearShift
+
+    private void HandleBarUpdate() 
+    {
+        maxGear = (GearType)playerHealth.CurrentBar;
+
+        if (currentGear > maxGear) 
+        {
+            currentGear = maxGear;
+            ShiftGear();
+        }
+    }
+
+    private void HandleGearInput() 
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && currentGear > GearType.Gear1) 
+        {
+            // Shift down
+            currentGear--;
+            ShiftGear();
+
+        }
+        else if (Input.GetKeyDown(KeyCode.E) && currentGear < maxGear) 
+        {
+            // Shift up
+            currentGear++;
+            ShiftGear();
+        }
+    }
+
+    private void ShiftGear() 
+    {
+        yScale = gears[(int)currentGear].YScale;
+    }
+
+    #endregion
 }

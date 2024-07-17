@@ -538,6 +538,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0f04c168b2382c45b298589edb32cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gears:
+  - {fileID: 11400000, guid: 837d5bab8b68ccb4f9f790ff8c635b48, type: 2}
+  - {fileID: 11400000, guid: c2c0ae608ff680b40b84e3cf873fe015, type: 2}
+  - {fileID: 11400000, guid: 577c5c93c923100468ec165e80d5e4c9, type: 2}
   rotationSpeed: 5
   drag: 35
   theta: 13.82

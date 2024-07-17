@@ -25,7 +25,7 @@ public class PlayerHealth : Health
     public bool isInvulnurable = false;
 
     private BarMax currentBar;
-    NotifyHealth barUpdated;
+    public NotifyHealth barUpdated;
 
     /// <summary>
     /// The current bar to work toward

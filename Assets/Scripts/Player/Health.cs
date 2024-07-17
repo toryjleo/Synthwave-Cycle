@@ -63,6 +63,5 @@ public class Health : MonoBehaviour
             // Ensure that _hitPoints does not go over the stated maximum
             _hitPoints = Mathf.Min(_hitPoints + hp, _maxHitPoints);
         }
-        Debug.Log(_hitPoints);
     }
 }
