@@ -35,6 +35,10 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     [SerializeField] private float rotationSpeed = 5;
     /// <summary>
+    /// Amount of drag to apply to the tangent of movement
+    /// </summary>
+    [SerializeField] private float drag = 35;
+    /// <summary>
     /// Angle off of inputDirection in which to start applying force upon forward vector aligning
     /// </summary>
     [SerializeField] private float theta = 20;
@@ -150,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Apply drag to the perpendicular velocity of the desiredDirection Vector
-        ApplyDeceleration(transform.right);
+        ApplyDeceleration(transform.right, drag);
 
         Debug.DrawLine(transform.position, transform.position + endLine1, color);
         Debug.DrawLine(transform.position, transform.position + endLine2, color);
