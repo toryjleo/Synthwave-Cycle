@@ -67,6 +67,11 @@ public class PlayerMovement : MonoBehaviour
     /// Linear scale of graph's x
     /// </summary>
     [SerializeField] private float xScale = 1;
+    /// <summary>
+    /// Speeds up the time it takes to get to full velocity on the graph
+    /// </summary>
+    [SerializeField] private float graphTraversalSpeed = 1;
+
     #endregion
 
     #region Properties
@@ -175,8 +180,8 @@ public class PlayerMovement : MonoBehaviour
                 color = UnityEngine.Color.green;
 
                 // Apply acceleration
-                currentAcceleration = motionFunction.Acceleration(GetX) * desiredDirection * yScale;
-                rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime, ForceMode.Acceleration);
+                currentAcceleration = motionFunction.Acceleration( GetX) * desiredDirection * yScale;
+                rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime * graphTraversalSpeed, ForceMode.Acceleration);
             }
 
 
@@ -259,6 +264,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ShiftGear() 
     {
+        // TODO: fill in all sections
         yScale = gears[(int)currentGear].YScale;
         xScale = gears[(int)currentGear].XScale;
     }
