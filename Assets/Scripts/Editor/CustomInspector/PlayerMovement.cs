@@ -24,6 +24,7 @@ namespace CustomInspector
 
                 GraphMovement(t, -1, 1, x => playerMovement.MotionFunctions.Velocity(x), "Velocity");
                 EditorGUILayout.LabelField("Calculated velocity: " + playerMovement.MotionFunctions.Velocity(t));
+                EditorGUILayout.LabelField("Scaled velocity: " + playerMovement.MotionFunctions.Velocity(t) * playerMovement.YScale);
                 EditorGUILayout.LabelField("Actual velocity: " + (playerMovement.Velocity).ToString("F3"));
 
                 EditorGUILayout.LabelField("Current t: " + t);
@@ -31,6 +32,7 @@ namespace CustomInspector
 
                 GraphMovement(t, -1, 1.1f, x => playerMovement.MotionFunctions.Acceleration(x), "Acceleration");
                 EditorGUILayout.LabelField("Calculated Acceleration: " + playerMovement.MotionFunctions.Acceleration(t));
+                EditorGUILayout.LabelField("Scaled Acceleration: " + playerMovement.MotionFunctions.Acceleration(t) * playerMovement.YScale);
                 EditorGUILayout.LabelField("Actual Acceleration: " + playerMovement.CurrentAcceleration.ToString("F3"));
                 
             }

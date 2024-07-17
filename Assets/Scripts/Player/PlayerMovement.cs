@@ -66,11 +66,11 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// Linear scale of graph's x
     /// </summary>
-    [SerializeField] private float xScale = 0;
+    [SerializeField] private float xScale = 1;
     #endregion
 
     #region Properties
-    public float GetX {  get => motionFunction.GetXFromVelocity(Vector3.Dot(inputDirection.normalized, Velocity / yScale)); }
+    public float GetX {  get => motionFunction.GetXFromVelocity(Vector3.Dot(inputDirection.normalized, Velocity)/yScale); }
     /// <summary>
     /// The velocity of the rigidbody this cycle
     /// </summary>
@@ -85,11 +85,6 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.position = start_position;
         motionFunction = new Sigmoid1();
-
-        if ((Sigmoid1)motionFunction != null) 
-        {
-            xScale = ((Sigmoid1)motionFunction).xScale;
-        }
 
         playerHealth = GetComponent<PlayerHealth>();
         if (playerHealth == null) 
@@ -113,7 +108,8 @@ public class PlayerMovement : MonoBehaviour
         }
 
         currentGear = GearType.Gear1;
-        maxGear = GearType.Gear1;
+        HandleBarUpdate();
+        ShiftGear();
     }
 
     // Update is called once per frame
@@ -264,6 +260,7 @@ public class PlayerMovement : MonoBehaviour
     private void ShiftGear() 
     {
         yScale = gears[(int)currentGear].YScale;
+        xScale = gears[(int)currentGear].XScale;
     }
 
     #endregion
