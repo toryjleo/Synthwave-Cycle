@@ -44,8 +44,6 @@ public class Sigmoid1 : MotionFunctions
 
     public float GetXFromVelocity(float y)
     {
-        // TODO: Suspicious of this
-        Debug.Log("Passed in " + y + " for height");
         float yClamped = Mathf.Clamp(y, -1.0f, 1.0f);
         return 1/xScale * .5f * Mathf.Log((1.0f + yClamped) / (1.0f - yClamped));
     }

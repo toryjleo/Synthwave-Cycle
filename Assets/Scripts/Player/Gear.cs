@@ -29,7 +29,11 @@ namespace EditorObject
         /// <summary>
         /// Amount of drag to apply to the tangent of movement
         /// </summary>
-        [SerializeField] private float drag = 35;
+        [SerializeField] private float tangentDrag = 35;
+        /// <summary>
+        /// Amount of drag to apply to resist forward movement
+        /// </summary>
+        [SerializeField] private float forwardDrag = 35;
         /// <summary>
         /// How fast to rotate the player when turning
         /// </summary>
@@ -44,7 +48,8 @@ namespace EditorObject
         public float XScale { get { return xScale; } }
         public float YScale { get { return yScale; } }
         public float Theta { get { return theta; } }
-        public float Drag { get { return drag; } }
+        public float TangentDrag { get { return tangentDrag; } }
+        public float ForwardDrag { get { return forwardDrag; } }
         public float RotationSpeed { get { return rotationSpeed; } }
         public float GraphTraversalSpeed { get { return graphTraversalSpeed; } }
         #endregion

@@ -8,6 +8,7 @@ using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class PlayerMovement : MonoBehaviour
 {
+    #region TypeDefinition
     /// <summary>
     /// Handles tweakable variables which impacts movement
     /// </summary>
@@ -28,7 +29,8 @@ public class PlayerMovement : MonoBehaviour
         public float XScale { get { return gears[(int)currentGear].XScale; } }
         public float YScale { get { return gears[(int)currentGear].YScale; } }
         public float Theta { get { return gears[(int)currentGear].Theta; } }
-        public float Drag { get { return gears[(int)currentGear].Drag; } }
+        public float TangentDrag { get { return gears[(int)currentGear].TangentDrag; } }
+        public float ForwardDrag { get { return gears[(int)currentGear].ForwardDrag; } }
         public float RotationSpeed { get { return gears[(int)currentGear].RotationSpeed; } }
         public float GraphTraversalSpeed { get { return gears[(int)currentGear].GraphTraversalSpeed; } }
 
@@ -83,12 +85,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-
-    #region Gears
-
-    [SerializeField] private List<EditorObject.Gear> gears;
-
-    private Engine gearManager = null;
     #endregion
 
     #region InputManagerStrings
@@ -109,6 +105,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private MotionFunctions motionFunction;
     #endregion
 
+    #region UpdatedAtAwake
+    private Engine gearManager = null;
+    #endregion
+
+    #region DefinedInPrefab
+    /// <summary>
+    /// Need exactly 3 Gear ScriptableObjects.
+    /// </summary>
+    [SerializeField] private List<EditorObject.Gear> gears;
+    #endregion
+
     #region UpdatedOnCycle
     private Vector3 inputDirection = Vector3.zero;
     private Vector3 currentAcceleration = Vector3.zero;
@@ -125,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
     public MotionFunctions MotionFunctions { get { return motionFunction; } }
     #endregion
 
-
+    #region MonoBehavior
     void Awake()
     {
         playerHealth = GetComponent<PlayerHealth>();
@@ -176,6 +183,7 @@ public class PlayerMovement : MonoBehaviour
         ApplyAcceleration(inputDirection);
 
     }
+    #endregion
 
     private Vector3 GetInputDir() 
     {
@@ -227,11 +235,11 @@ public class PlayerMovement : MonoBehaviour
         // Apply some drag to the forward vector if going over max velocity
         if (rigidBody.velocity.sqrMagnitude > (gearManager.YScale * gearManager.YScale))
         {
-            ApplyDeceleration(transform.forward, gearManager.Drag);
+            ApplyDeceleration(transform.forward, gearManager.ForwardDrag);
         }
 
         // Apply drag to the perpendicular velocity of the desiredDirection Vector
-        ApplyDeceleration(transform.right, gearManager.Drag);
+        ApplyDeceleration(transform.right, gearManager.TangentDrag);
 
         Debug.DrawLine(transform.position, transform.position + endLine1, color);
         Debug.DrawLine(transform.position, transform.position + endLine2, color);
