@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xScale: 4
   yScale: 20
-  theta: 20
-  drag: 35
+  theta: 25
+  tangentDrag: 30
+  forwardDrag: 30
   rotationSpeed: 5
+  graphTraversalSpeed: 5

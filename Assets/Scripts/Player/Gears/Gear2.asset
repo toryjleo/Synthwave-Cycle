@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Gear2
   m_EditorClassIdentifier: 
   xScale: 4
-  yScale: 40
-  theta: 20
-  drag: 35
+  yScale: 45
+  theta: 30
+  tangentDrag: 50
+  forwardDrag: 35
   rotationSpeed: 5
+  graphTraversalSpeed: 5
