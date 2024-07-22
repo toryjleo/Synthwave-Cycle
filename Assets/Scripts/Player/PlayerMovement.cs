@@ -7,20 +7,111 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    #region Gears
-    private enum GearType 
+    private class GearManager 
     {
-        Gear1,
-        Gear2,
-        Gear3,
+        private enum GearType
+        {
+            Gear1,
+            Gear2,
+            Gear3,
+        }
+
+        List<EditorObject.Gear> gears;
+
+        public float XScale { get { return xScale; } }
+        public float YScale { get { return yScale; } }
+        public float Theta { get { return theta; } }
+        public float Drag { get { return drag; } }
+        public float RotationSpeed { get { return rotationSpeed; } }
+        public float GraphTraversalSpeed { get { return graphTraversalSpeed; } }
+
+        /// <summary>
+        /// How fast to rotate the player when turning
+        /// </summary>
+        [SerializeField] private float rotationSpeed = 5;
+        /// <summary>
+        /// Amount of drag to apply to the tangent of movement
+        /// </summary>
+        [SerializeField] private float drag = 35;
+        /// <summary>
+        /// Angle off of inputDirection in which to start applying force upon forward vector aligning
+        /// </summary>
+        [SerializeField] private float theta = 20;
+        /// <summary>
+        /// Linear scale of velocity and acceleration
+        /// </summary>
+        [SerializeField] private float yScale = 20.0f;
+        /// <summary>
+        /// Linear scale of graph's x
+        /// </summary>
+        [SerializeField] private float xScale = 1;
+        /// <summary>
+        /// Speeds up the time it takes to get to full velocity on the graph
+        /// </summary>
+        [SerializeField] private float graphTraversalSpeed = 1;
+
+
+        private GearType maxGear;
+
+        [SerializeField] private GearType currentGear;
+
+
+        public GearManager(List<EditorObject.Gear> gears)
+        {
+            this.gears = gears;
+            currentGear = GearType.Gear1;
+        }
+
+        public void HandleBarUpdate(PlayerHealth playerHealth)
+        {
+            maxGear = (GearType)playerHealth.CurrentBar;
+
+            if (currentGear > maxGear)
+            {
+                currentGear = maxGear;
+                ShiftGear();
+            }
+        }
+
+
+        /// <summary>
+        /// Changes the movement perameters of this object to match the current gear
+        /// </summary>
+        public void ShiftGear()
+        {
+            EditorObject.Gear gear = gears[(int)currentGear];
+
+            yScale = gear.YScale;
+            xScale = gear.XScale;
+            theta = gear.Theta;
+            drag = gear.Drag;
+            rotationSpeed = gear.RotationSpeed;
+            graphTraversalSpeed = gear.GraphTraversalSpeed;
+        }
+
+        public void HandleGearInput()
+        {
+            if (Input.GetKeyDown(KeyCode.Q) && currentGear > GearType.Gear1)
+            {
+                // Shift down
+                currentGear--;
+                ShiftGear();
+
+            }
+            else if (Input.GetKeyDown(KeyCode.E) && currentGear < maxGear)
+            {
+                // Shift up
+                currentGear++;
+                ShiftGear();
+            }
+        }
+
     }
-
-    private GearType maxGear;
-
-    [SerializeField] private GearType currentGear;
+    #region Gears
 
     [SerializeField] private List<EditorObject.Gear> gears;
 
+    private GearManager gearManager = null;
     #endregion
 
     #region InputManagerStrings
@@ -47,41 +138,17 @@ public class PlayerMovement : MonoBehaviour
     /// The motion functions defining the velocity and acceleration
     /// </summary>
     [SerializeField] private MotionFunctions motionFunction;
-    /// <summary>
-    /// How fast to rotate the player when turning
-    /// </summary>
-    [SerializeField] private float rotationSpeed = 5;
-    /// <summary>
-    /// Amount of drag to apply to the tangent of movement
-    /// </summary>
-    [SerializeField] private float drag = 35;
-    /// <summary>
-    /// Angle off of inputDirection in which to start applying force upon forward vector aligning
-    /// </summary>
-    [SerializeField] private float theta = 20;
-    /// <summary>
-    /// Linear scale of velocity and acceleration
-    /// </summary>
-    [SerializeField] private float yScale = 20.0f;
-    /// <summary>
-    /// Linear scale of graph's x
-    /// </summary>
-    [SerializeField] private float xScale = 1;
-    /// <summary>
-    /// Speeds up the time it takes to get to full velocity on the graph
-    /// </summary>
-    [SerializeField] private float graphTraversalSpeed = 1;
 
     #endregion
 
     #region Properties
-    public float GetX {  get => motionFunction.GetXFromVelocity(Vector3.Dot(inputDirection.normalized, Velocity)/yScale); }
+    public float GetX {  get => motionFunction.GetXFromVelocity(Vector3.Dot(inputDirection.normalized, Velocity)/gearManager.YScale); }
     /// <summary>
     /// The velocity of the rigidbody this cycle
     /// </summary>
     public Vector3 Velocity { get => rigidBody.velocity; }
     public Vector3 CurrentAcceleration { get => currentAcceleration; }
-    public float YScale { get => yScale; }
+    public float YScale { get => gearManager.YScale; }
     public MotionFunctions MotionFunctions { get { return motionFunction; } }
     #endregion
 
@@ -90,6 +157,7 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.position = start_position;
         motionFunction = new Sigmoid1();
+        gearManager = new GearManager(gears);
 
         playerHealth = GetComponent<PlayerHealth>();
         if (playerHealth == null) 
@@ -98,7 +166,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else 
         {
-            playerHealth.barUpdated += HandleBarUpdate;
+            playerHealth.barUpdated += gearManager.HandleBarUpdate;
         }
 
         rigidBody = GetComponent<Rigidbody>();
@@ -111,10 +179,8 @@ public class PlayerMovement : MonoBehaviour
             // We will manually assign drag
             rigidBody.drag = 0;
         }
-
-        currentGear = GearType.Gear1;
-        HandleBarUpdate();
-        ShiftGear();
+        gearManager.HandleBarUpdate(playerHealth);
+        gearManager.ShiftGear();
     }
 
     // Update is called once per frame
@@ -122,17 +188,17 @@ public class PlayerMovement : MonoBehaviour
     {
         inputDirection = GetInputDir();
 
-        HandleGearInput();
+        gearManager.HandleGearInput();
 
         if (inputDirection != Vector3.zero) 
         {
             Quaternion newRotation = Quaternion.LookRotation(inputDirection, transform.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * gearManager.RotationSpeed);
         }
 
         if ((Sigmoid1)motionFunction != null)
         {
-            ((Sigmoid1)motionFunction).xScale = xScale;
+            ((Sigmoid1)motionFunction).xScale = gearManager.XScale;
         }
 
     }
@@ -163,8 +229,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyAcceleration(Vector3 desiredDirection) 
     {
-        Vector3 endLine1 = Quaternion.Euler(0, theta, 0) * transform.forward;
-        Vector3 endLine2 = Quaternion.Euler(0, -theta, 0) * transform.forward;
+        Vector3 endLine1 = Quaternion.Euler(0, gearManager.Theta, 0) * transform.forward;
+        Vector3 endLine2 = Quaternion.Euler(0, -gearManager.Theta, 0) * transform.forward;
 
         UnityEngine.Color color = UnityEngine.Color.red;
 
@@ -174,14 +240,14 @@ public class PlayerMovement : MonoBehaviour
             float dot = Vector3.Dot(transform.forward, desiredDirection) / (transform.forward.magnitude * desiredDirection.magnitude);
             float angle = Mathf.Acos(dot);
 
-            if (AngleLessThanTheta(angle, theta)) // Convert to radians
+            if (AngleLessThanTheta(angle, gearManager.Theta)) // Convert to radians
             {
                 // Are pressing a direction and within that direction (can accelerate)
                 color = UnityEngine.Color.green;
 
                 // Apply acceleration
-                currentAcceleration = motionFunction.Acceleration( GetX) * desiredDirection * yScale;
-                rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime * graphTraversalSpeed, ForceMode.Acceleration);
+                currentAcceleration = motionFunction.Acceleration( GetX) * desiredDirection * gearManager.YScale;
+                rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime * gearManager.GraphTraversalSpeed, ForceMode.Acceleration);
             }
 
 
@@ -192,13 +258,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Apply some drag to the forward vector if going over max velocity
-        if (rigidBody.velocity.sqrMagnitude > (yScale * yScale))
+        if (rigidBody.velocity.sqrMagnitude > (gearManager.YScale * gearManager.YScale))
         {
-            ApplyDeceleration(transform.forward, drag);
+            ApplyDeceleration(transform.forward, gearManager.Drag);
         }
 
         // Apply drag to the perpendicular velocity of the desiredDirection Vector
-        ApplyDeceleration(transform.right, drag);
+        ApplyDeceleration(transform.right, gearManager.Drag);
 
         Debug.DrawLine(transform.position, transform.position + endLine1, color);
         Debug.DrawLine(transform.position, transform.position + endLine2, color);
@@ -231,51 +297,4 @@ public class PlayerMovement : MonoBehaviour
         }
         return false;
     }
-
-    #region GearShift
-
-    private void HandleBarUpdate() 
-    {
-        maxGear = (GearType)playerHealth.CurrentBar;
-
-        if (currentGear > maxGear) 
-        {
-            currentGear = maxGear;
-            ShiftGear();
-        }
-    }
-
-    private void HandleGearInput() 
-    {
-        if (Input.GetKeyDown(KeyCode.Q) && currentGear > GearType.Gear1) 
-        {
-            // Shift down
-            currentGear--;
-            ShiftGear();
-
-        }
-        else if (Input.GetKeyDown(KeyCode.E) && currentGear < maxGear) 
-        {
-            // Shift up
-            currentGear++;
-            ShiftGear();
-        }
-    }
-
-    /// <summary>
-    /// Changes the movement perameters of this object to match the current gear
-    /// </summary>
-    private void ShiftGear() 
-    {
-        EditorObject.Gear gear = gears[(int)currentGear];
-
-        yScale = gear.YScale;
-        xScale = gear.XScale;
-        theta = gear.Theta;
-        drag = gear.Drag;
-        rotationSpeed = gear.RotationSpeed;
-        graphTraversalSpeed = gear.GraphTraversalSpeed;
-    }
-
-    #endregion
 }

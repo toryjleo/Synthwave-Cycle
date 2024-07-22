@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void NotifyPlayerHealth(PlayerHealth ph);
+
 /// <summary>
 /// Implements a variant of health made for the player
 /// </summary>
@@ -25,7 +27,7 @@ public class PlayerHealth : Health
     public bool isInvulnurable = false;
 
     private BarMax currentBar;
-    public NotifyHealth barUpdated;
+    public NotifyPlayerHealth barUpdated;
 
     /// <summary>
     /// The current bar to work toward
@@ -136,7 +138,7 @@ public class PlayerHealth : Health
         if (newBarMax != currentBar)
         {
             currentBar = newBarMax;
-            barUpdated?.Invoke();
+            barUpdated?.Invoke(this);
         }
 
     }
