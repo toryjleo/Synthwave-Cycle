@@ -9,55 +9,59 @@ public enum WaveType
     HostileWave, LevelComplete, PlayAudioLog
 };
 
-/// <summary>
-/// A wave holds the information for one "Wave Level" of enemies
-/// When the danger level reches the DLThreshold,
-/// squads of waveEnemies are spawned in every track loop
-/// </summary>
-[CreateAssetMenu(menuName = "Wave/Wave", fileName = "New Wave")]
-public class Wave : ScriptableObject
+namespace EditorObject
 {
-    //The minimum danger level required for this Wave to take effect
-    [SerializeField]
-    public int DLThreshold;
-    
-    //The audio loop for this wave
-    [SerializeField]
-    public AudioClip TrackVariation;
 
-    //If the track has more than one music loop, we need to spawn in waves multiple times
-    [SerializeField]
-    public int wavesInTrack = 1;
-
-    //A collection of enemy types, each loop, a squad of each type is spawned
-    [SerializeField]
-    public List<Enemy> waveEnemies;
-
-    //Default: HostileWave, this determines if the wave has any special functionality
-    [SerializeField]
-    public WaveType waveType;
-
-    public bool IsOverThreshold()
+    /// <summary>
+    /// A wave holds the information for one "Wave Level" of enemies
+    /// When the danger level reches the DLThreshold,
+    /// squads of waveEnemies are spawned in every track loop
+    /// </summary>
+    [CreateAssetMenu(menuName = "Wave/Wave", fileName = "New Wave")]
+    public class Wave : ScriptableObject
     {
-        return DangerLevel.Instance.GetDangerLevel() >= DLThreshold;
-    }
+        //The minimum danger level required for this Wave to take effect
+        [SerializeField]
+        public int DLThreshold;
 
-    internal AudioClip GetTrackVariation()
-    {
-        return TrackVariation;
-    }
+        //The audio loop for this wave
+        [SerializeField]
+        public AudioClip TrackVariation;
 
-    // Activates wave properties and returns a list of wave enemies
-    internal virtual List<Enemy> GetWaveInfo()
-    {
-        switch (waveType)
+        //If the track has more than one music loop, we need to spawn in waves multiple times
+        [SerializeField]
+        public int wavesInTrack = 1;
+
+        //A collection of enemy types, each loop, a squad of each type is spawned
+        [SerializeField]
+        public List<Enemy> waveEnemies;
+
+        //Default: HostileWave, this determines if the wave has any special functionality
+        [SerializeField]
+        public WaveType waveType;
+
+        public bool IsOverThreshold()
         {
-            case WaveType.HostileWave:
-                break;
-            case WaveType.LevelComplete:
-                GameStateController.HandleTrigger(StateTrigger.LevelComplete);
-                break;
+            return DangerLevel.Instance.GetDangerLevel() >= DLThreshold;
         }
-        return waveEnemies;
+
+        internal AudioClip GetTrackVariation()
+        {
+            return TrackVariation;
+        }
+
+        // Activates wave properties and returns a list of wave enemies
+        internal virtual List<Enemy> GetWaveInfo()
+        {
+            switch (waveType)
+            {
+                case WaveType.HostileWave:
+                    break;
+                case WaveType.LevelComplete:
+                    GameStateController.HandleTrigger(StateTrigger.LevelComplete);
+                    break;
+            }
+            return waveEnemies;
+        }
     }
 }

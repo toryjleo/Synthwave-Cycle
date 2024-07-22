@@ -4,97 +4,198 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class PlayerMovement : MonoBehaviour
 {
+    #region TypeDefinition
+    public enum GearType
+    {
+        Gear1,
+        Gear2,
+        Gear3,
+        GearTypeInvalid
+    }
+
+    /// <summary>
+    /// Handles tweakable variables which impacts movement
+    /// </summary>
+    private class Engine 
+    {
+        /// <summary>
+        /// Copied over from editor. Scriptable object defining the gears
+        /// </summary>
+        List<EditorObject.Gear> gears;
+
+        public float XScale { get { return gears[(int)currentGear].XScale; } }
+        public float YScale { get { return gears[(int)currentGear].YScale; } }
+        public float Theta { get { return gears[(int)currentGear].Theta; } }
+        public float TangentDrag { get { return gears[(int)currentGear].TangentDrag; } }
+        public float ForwardDrag { get { return gears[(int)currentGear].ForwardDrag; } }
+        public float RotationSpeed { get { return gears[(int)currentGear].RotationSpeed; } }
+        public float GraphTraversalSpeed { get { return gears[(int)currentGear].GraphTraversalSpeed; } }
+
+        public GearType CurrentGear { get => currentGear; }
+
+
+        private GearType maxGear;
+
+        [SerializeField] private GearType currentGear;
+
+
+        public Engine(List<EditorObject.Gear> gears, PlayerHealth playerHealth)
+        {
+            if (gears.Count != 3) 
+            {
+                Debug.LogError("Please check GameObject with PlayerMovement component to assure there are exactly 3 gears!");
+            }
+            this.gears = gears;
+            currentGear = GearType.Gear1;
+            playerHealth.barUpdated += HandleBarUpdate;
+            HandleBarUpdate(playerHealth);
+        }
+
+        /// <summary>
+        /// Updates the maxGear when the player health updates its bars
+        /// </summary>
+        /// <param name="playerHealth">A reference to player health</param>
+        private void HandleBarUpdate(PlayerHealth playerHealth)
+        {
+            maxGear = (GearType)playerHealth.CurrentBar;
+
+            if (currentGear > maxGear)
+            {
+                currentGear = maxGear;
+            }
+        }
+
+        /// <summary>
+        /// Called on Update to handle player input
+        /// </summary>
+        public void HandleGearInput()
+        {
+            if (Input.GetKeyDown(KeyCode.Q) && currentGear > GearType.Gear1)
+            {
+                // Shift down
+                currentGear--;
+
+            }
+            else if (Input.GetKeyDown(KeyCode.E) && currentGear < maxGear)
+            {
+                // Shift up
+                currentGear++;
+            }
+        }
+
+    }
+    #endregion
+
     #region InputManagerStrings
     private const string HORIZONTAL = "Horizontal";
     private const string VERTICAL = "Vertical";
     #endregion
 
     #region NeverUpdated
-    [SerializeField] private Rigidbody rigidBody;
+    private Rigidbody rigidBody;
+    private PlayerHealth playerHealth;
     /// <summary>
     /// Where to start at game start
     /// </summary>
     private Vector3 start_position = new Vector3(0, 1, 0);
-    #endregion
-
-    #region UpdatedOnCycle
-    private Vector3 inputDirection = Vector3.zero;
-    private Vector3 currentAcceleration = Vector3.zero;
-    #endregion
-
-    #region Tweakable
     /// <summary>
     /// The motion functions defining the velocity and acceleration
     /// </summary>
     [SerializeField] private MotionFunctions motionFunction;
-    /// <summary>
-    /// How fast to rotate the player when turning
-    /// </summary>
-    [SerializeField] private float rotationSpeed = 5;
-    /// <summary>
-    /// Amount of drag to apply to the tangent of movement
-    /// </summary>
-    [SerializeField] private float drag = 35;
-    /// <summary>
-    /// Angle off of inputDirection in which to start applying force upon forward vector aligning
-    /// </summary>
-    [SerializeField] private float theta = 20;
-    /// <summary>
-    /// Linear scale of velocity and acceleration
-    /// </summary>
-    [SerializeField] private float yScale = 20.0f;
-    /// <summary>
-    /// Linear scale of graph's x
-    /// </summary>
-    [SerializeField] private float xScale = 0;
     #endregion
 
+    #region UpdatedAtAwake
+    private Engine gearManager = null;
+    #endregion
 
+    #region DefinedInPrefab
+    /// <summary>
+    /// Need exactly 3 Gear ScriptableObjects.
+    /// </summary>
+    [SerializeField] private List<EditorObject.Gear> gears;
+    #endregion
 
+    #region UpdatedOnCycle
+    /// <summary>
+    /// Normalized direction of input
+    /// </summary>
+    private Vector3 inputDirection = Vector3.zero;
+    /// <summary>
+    /// Magnitude of the non-normalized inputDirection
+    /// </summary>
+    private float inputMagnitude = 0;
+    private Vector3 currentAcceleration = Vector3.zero;
+    #endregion
 
-    public float GetX {  get => motionFunction.GetXFromVelocity(Vector3.Dot(inputDirection.normalized, Velocity / yScale)); }
+    #region Properties
+    public float GetX {  get => motionFunction.GetXFromVelocity(Vector3.Dot(inputDirection, Velocity)/gearManager.YScale); }
     /// <summary>
     /// The velocity of the rigidbody this cycle
     /// </summary>
     public Vector3 Velocity { get => rigidBody.velocity; }
     public Vector3 CurrentAcceleration { get => currentAcceleration; }
-    public float YScale { get => yScale; }
+    public float YScale { get => gearManager.YScale; }
     public MotionFunctions MotionFunctions { get { return motionFunction; } }
+    public GearType CurrentGear { 
+        get { 
+            if (gearManager != null) 
+            {
+                return gearManager.CurrentGear;
+            }
+            else 
+            {
+                return GearType.GearTypeInvalid;
+            }
+            
+        } 
+    }
+    #endregion
 
-
-    // Start is called before the first frame update
-    void Start()
+    #region MonoBehavior
+    void Awake()
     {
-        transform.position = start_position;
-        motionFunction = new Sigmoid1();
-        // We will manually assign drag
-        rigidBody.drag = 0;
-
-        if ((Sigmoid1)motionFunction != null) 
+        playerHealth = GetComponent<PlayerHealth>();
+        if (playerHealth == null) 
         {
-            xScale = ((Sigmoid1)motionFunction).xScale;
+            Debug.LogWarning("Could not find PlayerHealth on object!");
         }
 
-        
+        rigidBody = GetComponent<Rigidbody>();
+        if (rigidBody == null)
+        {
+            Debug.LogWarning("Could not find RigidBody on object!");
+        }
+        else 
+        {
+            // We will manually assign drag
+            rigidBody.drag = 0;
+        }
+
+        transform.position = start_position;
+        motionFunction = new Sigmoid1();
+        gearManager = new Engine(gears, playerHealth);
     }
 
     // Update is called once per frame
     void Update()
     {
-        inputDirection = GetInputDir();
+        UpdateInputDir();
 
-        if (inputDirection != Vector3.zero) 
+        gearManager.HandleGearInput();
+
+        if (inputMagnitude != 0) 
         {
             Quaternion newRotation = Quaternion.LookRotation(inputDirection, transform.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * gearManager.RotationSpeed);
         }
 
         if ((Sigmoid1)motionFunction != null)
         {
-            ((Sigmoid1)motionFunction).xScale = xScale;
+            ((Sigmoid1)motionFunction).xScale = gearManager.XScale;
         }
 
     }
@@ -102,48 +203,50 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
 
-        ApplyAcceleration(inputDirection);
+        ApplyMovementForces(inputDirection, inputMagnitude);
 
     }
+    #endregion
 
-    private Vector3 GetInputDir() 
+    private void UpdateInputDir() 
     {
         // Note: using vertical axis to represent +x and horizontal axis to represent -z
         float horizontalAxis = Input.GetAxis(HORIZONTAL);
         float verticalAxis = Input.GetAxis(VERTICAL);
 
         Vector3 desiredDirection = new Vector3(verticalAxis, 0, -horizontalAxis);
-        Vector3 desiredDirectionNormalized = Vector3.Normalize(desiredDirection);
         float magnitude = Mathf.Clamp(desiredDirection.magnitude, 0, 1);
+        Vector3 desiredDirectionNormalized = Vector3.Normalize(desiredDirection);
 
 
         Debug.DrawLine(transform.position, transform.position + transform.forward, UnityEngine.Color.red);
         Debug.DrawLine(transform.position, transform.position + (desiredDirectionNormalized * magnitude), UnityEngine.Color.magenta);
 
-        return desiredDirectionNormalized * magnitude;
+        inputDirection = desiredDirectionNormalized;
+        inputMagnitude = magnitude;
     }
 
-    private void ApplyAcceleration(Vector3 desiredDirection) 
+    private void ApplyMovementForces(Vector3 desiredDirection, float desiredDirectionMagnitude) 
     {
-        Vector3 endLine1 = Quaternion.Euler(0, theta, 0) * transform.forward;
-        Vector3 endLine2 = Quaternion.Euler(0, -theta, 0) * transform.forward;
+        Vector3 endLine1 = Quaternion.Euler(0, gearManager.Theta, 0) * transform.forward;
+        Vector3 endLine2 = Quaternion.Euler(0, -gearManager.Theta, 0) * transform.forward;
 
         UnityEngine.Color color = UnityEngine.Color.red;
 
-        if ((desiredDirection.sqrMagnitude > 0)) 
+        if (desiredDirectionMagnitude > 0)
         {
             // If there is input
-            float dot = Vector3.Dot(transform.forward, desiredDirection) / (transform.forward.magnitude * desiredDirection.magnitude);
+            float dot = Vector3.Dot(transform.forward, desiredDirection) / (transform.forward.magnitude * desiredDirectionMagnitude);
             float angle = Mathf.Acos(dot);
 
-            if (AngleLessThanTheta(angle, theta)) // Convert to radians
+            if (AngleLessThanTheta(angle, gearManager.Theta)) // Convert to radians
             {
                 // Are pressing a direction and within that direction (can accelerate)
                 color = UnityEngine.Color.green;
 
                 // Apply acceleration
-                currentAcceleration = motionFunction.Acceleration(GetX) * desiredDirection;
-                rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime * yScale, ForceMode.Acceleration);
+                currentAcceleration = motionFunction.Acceleration( GetX) * desiredDirection * desiredDirectionMagnitude * gearManager.YScale;
+                rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime * gearManager.GraphTraversalSpeed, ForceMode.Acceleration);
             }
 
 
@@ -153,8 +256,15 @@ public class PlayerMovement : MonoBehaviour
             // Can Apply drag to current velocity
         }
 
+        // Apply some drag to the forward vector if going over max velocity
+        if (rigidBody.velocity.sqrMagnitude > (gearManager.YScale * gearManager.YScale))
+        {
+            Debug.Log("Applying resestance");
+            ApplyDeceleration(transform.forward, gearManager.ForwardDrag);
+        }
+
         // Apply drag to the perpendicular velocity of the desiredDirection Vector
-        ApplyDeceleration(transform.right, drag);
+        ApplyDeceleration(transform.right, gearManager.TangentDrag);
 
         Debug.DrawLine(transform.position, transform.position + endLine1, color);
         Debug.DrawLine(transform.position, transform.position + endLine2, color);

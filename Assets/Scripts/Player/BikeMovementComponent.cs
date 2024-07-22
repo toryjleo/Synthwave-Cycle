@@ -21,7 +21,7 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
     public Rigidbody rb;
 
     // Dictates movement speed
-    public Health health;
+    private PlayerHealth health;
 
 
     public float MoveSpeed = 100; //The speed of the bike 
@@ -84,10 +84,7 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         // The bike will begin at rest
         appliedForce = new Vector3(0, 0, 0);
         rb = GetComponent<Rigidbody>();
-        health = GetComponentInChildren<Health>();
-
-
-        health.Init(STARTING_HEALTH, MAX_HEALTH);
+        health = GetComponentInChildren<PlayerHealth>();
     }
 
     private void FixedUpdate()
