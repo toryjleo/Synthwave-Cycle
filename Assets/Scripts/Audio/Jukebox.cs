@@ -10,7 +10,7 @@ using UnityEngine;
 public class Jukebox : MonoBehaviour, IResettable
 {
     //The current WaveSequence in play
-    private WaveSequence sequence;
+    private EditorObject.WaveSequence sequence;
     // An audiosource array with 2 members to switch between with "toggle"
     public AudioSource[] audioSourceArray;
     int toggle;
@@ -22,7 +22,7 @@ public class Jukebox : MonoBehaviour, IResettable
     double nextAudioLoopDifference;
 
     //Resets the jukebox and starts a new Wave Sequence
-    public void Init(WaveSequence seq)
+    public void Init(EditorObject.WaveSequence seq)
     {
         sequence = seq;
         sequence.Init(GameObject.FindObjectOfType<SquadSpawner>());

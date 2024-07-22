@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private GearType currentGear;
 
-    [SerializeField] private List<Gear> gears;
+    [SerializeField] private List<EditorObject.Gear> gears;
 
     #endregion
 
@@ -262,11 +262,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Changes the movement perameters of this object to match the current gear
+    /// </summary>
     private void ShiftGear() 
     {
-        // TODO: fill in all sections
-        yScale = gears[(int)currentGear].YScale;
-        xScale = gears[(int)currentGear].XScale;
+        EditorObject.Gear gear = gears[(int)currentGear];
+
+        yScale = gear.YScale;
+        xScale = gear.XScale;
+        theta = gear.Theta;
+        drag = gear.Drag;
+        rotationSpeed = gear.RotationSpeed;
+        graphTraversalSpeed = gear.GraphTraversalSpeed;
     }
 
     #endregion
