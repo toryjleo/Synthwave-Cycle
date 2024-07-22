@@ -117,12 +117,19 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region UpdatedOnCycle
+    /// <summary>
+    /// Normalized direction of input
+    /// </summary>
     private Vector3 inputDirection = Vector3.zero;
+    /// <summary>
+    /// Magnitude of the non-normalized inputDirection
+    /// </summary>
+    private float inputMagnitude = 0;
     private Vector3 currentAcceleration = Vector3.zero;
     #endregion
 
     #region Properties
-    public float GetX {  get => motionFunction.GetXFromVelocity(Vector3.Dot(inputDirection.normalized, Velocity)/gearManager.YScale); }
+    public float GetX {  get => motionFunction.GetXFromVelocity(Vector3.Dot(inputDirection, Velocity)/gearManager.YScale); }
     /// <summary>
     /// The velocity of the rigidbody this cycle
     /// </summary>
@@ -160,11 +167,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        inputDirection = GetInputDir();
+        UpdateInputDir();
 
         gearManager.HandleGearInput();
 
-        if (inputDirection != Vector3.zero) 
+        if (inputMagnitude != 0) 
         {
             Quaternion newRotation = Quaternion.LookRotation(inputDirection, transform.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * gearManager.RotationSpeed);
@@ -180,39 +187,40 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
 
-        ApplyAcceleration(inputDirection);
+        ApplyMovementForces(inputDirection, inputMagnitude);
 
     }
     #endregion
 
-    private Vector3 GetInputDir() 
+    private void UpdateInputDir() 
     {
         // Note: using vertical axis to represent +x and horizontal axis to represent -z
         float horizontalAxis = Input.GetAxis(HORIZONTAL);
         float verticalAxis = Input.GetAxis(VERTICAL);
 
         Vector3 desiredDirection = new Vector3(verticalAxis, 0, -horizontalAxis);
-        Vector3 desiredDirectionNormalized = Vector3.Normalize(desiredDirection);
         float magnitude = Mathf.Clamp(desiredDirection.magnitude, 0, 1);
+        Vector3 desiredDirectionNormalized = Vector3.Normalize(desiredDirection);
 
 
         Debug.DrawLine(transform.position, transform.position + transform.forward, UnityEngine.Color.red);
         Debug.DrawLine(transform.position, transform.position + (desiredDirectionNormalized * magnitude), UnityEngine.Color.magenta);
 
-        return desiredDirectionNormalized * magnitude;
+        inputDirection = desiredDirectionNormalized;
+        inputMagnitude = magnitude;
     }
 
-    private void ApplyAcceleration(Vector3 desiredDirection) 
+    private void ApplyMovementForces(Vector3 desiredDirection, float desiredDirectionMagnitude) 
     {
         Vector3 endLine1 = Quaternion.Euler(0, gearManager.Theta, 0) * transform.forward;
         Vector3 endLine2 = Quaternion.Euler(0, -gearManager.Theta, 0) * transform.forward;
 
         UnityEngine.Color color = UnityEngine.Color.red;
 
-        if ((desiredDirection.sqrMagnitude > 0)) 
+        if (desiredDirectionMagnitude > 0)
         {
             // If there is input
-            float dot = Vector3.Dot(transform.forward, desiredDirection) / (transform.forward.magnitude * desiredDirection.magnitude);
+            float dot = Vector3.Dot(transform.forward, desiredDirection) / (transform.forward.magnitude * desiredDirectionMagnitude);
             float angle = Mathf.Acos(dot);
 
             if (AngleLessThanTheta(angle, gearManager.Theta)) // Convert to radians
@@ -221,7 +229,8 @@ public class PlayerMovement : MonoBehaviour
                 color = UnityEngine.Color.green;
 
                 // Apply acceleration
-                currentAcceleration = motionFunction.Acceleration( GetX) * desiredDirection * gearManager.YScale;
+                currentAcceleration = motionFunction.Acceleration( GetX) * desiredDirection * desiredDirectionMagnitude * gearManager.YScale;
+                Debug.Log("Applying force: " + currentAcceleration * Time.fixedDeltaTime * gearManager.GraphTraversalSpeed);
                 rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime * gearManager.GraphTraversalSpeed, ForceMode.Acceleration);
             }
 
@@ -235,6 +244,7 @@ public class PlayerMovement : MonoBehaviour
         // Apply some drag to the forward vector if going over max velocity
         if (rigidBody.velocity.sqrMagnitude > (gearManager.YScale * gearManager.YScale))
         {
+            Debug.Log("Applying resestance");
             ApplyDeceleration(transform.forward, gearManager.ForwardDrag);
         }
 
