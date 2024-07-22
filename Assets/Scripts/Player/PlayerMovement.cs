@@ -230,7 +230,6 @@ public class PlayerMovement : MonoBehaviour
 
                 // Apply acceleration
                 currentAcceleration = motionFunction.Acceleration( GetX) * desiredDirection * desiredDirectionMagnitude * gearManager.YScale;
-                Debug.Log("Applying force: " + currentAcceleration * Time.fixedDeltaTime * gearManager.GraphTraversalSpeed);
                 rigidBody.AddForce(currentAcceleration * Time.fixedDeltaTime * gearManager.GraphTraversalSpeed, ForceMode.Acceleration);
             }
 
