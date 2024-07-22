@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
         public float RotationSpeed { get { return gears[(int)currentGear].RotationSpeed; } }
         public float GraphTraversalSpeed { get { return gears[(int)currentGear].GraphTraversalSpeed; } }
 
-        public GearType CurretGear { get => currentGear; }
+        public GearType CurrentGear { get => currentGear; }
 
 
         private GearType maxGear;
@@ -144,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
         get { 
             if (gearManager != null) 
             {
-                return gearManager.CurretGear;
+                return gearManager.CurrentGear;
             }
             else 
             {
