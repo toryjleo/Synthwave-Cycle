@@ -15,6 +15,11 @@ namespace CustomInspector
         {
             global::PlayerMovement playerMovement = (global::PlayerMovement)target;
 
+            if (playerMovement != null) 
+            {
+                EditorGUILayout.LabelField("Current Gear: " + playerMovement.CurrentGear);
+            }
+
             // Calls normal inspector
             base.OnInspectorGUI();
             if (playerMovement.MotionFunctions != null)

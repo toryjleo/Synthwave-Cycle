@@ -9,18 +9,19 @@ using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 public class PlayerMovement : MonoBehaviour
 {
     #region TypeDefinition
+    public enum GearType
+    {
+        Gear1,
+        Gear2,
+        Gear3,
+        GearTypeInvalid
+    }
+
     /// <summary>
     /// Handles tweakable variables which impacts movement
     /// </summary>
     private class Engine 
     {
-        private enum GearType
-        {
-            Gear1,
-            Gear2,
-            Gear3,
-        }
-
         /// <summary>
         /// Copied over from editor. Scriptable object defining the gears
         /// </summary>
@@ -33,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
         public float ForwardDrag { get { return gears[(int)currentGear].ForwardDrag; } }
         public float RotationSpeed { get { return gears[(int)currentGear].RotationSpeed; } }
         public float GraphTraversalSpeed { get { return gears[(int)currentGear].GraphTraversalSpeed; } }
+
+        public GearType CurretGear { get => currentGear; }
 
 
         private GearType maxGear;
@@ -137,6 +140,19 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 CurrentAcceleration { get => currentAcceleration; }
     public float YScale { get => gearManager.YScale; }
     public MotionFunctions MotionFunctions { get { return motionFunction; } }
+    public GearType CurrentGear { 
+        get { 
+            if (gearManager != null) 
+            {
+                return gearManager.CurretGear;
+            }
+            else 
+            {
+                return GearType.GearTypeInvalid;
+            }
+            
+        } 
+    }
     #endregion
 
     #region MonoBehavior
