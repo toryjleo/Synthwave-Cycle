@@ -4,10 +4,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private class GearManager 
+    /// <summary>
+    /// Handles tweakable variables which impacts movement
+    /// </summary>
+    private class Engine 
     {
         private enum GearType
         {
@@ -16,39 +20,17 @@ public class PlayerMovement : MonoBehaviour
             Gear3,
         }
 
+        /// <summary>
+        /// Copied over from editor. Scriptable object defining the gears
+        /// </summary>
         List<EditorObject.Gear> gears;
 
-        public float XScale { get { return xScale; } }
-        public float YScale { get { return yScale; } }
-        public float Theta { get { return theta; } }
-        public float Drag { get { return drag; } }
-        public float RotationSpeed { get { return rotationSpeed; } }
-        public float GraphTraversalSpeed { get { return graphTraversalSpeed; } }
-
-        /// <summary>
-        /// How fast to rotate the player when turning
-        /// </summary>
-        [SerializeField] private float rotationSpeed = 5;
-        /// <summary>
-        /// Amount of drag to apply to the tangent of movement
-        /// </summary>
-        [SerializeField] private float drag = 35;
-        /// <summary>
-        /// Angle off of inputDirection in which to start applying force upon forward vector aligning
-        /// </summary>
-        [SerializeField] private float theta = 20;
-        /// <summary>
-        /// Linear scale of velocity and acceleration
-        /// </summary>
-        [SerializeField] private float yScale = 20.0f;
-        /// <summary>
-        /// Linear scale of graph's x
-        /// </summary>
-        [SerializeField] private float xScale = 1;
-        /// <summary>
-        /// Speeds up the time it takes to get to full velocity on the graph
-        /// </summary>
-        [SerializeField] private float graphTraversalSpeed = 1;
+        public float XScale { get { return gears[(int)currentGear].XScale; } }
+        public float YScale { get { return gears[(int)currentGear].YScale; } }
+        public float Theta { get { return gears[(int)currentGear].Theta; } }
+        public float Drag { get { return gears[(int)currentGear].Drag; } }
+        public float RotationSpeed { get { return gears[(int)currentGear].RotationSpeed; } }
+        public float GraphTraversalSpeed { get { return gears[(int)currentGear].GraphTraversalSpeed; } }
 
 
         private GearType maxGear;
@@ -56,62 +38,57 @@ public class PlayerMovement : MonoBehaviour
         [SerializeField] private GearType currentGear;
 
 
-        public GearManager(List<EditorObject.Gear> gears)
+        public Engine(List<EditorObject.Gear> gears, PlayerHealth playerHealth)
         {
+            if (gears.Count != 3) 
+            {
+                Debug.LogError("Please check GameObject with PlayerMovement component to assure there are exactly 3 gears!");
+            }
             this.gears = gears;
             currentGear = GearType.Gear1;
+            playerHealth.barUpdated += HandleBarUpdate;
+            HandleBarUpdate(playerHealth);
         }
 
-        public void HandleBarUpdate(PlayerHealth playerHealth)
+        /// <summary>
+        /// Updates the maxGear when the player health updates its bars
+        /// </summary>
+        /// <param name="playerHealth">A reference to player health</param>
+        private void HandleBarUpdate(PlayerHealth playerHealth)
         {
             maxGear = (GearType)playerHealth.CurrentBar;
 
             if (currentGear > maxGear)
             {
                 currentGear = maxGear;
-                ShiftGear();
             }
         }
 
-
         /// <summary>
-        /// Changes the movement perameters of this object to match the current gear
+        /// Called on Update to handle player input
         /// </summary>
-        public void ShiftGear()
-        {
-            EditorObject.Gear gear = gears[(int)currentGear];
-
-            yScale = gear.YScale;
-            xScale = gear.XScale;
-            theta = gear.Theta;
-            drag = gear.Drag;
-            rotationSpeed = gear.RotationSpeed;
-            graphTraversalSpeed = gear.GraphTraversalSpeed;
-        }
-
         public void HandleGearInput()
         {
             if (Input.GetKeyDown(KeyCode.Q) && currentGear > GearType.Gear1)
             {
                 // Shift down
                 currentGear--;
-                ShiftGear();
 
             }
             else if (Input.GetKeyDown(KeyCode.E) && currentGear < maxGear)
             {
                 // Shift up
                 currentGear++;
-                ShiftGear();
             }
         }
 
     }
+
     #region Gears
 
     [SerializeField] private List<EditorObject.Gear> gears;
 
-    private GearManager gearManager = null;
+    private Engine gearManager = null;
     #endregion
 
     #region InputManagerStrings
@@ -126,19 +103,15 @@ public class PlayerMovement : MonoBehaviour
     /// Where to start at game start
     /// </summary>
     private Vector3 start_position = new Vector3(0, 1, 0);
+    /// <summary>
+    /// The motion functions defining the velocity and acceleration
+    /// </summary>
+    [SerializeField] private MotionFunctions motionFunction;
     #endregion
 
     #region UpdatedOnCycle
     private Vector3 inputDirection = Vector3.zero;
     private Vector3 currentAcceleration = Vector3.zero;
-    #endregion
-
-    #region Tweakable
-    /// <summary>
-    /// The motion functions defining the velocity and acceleration
-    /// </summary>
-    [SerializeField] private MotionFunctions motionFunction;
-
     #endregion
 
     #region Properties
@@ -155,18 +128,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
-        transform.position = start_position;
-        motionFunction = new Sigmoid1();
-        gearManager = new GearManager(gears);
-
         playerHealth = GetComponent<PlayerHealth>();
         if (playerHealth == null) 
         {
             Debug.LogWarning("Could not find PlayerHealth on object!");
-        }
-        else 
-        {
-            playerHealth.barUpdated += gearManager.HandleBarUpdate;
         }
 
         rigidBody = GetComponent<Rigidbody>();
@@ -179,8 +144,10 @@ public class PlayerMovement : MonoBehaviour
             // We will manually assign drag
             rigidBody.drag = 0;
         }
-        gearManager.HandleBarUpdate(playerHealth);
-        gearManager.ShiftGear();
+
+        transform.position = start_position;
+        motionFunction = new Sigmoid1();
+        gearManager = new Engine(gears, playerHealth);
     }
 
     // Update is called once per frame
