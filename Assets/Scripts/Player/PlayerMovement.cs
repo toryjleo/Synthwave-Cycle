@@ -183,21 +183,23 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateInputDir();
-
-        gearManager.HandleGearInput();
-
-        if (inputMagnitude != 0) 
+        if (GameStateController.InitialEnter && GameStateController.GameIsPlaying())
         {
-            Quaternion newRotation = Quaternion.LookRotation(inputDirection, transform.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * gearManager.RotationSpeed);
-        }
+            UpdateInputDir();
 
-        if ((Sigmoid1)motionFunction != null)
-        {
-            ((Sigmoid1)motionFunction).xScale = gearManager.XScale;
-        }
+            gearManager.HandleGearInput();
 
+            if (inputMagnitude != 0)
+            {
+                Quaternion newRotation = Quaternion.LookRotation(inputDirection, transform.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * gearManager.RotationSpeed);
+            }
+
+            if ((Sigmoid1)motionFunction != null)
+            {
+                ((Sigmoid1)motionFunction).xScale = gearManager.XScale;
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -296,5 +298,17 @@ public class PlayerMovement : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    /// <summary>Responds to the gun's NotifyShot event.</summary>
+    /// <param name="forceOfBulletOnBike">The force of the bullet to apply to the bike.</param>
+    public void ApplyShotForce(Vector3 forceOfBulletOnBike)
+    {
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.AddForce(new Vector3(forceOfBulletOnBike.x, forceOfBulletOnBike.y, forceOfBulletOnBike.z));
+        //velocity += acceleration * Time.fixedDeltaTime;
+
+        // Reset acceleration for next update
+        //acceleration = new Vector2(0, 0);
     }
 }

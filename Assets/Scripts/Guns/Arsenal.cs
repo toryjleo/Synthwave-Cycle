@@ -14,12 +14,28 @@ public class Arsenal : MonoBehaviour, IResettable
 
     private Dictionary<PlayerWeaponType, Weapon> weapons;
     private Weapon currentWeapon;
-    private BikeScript playerBike;
+    private PlayerMovement playerMovement;
 
     // Start is called before the first frame update
     void Start()
     {
-        Init();
+
+        playerMovement = GetComponentInParent<PlayerMovement>();
+
+        weapons = new Dictionary<PlayerWeaponType, Weapon>();
+        Weapon[] arsenalWeapons = this.GetComponentsInChildren<Weapon>();
+        //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
+        for (int i = 0; i < arsenalWeapons.Length; i++)
+        {
+            arsenalWeapons[i].gameObject.transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
+            arsenalWeapons[i].gameObject.SetActive(false);
+            weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
+
+            if (arsenalWeapons[i] is Gun)
+            {
+                ((Gun)arsenalWeapons[i]).BulletShot += playerMovement.ApplyShotForce;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -41,25 +57,32 @@ public class Arsenal : MonoBehaviour, IResettable
 #endif
     }
 
-    public void Init() 
+    private void FixedUpdate()
     {
-        playerBike = GetComponentInParent<BikeScript>();
 
-        weapons = new Dictionary<PlayerWeaponType, Weapon>();
-        Weapon[] arsenalWeapons = this.GetComponentsInChildren<Weapon>();
-        //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
-        for (int i = 0; i < arsenalWeapons.Length; i++)
+        if (GameStateController.GameIsPlaying())
         {
-            arsenalWeapons[i].gameObject.transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
-            arsenalWeapons[i].gameObject.SetActive(false);
-            weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
-
-            if (arsenalWeapons[i] is Gun)
+            // Handle primary and secondary fire inputs
+            if (Input.GetKey(KeyCode.Mouse0))
             {
-                ((Gun)arsenalWeapons[i]).BulletShot += playerBike.movementComponent.bl_ProcessCompleted;
+                //currentGun.Shoot(movementComponent.rb.velocity);
+                PrimaryFire(playerMovement.Velocity);
+            }
+            else
+            {
+                ReleasePrimaryFire(playerMovement.Velocity);
+            }
+
+            // Handle Secondary Fire Input
+            if (Input.GetKey(KeyCode.Mouse1))
+            {
+                SecondaryFire(playerMovement.Velocity);
+            }
+            else
+            {
+                ReleaseSecondaryFire(playerMovement.Velocity);
             }
         }
-
     }
 
     private void DisableAllWeapons() 

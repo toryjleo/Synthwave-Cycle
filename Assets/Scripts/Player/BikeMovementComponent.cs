@@ -147,17 +147,7 @@ public class BikeMovementComponent : MonoBehaviour, IResettable
         rb.AddForce(appliedForce);
     }
 
-    /// <summary>Responds to the gun'd NotifyShot event.</summary>
-    /// <param name="forceOfBulletOnBike">The force of the bullet to apply to the bike.</param>
-    public void bl_ProcessCompleted(Vector3 forceOfBulletOnBike)
-    {
-        Rigidbody rb = GetComponent<Rigidbody>();
-        rb.AddForce(new Vector3(forceOfBulletOnBike.x, forceOfBulletOnBike.y, forceOfBulletOnBike.z));
-        //velocity += acceleration * Time.fixedDeltaTime;
 
-        // Reset acceleration for next update
-        //acceleration = new Vector2(0, 0);
-    }
 
     public void ResetGameObject()
     {
