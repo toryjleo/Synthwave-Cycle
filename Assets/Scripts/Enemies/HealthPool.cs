@@ -5,7 +5,7 @@ using UnityEngine;
 public class HealthPool : SelfDespawn
 {
     // Visuals
-    private BikeScript player;
+    private PlayerMovement player;
     [SerializeField]
     private CircleRendererScript circleRenderer;
     public int Spawndistance = 800;
@@ -20,7 +20,6 @@ public class HealthPool : SelfDespawn
 
     private const int SPAWN_DISTANCE_INCREASE = 200;
     private const float PLAYER_HEAL_AMNT_INCREASE = 50f;
-    private const float PLAYER_SPEED_BOOST_AMNT = 10f;
 
     private float minScale;
     private float maxScale;
@@ -52,7 +51,7 @@ public class HealthPool : SelfDespawn
         GameStateController.resetting.notifyListenersEnter += HandleResettingEnter;
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        player = playerObject.GetComponent<BikeScript>();
+        player = playerObject.GetComponent<PlayerMovement>();
 
         currentSpawnDistance = INITIAL_SPAWN_DISTANCE;
         currentPlayerHealAmount = INITIAL_PLAYER_HEAL_AMNT;
@@ -189,7 +188,7 @@ public class HealthPool : SelfDespawn
     /// </summary>
     private void SpawnNewLocation() 
     {
-        this.transform.position = GetSpawnVector(player.ForwardVector(), SpawnAngleRandomNess, currentSpawnDistance);
+        this.transform.position = GetSpawnVector(player.transform.forward, SpawnAngleRandomNess, currentSpawnDistance);
 
         this.gameObject.SetActive(true);
     }
@@ -201,7 +200,6 @@ public class HealthPool : SelfDespawn
         {
             Health playerHealthRef = other.GetComponentInChildren<Health>();
             playerHealthRef.Heal(currentPlayerHealAmount);
-            player.SpeedBoost(PLAYER_SPEED_BOOST_AMNT);
             IncreaseHealthOutput();
             OnDespawn();
         }

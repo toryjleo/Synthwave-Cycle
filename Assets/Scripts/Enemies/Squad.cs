@@ -84,10 +84,10 @@ public abstract class Squad
 
     internal float GetHitPoints(GameObject target)
     {
-        BikeScript bikeScript = target.GetComponent<BikeScript>();
-        if(bikeScript != null) 
+        PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
+        if(playerHealth != null) 
         {
-            return bikeScript.Energy;
+            return playerHealth.HitPoints;
         }
         else
         {
