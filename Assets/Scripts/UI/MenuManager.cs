@@ -89,11 +89,13 @@ public class MenuManager : MonoBehaviour
   private void HandleLoadingFinishedEnter()
   {
     loadingFinishedScreen.SetActive(true);
+    StopTimeScale();
   }
 
   private void HandleLoadingFinishedExit()
   {
     loadingFinishedScreen.SetActive(false);
+    StartTimeScale();
   }
 
   private void HandlePausingFinishedEnter()

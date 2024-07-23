@@ -22,7 +22,7 @@ public class GameManager : EditorWindow
         // Make sure to keep a reference to player health
         if (playerhealth == null && GameStateController.GameIsPlaying())
         {
-            playerhealth = GameObject.FindObjectOfType<BikeScript>().GetComponentInChildren<PlayerHealth>();
+            playerhealth = GameObject.FindObjectOfType<PlayerHealth>();
             if (playerhealth == null) 
             {
                 Debug.LogError("Player health not found in level!");

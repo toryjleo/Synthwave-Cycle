@@ -22,7 +22,6 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     public Rigidbody rb;
     public Gun myGun;
     public Health hp;
-    public List<Condition> activeConditions = new List<Condition>();
 
     public float StartingHP;
 
@@ -44,12 +43,6 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     public override void Update()
     {
         base.Update();
-
-        //update conditions
-        foreach (Condition cond in activeConditions)
-        {
-            cond.Tick();
-        }
 
         //Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
@@ -233,18 +226,6 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
         RespawnEvent?.Invoke();
         rb.detectCollisions = true;
     }// this restets the enemies HP and sets them to alive;
-
-    /// <summary>
-    /// This method applies a condition to the AI (assuming it doesn't already have the condition)
-    /// </summary>
-    public void ApplyCondition(Condition cond)
-    {
-        if(!activeConditions.Contains(cond))
-        {
-            cond.SetHostAi(this);
-            activeConditions.Add(cond);
-        }
-    }
 
     public Health CurrentHP()
     {

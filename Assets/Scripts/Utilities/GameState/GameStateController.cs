@@ -37,7 +37,12 @@ public class GameStateController : MonoBehaviour
     public static Resetting resetting;
     public static LevelComplete levelComplete;
 
-    private bool initialEnter = false;
+    private static bool initialEnter = false;
+
+    public static bool InitialEnter 
+    {
+        get => initialEnter;
+    }
 
 
 
