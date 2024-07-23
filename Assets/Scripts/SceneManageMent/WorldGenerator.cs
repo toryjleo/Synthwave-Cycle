@@ -23,8 +23,8 @@ public static class WorldBounds
     }
 
 
-    public static Vector2 worldBoundsHorizontalMinMax;
-    public static Vector2 worldBoundsVericalMinMax;
+    public static Vector2 worldBoundsHorizontalMinMax = new Vector2(-100, 100);
+    public static Vector2 worldBoundsVericalMinMax = new Vector2(-100, 100);
 
 }
 

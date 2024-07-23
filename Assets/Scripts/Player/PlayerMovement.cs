@@ -106,8 +106,6 @@ public class PlayerMovement : MonoBehaviour
     /// The motion functions defining the velocity and acceleration
     /// </summary>
     [SerializeField] private MotionFunctions motionFunction;
-
-    [SerializeField] private bool isMainScene = true;
     #endregion
 
     #region UpdatedAtAwake

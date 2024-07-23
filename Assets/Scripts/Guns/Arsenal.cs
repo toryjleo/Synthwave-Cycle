@@ -14,6 +14,7 @@ public class Arsenal : MonoBehaviour, IResettable
 
     private Dictionary<PlayerWeaponType, Weapon> weapons;
     private Weapon currentWeapon;
+    private Turret turret = null;
     private PlayerMovement playerMovement;
 
     // Start is called before the first frame update
@@ -24,12 +25,24 @@ public class Arsenal : MonoBehaviour, IResettable
 
         weapons = new Dictionary<PlayerWeaponType, Weapon>();
         Weapon[] arsenalWeapons = this.GetComponentsInChildren<Weapon>();
+
+
         //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
         for (int i = 0; i < arsenalWeapons.Length; i++)
         {
-            arsenalWeapons[i].gameObject.transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
-            arsenalWeapons[i].gameObject.SetActive(false);
-            weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
+            // Disable all weapons except for turret
+            if (arsenalWeapons[i].GetType() == typeof(Turret)) 
+            {
+                arsenalWeapons[i].gameObject.SetActive(true);
+                turret = arsenalWeapons[i] as Turret;
+            }
+            else 
+            {
+                arsenalWeapons[i].gameObject.SetActive(false);
+                // Add weapon to dictionary
+                weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
+            }
+            
 
             if (arsenalWeapons[i] is Gun)
             {
@@ -65,7 +78,6 @@ public class Arsenal : MonoBehaviour, IResettable
             // Handle primary and secondary fire inputs
             if (Input.GetKey(KeyCode.Mouse0))
             {
-                //currentGun.Shoot(movementComponent.rb.velocity);
                 PrimaryFire(playerMovement.Velocity);
             }
             else
@@ -97,6 +109,8 @@ public class Arsenal : MonoBehaviour, IResettable
     //Tells the current gun to fire
     public void PrimaryFire(Vector3 initialVelocity) 
     {
+        turret.PrimaryFire(initialVelocity);
+
         if (currentWeapon != null)
         {
             currentWeapon.PrimaryFire(initialVelocity);
@@ -109,6 +123,7 @@ public class Arsenal : MonoBehaviour, IResettable
     /// <param name="initialVelocity">Current velocity of the bike</param>
     public void ReleasePrimaryFire(Vector3 initialVelocity)
     {
+        turret.ReleasePrimaryFire(initialVelocity);
         if (currentWeapon != null)
         {
             currentWeapon.ReleasePrimaryFire(initialVelocity);

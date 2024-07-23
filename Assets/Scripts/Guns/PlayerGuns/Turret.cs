@@ -8,8 +8,10 @@ using UnityEngine;
 /// </summary>
 public class Turret : Gun
 {
-    [SerializeField] private bool isMainScene = true;
     [SerializeField] private float distanceToBulletSpawn = .2f;
+    [SerializeField] private GameObject crossHair;
+
+    Plane plane = new Plane(Vector3.up, 0);
 
     // Start is called before the first frame update
     void Start()
@@ -22,19 +24,22 @@ public class Turret : Gun
     {
         if (GameStateController.CanRunGameplay)
         {
+            PlaneCheck();
+        }
+    }
 
-
-            Vector3 mouse = Vector3.zero;
-            // Logic for Having turret track the Mouse. 
-            Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(r, out RaycastHit raycastHit))
-            {
-                mouse = raycastHit.point;
-
-                mouse -= this.transform.position;
-            }
-
-            var angle = Mathf.Atan2(mouse.x, mouse.z) * Mathf.Rad2Deg;
+    private void PlaneCheck() 
+    {
+        float distance;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (plane.Raycast(ray, out distance))
+        {
+            Vector3 mouseWorldPos = ray.GetPoint(distance);
+            crossHair.transform.position = new Vector3(mouseWorldPos.x,
+                                                           transform.position.y,
+                                                           mouseWorldPos.z);
+            Vector3 playerToMouse = mouseWorldPos - transform.position;
+            var angle = Mathf.Atan2(playerToMouse.x, playerToMouse.z) * Mathf.Rad2Deg;
 
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         }
