@@ -60,7 +60,7 @@ public class Arsenal : MonoBehaviour, IResettable
     private void FixedUpdate()
     {
 
-        if (GameStateController.GameIsPlaying())
+        if (GameStateController.CanRunGameplay)
         {
             // Handle primary and secondary fire inputs
             if (Input.GetKey(KeyCode.Mouse0))
