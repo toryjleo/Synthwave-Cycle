@@ -34,7 +34,7 @@ namespace Assets.Scripts.Bullets
         }
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.tag == "PlayerHealth")
+            if (other.gameObject.tag == "Player")
             {
                 DealDamageAndDespawn(other.gameObject);
             }
