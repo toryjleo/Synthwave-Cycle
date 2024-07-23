@@ -306,9 +306,5 @@ public class PlayerMovement : MonoBehaviour
     {
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.AddForce(new Vector3(forceOfBulletOnBike.x, forceOfBulletOnBike.y, forceOfBulletOnBike.z));
-        //velocity += acceleration * Time.fixedDeltaTime;
-
-        // Reset acceleration for next update
-        //acceleration = new Vector2(0, 0);
     }
 }
