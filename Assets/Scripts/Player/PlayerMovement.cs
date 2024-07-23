@@ -106,6 +106,8 @@ public class PlayerMovement : MonoBehaviour
     /// The motion functions defining the velocity and acceleration
     /// </summary>
     [SerializeField] private MotionFunctions motionFunction;
+
+    [SerializeField] private bool isMainScene = true;
     #endregion
 
     #region UpdatedAtAwake
@@ -183,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameStateController.InitialEnter && GameStateController.GameIsPlaying())
+        if (!isMainScene ||(GameStateController.InitialEnter && GameStateController.GameIsPlaying()))
         {
             UpdateInputDir();
 
