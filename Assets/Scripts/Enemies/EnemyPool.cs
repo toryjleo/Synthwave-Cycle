@@ -88,6 +88,14 @@ public class EnemyPool : MonoBehaviour
         //Debug.Log("Despawned, Size of queue: " + bulletQueue.Count);
     }
 
+
+    /// <summary>
+    /// Spawns in a single enemy AI based on the given tag
+    /// </summary>
+    /// <param name="tag">Which enemy type to spawn</param>
+    /// <param name="position">Spawn location for the enemy</param>
+    /// <param name="playerLocation">Player's current location, the direction the enemy will spawn facing</param>
+    /// <returns></returns>
     public Ai SpawnFromPool(Enemy tag, Vector3 position, Vector3 playerLocation)
     {
         if (!poolDictionary.ContainsKey(tag))
