@@ -8,8 +8,10 @@ using UnityEngine;
 /// </summary>
 public class Turret : Gun
 {
-    [SerializeField] private float distanceToBulletSpawn = .2f;
+    private float distanceToBulletSpawn = .9f;
     [SerializeField] private GameObject crossHair;
+
+    bool usingMouse = true;
 
     Plane plane = new Plane(Vector3.up, 0);
 
@@ -20,12 +22,32 @@ public class Turret : Gun
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (GameStateController.CanRunGameplay)
         {
+            UpdateTurretDirection();
+        }
+    }
+
+    public override void Init()
+    {
+        base.Init();
+        lastFired = 0;
+        fireRate = 10;
+    }
+
+    private void UpdateTurretDirection()
+    {
+        if (usingMouse)
+        {
             PlaneCheck();
         }
+        else 
+        {
+            // TODO: Implement controller input
+        }
+
     }
 
     private void PlaneCheck() 
@@ -35,21 +57,15 @@ public class Turret : Gun
         if (plane.Raycast(ray, out distance))
         {
             Vector3 mouseWorldPos = ray.GetPoint(distance);
+            Debug.Log(mouseWorldPos);
             crossHair.transform.position = new Vector3(mouseWorldPos.x,
                                                            transform.position.y,
-                                                           mouseWorldPos.z);
+                                                        mouseWorldPos.z);
             Vector3 playerToMouse = mouseWorldPos - transform.position;
             var angle = Mathf.Atan2(playerToMouse.x, playerToMouse.z) * Mathf.Rad2Deg;
 
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         }
-    }
-
-    public override void Init()
-    {
-        base.Init();
-        lastFired = 0;
-        fireRate = 10;
     }
 
     public override PlayerWeaponType GetPlayerWeaponType()
