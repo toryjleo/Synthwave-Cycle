@@ -23,8 +23,8 @@ public class Turret : Gun
     #endregion
 
     #region ControllerVariables
-    private float reticleLeeway = 1f;
-
+    private float crossHairLeeway = 1f;
+    private float distBehindPlayerToFollow = 1.5f;
     #endregion
 
     #region Debug
@@ -95,21 +95,29 @@ public class Turret : Gun
         {
             // Get height of screen
             Vector3 bottomScreenWorldPos = ray.GetPoint(distance);
-            float screenToWorldHeight = Mathf.Abs(transform.position.x - bottomScreenWorldPos.x) - reticleLeeway;
+            float screenToWorldHeight = Mathf.Abs(transform.position.x - bottomScreenWorldPos.x) - crossHairLeeway;
 
             // Get controller input
             Vector2 controllerInput = new Vector2(Input.GetAxis(RIGHT_STICK_HORIZONTAL),
                                       Input.GetAxis(RIGHT_STICK_VERTICAL));
-            Vector3 desiredDirection = new Vector3(-controllerInput.y, 0, -controllerInput.x);
-            float magnitude = Mathf.Clamp(desiredDirection.magnitude, 0, 1);
-            Vector3 desiredDirectionNormalized = Vector3.Normalize(desiredDirection);
-            Debug.DrawLine(transform.position, transform.position + desiredDirectionNormalized);
 
-            // Move crosshair in to position
-            Vector3 crossHairPos = transform.position + (magnitude * screenToWorldHeight * desiredDirectionNormalized);
-            crossHair.transform.position = new Vector3(crossHairPos.x,
-                                            transform.position.y,
-                                            crossHairPos.z);
+            if (controllerInput != Vector2.zero) 
+            {
+                Vector3 desiredDirection = new Vector3(-controllerInput.y, 0, -controllerInput.x);
+                float magnitude = Mathf.Clamp(desiredDirection.magnitude, 0, 1);
+                Vector3 desiredDirectionNormalized = Vector3.Normalize(desiredDirection);
+                Debug.DrawLine(transform.position, transform.position + desiredDirectionNormalized);
+
+                // Move crosshair in to position
+                Vector3 crossHairPos = transform.position + (magnitude * screenToWorldHeight * desiredDirectionNormalized);
+                crossHair.transform.position = new Vector3(crossHairPos.x,
+                                                transform.position.y,
+                                                crossHairPos.z);
+            }
+            else 
+            {
+                crossHair.transform.position = transform.position - (transform.parent.parent.forward * distBehindPlayerToFollow);
+            }
 
 #if UNITY_EDITOR
             circleRenderer.DrawCircle(transform.position, 20, transform.position.x - bottomScreenWorldPos.x);
@@ -118,6 +126,7 @@ public class Turret : Gun
             //var angle = Mathf.Atan2(playerToMouse.x, playerToMouse.z) * Mathf.Rad2Deg;
 
             //transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+            transform.LookAt(crossHair.transform.position); 
         }
 
     }
