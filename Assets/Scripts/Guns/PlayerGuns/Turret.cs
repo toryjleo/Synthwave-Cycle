@@ -57,9 +57,8 @@ public class Turret : Gun
         if (plane.Raycast(ray, out distance))
         {
             Vector3 mouseWorldPos = ray.GetPoint(distance);
-            Debug.Log(mouseWorldPos);
             crossHair.transform.position = new Vector3(mouseWorldPos.x,
-                                                           transform.position.y,
+                                                        transform.position.y,
                                                         mouseWorldPos.z);
             Vector3 playerToMouse = mouseWorldPos - transform.position;
             var angle = Mathf.Atan2(playerToMouse.x, playerToMouse.z) * Mathf.Rad2Deg;
