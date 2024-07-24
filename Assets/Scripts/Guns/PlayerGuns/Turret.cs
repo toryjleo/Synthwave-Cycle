@@ -33,10 +33,15 @@ public class Turret : Gun
     private float inputMagnitude = 0;
     #endregion
 
+    #region Debug
+    private CircleRendererScript circleRenderer;
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
         infiniteAmmo = true;
+        circleRenderer = GetComponent<CircleRendererScript>();
     }
 
     private void Update()
@@ -55,6 +60,10 @@ public class Turret : Gun
         {
             usingMouse = true;
         }
+
+#if UNITY_EDITOR
+        circleRenderer.DrawCircle(transform.position, 20, 1);
+#endif
     }
 
     // Update is called once per frame
@@ -77,7 +86,6 @@ public class Turret : Gun
     {
         Debug.Log(RIGHT_STICK_HORIZONTAL + ": " + Input.GetAxis(RIGHT_STICK_HORIZONTAL));
         Debug.Log(RIGHT_STICK_VERTICAL + ": " + Input.GetAxis(RIGHT_STICK_VERTICAL));
-
 
         if (usingMouse)
         {
