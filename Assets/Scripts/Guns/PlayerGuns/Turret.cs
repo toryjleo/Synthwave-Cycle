@@ -23,14 +23,8 @@ public class Turret : Gun
     #endregion
 
     #region ControllerVariables
-    /// <summary>
-    /// Normalized direction of input
-    /// </summary>
-    private Vector3 inputDirection = Vector3.zero;
-    /// <summary>
-    /// Magnitude of the non-normalized inputDirection
-    /// </summary>
-    private float inputMagnitude = 0;
+    private float reticleLeeway = 1f;
+
     #endregion
 
     #region Debug
@@ -60,10 +54,6 @@ public class Turret : Gun
         {
             usingMouse = true;
         }
-
-#if UNITY_EDITOR
-        circleRenderer.DrawCircle(transform.position, 20, 1);
-#endif
     }
 
     // Update is called once per frame
@@ -84,12 +74,10 @@ public class Turret : Gun
 
     private void UpdateTurretDirection()
     {
-        Debug.Log(RIGHT_STICK_HORIZONTAL + ": " + Input.GetAxis(RIGHT_STICK_HORIZONTAL));
-        Debug.Log(RIGHT_STICK_VERTICAL + ": " + Input.GetAxis(RIGHT_STICK_VERTICAL));
 
         if (usingMouse)
         {
-            PlaneCheck();
+            Mouse();
         }
         else 
         {
@@ -100,14 +88,41 @@ public class Turret : Gun
 
     private void Controller() 
     {
-        // Get direction right stick is pointing,
-        /*
-        Vector3 desiredDirection = new Vector3(verticalAxis, 0, -horizontalAxis);
-        float magnitude = Mathf.Clamp(desiredDirection.magnitude, 0, 1);
-        Vector3 desiredDirectionNormalized = Vector3.Normalize(desiredDirection);*/
+
+        float distance;
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0f, 0f, 0f));
+        if (plane.Raycast(ray, out distance))
+        {
+            // Get height of screen
+            Vector3 bottomScreenWorldPos = ray.GetPoint(distance);
+            float screenToWorldHeight = Mathf.Abs(transform.position.x - bottomScreenWorldPos.x) - reticleLeeway;
+
+            // Get controller input
+            Vector2 controllerInput = new Vector2(Input.GetAxis(RIGHT_STICK_HORIZONTAL),
+                                      Input.GetAxis(RIGHT_STICK_VERTICAL));
+            Vector3 desiredDirection = new Vector3(-controllerInput.y, 0, -controllerInput.x);
+            float magnitude = Mathf.Clamp(desiredDirection.magnitude, 0, 1);
+            Vector3 desiredDirectionNormalized = Vector3.Normalize(desiredDirection);
+            Debug.DrawLine(transform.position, transform.position + desiredDirectionNormalized);
+
+            // Move crosshair in to position
+            Vector3 crossHairPos = transform.position + (magnitude * screenToWorldHeight * desiredDirectionNormalized);
+            crossHair.transform.position = new Vector3(crossHairPos.x,
+                                            transform.position.y,
+                                            crossHairPos.z);
+
+#if UNITY_EDITOR
+            circleRenderer.DrawCircle(transform.position, 20, transform.position.x - bottomScreenWorldPos.x);
+#endif
+            //Vector3 playerToMouse = mouseWorldPos - transform.position;
+            //var angle = Mathf.Atan2(playerToMouse.x, playerToMouse.z) * Mathf.Rad2Deg;
+
+            //transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+        }
+
     }
 
-    private void PlaneCheck() 
+    private void Mouse() 
     {
         float distance;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
