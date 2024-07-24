@@ -78,6 +78,7 @@ public class DangerLevel : MonoBehaviour, IResettable
     {
         dangerLevel = START_LEVEL;
         minimumThreshold = START_LEVEL;
+        maximumThreshold = int.MaxValue;
         StartTimer();
     }
 
