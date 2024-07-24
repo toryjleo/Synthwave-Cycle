@@ -9,6 +9,8 @@ using UnityEngine;
 /// </summary>
 public class Arsenal : MonoBehaviour, IResettable
 {
+    private const string FIRE1 = "Fire1";
+
     [SerializeField]
     public AudioSource weaponPickupSFX;
 
@@ -76,7 +78,7 @@ public class Arsenal : MonoBehaviour, IResettable
         if (GameStateController.CanRunGameplay)
         {
             // Handle primary and secondary fire inputs
-            if (Input.GetKey(KeyCode.Mouse0))
+            if (Input.GetAxis(FIRE1) > .1f)
             {
                 PrimaryFire(playerMovement.Velocity);
             }
