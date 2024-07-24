@@ -15,10 +15,23 @@ public class Turret : Gun
     [SerializeField] private GameObject crossHair;
 
     [SerializeField] private bool usingMouse = true;
+
+    #region MouseVariables
     private Vector3 lastMouseCoordinate = Vector3.zero;
     private float minMouseMovementMagnitudeSqr = 4;
-
     Plane plane = new Plane(Vector3.up, 0);
+    #endregion
+
+    #region ControllerVariables
+    /// <summary>
+    /// Normalized direction of input
+    /// </summary>
+    private Vector3 inputDirection = Vector3.zero;
+    /// <summary>
+    /// Magnitude of the non-normalized inputDirection
+    /// </summary>
+    private float inputMagnitude = 0;
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -62,8 +75,8 @@ public class Turret : Gun
 
     private void UpdateTurretDirection()
     {
-        //Debug.Log(RIGHT_STICK_HORIZONTAL + ": " + Input.GetAxis(RIGHT_STICK_HORIZONTAL));
-        //Debug.Log(RIGHT_STICK_VERTICAL + ": " + Input.GetAxis(RIGHT_STICK_VERTICAL));
+        Debug.Log(RIGHT_STICK_HORIZONTAL + ": " + Input.GetAxis(RIGHT_STICK_HORIZONTAL));
+        Debug.Log(RIGHT_STICK_VERTICAL + ": " + Input.GetAxis(RIGHT_STICK_VERTICAL));
 
 
         if (usingMouse)
@@ -72,9 +85,18 @@ public class Turret : Gun
         }
         else 
         {
-            // TODO: Implement controller input
+            Controller();
         }
 
+    }
+
+    private void Controller() 
+    {
+        // Get direction right stick is pointing,
+        /*
+        Vector3 desiredDirection = new Vector3(verticalAxis, 0, -horizontalAxis);
+        float magnitude = Mathf.Clamp(desiredDirection.magnitude, 0, 1);
+        Vector3 desiredDirectionNormalized = Vector3.Normalize(desiredDirection);*/
     }
 
     private void PlaneCheck() 
