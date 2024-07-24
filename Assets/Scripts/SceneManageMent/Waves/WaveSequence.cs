@@ -46,7 +46,8 @@ namespace EditorObject
                 if (sequence[index].IsOverThreshold())
                 {
                     currentWave = index;
-                    DangerLevel.Instance.SetDlThreashold(sequence[index].DLThreshold);
+                    int maxThreshold = (index < (sequence.Count - 1)) ? sequence[index + 1].DLThreshold : int.MaxValue;
+                    DangerLevel.Instance.SetDlThreashold(sequence[index].DLThreshold, maxThreshold);
                     //Log the wave + 1 because the index starts at 0, but the tracks start at 1
                     Debug.Log("Current Wave: " + (currentWave + 1) + "/" + (sequence.Count) + "\nDanger Level: " + DangerLevel.Instance.GetDangerLevel());
                     Debug.Log("DlThreshold: " + sequence[index].DLThreshold);

@@ -12,10 +12,17 @@ public class DangerLevel : MonoBehaviour, IResettable
     public Timer dangerTimer;
     public int dangerLevel;
 
-    private int currentDlThreashold;
+    private int minimumThreshold;
+    private int maximumThreshold;
 
     const int DECAY_TICK_MS = 3000;
     const int START_LEVEL = 1;
+
+    public float PercentProgress 
+    {
+        get => Mathf.Clamp01((float)(dangerLevel - minimumThreshold) / (float)(maximumThreshold - minimumThreshold));
+    }
+
 
     private void Awake()
     {
@@ -25,7 +32,8 @@ public class DangerLevel : MonoBehaviour, IResettable
     private void Start()
     {
         dangerLevel = START_LEVEL;
-        currentDlThreashold = START_LEVEL;
+        minimumThreshold = START_LEVEL;
+        maximumThreshold = int.MaxValue;
         StartTimer();
     }
 
@@ -47,9 +55,9 @@ public class DangerLevel : MonoBehaviour, IResettable
     private void XTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
         dangerLevel--;
-        if (dangerLevel < currentDlThreashold)
+        if (dangerLevel < minimumThreshold)
         {
-            dangerLevel = currentDlThreashold;
+            dangerLevel = minimumThreshold;
         }
     }
 
@@ -69,13 +77,15 @@ public class DangerLevel : MonoBehaviour, IResettable
     public void ResetGameObject()
     {
         dangerLevel = START_LEVEL;
-        currentDlThreashold = START_LEVEL;
+        minimumThreshold = START_LEVEL;
+        maximumThreshold = int.MaxValue;
         StartTimer();
     }
 
-    public void SetDlThreashold(int newMinimum)
+    public void SetDlThreashold(int newMinimum, int newMaximum = int.MaxValue)
     {
-        currentDlThreashold = newMinimum;
+        minimumThreshold = newMinimum;
+        maximumThreshold = newMaximum;
     }
 
 }
