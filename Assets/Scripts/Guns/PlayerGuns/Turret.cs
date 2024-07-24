@@ -8,10 +8,15 @@ using UnityEngine;
 /// </summary>
 public class Turret : Gun
 {
+    private const string RIGHT_STICK_HORIZONTAL = "RightStickHorizontal";
+    private const string RIGHT_STICK_VERTICAL = "RightStickVertical";
+
     private float distanceToBulletSpawn = .9f;
     [SerializeField] private GameObject crossHair;
 
-    bool usingMouse = true;
+    [SerializeField] private bool usingMouse = true;
+    private Vector3 lastMouseCoordinate = Vector3.zero;
+    private float minMouseMovementMagnitudeSqr = 4;
 
     Plane plane = new Plane(Vector3.up, 0);
 
@@ -19,6 +24,24 @@ public class Turret : Gun
     void Start()
     {
         infiniteAmmo = true;
+    }
+
+    private void Update()
+    {
+        Vector3 mouseDelta = Input.mousePosition - lastMouseCoordinate;
+        lastMouseCoordinate = Input.mousePosition;
+
+        // Swap between mouse and controller input
+        Vector2 controllerInput = new Vector2(Input.GetAxis(RIGHT_STICK_HORIZONTAL), Input.GetAxis(RIGHT_STICK_VERTICAL));
+
+        if (controllerInput != Vector2.zero) 
+        {
+            usingMouse = false;
+        }
+        else if (mouseDelta.sqrMagnitude > minMouseMovementMagnitudeSqr) 
+        {
+            usingMouse = true;
+        }
     }
 
     // Update is called once per frame
@@ -39,6 +62,10 @@ public class Turret : Gun
 
     private void UpdateTurretDirection()
     {
+        //Debug.Log(RIGHT_STICK_HORIZONTAL + ": " + Input.GetAxis(RIGHT_STICK_HORIZONTAL));
+        //Debug.Log(RIGHT_STICK_VERTICAL + ": " + Input.GetAxis(RIGHT_STICK_VERTICAL));
+
+
         if (usingMouse)
         {
             PlaneCheck();
