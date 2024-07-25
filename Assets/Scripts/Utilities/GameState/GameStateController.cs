@@ -44,6 +44,22 @@ public class GameStateController : MonoBehaviour
         get => initialEnter;
     }
 
+    /// <summary>
+    /// Check if this class is instantiated
+    /// </summary>
+    public static bool StateExists 
+    {
+        get => state != null;
+    }
+
+    /// <summary>
+    /// Check if gameplay code can be called
+    /// </summary>
+    public static bool CanRunGameplay 
+    {
+        get => (!StateExists || (InitialEnter && GameIsPlaying()));
+    }
+
 
 
     #region static functions
@@ -60,7 +76,6 @@ public class GameStateController : MonoBehaviour
         }
     }
 
-    // TODO: Remove when you have a game paused and playing state. Change logic to use events
     public static bool GameIsPlaying()
     {
         if (instance) // Covering case where Gamestatecontroller gets called before it is initialized

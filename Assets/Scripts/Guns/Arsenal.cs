@@ -9,12 +9,17 @@ using UnityEngine;
 /// </summary>
 public class Arsenal : MonoBehaviour, IResettable
 {
+    #region InputManagerStrings
+    private const string FIRE1 = "Fire1";
+    #endregion
+
     [SerializeField]
     public AudioSource weaponPickupSFX;
 
     private Dictionary<PlayerWeaponType, Weapon> weapons;
-    private Weapon currentWeapon;
-    private PlayerMovement playerMovement;
+    private Weapon currentWeapon = null;
+    private Turret turret = null;
+    private PlayerMovement playerMovement = null;
 
     // Start is called before the first frame update
     void Start()
@@ -24,12 +29,24 @@ public class Arsenal : MonoBehaviour, IResettable
 
         weapons = new Dictionary<PlayerWeaponType, Weapon>();
         Weapon[] arsenalWeapons = this.GetComponentsInChildren<Weapon>();
-        //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
+
+        // iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
         for (int i = 0; i < arsenalWeapons.Length; i++)
         {
-            arsenalWeapons[i].gameObject.transform.RotateAround(arsenalWeapons[i].transform.position, arsenalWeapons[i].transform.up, 180f);
-            arsenalWeapons[i].gameObject.SetActive(false);
+            // Disable all weapons except for turret
+            if (arsenalWeapons[i].GetPlayerWeaponType() == PlayerWeaponType.PowerGlove) 
+            {
+                arsenalWeapons[i].gameObject.SetActive(true);
+                turret = arsenalWeapons[i] as Turret;
+            }
+            else 
+            {
+                arsenalWeapons[i].gameObject.SetActive(false);
+            }
+
+            // Add weapon to dictionary
             weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
+
 
             if (arsenalWeapons[i] is Gun)
             {
@@ -41,7 +58,7 @@ public class Arsenal : MonoBehaviour, IResettable
     // Update is called once per frame
     void Update()
     {
-#if DEBUG
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.L))
         {
             EquipGun(PlayerWeaponType.DefaultGun);
@@ -60,12 +77,11 @@ public class Arsenal : MonoBehaviour, IResettable
     private void FixedUpdate()
     {
 
-        if (GameStateController.GameIsPlaying())
+        if (GameStateController.CanRunGameplay)
         {
             // Handle primary and secondary fire inputs
-            if (Input.GetKey(KeyCode.Mouse0))
+            if (Input.GetAxis(FIRE1) > .1f)
             {
-                //currentGun.Shoot(movementComponent.rb.velocity);
                 PrimaryFire(playerMovement.Velocity);
             }
             else
@@ -85,18 +101,26 @@ public class Arsenal : MonoBehaviour, IResettable
         }
     }
 
+    /// <summary>
+    /// Disable all weapons except for turret
+    /// </summary>
     private void DisableAllWeapons() 
     {
         currentWeapon = null;
         foreach (Weapon weapon in weapons.Values)
         {
-            weapon.gameObject.SetActive(false);
+            if (weapon != turret) 
+            {
+                weapon.gameObject.SetActive(false);
+            }
         }
     }
 
     //Tells the current gun to fire
     public void PrimaryFire(Vector3 initialVelocity) 
     {
+        turret.PrimaryFire(initialVelocity);
+
         if (currentWeapon != null)
         {
             currentWeapon.PrimaryFire(initialVelocity);
@@ -109,6 +133,7 @@ public class Arsenal : MonoBehaviour, IResettable
     /// <param name="initialVelocity">Current velocity of the bike</param>
     public void ReleasePrimaryFire(Vector3 initialVelocity)
     {
+        turret.ReleasePrimaryFire(initialVelocity);
         if (currentWeapon != null)
         {
             currentWeapon.ReleasePrimaryFire(initialVelocity);
