@@ -101,12 +101,18 @@ public class Arsenal : MonoBehaviour, IResettable
         }
     }
 
+    /// <summary>
+    /// Disable all weapons except for turret
+    /// </summary>
     private void DisableAllWeapons() 
     {
         currentWeapon = null;
         foreach (Weapon weapon in weapons.Values)
         {
-            weapon.gameObject.SetActive(false);
+            if (weapon != turret) 
+            {
+                weapon.gameObject.SetActive(false);
+            }
         }
     }
 
