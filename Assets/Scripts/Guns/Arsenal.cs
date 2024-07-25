@@ -9,15 +9,17 @@ using UnityEngine;
 /// </summary>
 public class Arsenal : MonoBehaviour, IResettable
 {
+    #region InputManagerStrings
     private const string FIRE1 = "Fire1";
+    #endregion
 
     [SerializeField]
     public AudioSource weaponPickupSFX;
 
     private Dictionary<PlayerWeaponType, Weapon> weapons;
-    private Weapon currentWeapon;
+    private Weapon currentWeapon = null;
     private Turret turret = null;
-    private PlayerMovement playerMovement;
+    private PlayerMovement playerMovement = null;
 
     // Start is called before the first frame update
     void Start()
@@ -28,12 +30,11 @@ public class Arsenal : MonoBehaviour, IResettable
         weapons = new Dictionary<PlayerWeaponType, Weapon>();
         Weapon[] arsenalWeapons = this.GetComponentsInChildren<Weapon>();
 
-
-        //iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
+        // iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
         for (int i = 0; i < arsenalWeapons.Length; i++)
         {
             // Disable all weapons except for turret
-            if (arsenalWeapons[i].GetType() == typeof(Turret)) 
+            if (arsenalWeapons[i].GetPlayerWeaponType() == PlayerWeaponType.PowerGlove) 
             {
                 arsenalWeapons[i].gameObject.SetActive(true);
                 turret = arsenalWeapons[i] as Turret;
@@ -41,10 +42,11 @@ public class Arsenal : MonoBehaviour, IResettable
             else 
             {
                 arsenalWeapons[i].gameObject.SetActive(false);
-                // Add weapon to dictionary
-                weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
             }
-            
+
+            // Add weapon to dictionary
+            weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
+
 
             if (arsenalWeapons[i] is Gun)
             {
@@ -56,7 +58,7 @@ public class Arsenal : MonoBehaviour, IResettable
     // Update is called once per frame
     void Update()
     {
-#if DEBUG
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.L))
         {
             EquipGun(PlayerWeaponType.DefaultGun);

@@ -10,6 +10,7 @@ public enum PlayerWeaponType
     Shotty,
     DefaultGun, // Not fully implemented
     VulkanV64AutoCannons, // Not fully implemented
+    PowerGlove,
     INVALID
 }
 

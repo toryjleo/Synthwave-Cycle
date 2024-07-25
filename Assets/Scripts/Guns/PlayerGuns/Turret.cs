@@ -4,26 +4,54 @@ using UnityEngine;
 
 
 /// <summary>
-/// This Script Controlls the turret attached to the turret bike. It requires a GameObject for the muzzle and keeps track of the mouse coordinates. 
+/// This Script Controlls the turret attached to the turret bike. It requires a GameObject for the muzzle and keeps 
+/// track of the mouse coordinates.
 /// </summary>
 public class Turret : Gun
 {
+    private class InputManager 
+    {
+    
+    }
+
+    #region InputManagerStrings
     private const string RIGHT_STICK_HORIZONTAL = "RightStickHorizontal";
     private const string RIGHT_STICK_VERTICAL = "RightStickVertical";
+    #endregion
 
-    private float distanceToBulletSpawn = .9f;
+    /// <summary>
+    /// Child gameObject with a SpriteRenderer of a crosshair
+    /// </summary>
     [SerializeField] private GameObject crossHair;
-
-    [SerializeField] private bool usingMouse = true;
+    /// <summary>
+    /// Tracking if we are currently using mouse input
+    /// </summary>
+    [SerializeField] private bool isUsingMouse = true;
+    /// <summary>
+    /// How far to spawn bullets down the forward vector
+    /// </summary>
+    private float distanceToBulletSpawn = .9f;
+    /// <summary>
+    /// Plane used to detect raycast hits from camera
+    /// </summary>
+    Plane plane = new Plane(Vector3.up, 0);
 
     #region MouseVariables
     private Vector3 lastMouseCoordinate = Vector3.zero;
+    /// <summary>
+    /// How far mouse must move to switch to using mouse input
+    /// </summary>
     private float minMouseMovementMagnitudeSqr = 4;
-    Plane plane = new Plane(Vector3.up, 0);
     #endregion
 
     #region ControllerVariables
-    private float crossHairLeeway = 1f;
+    /// <summary>
+    /// Used to keep the crosshair on screen for controller 
+    /// </summary>
+    private float maxCrosshairDistAcrossScreen = .95f;
+    /// <summary>
+    /// How far to maintain the crosshair behind player in world units
+    /// </summary>
     private float distBehindPlayerToFollow = 1.5f;
     #endregion
 
@@ -48,11 +76,11 @@ public class Turret : Gun
 
         if (controllerInput != Vector2.zero) 
         {
-            usingMouse = false;
+            isUsingMouse = false;
         }
         else if (mouseDelta.sqrMagnitude > minMouseMovementMagnitudeSqr) 
         {
-            usingMouse = true;
+            isUsingMouse = true;
         }
     }
 
@@ -75,7 +103,7 @@ public class Turret : Gun
     private void UpdateTurretDirection()
     {
 
-        if (usingMouse)
+        if (isUsingMouse)
         {
             Mouse();
         }
@@ -95,7 +123,7 @@ public class Turret : Gun
         {
             // Get height of screen
             Vector3 bottomScreenWorldPos = ray.GetPoint(distance);
-            float screenToWorldHeight = Mathf.Abs(transform.position.x - bottomScreenWorldPos.x) - crossHairLeeway;
+            float screenToWorldHeight = Mathf.Abs(transform.position.x - (bottomScreenWorldPos.x) * maxCrosshairDistAcrossScreen);
 
             // Get controller input
             Vector2 controllerInput = new Vector2(Input.GetAxis(RIGHT_STICK_HORIZONTAL),
@@ -120,12 +148,8 @@ public class Turret : Gun
             }
 
 #if UNITY_EDITOR
-            circleRenderer.DrawCircle(transform.position, 20, transform.position.x - bottomScreenWorldPos.x);
+            //circleRenderer.DrawCircle(transform.position, 20, transform.position.x - bottomScreenWorldPos.x);
 #endif
-            //Vector3 playerToMouse = mouseWorldPos - transform.position;
-            //var angle = Mathf.Atan2(playerToMouse.x, playerToMouse.z) * Mathf.Rad2Deg;
-
-            //transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
             transform.LookAt(crossHair.transform.position); 
         }
 
@@ -150,7 +174,7 @@ public class Turret : Gun
 
     public override PlayerWeaponType GetPlayerWeaponType()
     {
-        return PlayerWeaponType.INVALID;
+        return PlayerWeaponType.PowerGlove;
     }
 
     public override void PrimaryFire(Vector3 initialVelocity)
