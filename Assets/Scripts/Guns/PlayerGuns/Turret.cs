@@ -12,13 +12,6 @@ public class Turret : Gun
 {
     private class InputManager 
     {
-        #region outside
-        /// <summary>
-        /// Child gameObject with a SpriteRenderer of a crosshair
-        /// </summary>
-        [SerializeField] private GameObject crossHair;
-        #endregion
-
 
         #region InputManagerStrings
         private const string RIGHT_STICK_HORIZONTAL = "RightStickHorizontal";
@@ -53,12 +46,6 @@ public class Turret : Gun
         /// Tracking if we are currently using mouse input
         /// </summary>
         public bool isUsingMouse = true;
-
-
-        public InputManager(GameObject crosshair) 
-        {
-            this.crossHair = crosshair;
-        }
 
         public void Update()
         {
@@ -122,17 +109,17 @@ public class Turret : Gun
             }
         }
 
-        public void Controller(Vector3 position, Transform transform)
+        public Vector3 Controller(Vector3 position, Transform transform)
         {
             UpdateScreenSize(position.x);
 
             Vector2 controllerInput = GetControllerInput();
 
-            crossHair.transform.position = GetCrosshairPosition_Controller(controllerInput, position, transform.parent.parent.forward);
 #if UNITY_EDITOR
             //circleRenderer.DrawCircle(transform.position, 20, transform.position.x - bottomScreenWorldPos.x);
 #endif
-            transform.LookAt(crossHair.transform.position);
+
+            return GetCrosshairPosition_Controller(controllerInput, position, transform.parent.parent.forward);
 
         }
         #endregion
@@ -155,11 +142,10 @@ public class Turret : Gun
                                mouseWorldPos.z);
         }
 
-        public void Mouse(Transform transform)
+        public Vector3 Mouse(Transform transform)
         {
 
-            crossHair.transform.position = GetCrosshairPosition_Mouse(transform);
-            transform.LookAt(crossHair.transform.position);
+             return GetCrosshairPosition_Mouse(transform);
         }
         #endregion
     }
@@ -184,7 +170,7 @@ public class Turret : Gun
     {
         infiniteAmmo = true;
         circleRenderer = GetComponent<CircleRendererScript>();
-        inputManager = new InputManager(crossHair);
+        inputManager = new InputManager();
     }
 
     private void Update()
@@ -213,13 +199,13 @@ public class Turret : Gun
 
         if (inputManager.isUsingMouse)
         {
-            inputManager.Mouse(transform);
+            crossHair.transform.position = inputManager.Mouse(transform);
         }
         else 
         {
-            inputManager.Controller(transform.position, transform);
+            crossHair.transform.position = inputManager.Controller(transform.position, transform);
         }
-
+        transform.LookAt(crossHair.transform.position);
     }
 
     public override PlayerWeaponType GetPlayerWeaponType()
