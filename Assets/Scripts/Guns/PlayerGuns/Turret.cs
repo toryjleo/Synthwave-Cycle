@@ -10,6 +10,9 @@ using UnityEngine.UIElements;
 /// </summary>
 public class Turret : Gun
 {
+    /// <summary>
+    /// Manages user inputs for the turret
+    /// </summary>
     private class InputManager 
     {
 

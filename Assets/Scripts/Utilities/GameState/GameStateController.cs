@@ -44,11 +44,17 @@ public class GameStateController : MonoBehaviour
         get => initialEnter;
     }
 
+    /// <summary>
+    /// Check if this class is instantiated
+    /// </summary>
     public static bool StateExists 
     {
         get => state != null;
     }
 
+    /// <summary>
+    /// Check if gameplay code can be called
+    /// </summary>
     public static bool CanRunGameplay 
     {
         get => (!StateExists || (InitialEnter && GameIsPlaying()));
