@@ -11,49 +11,141 @@ public class Turret : Gun
 {
     private class InputManager 
     {
-    
+        #region outside
+        /// <summary>
+        /// Child gameObject with a SpriteRenderer of a crosshair
+        /// </summary>
+        [SerializeField] private GameObject crossHair;
+        #endregion
+
+
+        #region InputManagerStrings
+        private const string RIGHT_STICK_HORIZONTAL = "RightStickHorizontal";
+        private const string RIGHT_STICK_VERTICAL = "RightStickVertical";
+        #endregion
+
+        #region MouseVariables
+        private Vector3 lastMouseCoordinate = Vector3.zero;
+        /// <summary>
+        /// How far mouse must move to switch to using mouse input
+        /// </summary>
+        private float minMouseMovementMagnitudeSqr = 4;
+        #endregion
+
+        #region ControllerVariables
+        /// <summary>
+        /// Used to keep the crosshair on screen for controller 
+        /// </summary>
+        private float maxCrosshairDistAcrossScreen = .95f;
+        /// <summary>
+        /// How far to maintain the crosshair behind player in world units
+        /// </summary>
+        private float distBehindPlayerToFollow = 1.5f;
+        #endregion
+
+        /// <summary>
+        /// Plane used to detect raycast hits from camera
+        /// </summary>
+        Plane plane = new Plane(Vector3.up, 0);
+        /// <summary>
+        /// Tracking if we are currently using mouse input
+        /// </summary>
+        public bool isUsingMouse = true;
+
+
+        public InputManager(GameObject crosshair) 
+        {
+            this.crossHair = crosshair;
+        }
+
+        public void Update()
+        {
+            Vector3 mouseDelta = Input.mousePosition - lastMouseCoordinate;
+            lastMouseCoordinate = Input.mousePosition;
+
+            // Swap between mouse and controller input
+            Vector2 controllerInput = new Vector2(Input.GetAxis(RIGHT_STICK_HORIZONTAL), Input.GetAxis(RIGHT_STICK_VERTICAL));
+
+            if (controllerInput != Vector2.zero)
+            {
+                isUsingMouse = false;
+            }
+            else if (mouseDelta.sqrMagnitude > minMouseMovementMagnitudeSqr)
+            {
+                isUsingMouse = true;
+            }
+        }
+
+        public void Controller(Vector3 position, Transform transform)
+        {
+
+            float distance;
+            Ray ray = Camera.main.ViewportPointToRay(new Vector3(0f, 0f, 0f));
+            if (plane.Raycast(ray, out distance))
+            {
+                // Get height of screen
+                Vector3 bottomScreenWorldPos = ray.GetPoint(distance);
+                float screenToWorldHeight = Mathf.Abs(position.x - (bottomScreenWorldPos.x) * maxCrosshairDistAcrossScreen);
+
+                // Get controller input
+                Vector2 controllerInput = new Vector2(Input.GetAxis(RIGHT_STICK_HORIZONTAL),
+                                          Input.GetAxis(RIGHT_STICK_VERTICAL));
+
+                if (controllerInput != Vector2.zero)
+                {
+                    Vector3 desiredDirection = new Vector3(-controllerInput.y, 0, -controllerInput.x);
+                    float magnitude = Mathf.Clamp(desiredDirection.magnitude, 0, 1);
+                    Vector3 desiredDirectionNormalized = Vector3.Normalize(desiredDirection);
+                    Debug.DrawLine(position, position + desiredDirectionNormalized);
+
+                    // Move crosshair in to position
+                    Vector3 crossHairPos = position + (magnitude * screenToWorldHeight * desiredDirectionNormalized);
+                    crossHair.transform.position = new Vector3(crossHairPos.x,
+                                                    position.y,
+                                                    crossHairPos.z);
+                }
+                else
+                {
+                    crossHair.transform.position = position - (transform.parent.parent.forward * distBehindPlayerToFollow);
+                }
+
+#if UNITY_EDITOR
+                //circleRenderer.DrawCircle(transform.position, 20, transform.position.x - bottomScreenWorldPos.x);
+#endif
+                transform.LookAt(crossHair.transform.position);
+            }
+
+        }
+
+
+        public void Mouse(Transform transform)
+        {
+            float distance;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (plane.Raycast(ray, out distance))
+            {
+                Vector3 mouseWorldPos = ray.GetPoint(distance);
+                crossHair.transform.position = new Vector3(mouseWorldPos.x,
+                                                            transform.position.y,
+                                                            mouseWorldPos.z);
+                Vector3 playerToMouse = mouseWorldPos - transform.position;
+                var angle = Mathf.Atan2(playerToMouse.x, playerToMouse.z) * Mathf.Rad2Deg;
+
+                transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+            }
+        }
     }
 
-    #region InputManagerStrings
-    private const string RIGHT_STICK_HORIZONTAL = "RightStickHorizontal";
-    private const string RIGHT_STICK_VERTICAL = "RightStickVertical";
-    #endregion
+    private InputManager inputManager = null;
 
     /// <summary>
     /// Child gameObject with a SpriteRenderer of a crosshair
     /// </summary>
     [SerializeField] private GameObject crossHair;
     /// <summary>
-    /// Tracking if we are currently using mouse input
-    /// </summary>
-    [SerializeField] private bool isUsingMouse = true;
-    /// <summary>
     /// How far to spawn bullets down the forward vector
     /// </summary>
     private float distanceToBulletSpawn = .9f;
-    /// <summary>
-    /// Plane used to detect raycast hits from camera
-    /// </summary>
-    Plane plane = new Plane(Vector3.up, 0);
-
-    #region MouseVariables
-    private Vector3 lastMouseCoordinate = Vector3.zero;
-    /// <summary>
-    /// How far mouse must move to switch to using mouse input
-    /// </summary>
-    private float minMouseMovementMagnitudeSqr = 4;
-    #endregion
-
-    #region ControllerVariables
-    /// <summary>
-    /// Used to keep the crosshair on screen for controller 
-    /// </summary>
-    private float maxCrosshairDistAcrossScreen = .95f;
-    /// <summary>
-    /// How far to maintain the crosshair behind player in world units
-    /// </summary>
-    private float distBehindPlayerToFollow = 1.5f;
-    #endregion
 
     #region Debug
     private CircleRendererScript circleRenderer;
@@ -64,24 +156,12 @@ public class Turret : Gun
     {
         infiniteAmmo = true;
         circleRenderer = GetComponent<CircleRendererScript>();
+        inputManager = new InputManager(crossHair);
     }
 
     private void Update()
     {
-        Vector3 mouseDelta = Input.mousePosition - lastMouseCoordinate;
-        lastMouseCoordinate = Input.mousePosition;
-
-        // Swap between mouse and controller input
-        Vector2 controllerInput = new Vector2(Input.GetAxis(RIGHT_STICK_HORIZONTAL), Input.GetAxis(RIGHT_STICK_VERTICAL));
-
-        if (controllerInput != Vector2.zero) 
-        {
-            isUsingMouse = false;
-        }
-        else if (mouseDelta.sqrMagnitude > minMouseMovementMagnitudeSqr) 
-        {
-            isUsingMouse = true;
-        }
+        inputManager.Update();
     }
 
     // Update is called once per frame
@@ -103,73 +183,15 @@ public class Turret : Gun
     private void UpdateTurretDirection()
     {
 
-        if (isUsingMouse)
+        if (inputManager.isUsingMouse)
         {
-            Mouse();
+            inputManager.Mouse(transform);
         }
         else 
         {
-            Controller();
+            inputManager.Controller(transform.position, transform);
         }
 
-    }
-
-    private void Controller() 
-    {
-
-        float distance;
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0f, 0f, 0f));
-        if (plane.Raycast(ray, out distance))
-        {
-            // Get height of screen
-            Vector3 bottomScreenWorldPos = ray.GetPoint(distance);
-            float screenToWorldHeight = Mathf.Abs(transform.position.x - (bottomScreenWorldPos.x) * maxCrosshairDistAcrossScreen);
-
-            // Get controller input
-            Vector2 controllerInput = new Vector2(Input.GetAxis(RIGHT_STICK_HORIZONTAL),
-                                      Input.GetAxis(RIGHT_STICK_VERTICAL));
-
-            if (controllerInput != Vector2.zero) 
-            {
-                Vector3 desiredDirection = new Vector3(-controllerInput.y, 0, -controllerInput.x);
-                float magnitude = Mathf.Clamp(desiredDirection.magnitude, 0, 1);
-                Vector3 desiredDirectionNormalized = Vector3.Normalize(desiredDirection);
-                Debug.DrawLine(transform.position, transform.position + desiredDirectionNormalized);
-
-                // Move crosshair in to position
-                Vector3 crossHairPos = transform.position + (magnitude * screenToWorldHeight * desiredDirectionNormalized);
-                crossHair.transform.position = new Vector3(crossHairPos.x,
-                                                transform.position.y,
-                                                crossHairPos.z);
-            }
-            else 
-            {
-                crossHair.transform.position = transform.position - (transform.parent.parent.forward * distBehindPlayerToFollow);
-            }
-
-#if UNITY_EDITOR
-            //circleRenderer.DrawCircle(transform.position, 20, transform.position.x - bottomScreenWorldPos.x);
-#endif
-            transform.LookAt(crossHair.transform.position); 
-        }
-
-    }
-
-    private void Mouse() 
-    {
-        float distance;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (plane.Raycast(ray, out distance))
-        {
-            Vector3 mouseWorldPos = ray.GetPoint(distance);
-            crossHair.transform.position = new Vector3(mouseWorldPos.x,
-                                                        transform.position.y,
-                                                        mouseWorldPos.z);
-            Vector3 playerToMouse = mouseWorldPos - transform.position;
-            var angle = Mathf.Atan2(playerToMouse.x, playerToMouse.z) * Mathf.Rad2Deg;
-
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
-        }
     }
 
     public override PlayerWeaponType GetPlayerWeaponType()
