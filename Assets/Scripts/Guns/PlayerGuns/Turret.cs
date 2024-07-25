@@ -65,6 +65,18 @@ public class Turret : Gun
             }
         }
 
+        public Vector3 CrosshairPosition(Transform transform) 
+        {
+            if (isUsingMouse)
+            {
+                return Mouse(transform);
+            }
+            else
+            {
+                return Controller(transform.position, transform);
+            }
+        }
+
         #region Controller
 
         /// <summary>
@@ -196,15 +208,7 @@ public class Turret : Gun
 
     private void UpdateTurretDirection()
     {
-
-        if (inputManager.isUsingMouse)
-        {
-            crossHair.transform.position = inputManager.Mouse(transform);
-        }
-        else 
-        {
-            crossHair.transform.position = inputManager.Controller(transform.position, transform);
-        }
+        crossHair.transform.position = inputManager.CrosshairPosition(transform);
         transform.LookAt(crossHair.transform.position);
     }
 
