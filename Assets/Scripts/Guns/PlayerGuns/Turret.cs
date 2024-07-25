@@ -120,7 +120,7 @@ public class Turret : Gun
             {
                 // Get height of screen
                 Vector3 bottomScreenWorldPos = ray.GetPoint(distance);
-                this.screenToWorldHeight = Mathf.Abs(xPos - (bottomScreenWorldPos.x) * maxCrosshairDistAcrossScreen);
+                this.screenToWorldHeight = Mathf.Abs(xPos - bottomScreenWorldPos.x) * maxCrosshairDistAcrossScreen;
             }
         }
 
