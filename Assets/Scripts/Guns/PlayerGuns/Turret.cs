@@ -99,7 +99,7 @@ public class Turret : Gun
         private Vector2 GetControllerInput() 
         {
             return new Vector2(Input.GetAxis(RIGHT_STICK_HORIZONTAL),
-                                                      Input.GetAxis(RIGHT_STICK_VERTICAL));
+                               Input.GetAxis(RIGHT_STICK_VERTICAL));
         }
 
         private Vector3 GetCrosshairPosition_Controller(Vector2 controllerInput, Vector3 position, Vector3 vehicleForward) 
@@ -138,22 +138,30 @@ public class Turret : Gun
         #endregion
 
 
-        public void Mouse(Transform transform)
+        #region Mouse
+
+        private Vector3 GetCrosshairPosition_Mouse(Transform transform) 
         {
             float distance;
+            Vector3 mouseWorldPos = Vector3.zero;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (plane.Raycast(ray, out distance))
             {
-                Vector3 mouseWorldPos = ray.GetPoint(distance);
-                crossHair.transform.position = new Vector3(mouseWorldPos.x,
-                                                            transform.position.y,
-                                                            mouseWorldPos.z);
-                Vector3 playerToMouse = mouseWorldPos - transform.position;
-                var angle = Mathf.Atan2(playerToMouse.x, playerToMouse.z) * Mathf.Rad2Deg;
-
-                transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+                mouseWorldPos = ray.GetPoint(distance);
+                
             }
+            return new Vector3(mouseWorldPos.x,
+                               transform.position.y,
+                               mouseWorldPos.z);
         }
+
+        public void Mouse(Transform transform)
+        {
+
+            crossHair.transform.position = GetCrosshairPosition_Mouse(transform);
+            transform.LookAt(crossHair.transform.position);
+        }
+        #endregion
     }
 
     private InputManager inputManager = null;
