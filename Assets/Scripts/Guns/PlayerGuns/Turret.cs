@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 /// <summary>
@@ -41,6 +42,7 @@ public class Turret : Gun
         /// How far to maintain the crosshair behind player in world units
         /// </summary>
         private float distBehindPlayerToFollow = 1.5f;
+        private float screenToWorldHeight = 0.0f;
         #endregion
 
         /// <summary>
@@ -76,46 +78,64 @@ public class Turret : Gun
             }
         }
 
-        public void Controller(Vector3 position, Transform transform)
-        {
+        #region Controller
 
+        /// <summary>
+        /// Needs to be called during FixedUpdate
+        /// </summary>
+        /// <param name="xPos"></param>
+        private void UpdateScreenSize(float xPos)
+        {
             float distance;
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0f, 0f, 0f));
             if (plane.Raycast(ray, out distance))
             {
                 // Get height of screen
                 Vector3 bottomScreenWorldPos = ray.GetPoint(distance);
-                float screenToWorldHeight = Mathf.Abs(position.x - (bottomScreenWorldPos.x) * maxCrosshairDistAcrossScreen);
-
-                // Get controller input
-                Vector2 controllerInput = new Vector2(Input.GetAxis(RIGHT_STICK_HORIZONTAL),
-                                          Input.GetAxis(RIGHT_STICK_VERTICAL));
-
-                if (controllerInput != Vector2.zero)
-                {
-                    Vector3 desiredDirection = new Vector3(-controllerInput.y, 0, -controllerInput.x);
-                    float magnitude = Mathf.Clamp(desiredDirection.magnitude, 0, 1);
-                    Vector3 desiredDirectionNormalized = Vector3.Normalize(desiredDirection);
-                    Debug.DrawLine(position, position + desiredDirectionNormalized);
-
-                    // Move crosshair in to position
-                    Vector3 crossHairPos = position + (magnitude * screenToWorldHeight * desiredDirectionNormalized);
-                    crossHair.transform.position = new Vector3(crossHairPos.x,
-                                                    position.y,
-                                                    crossHairPos.z);
-                }
-                else
-                {
-                    crossHair.transform.position = position - (transform.parent.parent.forward * distBehindPlayerToFollow);
-                }
-
-#if UNITY_EDITOR
-                //circleRenderer.DrawCircle(transform.position, 20, transform.position.x - bottomScreenWorldPos.x);
-#endif
-                transform.LookAt(crossHair.transform.position);
+                this.screenToWorldHeight = Mathf.Abs(xPos - (bottomScreenWorldPos.x) * maxCrosshairDistAcrossScreen);
             }
+        }
+
+        private Vector2 GetControllerInput() 
+        {
+            return new Vector2(Input.GetAxis(RIGHT_STICK_HORIZONTAL),
+                                                      Input.GetAxis(RIGHT_STICK_VERTICAL));
+        }
+
+        private Vector3 GetCrosshairPosition_Controller(Vector2 controllerInput, Vector3 position, Vector3 vehicleForward) 
+        {
+            if (controllerInput != Vector2.zero)
+            {
+                Vector3 desiredDirection = new Vector3(-controllerInput.y, 0, -controllerInput.x);
+                float magnitude = Mathf.Clamp(desiredDirection.magnitude, 0, 1);
+                Vector3 desiredDirectionNormalized = Vector3.Normalize(desiredDirection);
+                Debug.DrawLine(position, position + desiredDirectionNormalized);
+
+                // Move crosshair in to position
+                Vector3 crossHairPos = position + (magnitude * screenToWorldHeight * desiredDirectionNormalized);
+                return new Vector3(crossHairPos.x, position.y, crossHairPos.z);
+            }
+            else
+            {
+                // Default behind player
+                return position - (vehicleForward * distBehindPlayerToFollow);
+            }
+        }
+
+        public void Controller(Vector3 position, Transform transform)
+        {
+            UpdateScreenSize(position.x);
+
+            Vector2 controllerInput = GetControllerInput();
+
+            crossHair.transform.position = GetCrosshairPosition_Controller(controllerInput, position, transform.parent.parent.forward);
+#if UNITY_EDITOR
+            //circleRenderer.DrawCircle(transform.position, 20, transform.position.x - bottomScreenWorldPos.x);
+#endif
+            transform.LookAt(crossHair.transform.position);
 
         }
+        #endregion
 
 
         public void Mouse(Transform transform)
