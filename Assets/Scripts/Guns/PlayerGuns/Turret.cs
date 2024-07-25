@@ -41,20 +41,23 @@ public class Turret : Gun
         /// <summary>
         /// Plane used to detect raycast hits from camera
         /// </summary>
-        Plane plane = new Plane(Vector3.up, 0);
+        private Plane plane = new Plane(Vector3.up, 0);
         /// <summary>
         /// Tracking if we are currently using mouse input
         /// </summary>
-        public bool isUsingMouse = true;
+        private bool isUsingMouse = true;
 
-        public void Update()
+        /// <summary>
+        /// Gets called every update
+        /// </summary>
+        public void UpdateInputMethod()
         {
             Vector3 mouseDelta = Input.mousePosition - lastMouseCoordinate;
             lastMouseCoordinate = Input.mousePosition;
 
-            // Swap between mouse and controller input
-            Vector2 controllerInput = new Vector2(Input.GetAxis(RIGHT_STICK_HORIZONTAL), Input.GetAxis(RIGHT_STICK_VERTICAL));
+            Vector2 controllerInput = GetControllerInput();
 
+            // Swap between mouse and controller input
             if (controllerInput != Vector2.zero)
             {
                 isUsingMouse = false;
@@ -65,7 +68,12 @@ public class Turret : Gun
             }
         }
 
-        public Vector3 CrosshairPosition(Transform transform) 
+        /// <summary>
+        /// Gets the crosshair's desired position this cycle
+        /// </summary>
+        /// <param name="transform">Turrer's transform</param>
+        /// <returns>A vector3 of the desired crosshair position in world coordinates</returns>
+        public Vector3 CrosshairPosition(in Transform transform) 
         {
             if (isUsingMouse)
             {
@@ -73,16 +81,34 @@ public class Turret : Gun
             }
             else
             {
-                return Controller(transform.position, transform);
+                return Controller(transform);
             }
         }
 
         #region Controller
+        /// <summary>
+        /// Returns the crosshair's world position this cycle for controller
+        /// </summary>
+        /// <param name="transform">The turret's transform</param>
+        /// <returns>the crosshair's world position this cycle</returns>
+        private Vector3 Controller(in Transform transform)
+        {
+            UpdateScreenSize(transform.position.x);
+
+            Vector2 controllerInput = GetControllerInput();
+
+#if UNITY_EDITOR
+            //circleRenderer.DrawCircle(transform.position, 20, transform.position.x - bottomScreenWorldPos.x);
+#endif
+
+            return GetCrosshairPosition_Controller(controllerInput, transform.position, transform.parent.parent.forward);
+
+        }
 
         /// <summary>
         /// Needs to be called during FixedUpdate
         /// </summary>
-        /// <param name="xPos"></param>
+        /// <param name="xPos">x position of turret in world coordinates</param>
         private void UpdateScreenSize(float xPos)
         {
             float distance;
@@ -95,12 +121,23 @@ public class Turret : Gun
             }
         }
 
-        private Vector2 GetControllerInput() 
+        /// <summary>
+        /// Gets the input this cycle for controller
+        /// </summary>
+        /// <returns>A vector representing horizontal and vertical input</returns>
+        private Vector2 GetControllerInput()
         {
             return new Vector2(Input.GetAxis(RIGHT_STICK_HORIZONTAL),
                                Input.GetAxis(RIGHT_STICK_VERTICAL));
         }
 
+        /// <summary>
+        /// Returns the crosshair's world position this cycle for controller.
+        /// </summary>
+        /// <param name="controllerInput">Input from the controller this cycle</param>
+        /// <param name="position">position in world coordinates of the player vehicle</param>
+        /// <param name="vehicleForward">Forward vector of the player vehicle</param>
+        /// <returns>Vector3 of the crosshair's desired position</returns>
         private Vector3 GetCrosshairPosition_Controller(Vector2 controllerInput, Vector3 position, Vector3 vehicleForward) 
         {
             if (controllerInput != Vector2.zero)
@@ -120,26 +157,27 @@ public class Turret : Gun
                 return position - (vehicleForward * distBehindPlayerToFollow);
             }
         }
-
-        public Vector3 Controller(Vector3 position, Transform transform)
-        {
-            UpdateScreenSize(position.x);
-
-            Vector2 controllerInput = GetControllerInput();
-
-#if UNITY_EDITOR
-            //circleRenderer.DrawCircle(transform.position, 20, transform.position.x - bottomScreenWorldPos.x);
-#endif
-
-            return GetCrosshairPosition_Controller(controllerInput, position, transform.parent.parent.forward);
-
-        }
         #endregion
 
 
         #region Mouse
+        /// <summary>
+        /// Returns the crosshair's world position this cycle for controller. Is a wrapper
+        /// </summary>
+        /// <param name="transform">The turret's transform</param>
+        /// <returns>the crosshair's world position this cycle</returns>
+        private Vector3 Mouse(in Transform transform)
+        {
 
-        private Vector3 GetCrosshairPosition_Mouse(Transform transform) 
+            return GetCrosshairPosition_Mouse(transform);
+        }
+
+        /// <summary>
+        /// Returns the crosshair's world position this cycle for controller
+        /// </summary>
+        /// <param name="transform">The turret's transform</param>
+        /// <returns>the crosshair's world position this cycle</returns>
+        private Vector3 GetCrosshairPosition_Mouse(in Transform transform) 
         {
             float distance;
             Vector3 mouseWorldPos = Vector3.zero;
@@ -152,12 +190,6 @@ public class Turret : Gun
             return new Vector3(mouseWorldPos.x,
                                transform.position.y,
                                mouseWorldPos.z);
-        }
-
-        public Vector3 Mouse(Transform transform)
-        {
-
-             return GetCrosshairPosition_Mouse(transform);
         }
         #endregion
     }
@@ -187,7 +219,7 @@ public class Turret : Gun
 
     private void Update()
     {
-        inputManager.Update();
+        inputManager.UpdateInputMethod();
     }
 
     // Update is called once per frame
@@ -206,6 +238,9 @@ public class Turret : Gun
         fireRate = 10;
     }
 
+    /// <summary>
+    /// Updates the turret's and crosshair's transforms. Must be called on FixedUpdate()
+    /// </summary>
     private void UpdateTurretDirection()
     {
         crossHair.transform.position = inputManager.CrosshairPosition(transform);
