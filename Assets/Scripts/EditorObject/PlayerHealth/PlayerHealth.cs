@@ -33,5 +33,22 @@ namespace EditorObject
         public float BarMax2HP { get { return barMax2HP; } }
         public float BarMax3HP { get { return barMax3HP; } }
         #endregion
+
+        private void OnValidate()
+        {
+            Check(hpOnStart, 0, barMax1HP, "hpOnStart");
+            Check(barMax1HP, hpOnStart, barMax2HP, "barMax1HP");
+            Check(barMax2HP, barMax1HP, barMax3HP, "barMax2HP");
+            Check(barMax3HP, barMax2HP, float.MaxValue, "barMax3HP");
+        }
+
+        private void Check(float value, float min, float max, string variable) 
+        {
+
+            if ((value < min) || (value > max))
+            {
+                Debug.LogWarning(variable + " out of bounds! Must be greater than " + min + " and less than " + max);
+            }
+        }
     }
 }
