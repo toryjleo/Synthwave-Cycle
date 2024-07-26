@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hitPoints: 0
+  playerHealth: {fileID: 11400000, guid: 631b7b7e3e8e8d84a9a4791e695dcc86, type: 2}
   isInvulnurable: 0
 --- !u!1001 &1769801774
 PrefabInstance:
