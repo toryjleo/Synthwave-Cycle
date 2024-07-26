@@ -16,13 +16,19 @@ public class PlayerHealth : Health
         Bar3,
     }
 
+    #region UpdatedAtAwake
+    private float hpOnStart = 200.0f;
+    private float barMax1HP = 1000.0f;
+    private float barMax2HP = 2000.0f;
+    private float barMax3HP = 3000.0f;
+    #endregion
 
-    private const float HP_ON_START = 200.0f;
-
-    private const float BAR_MAX_1_HP = 1000.0f;
-    private const float BAR_MAX_2_HP = 2000.0f;
-    private const float BAR_MAX_3_HP = 3000.0f;
-
+    #region DefinedInPrefab
+    /// <summary>
+    /// Defines values for this object
+    /// </summary>
+    [SerializeField] private EditorObject.PlayerHealth playerHealth;
+    #endregion
 
     public bool isInvulnurable = false;
 
@@ -47,11 +53,11 @@ public class PlayerHealth : Health
             switch (currentBar) 
             {
                 case BarMax.Bar1:
-                    return HitPoints / BAR_MAX_1_HP;
+                    return HitPoints / barMax1HP;
                 case BarMax.Bar2:
-                    return (HitPoints - BAR_MAX_1_HP) / (BAR_MAX_2_HP - BAR_MAX_1_HP);
+                    return (HitPoints - barMax1HP) / (barMax2HP - barMax1HP);
                 case BarMax.Bar3:
-                    return (HitPoints - BAR_MAX_2_HP) / (BAR_MAX_3_HP - BAR_MAX_2_HP);
+                    return (HitPoints - barMax2HP) / (barMax3HP - barMax2HP);
                 default:
                     return -1;
             }
@@ -62,8 +68,13 @@ public class PlayerHealth : Health
 
     private void Awake()
     {
+        hpOnStart = playerHealth.HpOnStart;
+        barMax1HP = playerHealth.BarMax1HP;
+        barMax2HP = playerHealth.BarMax2HP;
+        barMax3HP = playerHealth.BarMax3HP;
+
         currentBar = BarMax.Bar1;
-        Init(HP_ON_START, BAR_MAX_3_HP);
+        Init(hpOnStart, barMax3HP);
 
         deadEvent += HandleDeath;
         
@@ -126,11 +137,11 @@ public class PlayerHealth : Health
     {
         BarMax newBarMax = BarMax.Bar1;
 
-        if (HitPoints > BAR_MAX_2_HP)
+        if (HitPoints > barMax2HP)
         {
             newBarMax = BarMax.Bar3;
         }
-        else if (HitPoints > BAR_MAX_1_HP)
+        else if (HitPoints > barMax1HP)
         {
             newBarMax = BarMax.Bar2;
         }
