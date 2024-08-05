@@ -1,3 +1,4 @@
+using EditorObject;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,12 +21,18 @@ public class Arsenal : MonoBehaviour, IResettable
     private Weapon currentWeapon = null;
     private Turret turret = null;
     private PlayerMovement playerMovement = null;
+    private PlayerHealth playerHealth = null;
+    private ScreenWipe screenWipe = null;
 
     // Start is called before the first frame update
     void Start()
     {
 
         playerMovement = GetComponentInParent<PlayerMovement>();
+        playerHealth = GetComponentInParent<PlayerHealth>();
+        screenWipe = GetComponentInChildren<ScreenWipe>();
+
+        playerHealth.barUpdated += screenWipe.Trigger;
 
         weapons = new Dictionary<PlayerWeaponType, Weapon>();
         Weapon[] arsenalWeapons = this.GetComponentsInChildren<Weapon>();
