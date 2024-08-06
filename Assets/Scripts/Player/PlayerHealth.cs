@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlayerHealth;
 
-public delegate void NotifyPlayerHealth(PlayerHealth ph);
+public delegate void NotifyPlayerHealth(BarMax oldMax, BarMax newMax);
 
 /// <summary>
 /// Implements a variant of health made for the player
@@ -148,8 +149,9 @@ public class PlayerHealth : Health
 
         if (newBarMax != currentBar)
         {
+            barUpdated?.Invoke(currentBar, newBarMax);
+
             currentBar = newBarMax;
-            barUpdated?.Invoke(this);
         }
 
     }

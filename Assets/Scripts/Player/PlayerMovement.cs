@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
+using static PlayerHealth;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class PlayerMovement : MonoBehaviour
@@ -52,16 +53,16 @@ public class PlayerMovement : MonoBehaviour
             this.gears = gears;
             currentGear = GearType.Gear1;
             playerHealth.barUpdated += HandleBarUpdate;
-            HandleBarUpdate(playerHealth);
+            HandleBarUpdate(playerHealth.CurrentBar, playerHealth.CurrentBar);
         }
 
         /// <summary>
         /// Updates the maxGear when the player health updates its bars
         /// </summary>
         /// <param name="playerHealth">A reference to player health</param>
-        private void HandleBarUpdate(PlayerHealth playerHealth)
+        private void HandleBarUpdate(BarMax oldMax, BarMax newMax)
         {
-            maxGear = (GearType)playerHealth.CurrentBar;
+            maxGear = (GearType)newMax;
 
             if (currentGear > maxGear)
             {
