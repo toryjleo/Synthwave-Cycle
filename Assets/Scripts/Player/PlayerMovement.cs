@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
             }
             this.gears = gears;
             currentGear = GearType.Gear1;
-            playerHealth.barUpdated += HandleBarUpdate;
+            playerHealth.onBarUpdate += HandleBarUpdate;
             HandleBarUpdate(playerHealth.CurrentBar, playerHealth.CurrentBar);
         }
 

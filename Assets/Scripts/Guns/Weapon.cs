@@ -11,6 +11,7 @@ public enum PlayerWeaponType
     DefaultGun, // Not fully implemented
     VulkanV64AutoCannons, // Not fully implemented
     PowerGlove,
+    PinkMist,
     INVALID
 }
 

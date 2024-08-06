@@ -34,7 +34,7 @@ public class PlayerHealth : Health
     public bool isInvulnurable = false;
 
     private BarMax currentBar;
-    public NotifyPlayerHealth barUpdated;
+    public NotifyPlayerHealth onBarUpdate;
 
     /// <summary>
     /// The current bar to work toward
@@ -149,7 +149,7 @@ public class PlayerHealth : Health
 
         if (newBarMax != currentBar)
         {
-            barUpdated?.Invoke(currentBar, newBarMax);
+            onBarUpdate?.Invoke(currentBar, newBarMax);
 
             currentBar = newBarMax;
         }

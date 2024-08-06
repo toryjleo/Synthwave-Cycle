@@ -39,6 +39,18 @@ public class Arsenal : MonoBehaviour, IResettable
                 arsenalWeapons[i].gameObject.SetActive(true);
                 turret = arsenalWeapons[i] as Turret;
             }
+            else if (arsenalWeapons[i].GetPlayerWeaponType() == PlayerWeaponType.PinkMist) 
+            {
+                PlayerHealth playerHealth = GetComponentInParent<PlayerHealth>();
+                if (playerHealth == null) 
+                {
+                    Debug.LogWarning("Arsenal not child of object with PlayerHealth Component");
+                }
+                else
+                {
+                    playerHealth.onBarUpdate += ((PinkMist)arsenalWeapons[i]).HandleBarUpdate;
+                }
+            }
             else 
             {
                 arsenalWeapons[i].gameObject.SetActive(false);
@@ -53,6 +65,8 @@ public class Arsenal : MonoBehaviour, IResettable
                 ((Gun)arsenalWeapons[i]).BulletShot += playerMovement.ApplyShotForce;
             }
         }
+
+
     }
 
     // Update is called once per frame
