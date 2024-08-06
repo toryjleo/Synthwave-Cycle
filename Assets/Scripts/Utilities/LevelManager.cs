@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     public GameLevel currentLevel;
 
-    private List<IResettable> resetObjects;
+    List<IResettable> resetObjects;
 
     public string SongName 
     {
@@ -26,7 +26,7 @@ public class LevelManager : MonoBehaviour
     {
         jukebox.Init(currentLevel.WaveSequence);
         worldGenerator.CreateGround(currentLevel.GroundMat);
-        resetObjects  = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
+        resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
 
         GameStateController.resetting.notifyListenersEnter += GameReset;
 
@@ -52,7 +52,6 @@ public class LevelManager : MonoBehaviour
         {
             r.ResetGameObject();
         }
-        // TODO: Reset player location
         currentLevel.WaveSequence.ResetGameObject();
         Initialize();
     }
