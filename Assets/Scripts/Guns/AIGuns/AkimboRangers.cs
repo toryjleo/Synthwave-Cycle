@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class AkimboRangers : Gun
 {
-    private float timeBetweenBlastWaves = .02f;
-
     public override void Init()
     {
         lastFired = 0;
-        fireRate = 2f; // Every 1 second
+        fireRate = 6f; // Every 1 second
         base.Init();
     }
 
@@ -18,11 +16,7 @@ public class AkimboRangers : Gun
         if (CanShootAgain())
         {
             lastFired = Time.time;
-            //Bullet bullet = bulletPool.SpawnFromPool();
-
-            StartCoroutine(SpreadShot());
-
-            //OnBulletShot(shotDir * bullet.Mass * bullet.muzzleVelocity);
+            StartCoroutine(SprayShot());
         }
     }
 
@@ -30,35 +24,14 @@ public class AkimboRangers : Gun
     {
     }
 
-
-    IEnumerator SpreadShot()
+    //Only fires a single shot, but the time between firing for a ranger is very short
+    IEnumerator SprayShot()
     {
-        int numberOfShots = 1;
-        int numberOfPellets = 4;
-
-        int degreeOff = -4;
-
+        Bullet bullet = bulletPool.SpawnFromPool();
         Vector3 shotDir = gameObject.transform.forward;
         Vector3 bulletPosition = transform.position;
         Vector3 initialVelocity = Vector3.zero;
-
-        for (int i = 0; i < numberOfShots; i++)
-        {
-            //Debug.Log("SHOT!");
-
-            for (int p = 0; p < numberOfPellets; p++)
-            {
-                Bullet bullet = bulletPool.SpawnFromPool();
-                bullet.Shoot(bulletPosition, Quaternion.Euler(0, degreeOff, 0) * shotDir, initialVelocity);
-                degreeOff += 2;
-            }
-            numberOfPellets--;
-
-            degreeOff = -7;
-
-
-            yield return new WaitForSeconds(timeBetweenBlastWaves);
-        }
+        bullet.Shoot(bulletPosition, shotDir, initialVelocity);
         yield return null;
     }
 
