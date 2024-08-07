@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
         /// Updates the maxGear when the player health updates its bars
         /// </summary>
         /// <param name="playerHealth">A reference to player health</param>
-        private void HandleBarUpdate(BarMax oldMax, BarMax newMax)
+        private void HandleBarUpdate(BarMax oldMax, BarMax newMax, bool hpIsOverBarMax3 = false)
         {
             maxGear = (GearType)newMax;
 

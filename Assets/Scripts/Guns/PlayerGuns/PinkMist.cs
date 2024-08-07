@@ -59,10 +59,9 @@ public class PinkMist : Weapon
         throw new System.NotImplementedException();
     }
 
-    public void HandleBarUpdate(BarMax oldMax, BarMax newMax) 
+    public void HandleBarUpdate(BarMax oldMax, BarMax newMax, bool hpIsOverBarMax3) 
     {
-        Debug.Log("Bar Update, new bar is: " + newMax);
-        if (newMax >= oldMax || (newMax == oldMax && oldMax == BarMax.Bar3)) 
+        if (newMax >= oldMax || hpIsOverBarMax3) 
         {
             PrimaryFire(Vector3.zero);
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static PlayerHealth;
 
-public delegate void NotifyPlayerHealth(BarMax oldMax, BarMax newMax);
+public delegate void NotifyPlayerHealth(BarMax oldMax, BarMax newMax, bool hpIsOverBarMax3);
 
 /// <summary>
 /// Implements a variant of health made for the player
@@ -75,7 +75,8 @@ public class PlayerHealth : Health
         barMax3HP = playerHealth.BarMax3HP;
 
         currentBar = BarMax.Bar1;
-        Init(hpOnStart, barMax3HP);
+        float maxHp = barMax3HP + (barMax3HP - barMax2HP) / 2;
+        Init(hpOnStart, maxHp);
 
         deadEvent += HandleDeath;
         
@@ -149,7 +150,7 @@ public class PlayerHealth : Health
 
         if (newBarMax != currentBar || currentBar == BarMax.Bar3)
         {
-            onBarUpdate?.Invoke(currentBar, newBarMax);
+            onBarUpdate?.Invoke(currentBar, newBarMax, HitPoints > barMax3HP);
 
             currentBar = newBarMax;
         }
