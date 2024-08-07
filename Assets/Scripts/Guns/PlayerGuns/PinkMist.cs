@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using static PlayerHealth;
 
+/// <summary>
+/// Weapon that triggers a screen-wipe for player
+/// </summary>
 public class PinkMist : Weapon
 {
     float PerSecondGrowth_Meters = 200f;
