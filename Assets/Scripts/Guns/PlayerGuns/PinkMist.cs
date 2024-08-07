@@ -5,7 +5,13 @@ using static PlayerHealth;
 
 public class PinkMist : Weapon
 {
+    float PerSecondGrowth_Meters = 200f;
+    float MaxSize_Meters = 100;
+    float StartSize_Meters = 1;
+
     public GameObject CollisionVolume;
+
+    Coroutine runningCoroutine = null;
 
     public override PlayerWeaponType GetPlayerWeaponType()
     {
@@ -14,10 +20,28 @@ public class PinkMist : Weapon
 
     public override void Init()
     {
+        if(CollisionVolume  == null) 
+        {
+            Debug.LogError("PinkMist needs to be assigned a collision volume!");
+        }
+        else 
+        { 
+            CollisionVolume.SetActive(false); 
+        }
     }
 
     public override void PrimaryFire(Vector3 initialVelocity)
     {
+
+        if (CollisionVolume != null)
+        {
+            if (runningCoroutine != null) 
+            {
+                StopCoroutine(runningCoroutine);
+            }
+            
+            runningCoroutine = StartCoroutine(GrowVolume(CollisionVolume));
+        }
         Debug.Log("Pink Mist triggered");
     }
 
@@ -38,9 +62,22 @@ public class PinkMist : Weapon
 
     public void HandleBarUpdate(BarMax oldMax, BarMax newMax) 
     {
-        if (newMax >= oldMax) 
+        if (newMax >= oldMax || (newMax == oldMax && oldMax == BarMax.Bar3)) 
         {
             PrimaryFire(Vector3.zero);
         }
+    }
+
+    private IEnumerator GrowVolume(GameObject volume) 
+    {
+        volume.SetActive(true);
+        for (float i = StartSize_Meters; i <= MaxSize_Meters;)
+        {
+            transform.localScale = new Vector3(i, CollisionVolume.transform.localScale.y, i);
+            i += (PerSecondGrowth_Meters * Time.deltaTime);
+            yield return null;
+        }
+        volume.SetActive(false);
+        runningCoroutine = null;
     }
 }
