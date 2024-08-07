@@ -39,5 +39,10 @@ namespace Assets.Scripts.Bullets
                 DealDamageAndDespawn(other.gameObject);
             }
         }
+
+        public void Despawn() 
+        {
+            OnDespawn();
+        }
     }
 }
