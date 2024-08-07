@@ -35,7 +35,7 @@ public class Health : MonoBehaviour
     /// <param name="hp">The number of points to subtract from _hitPoints.</param>
     public virtual void TakeDamage(float hp)
     {
-        if (GameStateController.GameIsPlaying())
+        if (GameStateController.CanRunGameplay)
         {
             _hitPoints -= hp;
 

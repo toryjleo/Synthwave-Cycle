@@ -42,7 +42,6 @@ public class PinkMist : Weapon
             
             runningCoroutine = StartCoroutine(GrowVolume(CollisionVolume));
         }
-        Debug.Log("Pink Mist triggered");
     }
 
     public override void ReleasePrimaryFire(Vector3 initialVelocity)
@@ -62,6 +61,7 @@ public class PinkMist : Weapon
 
     public void HandleBarUpdate(BarMax oldMax, BarMax newMax) 
     {
+        Debug.Log("Bar Update, new bar is: " + newMax);
         if (newMax >= oldMax || (newMax == oldMax && oldMax == BarMax.Bar3)) 
         {
             PrimaryFire(Vector3.zero);

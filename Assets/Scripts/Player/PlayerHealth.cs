@@ -147,7 +147,7 @@ public class PlayerHealth : Health
             newBarMax = BarMax.Bar2;
         }
 
-        if (newBarMax != currentBar)
+        if (newBarMax != currentBar || currentBar == BarMax.Bar3)
         {
             onBarUpdate?.Invoke(currentBar, newBarMax);
 
