@@ -130,7 +130,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
 
         Vector3 forward = rb.transform.forward; //The normaized vector of which direction the RB is facing
         Vector3 offset = new Vector3(0,0,1); //This is the random change vector that is uses to create natural wandering movement
-        Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
+       /* Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
         forward *= 10;
         offset = ranRot * offset;
 
@@ -138,14 +138,14 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
         Debug.DrawRay(rb.transform.position, forward, Color.blue);
         Debug.DrawRay(rb.transform.position+forward, offset, Color.red);
         Debug.DrawRay(rb.transform.position, forward + offset, Color.green);
-
+        */
         forward += offset; //adds a small offset to the forward vector.
 
         transform.LookAt(forward+transform.position); //TODO make this look way nicer
-
+        
         Vector3 steer = forward - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
         applyForce(steer);
-
+        
     }
 
     public void applyForce(Vector3 force)
