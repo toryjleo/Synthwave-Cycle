@@ -17,13 +17,6 @@ public class PlayerHealth : Health
         Bar3,
     }
 
-    #region UpdatedAtAwake
-    private float hpOnStart = 200.0f;
-    private float barMax1HP = 1000.0f;
-    private float barMax2HP = 2000.0f;
-    private float barMax3HP = 3000.0f;
-    #endregion
-
     #region DefinedInPrefab
     /// <summary>
     /// Defines values for this object
@@ -51,14 +44,19 @@ public class PlayerHealth : Health
     {
         get 
         {
+            if (playerHealth == null) 
+            {
+                Debug.LogError("Please assign player health EditorObject to PlayerHealth componenet");
+                return 0f;
+            }
             switch (currentBar) 
             {
                 case BarMax.Bar1:
-                    return HitPoints / barMax1HP;
+                    return HitPoints / playerHealth.BarMax1HP;
                 case BarMax.Bar2:
-                    return (HitPoints - barMax1HP) / (barMax2HP - barMax1HP);
+                    return (HitPoints - playerHealth.BarMax1HP) / (playerHealth.BarMax2HP - playerHealth.BarMax1HP);
                 case BarMax.Bar3:
-                    return (HitPoints - barMax2HP) / (barMax3HP - barMax2HP);
+                    return (HitPoints - playerHealth.BarMax2HP) / (playerHealth.BarMax3HP - playerHealth.BarMax2HP);
                 default:
                     return -1;
             }
@@ -69,14 +67,10 @@ public class PlayerHealth : Health
 
     private void Awake()
     {
-        hpOnStart = playerHealth.HpOnStart;
-        barMax1HP = playerHealth.BarMax1HP;
-        barMax2HP = playerHealth.BarMax2HP;
-        barMax3HP = playerHealth.BarMax3HP;
 
         currentBar = BarMax.Bar1;
-        float maxHp = barMax3HP + (barMax3HP - barMax2HP) / 2;
-        Init(hpOnStart, maxHp);
+        float maxHp = playerHealth.BarMax3HP + (playerHealth.BarMax3HP - playerHealth.BarMax2HP) / 2;
+        Init(playerHealth.HpOnStart, maxHp);
 
         deadEvent += HandleDeath;
         
@@ -139,18 +133,18 @@ public class PlayerHealth : Health
     {
         BarMax newBarMax = BarMax.Bar1;
 
-        if (HitPoints > barMax2HP)
+        if (HitPoints > playerHealth.BarMax2HP)
         {
             newBarMax = BarMax.Bar3;
         }
-        else if (HitPoints > barMax1HP)
+        else if (HitPoints > playerHealth.BarMax1HP)
         {
             newBarMax = BarMax.Bar2;
         }
 
         if (newBarMax != currentBar || currentBar == BarMax.Bar3)
         {
-            onBarUpdate?.Invoke(currentBar, newBarMax, HitPoints > barMax3HP);
+            onBarUpdate?.Invoke(currentBar, newBarMax, HitPoints > playerHealth.BarMax3HP);
 
             currentBar = newBarMax;
         }
