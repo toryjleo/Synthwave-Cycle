@@ -329,9 +329,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28b7db4cff69d89418648276302cde82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visual: {fileID: 0}
-  prefab_HealthPool: {fileID: 0}
-  radius: 4
+  prefab_HealthPool: {fileID: 6311500061181353777, guid: 4d0fbf0374c466046a73630acd8fd30e, type: 3}
+  healthPool: {fileID: 0}
 --- !u!54 &489305275
 Rigidbody:
   m_ObjectHideFlags: 0

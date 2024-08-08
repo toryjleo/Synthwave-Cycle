@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class TransmissionArea : MonoBehaviour
 {
+    // TODO: Figure out formatting to specify object needs prefab assigned
     [SerializeField] private HealthPool prefab_HealthPool;
 
 
     private float radius = 20;
-    private Vector3 startPos = new Vector3 (20, 0, 0);
+    // In degrees
+    private float spawnAngle = 0;
 
     [SerializeField] private HealthPool healthPool = null;
 
@@ -20,15 +22,31 @@ public class TransmissionArea : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Vector3 startPos = new Vector3(radius, 0, 0);
+
         // Adjusts visual and capsule collider
         transform.localScale = new Vector3(Width, transform.localScale.y, Width);
         healthPool = Instantiate(prefab_HealthPool, startPos, Quaternion.identity);
         healthPool.Init(0, 1, .2f);
+        healthPool.transform.RotateAround(transform.position, Vector3.up, spawnAngle);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.P)) 
+        {
+            MoveHealthPool();
+        }
+#endif
+
+    }
+
+    private void MoveHealthPool() 
+    {
+        float deltaAngle = 60;
+        healthPool.transform.RotateAround(transform.position, Vector3.up, deltaAngle);
+
     }
 }
