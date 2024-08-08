@@ -46,21 +46,10 @@ public class HealthPool : SelfDespawn
         }
     }
 
-    private void Start()
+    public float Width 
     {
-        if (GameStateController.StateExists)
-        {
-            GameStateController.resetting.notifyListenersEnter += HandleResettingEnter;
-        }
-        
-
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        player = playerObject.GetComponent<PlayerMovement>();
-
-        currentSpawnDistance = INITIAL_SPAWN_DISTANCE;
-        currentPlayerHealAmount = INITIAL_PLAYER_HEAL_AMNT;
-        Init(RateOfDecay, SizeofCylinder);
-        Init();
+        get { return SizeofCylinder; }
+        set { SizeofCylinder = value; }
     }
 
 
@@ -93,8 +82,6 @@ public class HealthPool : SelfDespawn
         this.shrinkPerSecond = shrinkPerSecond;
 
         SetScale(startScale);
-
-        SpawnNewLocation();
     }
 
     protected override void OnDespawn() 
@@ -180,16 +167,6 @@ public class HealthPool : SelfDespawn
         spawnVector *= distance;
         spawnVector += player.transform.position;
         return spawnVector;
-    }
-
-    /// <summary>
-    /// Sets this healthpool to have a fresh spawn location.
-    /// </summary>
-    private void SpawnNewLocation() 
-    {
-        this.transform.position = GetSpawnVector(player.transform.forward, SpawnAngleRandomNess, currentSpawnDistance);
-
-        this.gameObject.SetActive(true);
     }
     #endregion
 
