@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlayerHealth;
 
-public delegate void NotifyPlayerHealth(PlayerHealth ph);
+public delegate void NotifyPlayerHealth(BarMax oldMax, BarMax newMax, bool hpIsOverBarMax3);
 
 /// <summary>
 /// Implements a variant of health made for the player
@@ -16,18 +17,17 @@ public class PlayerHealth : Health
         Bar3,
     }
 
-
-    private const float HP_ON_START = 200.0f;
-
-    private const float BAR_MAX_1_HP = 1000.0f;
-    private const float BAR_MAX_2_HP = 2000.0f;
-    private const float BAR_MAX_3_HP = 3000.0f;
-
+    #region DefinedInPrefab
+    /// <summary>
+    /// Defines values for this object
+    /// </summary>
+    [SerializeField] private EditorObject.PlayerHealth playerHealth;
+    #endregion
 
     public bool isInvulnurable = false;
 
     private BarMax currentBar;
-    public NotifyPlayerHealth barUpdated;
+    public NotifyPlayerHealth onBarUpdate;
 
     /// <summary>
     /// The current bar to work toward
@@ -44,14 +44,19 @@ public class PlayerHealth : Health
     {
         get 
         {
+            if (playerHealth == null) 
+            {
+                Debug.LogError("Please assign player health EditorObject to PlayerHealth componenet");
+                return 0f;
+            }
             switch (currentBar) 
             {
                 case BarMax.Bar1:
-                    return HitPoints / BAR_MAX_1_HP;
+                    return HitPoints / playerHealth.BarMax1HP;
                 case BarMax.Bar2:
-                    return (HitPoints - BAR_MAX_1_HP) / (BAR_MAX_2_HP - BAR_MAX_1_HP);
+                    return (HitPoints - playerHealth.BarMax1HP) / (playerHealth.BarMax2HP - playerHealth.BarMax1HP);
                 case BarMax.Bar3:
-                    return (HitPoints - BAR_MAX_2_HP) / (BAR_MAX_3_HP - BAR_MAX_2_HP);
+                    return (HitPoints - playerHealth.BarMax2HP) / (playerHealth.BarMax3HP - playerHealth.BarMax2HP);
                 default:
                     return -1;
             }
@@ -62,8 +67,10 @@ public class PlayerHealth : Health
 
     private void Awake()
     {
+
         currentBar = BarMax.Bar1;
-        Init(HP_ON_START, BAR_MAX_3_HP);
+        float maxHp = playerHealth.BarMax3HP + (playerHealth.BarMax3HP - playerHealth.BarMax2HP) / 2;
+        Init(playerHealth.HpOnStart, maxHp);
 
         deadEvent += HandleDeath;
         
@@ -126,19 +133,20 @@ public class PlayerHealth : Health
     {
         BarMax newBarMax = BarMax.Bar1;
 
-        if (HitPoints > BAR_MAX_2_HP)
+        if (HitPoints > playerHealth.BarMax2HP)
         {
             newBarMax = BarMax.Bar3;
         }
-        else if (HitPoints > BAR_MAX_1_HP)
+        else if (HitPoints > playerHealth.BarMax1HP)
         {
             newBarMax = BarMax.Bar2;
         }
 
-        if (newBarMax != currentBar)
+        if (newBarMax != currentBar || currentBar == BarMax.Bar3)
         {
+            onBarUpdate?.Invoke(currentBar, newBarMax, HitPoints > playerHealth.BarMax3HP);
+
             currentBar = newBarMax;
-            barUpdated?.Invoke(this);
         }
 
     }

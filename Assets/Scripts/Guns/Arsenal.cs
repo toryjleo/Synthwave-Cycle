@@ -33,15 +33,28 @@ public class Arsenal : MonoBehaviour, IResettable
         // iterate through all the Gun prefabs attached to the bike, initialize them, disable them, and register them in the dictionary
         for (int i = 0; i < arsenalWeapons.Length; i++)
         {
-            // Disable all weapons except for turret
-            if (arsenalWeapons[i].GetPlayerWeaponType() == PlayerWeaponType.PowerGlove) 
+            switch (arsenalWeapons[i].GetPlayerWeaponType())
             {
-                arsenalWeapons[i].gameObject.SetActive(true);
-                turret = arsenalWeapons[i] as Turret;
-            }
-            else 
-            {
-                arsenalWeapons[i].gameObject.SetActive(false);
+                // Disable all weapons except for turret
+                case PlayerWeaponType.PowerGlove:
+                    arsenalWeapons[i].gameObject.SetActive(true);
+                    turret = arsenalWeapons[i] as Turret;
+                    break;
+                case PlayerWeaponType.PinkMist:
+                    PlayerHealth playerHealth = GetComponentInParent<PlayerHealth>();
+                    if (playerHealth == null)
+                    {
+                        Debug.LogWarning("Arsenal not child of object with PlayerHealth Component");
+                    }
+                    else
+                    {
+                        playerHealth.onBarUpdate += ((PinkMist)arsenalWeapons[i]).HandleBarUpdate;
+                    }
+                    break;
+                default:
+                    arsenalWeapons[i].gameObject.SetActive(false);
+                    break;
+
             }
 
             // Add weapon to dictionary
