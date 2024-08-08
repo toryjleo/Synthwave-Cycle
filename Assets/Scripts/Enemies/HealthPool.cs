@@ -67,9 +67,9 @@ public class HealthPool : MonoBehaviour
             else
             {
                 // Shrink if player is in the pool
-                Shrink(shrinkPerSecond * Time.deltaTime);
+                //Shrink(shrinkPerSecond * Time.deltaTime);
                 float leeway = 3.0f; // Make the circle a little larger than the hitbox
-                circleRenderer.DrawCircle(transform.position, 80, (transform.localScale.x / 2) + leeway);
+                circleRenderer.DrawCircle(transform.position, 80, (transform.localScale.x));
             }
         }
     }

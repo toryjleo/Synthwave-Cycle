@@ -30,7 +30,7 @@ public class TransmissionArea : MonoBehaviour
         healthPool.onDespawnConditionMet += MoveHealthPool;
 
 
-        healthPool.Init(0, 1, .2f);
+        healthPool.Init(0, 5, .2f);
         healthPool.transform.RotateAround(transform.position, Vector3.up, spawnAngle);
     }
 
