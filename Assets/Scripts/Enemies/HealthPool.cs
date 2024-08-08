@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPool : SelfDespawn
+public delegate void NotifyDespawnConditionMet();
+
+public class HealthPool : MonoBehaviour
 {
     // Visuals
     private PlayerMovement player;
@@ -32,8 +34,9 @@ public class HealthPool : SelfDespawn
     private float currentPlayerHealAmount;
 
 
-    
-    
+
+    public NotifyDespawnConditionMet onDespawnConditionMet;
+
 
     /// <summary>The percentage of how "complete" this pool is.</summary>
     public float PercentFull 
@@ -59,7 +62,7 @@ public class HealthPool : SelfDespawn
         {
             if (curScale <= minScale)
             {
-                OnDespawn();
+                onDespawnConditionMet?.Invoke();
             }
             else
             {
@@ -82,22 +85,6 @@ public class HealthPool : SelfDespawn
         this.shrinkPerSecond = shrinkPerSecond;
 
         SetScale(startScale);
-    }
-
-    protected override void OnDespawn() 
-    {
-        this.gameObject.SetActive(false);
-        base.OnDespawn();
-        IcreaseSpawnDistance();
-        Init(RateOfDecay, SizeofCylinder);
-    }
-
-    /// <summary>
-    /// Should call the default Init method.
-    /// </summary>
-    public override void Init()
-    {
-        this.Init();
     }
 
     /// <summary>
@@ -172,12 +159,13 @@ public class HealthPool : SelfDespawn
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "PlayerHealth")
+        if (other.tag == "Player")
         {
+            Debug.Log("player collission");
             Health playerHealthRef = other.GetComponentInChildren<Health>();
             playerHealthRef.Heal(currentPlayerHealAmount);
             IncreaseHealthOutput();
-            OnDespawn();
+            onDespawnConditionMet?.Invoke();
         }
     }
 

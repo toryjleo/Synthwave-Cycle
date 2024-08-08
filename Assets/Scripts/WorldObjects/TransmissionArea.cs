@@ -27,6 +27,9 @@ public class TransmissionArea : MonoBehaviour
         // Adjusts visual and capsule collider
         transform.localScale = new Vector3(Width, transform.localScale.y, Width);
         healthPool = Instantiate(prefab_HealthPool, startPos, Quaternion.identity);
+        healthPool.onDespawnConditionMet += MoveHealthPool;
+
+
         healthPool.Init(0, 1, .2f);
         healthPool.transform.RotateAround(transform.position, Vector3.up, spawnAngle);
     }
