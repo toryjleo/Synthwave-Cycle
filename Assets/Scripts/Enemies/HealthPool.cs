@@ -48,7 +48,11 @@ public class HealthPool : SelfDespawn
 
     private void Start()
     {
-        GameStateController.resetting.notifyListenersEnter += HandleResettingEnter;
+        if (GameStateController.StateExists)
+        {
+            GameStateController.resetting.notifyListenersEnter += HandleResettingEnter;
+        }
+        
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         player = playerObject.GetComponent<PlayerMovement>();
@@ -62,7 +66,7 @@ public class HealthPool : SelfDespawn
 
     private void Update()
     {
-        if (GameStateController.GameIsPlaying())
+        if (GameStateController.CanRunGameplay)
         {
             if (curScale <= minScale)
             {
@@ -76,11 +80,6 @@ public class HealthPool : SelfDespawn
                 circleRenderer.DrawCircle(transform.position, 80, (transform.localScale.x / 2) + leeway);
             }
         }
-    }
-
-    private void OnDestroy()
-    {
-        GameStateController.resetting.notifyListenersEnter -= HandleResettingEnter;
     }
 
     /// <summary>Reinitializes and turns on this HealthPool gameObject.</summary>
