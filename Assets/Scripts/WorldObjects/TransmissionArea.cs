@@ -12,11 +12,29 @@ public class TransmissionArea : MonoBehaviour
     // In degrees
     private float spawnAngle = 0;
 
-    [SerializeField] private HealthPool healthPool = null;
+    private HealthPool healthPool = null;
 
     private float Width 
     {
         get => radius * 2;
+    }
+
+    /// <summary>
+    /// A percentage value. 1 is 100% clear and 0 is 0% clear
+    /// TODO: Make a better alogrithm when ui and audio implemented for talking head
+    /// </summary>
+    public float TransmissionClarity(Vector3 point)
+    {
+        Vector3 centerToPoint = transform.position - point;
+        if (centerToPoint.sqrMagnitude < (radius * radius)) 
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    
     }
 
     // Start is called before the first frame update
