@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class TransmissionArea : MonoBehaviour
 {
+    #region DefinedInPrefab
     // TODO: Figure out formatting to specify object needs prefab assigned
     [SerializeField] private HealthPool prefab_HealthPool;
+    [SerializeField] private EditorObject.TransmissionArea transmissionArea;
+    [SerializeField] private bool transmissionAreaIsViewable = false;
+    #endregion
 
-
-    private float radius = 20;
-    // In degrees
-    private float spawnAngle = 0;
-
+    /// <summary>
+    /// Healthpool the transmission area creates
+    /// </summary>
     private HealthPool healthPool = null;
 
-    private float Width 
+    private float Width
     {
-        get => radius * 2;
+        get => transmissionArea.Radius * 2;
     }
 
     /// <summary>
@@ -26,7 +28,7 @@ public class TransmissionArea : MonoBehaviour
     public float TransmissionClarity(Vector3 point)
     {
         Vector3 centerToPoint = transform.position - point;
-        if (centerToPoint.sqrMagnitude < (radius * radius)) 
+        if (centerToPoint.sqrMagnitude < (transmissionArea.Radius * transmissionArea.Radius)) 
         {
             return 1;
         }
@@ -40,7 +42,7 @@ public class TransmissionArea : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Vector3 startPos = new Vector3(radius, 0, 0);
+        Vector3 startPos = new Vector3(transmissionArea.Radius, 0, 0);
 
         // Adjusts visual and capsule collider
         transform.localScale = new Vector3(Width, transform.localScale.y, Width);
@@ -49,7 +51,13 @@ public class TransmissionArea : MonoBehaviour
 
 
         healthPool.Init(0, 5, .2f);
-        healthPool.transform.RotateAround(transform.position, Vector3.up, spawnAngle);
+        healthPool.transform.RotateAround(transform.position, Vector3.up, transmissionArea.StartAngleDegrees);
+
+#if UNITY_EDITOR
+    GetComponent<MeshRenderer>().enabled = transmissionAreaIsViewable;
+#else
+    GetComponent<MeshRenderer>().enabled = false;
+#endif
     }
 
     // Update is called once per frame
@@ -61,13 +69,11 @@ public class TransmissionArea : MonoBehaviour
             MoveHealthPool();
         }
 #endif
-
     }
 
     private void MoveHealthPool() 
     {
-        float deltaAngle = 60;
-        healthPool.transform.RotateAround(transform.position, Vector3.up, deltaAngle);
+        healthPool.transform.RotateAround(transform.position, Vector3.up, transmissionArea.DeltaAngleDegrees);
 
     }
 }

@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 489305271}
   - component: {fileID: 489305275}
   m_Layer: 0
-  m_Name: TransmissionAreaVisual
+  m_Name: TransmissionArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -330,7 +330,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab_HealthPool: {fileID: 6311500061181353777, guid: 4d0fbf0374c466046a73630acd8fd30e, type: 3}
-  healthPool: {fileID: 0}
+  transmissionArea: {fileID: 11400000, guid: 0cb3d9c3ea6737e47a7d5bf5323c4f8b, type: 2}
+  transmissionAreaIsViewable: 0
 --- !u!54 &489305275
 Rigidbody:
   m_ObjectHideFlags: 0
