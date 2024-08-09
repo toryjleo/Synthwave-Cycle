@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPool : SelfDespawn
+public delegate void NotifyDespawnConditionMet();
+
+public class HealthPool : MonoBehaviour
 {
     // Visuals
     private PlayerMovement player;
@@ -32,8 +34,9 @@ public class HealthPool : SelfDespawn
     private float currentPlayerHealAmount;
 
 
-    
-    
+
+    public NotifyDespawnConditionMet onDespawnConditionMet;
+
 
     /// <summary>The percentage of how "complete" this pool is.</summary>
     public float PercentFull 
@@ -46,41 +49,29 @@ public class HealthPool : SelfDespawn
         }
     }
 
-    private void Start()
+    public float Width 
     {
-        GameStateController.resetting.notifyListenersEnter += HandleResettingEnter;
-
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        player = playerObject.GetComponent<PlayerMovement>();
-
-        currentSpawnDistance = INITIAL_SPAWN_DISTANCE;
-        currentPlayerHealAmount = INITIAL_PLAYER_HEAL_AMNT;
-        Init(RateOfDecay, SizeofCylinder);
-        Init();
+        get { return SizeofCylinder; }
+        set { SizeofCylinder = value; }
     }
 
 
     private void Update()
     {
-        if (GameStateController.GameIsPlaying())
+        if (GameStateController.CanRunGameplay)
         {
             if (curScale <= minScale)
             {
-                OnDespawn();
+                onDespawnConditionMet?.Invoke();
             }
             else
             {
                 // Shrink if player is in the pool
-                Shrink(shrinkPerSecond * Time.deltaTime);
+                //Shrink(shrinkPerSecond * Time.deltaTime);
                 float leeway = 3.0f; // Make the circle a little larger than the hitbox
-                circleRenderer.DrawCircle(transform.position, 80, (transform.localScale.x / 2) + leeway);
+                circleRenderer.DrawCircle(transform.position, 80, (transform.localScale.x));
             }
         }
-    }
-
-    private void OnDestroy()
-    {
-        GameStateController.resetting.notifyListenersEnter -= HandleResettingEnter;
     }
 
     /// <summary>Reinitializes and turns on this HealthPool gameObject.</summary>
@@ -94,24 +85,6 @@ public class HealthPool : SelfDespawn
         this.shrinkPerSecond = shrinkPerSecond;
 
         SetScale(startScale);
-
-        SpawnNewLocation();
-    }
-
-    protected override void OnDespawn() 
-    {
-        this.gameObject.SetActive(false);
-        base.OnDespawn();
-        IcreaseSpawnDistance();
-        Init(RateOfDecay, SizeofCylinder);
-    }
-
-    /// <summary>
-    /// Should call the default Init method.
-    /// </summary>
-    public override void Init()
-    {
-        this.Init();
     }
 
     /// <summary>
@@ -182,26 +155,17 @@ public class HealthPool : SelfDespawn
         spawnVector += player.transform.position;
         return spawnVector;
     }
-
-    /// <summary>
-    /// Sets this healthpool to have a fresh spawn location.
-    /// </summary>
-    private void SpawnNewLocation() 
-    {
-        this.transform.position = GetSpawnVector(player.transform.forward, SpawnAngleRandomNess, currentSpawnDistance);
-
-        this.gameObject.SetActive(true);
-    }
     #endregion
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "PlayerHealth")
+        if (other.tag == "Player")
         {
+            Debug.Log("player collission");
             Health playerHealthRef = other.GetComponentInChildren<Health>();
             playerHealthRef.Heal(currentPlayerHealAmount);
             IncreaseHealthOutput();
-            OnDespawn();
+            onDespawnConditionMet?.Invoke();
         }
     }
 

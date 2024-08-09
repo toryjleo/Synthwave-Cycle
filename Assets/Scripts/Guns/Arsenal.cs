@@ -72,7 +72,7 @@ public class Arsenal : MonoBehaviour, IResettable
     void Update()
     {
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.L))
+        /*if (Input.GetKeyDown(KeyCode.L))
         {
             EquipGun(PlayerWeaponType.DefaultGun);
         }
@@ -83,7 +83,7 @@ public class Arsenal : MonoBehaviour, IResettable
         else if (Input.GetKeyDown(KeyCode.P))
         {
             EquipGun(PlayerWeaponType.Shotty);
-        }
+        }*/
 #endif
     }
 
