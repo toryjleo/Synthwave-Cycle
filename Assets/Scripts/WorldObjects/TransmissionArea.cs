@@ -92,6 +92,7 @@ public class TransmissionArea : MonoBehaviour
     {
         HealthPoolInit();
         healthPool.transform.position = new Vector3(transmissionArea.Radius, transform.position.y, 0);
+        healthPool.transform.RotateAround(transform.position, Vector3.up, transmissionArea.StartAngleDegrees);
     }
 
     private void MoveHealthPool() 
