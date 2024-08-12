@@ -52,10 +52,11 @@ public class HealthPool : MonoBehaviour
     /// <param name="shrinkPerSecond">The amount at which the scale is reduced per second.</param>
     /// <param name="startScale">The scale at which this healthpool starts at.</param>
     /// <param name="minScale">The minimum scale which the healthpool can shrink to before it is despawned.</param>
-    public void Init(float startScale, float minScale, float shrinkPerSecond) 
+    public void Init(float startScale, float minScale, float yScale, float shrinkPerSecond) 
     {
         this.maxScale = startScale;
         this.minScale = minScale;
+        transform.localScale = new Vector3(transform.localScale.x, yScale, transform.localScale.z); 
         this.shrinkPerSecond = shrinkPerSecond;
 
         SetScale(startScale);
@@ -67,7 +68,7 @@ public class HealthPool : MonoBehaviour
     private void SetScale(float scale)
     {
         curScale = ClampScale(scale);
-        Vector3 objScale = new Vector3(curScale, 1, curScale);
+        Vector3 objScale = new Vector3(curScale, transform.localScale.y, curScale);
 
         transform.localScale = objScale;
     }

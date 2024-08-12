@@ -85,13 +85,13 @@ public class TransmissionArea : MonoBehaviour
 
     private void HealthPoolInit() 
     {
-        healthPool.Init(transmissionArea.MaxScale, transmissionArea.MinScale, transmissionArea.ShrinkPerSecond);
+        healthPool.Init(transmissionArea.MaxScale, transmissionArea.MinScale, transmissionArea.YScale, transmissionArea.ShrinkPerSecond);
     }
 
     private void ApplyInitialState()
     {
         HealthPoolInit();
-        healthPool.transform.position = new Vector3(transmissionArea.Radius, 0, 0);
+        healthPool.transform.position = new Vector3(transmissionArea.Radius, transform.position.y, 0);
     }
 
     private void MoveHealthPool() 

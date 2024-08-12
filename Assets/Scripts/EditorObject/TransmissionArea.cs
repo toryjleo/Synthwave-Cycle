@@ -50,6 +50,10 @@ namespace EditorObject
         /// </summary>
         [SerializeField] private float maxScale = 5.0f;
         /// <summary>
+        /// Controls the Healthpool's y-scale. The healthpool must be tall enough to collide with the player.
+        /// </summary>
+        [SerializeField] private float yScale = 2.0f;
+        /// <summary>
         /// The scale for the healthpool to shrink every second
         /// </summary>
         [SerializeField] private float shrinkPerSecond = .75f;
@@ -57,6 +61,7 @@ namespace EditorObject
         #region Properties
         public float MinScale {  get => minScale; }
         public float MaxScale { get => maxScale;}
+        public float YScale { get => yScale; }
         public float ShrinkPerSecond { get => shrinkPerSecond; }
         #endregion
         #endregion
