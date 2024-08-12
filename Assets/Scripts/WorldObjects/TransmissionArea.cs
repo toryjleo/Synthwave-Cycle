@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class TransmissionArea : MonoBehaviour
@@ -11,6 +12,8 @@ public class TransmissionArea : MonoBehaviour
     [SerializeField] private bool transmissionAreaIsViewable = false;
     #endregion
 
+    private Vector3 startPos;
+
     /// <summary>
     /// Healthpool the transmission area creates
     /// </summary>
@@ -20,11 +23,6 @@ public class TransmissionArea : MonoBehaviour
     {
         get => transmissionArea.Radius * 2;
     }
-
-    #region HealthPool
-
-
-    #endregion
 
     /// <summary>
     /// A percentage value. 1 is 100% clear and 0 is 0% clear
@@ -47,19 +45,24 @@ public class TransmissionArea : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Vector3 startPos = new Vector3(transmissionArea.Radius, 0, 0);
 
         // Adjusts visual and capsule collider
         transform.localScale = new Vector3(Width, transform.localScale.y, Width);
+
+        // Initialize HealthPool
+        startPos = new Vector3(transmissionArea.Radius, 0, 0);
         healthPool = Instantiate(prefab_HealthPool, startPos, Quaternion.identity);
         healthPool.onDespawnConditionMet += MoveHealthPool;
+        HealthPoolToStartState();
 
-
-        healthPool.Init(transmissionArea.MaxScale, transmissionArea.MinScale, transmissionArea.ShrinkPerSecond);
-        healthPool.transform.RotateAround(transform.position, Vector3.up, transmissionArea.StartAngleDegrees);
+        // Handle reset state
+        if (GameStateController.StateExists)
+        {
+            GameStateController.resetting.notifyListenersEnter += HealthPoolToStartState;
+        }
 
 #if UNITY_EDITOR
-    GetComponent<MeshRenderer>().enabled = transmissionAreaIsViewable;
+        GetComponent<MeshRenderer>().enabled = transmissionAreaIsViewable;
 #else
     GetComponent<MeshRenderer>().enabled = false;
 #endif
@@ -79,9 +82,20 @@ public class TransmissionArea : MonoBehaviour
                                           transmissionArea.ClockwiseRotationAnglePerSecond * Time.deltaTime);
     }
 
-    private void MoveHealthPool() 
+    private void HealthPoolInit() 
     {
         healthPool.Init(transmissionArea.MaxScale, transmissionArea.MinScale, transmissionArea.ShrinkPerSecond);
+    }
+
+    private void HealthPoolToStartState()
+    {
+        HealthPoolInit();
+        healthPool.transform.position = new Vector3(transmissionArea.Radius, 0, 0);
+    }
+
+    private void MoveHealthPool() 
+    {
+        HealthPoolInit();
         healthPool.transform.RotateAround(transform.position, Vector3.up, transmissionArea.DeltaAngleDegrees);
     }
 }
