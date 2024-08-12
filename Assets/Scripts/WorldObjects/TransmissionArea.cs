@@ -21,6 +21,11 @@ public class TransmissionArea : MonoBehaviour
         get => transmissionArea.Radius * 2;
     }
 
+    #region HealthPool
+
+
+    #endregion
+
     /// <summary>
     /// A percentage value. 1 is 100% clear and 0 is 0% clear
     /// TODO: Make a better alogrithm when ui and audio implemented for talking head
@@ -50,7 +55,7 @@ public class TransmissionArea : MonoBehaviour
         healthPool.onDespawnConditionMet += MoveHealthPool;
 
 
-        healthPool.Init(0, 5, .2f);
+        healthPool.Init(transmissionArea.MaxScale, transmissionArea.MinScale, transmissionArea.ShrinkPerSecond);
         healthPool.transform.RotateAround(transform.position, Vector3.up, transmissionArea.StartAngleDegrees);
 
 #if UNITY_EDITOR
@@ -69,11 +74,14 @@ public class TransmissionArea : MonoBehaviour
             MoveHealthPool();
         }
 #endif
+
+        healthPool.transform.RotateAround(transform.position, Vector3.up, 
+                                          transmissionArea.ClockwiseRotationAnglePerSecond * Time.deltaTime);
     }
 
     private void MoveHealthPool() 
     {
+        healthPool.Init(transmissionArea.MaxScale, transmissionArea.MinScale, transmissionArea.ShrinkPerSecond);
         healthPool.transform.RotateAround(transform.position, Vector3.up, transmissionArea.DeltaAngleDegrees);
-
     }
 }

@@ -106,6 +106,11 @@ public class PlayerHealth : Health
         }
     }
 
+    public void HealFromHealthPool() 
+    {
+        Heal(playerHealth.HpFromHealthPool);
+    }
+
     /// <summary>
     /// Handles healing and updates the bar maximum
     /// </summary>

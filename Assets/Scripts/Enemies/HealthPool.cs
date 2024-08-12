@@ -8,21 +8,12 @@ public class HealthPool : MonoBehaviour
 {
     // Visuals
     [SerializeField] private CircleRendererScript circleRenderer;
-    public float SizeofCylinder = 400;
-    public float RateOfDecay = 10f;
-    private const float DEFAULT_MIN_SCALE = 50.0f;
-    private const float DEFAULT_MAX_SCALE = 400.0f;
-    private const float DEFULAT_SCALE_SHRINK_PER_SECOND = 10f;
 
 
-    private float minScale;
-    private float maxScale;
-    private float shrinkPerSecond;
-    private float curScale;
-
-
-    // Values that get updated as game progresses
-    private float currentPlayerHealAmount;
+    private float minScale = 0;
+    private float maxScale = 0;
+    private float shrinkPerSecond = 0;
+    private float curScale = 0;
 
 
 
@@ -40,12 +31,6 @@ public class HealthPool : MonoBehaviour
         }
     }
 
-    public float Width 
-    {
-        get { return SizeofCylinder; }
-        set { SizeofCylinder = value; }
-    }
-
 
     private void Update()
     {
@@ -57,9 +42,7 @@ public class HealthPool : MonoBehaviour
             }
             else
             {
-                // Shrink if player is in the pool
-                //Shrink(shrinkPerSecond * Time.deltaTime);
-                float leeway = 3.0f; // Make the circle a little larger than the hitbox
+                Shrink(shrinkPerSecond * Time.deltaTime);
                 circleRenderer.DrawCircle(transform.position, 80, (transform.localScale.x));
             }
         }
@@ -69,7 +52,7 @@ public class HealthPool : MonoBehaviour
     /// <param name="shrinkPerSecond">The amount at which the scale is reduced per second.</param>
     /// <param name="startScale">The scale at which this healthpool starts at.</param>
     /// <param name="minScale">The minimum scale which the healthpool can shrink to before it is despawned.</param>
-    public void Init(float shrinkPerSecond = DEFULAT_SCALE_SHRINK_PER_SECOND, float startScale = DEFAULT_MAX_SCALE, float minScale = DEFAULT_MIN_SCALE) 
+    public void Init(float startScale, float minScale, float shrinkPerSecond) 
     {
         this.maxScale = startScale;
         this.minScale = minScale;
@@ -109,9 +92,8 @@ public class HealthPool : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            Debug.Log("player collission");
-            Health playerHealthRef = other.GetComponentInChildren<Health>();
-            playerHealthRef.Heal(currentPlayerHealAmount);
+            PlayerHealth playerHealthRef = other.GetComponentInChildren<PlayerHealth>();
+            playerHealthRef.HealFromHealthPool();
             onDespawnConditionMet?.Invoke();
         }
     }
