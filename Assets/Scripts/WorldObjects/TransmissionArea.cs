@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class TransmissionArea : MonoBehaviour
@@ -10,6 +11,8 @@ public class TransmissionArea : MonoBehaviour
     [SerializeField] private EditorObject.TransmissionArea transmissionArea;
     [SerializeField] private bool transmissionAreaIsViewable = false;
     #endregion
+
+    private Vector3 startPos;
 
     /// <summary>
     /// Healthpool the transmission area creates
@@ -42,19 +45,25 @@ public class TransmissionArea : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Vector3 startPos = new Vector3(transmissionArea.Radius, 0, 0);
 
         // Adjusts visual and capsule collider
         transform.localScale = new Vector3(Width, transform.localScale.y, Width);
+        transform.position = transmissionArea.TransmissionAreaStart;
+
+        // Initialize HealthPool
+        startPos = new Vector3(transmissionArea.Radius, 0, 0);
         healthPool = Instantiate(prefab_HealthPool, startPos, Quaternion.identity);
         healthPool.onDespawnConditionMet += MoveHealthPool;
+        ApplyInitialState();
 
-
-        healthPool.Init(0, 5, .2f);
-        healthPool.transform.RotateAround(transform.position, Vector3.up, transmissionArea.StartAngleDegrees);
+        // Handle reset state
+        if (GameStateController.StateExists)
+        {
+            GameStateController.resetting.notifyListenersEnter += ApplyInitialState;
+        }
 
 #if UNITY_EDITOR
-    GetComponent<MeshRenderer>().enabled = transmissionAreaIsViewable;
+        GetComponent<MeshRenderer>().enabled = transmissionAreaIsViewable;
 #else
     GetComponent<MeshRenderer>().enabled = false;
 #endif
@@ -69,11 +78,26 @@ public class TransmissionArea : MonoBehaviour
             MoveHealthPool();
         }
 #endif
+
+        healthPool.transform.RotateAround(transform.position, Vector3.up, 
+                                          transmissionArea.ClockwiseRotationAnglePerSecond * Time.deltaTime);
+    }
+
+    private void HealthPoolInit() 
+    {
+        healthPool.Init(transmissionArea.MaxScale, transmissionArea.MinScale, transmissionArea.YScale, transmissionArea.ShrinkPerSecond);
+    }
+
+    private void ApplyInitialState()
+    {
+        HealthPoolInit();
+        healthPool.transform.position = new Vector3(transmissionArea.Radius, transform.position.y, 0);
+        healthPool.transform.RotateAround(transform.position, Vector3.up, transmissionArea.StartAngleDegrees);
     }
 
     private void MoveHealthPool() 
     {
+        HealthPoolInit();
         healthPool.transform.RotateAround(transform.position, Vector3.up, transmissionArea.DeltaAngleDegrees);
-
     }
 }

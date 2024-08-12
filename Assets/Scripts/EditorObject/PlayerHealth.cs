@@ -14,6 +14,10 @@ namespace EditorObject
         /// </summary>
         [SerializeField] private float hpOnStart = 200.0f;
         /// <summary>
+        /// The amount of HP gained from hitting a healthpool
+        /// </summary>
+        [SerializeField] private float hpFromHealthPool = 500f;
+        /// <summary>
         /// HP amount to be reached to fill the 1st bar
         /// </summary>
         [SerializeField] private float barMax1HP = 1000.0f;
@@ -29,6 +33,7 @@ namespace EditorObject
 
         #region Properties
         public float HpOnStart { get { return hpOnStart; } }
+        public float HpFromHealthPool { get { return hpFromHealthPool; } }
         public float BarMax1HP { get { return barMax1HP; } }
         public float BarMax2HP { get { return barMax2HP; } }
         public float BarMax3HP { get { return barMax3HP; } }

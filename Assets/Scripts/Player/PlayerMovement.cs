@@ -176,9 +176,17 @@ public class PlayerMovement : MonoBehaviour
             rigidBody.drag = 0;
         }
 
-        transform.position = start_position;
+        ApplyInitialState();
         motionFunction = new Sigmoid1();
         gearManager = new Engine(gears, playerHealth);
+    }
+
+    private void Start()
+    {
+        if (GameStateController.StateExists)
+        {
+            GameStateController.resetting.notifyListenersEnter += ApplyInitialState;
+        }
     }
 
     // Update is called once per frame
@@ -307,5 +315,14 @@ public class PlayerMovement : MonoBehaviour
     {
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.AddForce(new Vector3(forceOfBulletOnBike.x, forceOfBulletOnBike.y, forceOfBulletOnBike.z));
+    }
+
+    private void ApplyInitialState() 
+    {
+        transform.position = start_position;
+        transform.rotation = Quaternion.identity;
+        rigidBody.velocity = Vector3.zero;
+        rigidBody.angularVelocity = Vector3.zero;
+        rigidBody.Sleep();
     }
 }

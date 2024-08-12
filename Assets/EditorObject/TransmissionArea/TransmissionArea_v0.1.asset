@@ -12,3 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ad7b6fadb32b343a05661d834cc9f5, type: 3}
   m_Name: TransmissionArea_v0.1
   m_EditorClassIdentifier: 
+  radius: 16.1
+  transmissionAreaStart: {x: 0, y: -2, z: 50}
+  startAngleDegrees: 0
+  deltaAngleDegrees: 60
+  clockwiseRotationAnglePerSecond: 5.64
+  minScale: 0.2
+  maxScale: 10
+  yScale: 2
+  shrinkPerSecond: 0.75
