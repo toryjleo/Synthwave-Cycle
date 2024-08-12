@@ -28,6 +28,7 @@ public class PlayerHealth : Health
 
     private BarMax currentBar;
     public NotifyPlayerHealth onBarUpdate;
+    public NotifyHealth onHealthChange;
 
     /// <summary>
     /// The current bar to work toward
@@ -103,6 +104,7 @@ public class PlayerHealth : Health
             base.TakeDamage(hp);
 
             UpdateBarMax();
+            onHealthChange?.Invoke();
         }
     }
 
@@ -120,7 +122,7 @@ public class PlayerHealth : Health
         base.Heal(hp);
 
         UpdateBarMax();
-        
+        onHealthChange?.Invoke();
     }
 
     /// <summary>
