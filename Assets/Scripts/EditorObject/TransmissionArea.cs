@@ -14,6 +14,10 @@ namespace EditorObject
         /// </summary>
         [SerializeField] private float radius = 20;
         /// <summary>
+        /// The starting location of the transmissionArea
+        /// </summary>
+        [SerializeField] private Vector3 transmissionAreaStart = Vector3.zero;
+        /// <summary>
         /// Rotation to spawn healthpool at on start
         /// </summary>
         [SerializeField] private float startAngleDegrees = 0;
@@ -29,6 +33,7 @@ namespace EditorObject
 
         #region Properties
         public float Radius { get => radius; }
+        public Vector3 TransmissionAreaStart { get => transmissionAreaStart; }
         public float StartAngleDegrees { get => startAngleDegrees; }
         public float DeltaAngleDegrees { get => deltaAngleDegrees; }
         public float ClockwiseRotationAnglePerSecond { get => clockwiseRotationAnglePerSecond; }
