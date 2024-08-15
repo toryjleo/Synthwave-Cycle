@@ -64,7 +64,7 @@ public class PinkMist : Weapon
 
     public void HandleBarUpdate(BarMax oldMax, BarMax newMax, bool hpIsOverBarMax3) 
     {
-        if (newMax >= oldMax || hpIsOverBarMax3) 
+        if (newMax > oldMax || hpIsOverBarMax3) 
         {
             PrimaryFire(Vector3.zero);
         }

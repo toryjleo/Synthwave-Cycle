@@ -4444,6 +4444,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dangerLevelSlider: {fileID: 4273975369504931753}
+  healthSlider: {fileID: 7601686219321368726}
+  healthBarFill: {fileID: 273343015190905692}
+  healthBarBackground: {fileID: 1051878222058224643}
 --- !u!1 &5043197909229793381
 GameObject:
   m_ObjectHideFlags: 0
