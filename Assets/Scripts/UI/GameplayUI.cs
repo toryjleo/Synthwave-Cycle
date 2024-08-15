@@ -39,6 +39,10 @@ public class GameplayUI : MonoBehaviour
     dangerLevelSlider.value = DangerLevel.Instance.PercentProgress;
   }
 
+  /// <summary>
+  /// UpdateHealth sets the health slider (defined in inspector) and sets the health bar fill and background colors
+  /// according to the PlayerHealth's CurrentBar value
+  /// </summary>
   private void UpdateHealth()
   {
     healthSlider.value = playerHealth.PercentProgress;
