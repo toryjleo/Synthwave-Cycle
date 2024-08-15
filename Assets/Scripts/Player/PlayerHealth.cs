@@ -70,15 +70,25 @@ public class PlayerHealth : Health
     {
 
         currentBar = BarMax.Bar1;
-        float maxHp = playerHealth.BarMax3HP + (playerHealth.BarMax3HP - playerHealth.BarMax2HP) / 2;
-        Init(playerHealth.HpOnStart, maxHp);
 
         deadEvent += HandleDeath;
         
     }
 
+    private void Start()
+    {
+        ApplyInitialState();
+
+        // Handle reset state
+        if (GameStateController.StateExists)
+        {
+            GameStateController.resetting.notifyListenersEnter += ApplyInitialState;
+        }
+    }
+
     private void Update()
     {
+        Debug.Log("Hit points: " + HitPoints);
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Equals))
         {
@@ -89,6 +99,16 @@ public class PlayerHealth : Health
             TakeDamage(1000);
         }
 #endif
+    }
+
+    /// <summary>
+    /// Sets the Player Health to the state it must be at for the game to start
+    /// </summary>
+    private void ApplyInitialState() 
+    {
+        float maxHp = playerHealth.BarMax3HP + (playerHealth.BarMax3HP - playerHealth.BarMax2HP) / 2;
+        Init(playerHealth.HpOnStart, maxHp);
+        onHealthChange?.Invoke();
     }
 
     /// <summary>Subtracts points to _hitPoints, handles invulnerability, and updates the bar max</summary>
