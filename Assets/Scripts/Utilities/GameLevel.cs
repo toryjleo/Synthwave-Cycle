@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameLevel : MonoBehaviour
 {
     [SerializeField]
-    public WaveSequence WaveSequence;
+    public EditorObject.WaveSequence WaveSequence;
     [SerializeField]
     public Material GroundMat;
 }

@@ -133,6 +133,7 @@ public class SquadSpawner : MonoBehaviour
         return biasSpawnVector(vectors[Random.Range(0, vectors.Count)], spawnBiasAngle, spawnDistance);
 
     }
+
     /// <summary>
     /// This method returns a vector
     /// </summary>

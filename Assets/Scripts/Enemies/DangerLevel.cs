@@ -12,7 +12,17 @@ public class DangerLevel : MonoBehaviour, IResettable
     public Timer dangerTimer;
     public int dangerLevel;
 
+    private int minimumThreshold;
+    private int maximumThreshold;
+
+    const int DECAY_TICK_MS = 3000;
     const int START_LEVEL = 1;
+
+    public float PercentProgress 
+    {
+        get => Mathf.Clamp01((float)(dangerLevel - minimumThreshold) / (float)(maximumThreshold - minimumThreshold));
+    }
+
 
     private void Awake()
     {
@@ -22,6 +32,8 @@ public class DangerLevel : MonoBehaviour, IResettable
     private void Start()
     {
         dangerLevel = START_LEVEL;
+        minimumThreshold = START_LEVEL;
+        maximumThreshold = int.MaxValue;
         StartTimer();
     }
 
@@ -29,22 +41,23 @@ public class DangerLevel : MonoBehaviour, IResettable
     {
         // This timer increases the danger level and is used for determining the amount and difficulty of enemies being
         // spawned
-        dangerTimer = new Timer(3000);
+        dangerTimer = new Timer(DECAY_TICK_MS);
         dangerTimer.AutoReset = true;
         dangerTimer.Enabled = true;
         dangerTimer.Elapsed += XTimer_Elapsed;
     }
 
     /// <summary>
-    /// When xTimer Elapses every 3 seconds, increase the danger level by 1. 
+    /// When xTimer Elapses every {DECAY_TICK_MS} milliseconds, decrease the danger level by 1. 
     /// </summary>
     /// <param name="sender"></param> 
     /// <param name="e"></param>
     private void XTimer_Elapsed(object sender, ElapsedEventArgs e)
     {
-        if (dangerLevel > 1)
+        dangerLevel--;
+        if (dangerLevel < minimumThreshold)
         {
-            dangerLevel--;
+            dangerLevel = minimumThreshold;
         }
     }
 
@@ -64,6 +77,15 @@ public class DangerLevel : MonoBehaviour, IResettable
     public void ResetGameObject()
     {
         dangerLevel = START_LEVEL;
+        minimumThreshold = START_LEVEL;
+        maximumThreshold = int.MaxValue;
         StartTimer();
     }
+
+    public void SetDlThreashold(int newMinimum, int newMaximum = int.MaxValue)
+    {
+        minimumThreshold = newMinimum;
+        maximumThreshold = newMaximum;
+    }
+
 }
