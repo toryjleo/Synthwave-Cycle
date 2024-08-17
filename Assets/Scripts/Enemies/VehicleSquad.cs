@@ -33,7 +33,7 @@ public class VehicleSquad : Squad
 
     internal override void HandleMovement()
     {
-        foreach (VehicleAI ai in squadMembers)
+        foreach (VehicleAi ai in squadMembers)
         {
             Vector3 aimLoc = target.transform.position;
             aimLoc += target.transform.forward * 10;

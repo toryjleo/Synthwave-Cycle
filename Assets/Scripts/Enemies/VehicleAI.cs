@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>Class<c>VehicleAI</c> 
 /// VehicleAI holds all the code that makes an enemy Vehicle different form other enemy types
-public class VehicleAI : Ai
+public abstract class VehicleAi : Ai
 {
     public ArcadeAiVehicleController vehicleController;
 
@@ -37,13 +37,8 @@ public class VehicleAI : Ai
         base.NewLife();
     }
 
-    public override void Attack() 
-    {
-        if (myGun != null && myGun.CanShootAgain() && alive)
-        {
-            this.myGun.PrimaryFire(target.transform.position);
-        }
-    }
+    //All vehicles have a target, but some vehicles interact with their targets in different ways
+    public abstract Vector3 GetMovementLocation();
 
     public override void Update()
     {
@@ -67,14 +62,6 @@ public class VehicleAI : Ai
                 timeByTarget = TIME_BY_TARGET_TO_ATTACK;
             }
         }
-    }
-
-
-
-    //If Car has spent enough time by the player, ATTACK!
-    public bool IsConfident()
-    {
-        return timeByTarget >= TIME_BY_TARGET_TO_ATTACK;
     }
 
     public override void Init()
@@ -134,5 +121,14 @@ public class VehicleAI : Ai
     public override Enemy GetEnemyType()
     {
         return Enemy.Car;
+    }
+
+    public override void Attack()
+    {
+        //shooting code
+        if (myGun != null && myGun.CanShootAgain() && alive)
+        {
+            this.myGun.PrimaryFire(target.transform.position);
+        }
     }
 }

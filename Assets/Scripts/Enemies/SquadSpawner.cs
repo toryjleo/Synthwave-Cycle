@@ -34,7 +34,7 @@ public class SquadSpawner : MonoBehaviour
     private Squad SpawnSquad(Enemy aiType)
     {
         Ai enemyAi = SpawnNewEnemy(aiType);
-        if(enemyAi is VehicleAI)
+        if(enemyAi is VehicleAi)
         {
             VehicleSquad squad = new VehicleSquad(squadManager);
             squad.SetTarget(player);
@@ -81,7 +81,7 @@ public class SquadSpawner : MonoBehaviour
         VehicleSquad s = new VehicleSquad(squadManager);
         s.SetTarget(player);
 
-        VehicleAI ai = SpawnNewEnemy(type) as VehicleAI;
+        VehicleAi ai = SpawnNewEnemy(type) as VehicleAi;
         s.AddToSquad(ai);
         squadManager.currentEnemies.Add(ai);
         return s;
