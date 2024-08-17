@@ -42,6 +42,11 @@ public class TransmissionArea : MonoBehaviour
     
     }
 
+    private void Awake()
+    {
+        CreateHealthPool();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,8 +56,6 @@ public class TransmissionArea : MonoBehaviour
         transform.position = transmissionArea.TransmissionAreaStart;
 
         // Initialize HealthPool
-        startPos = new Vector3(transmissionArea.Radius, 0, 0);
-        healthPool = Instantiate(prefab_HealthPool, startPos, Quaternion.identity);
         healthPool.onDespawnConditionMet += MoveHealthPool;
         ApplyInitialState();
 
@@ -81,6 +84,12 @@ public class TransmissionArea : MonoBehaviour
 
         healthPool.transform.RotateAround(transform.position, Vector3.up, 
                                           transmissionArea.ClockwiseRotationAnglePerSecond * Time.deltaTime);
+    }
+
+    private void CreateHealthPool() 
+    {
+        startPos = new Vector3(transmissionArea.Radius, 0, 0);
+        healthPool = Instantiate(prefab_HealthPool, startPos, Quaternion.identity);
     }
 
     private void HealthPoolInit() 
