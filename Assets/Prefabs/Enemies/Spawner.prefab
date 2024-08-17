@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
-  - prefab: {fileID: -5485121639866341136, guid: 7577d168a208c5445a7f8ec18fb2eadf, type: 3}
+  - prefab: {fileID: 2850074470081858160, guid: 0eb95e7c3d18e884b99ecde9100043c9, type: 3}
     poolSize: 30
   - prefab: {fileID: 3874834857555224722, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
     poolSize: 30
@@ -98,5 +98,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   squadSpawner: {fileID: 1202201957}
   dl: {fileID: 0}
-  scoreKeeper: {fileID: 0}
   currentEnemies: []
