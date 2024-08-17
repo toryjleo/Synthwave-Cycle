@@ -19,7 +19,7 @@ public abstract class VehicleAi : Ai
     [SerializeField]
     public GameObject itemDrop;
 
-    public GameObject movementTarget;
+    public Transform movementTarget;
 
     //How much directional/rotational force effects the player on a ram
     private const float MAX_RANDOM_TORQUE = 4500f;
@@ -27,22 +27,24 @@ public abstract class VehicleAi : Ai
 
     //This is the time the Vehicle has spent within CONFIDENCE_BUILD_DISTANCE to it's target
     //When it exceeds TIME_BY_TARGET_TO_ATTACK the car is ready to attack
-    private float timeByTarget = 0;
-    private float TIME_BY_TARGET_TO_ATTACK;
-    private const float CONFIDENCE_BUILD_DISTANCE = 25f;
+    internal float timeByTarget = 0;
+    internal float TIME_BY_TARGET_TO_ATTACK;
+    internal const float CONFIDENCE_BUILD_DISTANCE = 25f;
 
     public override void NewLife()
     {
+        movementTarget = this.transform;
         TIME_BY_TARGET_TO_ATTACK = Random.Range(3, 11);
         base.NewLife();
     }
 
     //All vehicles have a target, but some vehicles interact with their targets in different ways
-    public abstract Vector3 GetMovementLocation();
+    public abstract void UpdateMovementLocation();
 
     public override void Update()
     {
         base.Update();
+        //Handle confidence/attack timing
         if(movementTarget != null)
         {
             if (Vector3.Distance(transform.position, movementTarget.transform.position) <= CONFIDENCE_BUILD_DISTANCE)
@@ -62,6 +64,8 @@ public abstract class VehicleAi : Ai
                 timeByTarget = TIME_BY_TARGET_TO_ATTACK;
             }
         }
+        //Figure out where to moved based on the child class movement pattern
+        UpdateMovementLocation();
     }
 
     public override void Init()
@@ -79,12 +83,6 @@ public abstract class VehicleAi : Ai
     {
         vehicleController.enabled = true;
         base.SetTarget(targ);
-    }
-
-    public void SetMovementTarget(GameObject targ)
-    {
-        movementTarget = targ;
-        vehicleController.target = targ.transform;
     }
 
     void OnCollisionEnter(Collision collision)
