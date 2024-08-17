@@ -33,34 +33,17 @@ public class VehicleSquad : Squad
 
     internal override void HandleMovement()
     {
-        BikeScript bikeScript = target.GetComponent<BikeScript>();
         foreach (VehicleAI ai in squadMembers)
         {
             Vector3 aimLoc = target.transform.position;
             aimLoc += target.transform.forward * 10;
             ai.myGun?.transform.LookAt(aimLoc);
-            //if car is confident, ATTACK PLAYER 
-            if (ai.IsConfident())
+
+            //UnityEngine.Debug.Log("ATTACK!");
+            ai.SetMovementTarget(target);
+            if( Vector3.Distance(ai.transform.position, target.transform.position) <= ai.attackRange)
             {
-                //UnityEngine.Debug.Log("ATTACK!");
-                ai.SetMovementTarget(bikeScript.gameObject);
-                if( Vector3.Distance(ai.transform.position, target.transform.position) <= ai.attackRange)
-                {
-                    ai.Attack();
-                }
-            }
-            else
-            {
-                float distanceToTrackerFR = (ai.transform.position - bikeScript.movementComponent.trackerFR.transform.position).sqrMagnitude;
-                float distanceToTrackerFL = (ai.transform.position - bikeScript.movementComponent.trackerFL.transform.position).sqrMagnitude;
-                if (distanceToTrackerFR < distanceToTrackerFL)
-                {
-                    ai.SetMovementTarget(bikeScript.movementComponent.trackerFR);
-                }
-                else
-                {
-                    ai.SetMovementTarget(bikeScript.movementComponent.trackerFL);
-                }
+                ai.Attack();
             }
         }
     }

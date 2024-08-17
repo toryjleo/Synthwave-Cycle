@@ -118,8 +118,9 @@ public class SquadSpawner : MonoBehaviour
     /// <returns></returns>
     public Vector3 biasSpawnVector()
     {
-        return biasSpawnVector(player.GetComponent<BikeScript>().ForwardVector(), spawnBiasAngle, spawnDistance);
+        return biasSpawnVector(player.transform.forward, spawnBiasAngle, spawnDistance);
     }
+
     /// <summary>
     /// This method returns a vector
     /// </summary>

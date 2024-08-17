@@ -23,8 +23,8 @@ public static class WorldBounds
     }
 
 
-    public static Vector2 worldBoundsHorizontalMinMax;
-    public static Vector2 worldBoundsVericalMinMax;
+    public static Vector2 worldBoundsHorizontalMinMax = new Vector2(-100, 100);
+    public static Vector2 worldBoundsVericalMinMax = new Vector2(-100, 100);
 
 }
 
@@ -32,7 +32,7 @@ public static class WorldBounds
 /// Expects there to be an object with BikeScript in the scene.</summary>
 public class WorldGenerator : MonoBehaviour
 {
-    private BikeScript bike;
+    private PlayerMovement player;
     #region ground
     [SerializeField] private GameObject ground;
     private GameObject[,] groundTiles;
@@ -44,14 +44,14 @@ public class WorldGenerator : MonoBehaviour
     // Start is called before the first frame update
     public  void CreateGround(Material mat)
     {
-        BikeScript[] bikeScripts = Object.FindObjectsOfType<BikeScript>();
-        if (bikeScripts.Length <= 0) 
+        PlayerMovement[] playerMovementComponents = Object.FindObjectsOfType<PlayerMovement>();
+        if (playerMovementComponents.Length <= 0) 
         {
             Debug.LogWarning("WorldGenerator did not find any BikeScripts in scene");
         }
         else 
         {
-            bike = bikeScripts[0];
+            player = playerMovementComponents[0];
         }
 
         InitializeGround(mat);
@@ -155,9 +155,9 @@ public class WorldGenerator : MonoBehaviour
     /// </summary>
     private void CheckUpdateGroundTiles()
     {
-        if (bike != null)
+        if (player != null)
         {
-            Vector3 bikePosition = bike.transform.position;
+            Vector3 bikePosition = player.transform.position;
             float bikeHorizontalPos = bikePosition.x;
             float bikeVerticalPos = bikePosition.z;
             if (bikeHorizontalPos > WorldBounds.currentTileHorizontalMinMax.y && bikeVerticalPos > WorldBounds.currentTileVericalMinMax.y) { MoveGroundTiles(1, 1); } // Upper Right

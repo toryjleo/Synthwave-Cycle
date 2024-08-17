@@ -104,18 +104,16 @@ public class VehicleAI : Ai
     {
         if (collision.gameObject.tag == "Player")
         {
-            BikeScript bike = collision.gameObject.GetComponent<BikeScript>();
-            Rigidbody bikeRB = bike.movementComponent.rb;
+            PlayerMovement playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
+            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+
+            
             Debug.DrawLine(transform.position, transform.position + vehicleController.carVelocity);
             //Damage player bike based on difference in velocity * multiplier
-            bike.movementComponent.TakeDamage(DamageMultiplyer * 
-                Mathf.Abs(bike.movementComponent.appliedForce.magnitude - 
-                vehicleController.carVelocity.magnitude));
-            //bump the bike based on difference in velocity and ram modifier
-            Vector3 bumpForce = Vector3.ClampMagnitude((vehicleController.carVelocity - 
-                bike.movementComponent.appliedForce) * RamModifier, MAX_RAM_MAGNITUDE);
+            playerHealth.TakeDamage(DamageMultiplyer * 
+                (vehicleController.carVelocity - playerMovement.Velocity).magnitude);
 
-            bikeRB.AddTorque(Vector3.up * Random.Range(-MAX_RANDOM_TORQUE, MAX_RANDOM_TORQUE), ForceMode.Impulse);
+            //bikeRB.AddTorque(Vector3.up * Random.Range(-MAX_RANDOM_TORQUE, MAX_RANDOM_TORQUE), ForceMode.Impulse);
         }
     }
 

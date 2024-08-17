@@ -8,12 +8,10 @@ public delegate void NotifyHealth();
 /// <summary>Class <c>Health</c> A Unity Component which tracks health.</summary>
 public class Health : MonoBehaviour
 {
-    private float _hitPoints;
+    [SerializeField] private float _hitPoints;
     private float _maxHitPoints;
     public NotifyHealth healEvent;
     public NotifyHealth deadEvent;
-
-    public bool isInvulnurable = false;
 
 
     public float HitPoints
@@ -35,14 +33,9 @@ public class Health : MonoBehaviour
 
     /// <summary>Subtracts points to _hitPoints.</summary>
     /// <param name="hp">The number of points to subtract from _hitPoints.</param>
-    public void TakeDamage(float hp)
+    public virtual void TakeDamage(float hp)
     {
-        if (isInvulnurable)
-        {
-            return;
-        }
-
-        if (GameStateController.GameIsPlaying())
+        if (GameStateController.CanRunGameplay)
         {
             _hitPoints -= hp;
 
@@ -55,7 +48,7 @@ public class Health : MonoBehaviour
 
     /// <summary>Adds points to _hitPoints.</summary>
     /// <param name="hp">The number of points to add to _hitPoints.</param>
-    public void Heal(float hp) 
+    public virtual void Heal(float hp) 
     {
         // Notify effects that this is healing
         healEvent?.Invoke();
@@ -70,6 +63,5 @@ public class Health : MonoBehaviour
             // Ensure that _hitPoints does not go over the stated maximum
             _hitPoints = Mathf.Min(_hitPoints + hp, _maxHitPoints);
         }
-        Debug.Log(_hitPoints);
     }
 }
