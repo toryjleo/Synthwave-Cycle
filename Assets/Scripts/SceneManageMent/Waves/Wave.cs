@@ -43,41 +43,37 @@ public class Wave : ScriptableObject
     [SerializeField]
     public WaveType waveType;
 
+    //The minimum danger level required for this Wave to take effect
+    [SerializeField]
+    public int DLThreshold;
+
+    //The audio loop for this wave
+    [SerializeField]
+    public AudioClip TrackVariation;
+
+    //Determines if current DL is above this wave's threshold
     public bool IsOverThreshold()
     {
-        //The minimum danger level required for this Wave to take effect
-        [SerializeField]
-        public int DLThreshold;
 
-        //The audio loop for this wave
-        [SerializeField]
-        public AudioClip TrackVariation;
+        return DangerLevel.Instance.GetDangerLevel() >= DLThreshold;
+    }
+
+    internal AudioClip GetTrackVariation()
+    {
+        return TrackVariation;
+    }
 
     // Activates wave properties and returns a list of wave enemies
     internal virtual List<WaveEnemyInfo> GetWaveInfo()
     {
         switch (waveType)
         {
-            return DangerLevel.Instance.GetDangerLevel() >= DLThreshold;
+            case WaveType.HostileWave:
+                break;
+            case WaveType.LevelComplete:
+                GameStateController.HandleTrigger(StateTrigger.LevelComplete);
+                break;
         }
-
-        internal AudioClip GetTrackVariation()
-        {
-            return TrackVariation;
-        }
-
-        // Activates wave properties and returns a list of wave enemies
-        internal virtual List<Enemy> GetWaveInfo()
-        {
-            switch (waveType)
-            {
-                case WaveType.HostileWave:
-                    break;
-                case WaveType.LevelComplete:
-                    GameStateController.HandleTrigger(StateTrigger.LevelComplete);
-                    break;
-            }
-            return waveEnemies;
-        }
+        return waveEnemies;
     }
 }

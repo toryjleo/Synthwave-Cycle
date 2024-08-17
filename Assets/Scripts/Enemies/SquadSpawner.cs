@@ -104,7 +104,7 @@ public class SquadSpawner : MonoBehaviour
     /// <returns></returns>
     public Vector3 biasSpawnVector(SpawnLocation loc)
     {
-        Vector3 forwardVector = player.GetComponent<BikeScript>().ForwardVector();
+        Vector3 forwardVector = player.transform.forward;
         List<Vector3> vectors = new List<Vector3>();
         switch(loc)
         {
