@@ -30,6 +30,7 @@ public abstract class Gun : Weapon
         }
         bulletPool.Init(bulletPrefab, bulletPoolSize);
         lastFired = 0;
+        this.gameObject.SetActive(true);
     }
     
     /// <summary>Calls OnBulletShot. Will apply variable recoil based on bullet's mass and muzzle velocity</summary>
@@ -61,7 +62,7 @@ public abstract class Gun : Weapon
     /// <returns>True if the gun can shoot again.</returns>
     public bool CanShootAgain() 
     {
-        return this.isActiveAndEnabled && (Time.time - lastFired > 1 / fireRate);
+        return this.gameObject.activeSelf && (Time.time - lastFired > 1 / fireRate);
     }
 
 }
