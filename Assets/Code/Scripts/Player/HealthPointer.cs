@@ -9,10 +9,12 @@ using UnityEngine;
 public class HealthPointer : MonoBehaviour
 {
     private HealthPool pool;
-    [SerializeField] private GameObject outOfBoundsArrows;
-    private BoundsChecker boundsChecker;
 
+
+    #region Out of Bounds Arrows
+    [SerializeField] private GameObject outOfBoundsArrows;
     private Coroutine runningCoroutine = null;
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +22,7 @@ public class HealthPointer : MonoBehaviour
         gameObject.SetActive(HealthPoolInWorld());
         outOfBoundsArrows.SetActive(false);
 
-        boundsChecker = FindObjectOfType<BoundsChecker>();
+        BoundsChecker boundsChecker = FindObjectOfType<BoundsChecker>();
         if (boundsChecker != null) 
         {
             boundsChecker.NotifyTimerEvent += EnableOutOfBoundsArrows;
@@ -60,6 +62,11 @@ public class HealthPointer : MonoBehaviour
         }
     }
 
+    #region Out Of Bounds Arrows
+    /// <summary>
+    /// Turns out of bounds arrows on and off
+    /// </summary>
+    /// <param name="enabled"></param>
     public void EnableOutOfBoundsArrows(bool enabled) 
     {
         if (gameObject.active == false) 
@@ -80,6 +87,10 @@ public class HealthPointer : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Blinks the Out of Bounds arrows
+    /// </summary>
+    /// <returns>IEnumerator</returns>
     private IEnumerator OutOfBoundsArrowsBlinkingBehavior() 
     {
         bool isOn = false;
@@ -91,4 +102,5 @@ public class HealthPointer : MonoBehaviour
 
         }
     }
+    #endregion
 }
