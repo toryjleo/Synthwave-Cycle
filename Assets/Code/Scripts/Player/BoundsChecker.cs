@@ -29,6 +29,10 @@ public class BoundsChecker : MonoBehaviour
     #region Type Definitions
 
     public delegate void TimerEventHandler(bool timerIsOn);
+
+    /// <summary>
+    /// Class that counts up to an elapsed time
+    /// </summary>
     private class Timer
     {
         private float timeElapsed = 0;
@@ -40,21 +44,34 @@ public class BoundsChecker : MonoBehaviour
         public TimerEventHandler NotifyTimerEvent;
         public TimerEventHandler NotifyTimerComplete;
 
+        /// <summary>
+        /// If the timer has started runnung
+        /// </summary>
         public bool HasStarted
         {
             get => timerOn;
         }
 
+        /// <summary>
+        /// How much time until timer finishes
+        /// </summary>
         public float TimeLeft
         {
             get { return maxTime - timeElapsed; }
         }
 
+        /// <summary>
+        /// Percentage of the full time used up
+        /// </summary>
         public float TimePercentage
         {
             get { return timeElapsed / maxTime; }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="maxTime">The span of time the timer is tracking</param>
         public Timer(float maxTime)
         {
             this.maxTime = maxTime;
@@ -62,6 +79,10 @@ public class BoundsChecker : MonoBehaviour
             this.timerOn = false;
         }
 
+        /// <summary>
+        /// Called every update
+        /// </summary>
+        /// <param name="deltaTime">Amount of time since last tick</param>
         public void Tick(float deltaTime)
         {
             if (timerOn)
@@ -76,6 +97,9 @@ public class BoundsChecker : MonoBehaviour
             }
         }
 
+        /// <summary>
+        /// Starts the timer from 0 seconds
+        /// </summary>
         public void TimerStart()
         {
             if (GameStateController.CanRunGameplay)
@@ -85,6 +109,9 @@ public class BoundsChecker : MonoBehaviour
             }
         }
 
+        /// <summary>
+        /// Resets the timer's values to run again
+        /// </summary>
         public void TimerReset()
         {
             timeElapsed = 0;
