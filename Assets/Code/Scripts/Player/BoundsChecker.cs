@@ -30,7 +30,7 @@ public class BoundsChecker : MonoBehaviour
 
         private bool timerOn = false;
 
-        public TimerEventHandler notifyListenersTimerUpdated;
+        public TimerEventHandler NotifyTimerEvent;
 
         public bool HasStarted 
         {
@@ -74,7 +74,7 @@ public class BoundsChecker : MonoBehaviour
             if (GameStateController.CanRunGameplay) 
             {
                 timerOn = true;
-                notifyListenersTimerUpdated?.Invoke(true);
+                NotifyTimerEvent?.Invoke(true);
             }
         }
 
@@ -82,7 +82,7 @@ public class BoundsChecker : MonoBehaviour
         {
             timeElapsed = 0;
             timerOn = false;
-            notifyListenersTimerUpdated?.Invoke(false);
+            NotifyTimerEvent?.Invoke(false);
         } 
     }
 
@@ -118,6 +118,9 @@ public class BoundsChecker : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Rising Percentage until timer is completed
+    /// </summary>
     public float TimePercentage
     {
         get 
@@ -127,7 +130,11 @@ public class BoundsChecker : MonoBehaviour
         }
     }
 
-    public TimerEventHandler timerEventHandler 
+    /// <summary>
+    /// Notifies the listeners that a timer event has triggered.
+    /// Timer events trigger when the player goes out of bounds or enters the bounds again.
+    /// </summary>
+    public TimerEventHandler NotifyTimerEvent 
     { get 
         {
             if (timer == null) 
@@ -137,7 +144,7 @@ public class BoundsChecker : MonoBehaviour
             }
             else 
             {
-                return timer.notifyListenersTimerUpdated;
+                return timer.NotifyTimerEvent;
             }
         } 
     }
