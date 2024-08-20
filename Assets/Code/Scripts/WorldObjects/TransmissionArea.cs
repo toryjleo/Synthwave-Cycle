@@ -22,11 +22,19 @@ public class TransmissionArea : MonoBehaviour
         get => transmissionArea.Radius * 2;
     }
 
+    /// <summary>
+    /// A linear scale of how far the player can travel outside the TransmissionArea
+    /// </summary>
     public float OutOfBoundsScale 
     {
         get => transmissionArea.OutOfBoundsScale;
     }
 
+    /// <summary>
+    /// The max distance the player can get from the center of the TransmissionArea before hitting an out of 
+    /// bounds condition.
+    /// This distance is the OutOfBounds width * OutOfBoundsScale
+    /// </summary>
     public float MaxBoundsFromTransmissionAreaSqr 
     {
         get => Width * Width * OutOfBoundsScale * OutOfBoundsScale;
