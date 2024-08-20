@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void TimerEventHandler(bool timerIsOn);
+
 public class BoundsChecker : MonoBehaviour
 {
     /// <summary>
@@ -27,6 +29,8 @@ public class BoundsChecker : MonoBehaviour
         private float maxTime = 10.0f;
 
         private bool timerOn = false;
+
+        public TimerEventHandler notifyListenersTimerUpdated;
 
         public bool HasStarted 
         {
@@ -70,7 +74,7 @@ public class BoundsChecker : MonoBehaviour
             if (GameStateController.CanRunGameplay) 
             {
                 timerOn = true;
-                // TODO: trigger event to start game ui timer
+                notifyListenersTimerUpdated?.Invoke(true);
             }
         }
 
@@ -78,7 +82,7 @@ public class BoundsChecker : MonoBehaviour
         {
             timeElapsed = 0;
             timerOn = false;
-            // TODO: trigger event to disable game ui timer
+            notifyListenersTimerUpdated?.Invoke(false);
         } 
     }
 
@@ -121,6 +125,21 @@ public class BoundsChecker : MonoBehaviour
             if (timer == null) { return -1; }
             else { return timer.TimePercentage; }
         }
+    }
+
+    public TimerEventHandler timerEventHandler 
+    { get 
+        {
+            if (timer == null) 
+            {
+                Debug.LogError("Hooking up an event to a null object");
+                return null;
+            }
+            else 
+            {
+                return timer.notifyListenersTimerUpdated;
+            }
+        } 
     }
 
     // Start is called before the first frame update
