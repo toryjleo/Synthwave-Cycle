@@ -29,6 +29,10 @@ namespace EditorObject
         /// Angle in degrees for the healthpool to rotate around the transmission area in a clockwise fashion
         /// </summary>
         [SerializeField] private float clockwiseRotationAnglePerSecond = 0;
+        /// <summary>
+        /// Linearly scales how far the player can travel outside the transmission area before they are out of bounds
+        /// </summary>
+        [SerializeField] private float outOfBoundsScale = 2;
         #endregion
 
         #region Properties
@@ -37,6 +41,7 @@ namespace EditorObject
         public float StartAngleDegrees { get => startAngleDegrees; }
         public float DeltaAngleDegrees { get => deltaAngleDegrees; }
         public float ClockwiseRotationAnglePerSecond { get => clockwiseRotationAnglePerSecond; }
+        public float OutOfBoundsScale { get => outOfBoundsScale; }
         #endregion
         #endregion
 

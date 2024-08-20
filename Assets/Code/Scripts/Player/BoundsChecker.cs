@@ -11,11 +11,6 @@ public class BoundsChecker : MonoBehaviour
     /// </summary>
     private TransmissionArea transmissionArea;
 
-    /// <summary>
-    /// Linearly scales the "in bounds" area
-    /// </summary>
-    private float outOfBoundsScale = 2.0f;
-
     private const float MAX_TIME = 10.0f;
 
     private Timer timer;
@@ -102,7 +97,7 @@ public class BoundsChecker : MonoBehaviour
             float maxDistanceSqrFromTransmissionAreaCenter = transmissionArea.Width * transmissionArea.Width;
 
             return distanceSqrToTransmissionAreaCenter >
-            (outOfBoundsScale * outOfBoundsScale * maxDistanceSqrFromTransmissionAreaCenter);
+            (transmissionArea.OutOfBoundsScale * transmissionArea.OutOfBoundsScale * maxDistanceSqrFromTransmissionAreaCenter);
         }
     }
 
