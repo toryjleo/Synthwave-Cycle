@@ -22,7 +22,7 @@ public class GameplayUI : MonoBehaviour
     public GameObject boundsWarning;
 
     [SerializeField]
-    private GameObject transmissionImage;
+    private GameObject transmissionRadio;
 
     private BoundsChecker boundsChecker;
     private PlayerHealth playerHealth;
@@ -71,7 +71,7 @@ public class GameplayUI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Delete)) 
         {
-            transmissionImage.SetActive(!transmissionImage.active);
+            transmissionRadio.SetActive(!transmissionRadio.active);
         }
     }
 
