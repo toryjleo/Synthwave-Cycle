@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,12 +14,19 @@ public class GameplayUI : MonoBehaviour
   public Image healthBarFill;
   [SerializeField]
   public Image healthBarBackground;
+  [SerializeField]
+  public TextMeshProUGUI timerText;
+
+  private BoundsChecker boundsChecker;
   private PlayerHealth playerHealth;
 
   // Start is called before the first frame update
   void Start()
   {
+    // Danger Level
     dangerLevelSlider.value = 0;
+
+    // Health
     playerHealth = GameObject.FindObjectOfType<PlayerHealth>();
     if (!playerHealth)
     {
@@ -31,12 +39,28 @@ public class GameplayUI : MonoBehaviour
     }
     healthBarFill.color = Color.red;
     healthBarBackground.color = Color.clear;
+
+    // OOB Timer
+    boundsChecker = GameObject.FindObjectOfType<BoundsChecker>();
+    if (!boundsChecker)
+    {
+      Debug.LogWarning("No Bounds Checker object found.");
+    }
+    else
+    {
+      boundsChecker.NotifyTimerEvent += UpdateTimer;
+    }
   }
 
   // Update is called once per frame
   void Update()
   {
-    dangerLevelSlider.value = DangerLevel.Instance.PercentProgress;
+    if (DangerLevel.Instance)
+    {
+      dangerLevelSlider.value = DangerLevel.Instance.PercentProgress;
+    }
+
+    timerText.text = boundsChecker.TimeLeft.ToString("0.00");
   }
 
   /// <summary>
@@ -64,5 +88,10 @@ public class GameplayUI : MonoBehaviour
       default:
         break;
     }
+  }
+
+  private void UpdateTimer(bool timerIsOn)
+  {
+    timerText.gameObject.SetActive(timerIsOn);
   }
 }

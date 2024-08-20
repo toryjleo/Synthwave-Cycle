@@ -21,35 +21,46 @@ public class MenuManager : MonoBehaviour
   void Start()
   {
     levelManager = FindObjectOfType<LevelManager>();
-    songDisplayText.text = "Current Song: " + levelManager.SongName + " by Shadow Mage";
 
-    //Loading
-    GameStateController.loading.notifyListenersEnter += HandleLoadingEnter;
-    GameStateController.loading.notifyListenersExit += HandleLoadingExit;
+    if (!levelManager)
+    {
+      songDisplayText.text = "Current Song: " + " by Shadow Mage";
+    }
+    else
+    {
+      songDisplayText.text = "Current Song: " + levelManager.SongName + " by Shadow Mage";
+    }
 
-    //Loading complete/GameStartPaused
-    GameStateController.gamesStartPaused.notifyListenersEnter += HandleLoadingFinishedEnter;
-    GameStateController.gamesStartPaused.notifyListenersExit += HandleLoadingFinishedExit;
+    if (GameStateController.StateExists)
+    {
+      //Loading
+      GameStateController.loading.notifyListenersEnter += HandleLoadingEnter;
+      GameStateController.loading.notifyListenersExit += HandleLoadingExit;
 
-    //Playing
-    GameStateController.playing.notifyListenersEnter += HandlePlayingEnter;
-    GameStateController.playing.notifyListenersExit += StopTimeScale;
+      //Loading complete/GameStartPaused
+      GameStateController.gamesStartPaused.notifyListenersEnter += HandleLoadingFinishedEnter;
+      GameStateController.gamesStartPaused.notifyListenersExit += HandleLoadingFinishedExit;
 
-    //Paused
-    GameStateController.gamePlayPaused.notifyListenersEnter += HandlePausingFinishedEnter;
-    GameStateController.gamePlayPaused.notifyListenersExit += HandlePausingFinishedExit;
+      //Playing
+      GameStateController.playing.notifyListenersEnter += HandlePlayingEnter;
+      GameStateController.playing.notifyListenersExit += StopTimeScale;
 
-    //Player dead
-    GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
-    GameStateController.playerDead.notifyListenersExit += HandlePlayerDeadExit;
+      //Paused
+      GameStateController.gamePlayPaused.notifyListenersEnter += HandlePausingFinishedEnter;
+      GameStateController.gamePlayPaused.notifyListenersExit += HandlePausingFinishedExit;
 
-    //Level Complete
-    GameStateController.levelComplete.notifyListenersEnter += HandleLevelCompleteEnter;
-    GameStateController.levelComplete.notifyListenersExit += HandleLevelCompleteExit;
+      //Player dead
+      GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
+      GameStateController.playerDead.notifyListenersExit += HandlePlayerDeadExit;
 
-    //Reset
-    GameStateController.resetting.notifyListenersEnter += HandleLoadingEnter;
-    GameStateController.resetting.notifyListenersExit += HandleLoadingExit;
+      //Level Complete
+      GameStateController.levelComplete.notifyListenersEnter += HandleLevelCompleteEnter;
+      GameStateController.levelComplete.notifyListenersExit += HandleLevelCompleteExit;
+
+      //Reset
+      GameStateController.resetting.notifyListenersEnter += HandleLoadingEnter;
+      GameStateController.resetting.notifyListenersExit += HandleLoadingExit;
+    }
   }
 
   // Update is called once per frame
