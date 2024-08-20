@@ -4639,7 +4639,7 @@ MonoBehaviour:
   healthBarBackground: {fileID: 1051878222058224643}
   timerText: {fileID: 8150787297117198109}
   boundsWarning: {fileID: 4409440954604735351}
-  transmissionRadio: {fileID: 7399682588621461268}
+  transmissionRadio: {fileID: 2625886681432240619}
 --- !u!1 &5043197909229793381
 GameObject:
   m_ObjectHideFlags: 0
@@ -11212,6 +11212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96381df51aa02b9488f5d58d382fae0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radioFrame: {fileID: 8411382305878567057}
+  wifiSignal: {fileID: 4915985390117432053}
 --- !u!1 &7405927287954241349
 GameObject:
   m_ObjectHideFlags: 0
