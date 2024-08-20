@@ -4562,7 +4562,7 @@ MonoBehaviour:
   healthBarFill: {fileID: 273343015190905692}
   healthBarBackground: {fileID: 1051878222058224643}
   timerText: {fileID: 8150787297117198109}
-  boundsWarning: {fileID: 0}
+  boundsWarning: {fileID: 4409440954604735351}
 --- !u!1 &5043197909229793381
 GameObject:
   m_ObjectHideFlags: 0
