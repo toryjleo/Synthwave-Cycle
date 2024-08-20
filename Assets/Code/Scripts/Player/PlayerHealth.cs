@@ -144,6 +144,10 @@ public class PlayerHealth : Health
         onHealthChange?.Invoke();
     }
 
+    /// <summary>
+    /// Kills the player instantly, triggers any triggers related to player death.
+    /// </summary>
+    /// <param name="timerOn">Not used</param>
     public void KillPlayer(bool timerOn)
     {
         TakeDamage(HitPoints);

@@ -2,21 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void TimerEventHandler(bool timerIsOn);
-
+/// <summary>
+/// Tracks and triggers logic related to the player going out of bounds
+/// Attach to a gameobject underneath player
+/// Requires a TransmissionArea in scene
+/// </summary>
 public class BoundsChecker : MonoBehaviour
 {
+    #region Members
     /// <summary>
     /// Reference to the transmissionArea
     /// </summary>
     private TransmissionArea transmissionArea;
 
+    /// <summary>
+    /// Maximum amount of time (in seconds) you can remain out of bounds before game over
+    /// </summary>
     private const float MAX_TIME = 10.0f;
 
+    /// <summary>
+    /// Reference to timer object
+    /// </summary>
     private Timer timer;
+    #endregion
 
+    #region Type Definitions
 
-
+    public delegate void TimerEventHandler(bool timerIsOn);
     private class Timer
     {
         private float timeElapsed = 0;
@@ -82,6 +94,9 @@ public class BoundsChecker : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Properties
     /// <summary>
     /// Returns true if the player has made it outside the playable bounds
     /// </summary>
@@ -145,8 +160,8 @@ public class BoundsChecker : MonoBehaviour
         }
         set { timer.NotifyTimerEvent = value; }
     }
+    #endregion
 
-    // Start is called before the first frame update
     void Awake()
     {
         // Find TransmissionArea, disable if not found
@@ -177,6 +192,8 @@ public class BoundsChecker : MonoBehaviour
         transmissionArea = FindObjectOfType<TransmissionArea>();
         return transmissionArea != null;
     }
+
+    #region Timer
 
     /// <summary>
     /// Set timer to its initial state
@@ -216,4 +233,5 @@ public class BoundsChecker : MonoBehaviour
             timer.TimerStart();
         }
     }
+    #endregion
 }
