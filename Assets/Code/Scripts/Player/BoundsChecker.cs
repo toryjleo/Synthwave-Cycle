@@ -38,6 +38,11 @@ public class BoundsChecker : MonoBehaviour
             get { return maxTime - timeElapsed; }
         }
 
+        public float TimePercentage 
+        {
+            get { return timeElapsed/maxTime; }
+        }
+
         public Timer(float maxTime)
         {
             this.maxTime = maxTime;
@@ -106,6 +111,15 @@ public class BoundsChecker : MonoBehaviour
         { 
             if (timer == null) { return -1; }
             else { return timer.TimeLeft; } 
+        }
+    }
+
+    public float TimePercentage
+    {
+        get 
+        {
+            if (timer == null) { return -1; }
+            else { return timer.TimePercentage; }
         }
     }
 
