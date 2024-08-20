@@ -26,6 +26,11 @@ public class HealthPointer : MonoBehaviour
         if (boundsChecker != null) 
         {
             boundsChecker.NotifyTimerEvent += EnableOutOfBoundsArrows;
+
+            if (GameStateController.StateExists) 
+            {
+                GameStateController.playerDead.notifyListenersEnter += KillOutOfBoundsArrows;
+            }
         }
     }
 
@@ -85,6 +90,11 @@ public class HealthPointer : MonoBehaviour
         {
             runningCoroutine = StartCoroutine(OutOfBoundsArrowsBlinkingBehavior());
         }
+    }
+
+    private void KillOutOfBoundsArrows() 
+    {
+        EnableOutOfBoundsArrows(false);
     }
 
     /// <summary>

@@ -107,6 +107,7 @@ public class PlayerHealth : Health
     {
         float maxHp = playerHealth.BarMax3HP + (playerHealth.BarMax3HP - playerHealth.BarMax2HP) / 2;
         Init(playerHealth.HpOnStart, maxHp);
+        UpdateBarMax();
         onHealthChange?.Invoke();
     }
 
