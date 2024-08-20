@@ -12,16 +12,32 @@ public class TransmissionArea : MonoBehaviour
     [SerializeField] private bool transmissionAreaIsViewable = false;
     #endregion
 
-    private Vector3 startPos;
-
     /// <summary>
     /// Healthpool the transmission area creates
     /// </summary>
     private HealthPool healthPool = null;
 
-    private float Width
+    public float Width
     {
         get => transmissionArea.Radius * 2;
+    }
+
+    /// <summary>
+    /// A linear scale of how far the player can travel outside the TransmissionArea
+    /// </summary>
+    public float OutOfBoundsScale 
+    {
+        get => transmissionArea.OutOfBoundsScale;
+    }
+
+    /// <summary>
+    /// The max distance the player can get from the center of the TransmissionArea before hitting an out of 
+    /// bounds condition.
+    /// This distance is the OutOfBounds width * OutOfBoundsScale
+    /// </summary>
+    public float MaxBoundsFromTransmissionAreaSqr 
+    {
+        get => Width * Width * OutOfBoundsScale * OutOfBoundsScale;
     }
 
     /// <summary>
@@ -86,10 +102,12 @@ public class TransmissionArea : MonoBehaviour
                                           transmissionArea.ClockwiseRotationAnglePerSecond * Time.deltaTime);
     }
 
+    /// <summary>
+    /// Creates a healthpool at this GameObject's location
+    /// </summary>
     private void CreateHealthPool() 
     {
-        startPos = new Vector3(transmissionArea.Radius, 0, 0);
-        healthPool = Instantiate(prefab_HealthPool, startPos, Quaternion.identity);
+        healthPool = Instantiate(prefab_HealthPool, transform.position, Quaternion.identity);
     }
 
     private void HealthPoolInit() 
@@ -100,7 +118,7 @@ public class TransmissionArea : MonoBehaviour
     private void ApplyInitialState()
     {
         HealthPoolInit();
-        healthPool.transform.position = new Vector3(transmissionArea.Radius, transform.position.y, 0);
+        healthPool.transform.position = new Vector3(transmissionArea.Radius, transform.position.y, transform.position.z);
         healthPool.transform.RotateAround(transform.position, Vector3.up, transmissionArea.StartAngleDegrees);
     }
 

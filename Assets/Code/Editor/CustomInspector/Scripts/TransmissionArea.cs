@@ -16,7 +16,7 @@ namespace CustomInspector
         private bool showTransmissionArea = true;
         private bool showHealthPool = true;
 
-        private string[] transmissionAreaProps = { "radius", "transmissionAreaStart", "startAngleDegrees", "deltaAngleDegrees", "clockwiseRotationAnglePerSecond" };
+        private string[] transmissionAreaProps = { "radius", "transmissionAreaStart", "startAngleDegrees", "deltaAngleDegrees", "clockwiseRotationAnglePerSecond", "outOfBoundsScale" };
         private string[] healthPoolProps = { "yScale", "minScale", "maxScale", "shrinkPerSecond" };
 
 

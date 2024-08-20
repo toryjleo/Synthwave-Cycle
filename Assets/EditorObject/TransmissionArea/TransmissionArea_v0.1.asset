@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: TransmissionArea_v0.1
   m_EditorClassIdentifier: 
   radius: 16.1
-  transmissionAreaStart: {x: 0, y: -2, z: 50}
+  transmissionAreaStart: {x: 0, y: 0, z: 50}
   startAngleDegrees: 0
   deltaAngleDegrees: 60
   clockwiseRotationAnglePerSecond: 5.64
+  outOfBoundsScale: 2
   minScale: 0.2
   maxScale: 10
   yScale: 2

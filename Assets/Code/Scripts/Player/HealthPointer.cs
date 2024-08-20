@@ -10,10 +10,28 @@ public class HealthPointer : MonoBehaviour
 {
     private HealthPool pool;
 
+
+    #region Out of Bounds Arrows
+    [SerializeField] private GameObject outOfBoundsArrows;
+    private Coroutine runningCoroutine = null;
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.SetActive(HealthPoolInWorld());   
+        gameObject.SetActive(HealthPoolInWorld());
+        outOfBoundsArrows.SetActive(false);
+
+        BoundsChecker boundsChecker = FindObjectOfType<BoundsChecker>();
+        if (boundsChecker != null) 
+        {
+            boundsChecker.NotifyTimerEvent += EnableOutOfBoundsArrows;
+
+            if (GameStateController.StateExists) 
+            {
+                GameStateController.playerDead.notifyListenersEnter += KillOutOfBoundsArrows;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -48,4 +66,51 @@ public class HealthPointer : MonoBehaviour
             transform.LookAt(positionToLook);
         }
     }
+
+    #region Out Of Bounds Arrows
+    /// <summary>
+    /// Turns out of bounds arrows on and off
+    /// </summary>
+    /// <param name="enabled"></param>
+    public void EnableOutOfBoundsArrows(bool enabled) 
+    {
+        if (gameObject.active == false) 
+        {
+            return;
+        }
+
+        outOfBoundsArrows.SetActive(enabled);
+
+        if (enabled == false && runningCoroutine != null) 
+        {
+            StopCoroutine(runningCoroutine);
+            runningCoroutine = null;
+        }
+        else if (enabled == true && runningCoroutine == null) 
+        {
+            runningCoroutine = StartCoroutine(OutOfBoundsArrowsBlinkingBehavior());
+        }
+    }
+
+    private void KillOutOfBoundsArrows() 
+    {
+        EnableOutOfBoundsArrows(false);
+    }
+
+    /// <summary>
+    /// Blinks the Out of Bounds arrows
+    /// </summary>
+    /// <returns>IEnumerator</returns>
+    private IEnumerator OutOfBoundsArrowsBlinkingBehavior() 
+    {
+        bool isOn = false;
+        while (true) 
+        {
+            isOn = !isOn;
+            outOfBoundsArrows.SetActive(isOn);
+            yield return new WaitForSeconds(.5f);
+
+        }
+    }
+    #endregion
 }
