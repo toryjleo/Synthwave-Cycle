@@ -26,6 +26,7 @@ public class BoundsChecker : MonoBehaviour
     private bool timerOn = false;
 
     public TimerEventHandler NotifyTimerEvent;
+    public TimerEventHandler NotifyTimerComplete;
 
     public bool HasStarted
     {
@@ -58,7 +59,7 @@ public class BoundsChecker : MonoBehaviour
 
         if (timeElapsed > maxTime)
         {
-          // TODO: trigger event to kill player and end game
+        NotifyTimerComplete?.Invoke(false);
           TimerReset();
         }
       }
@@ -183,6 +184,9 @@ public class BoundsChecker : MonoBehaviour
   private void InitTimer()
   {
     timer = new Timer(MAX_TIME);
+
+        PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
+        if (playerHealth != null) { timer.NotifyTimerComplete += playerHealth.KillPlayer; }
   }
 
   /// <summary>

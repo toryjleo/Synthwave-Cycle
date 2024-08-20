@@ -144,12 +144,24 @@ public class PlayerHealth : Health
     onHealthChange?.Invoke();
   }
 
+    public void KillPlayer(bool timerOn) 
+    {
+        TakeDamage(HitPoints);
+    }
+
   /// <summary>
   /// Call ZeroHP trigger
   /// </summary>
   private void HandleDeath()
   {
-    GameStateController.HandleTrigger(StateTrigger.ZeroHP);
+        if (GameStateController.StateExists) 
+        {
+            GameStateController.HandleTrigger(StateTrigger.ZeroHP);
+        }
+        else 
+        {
+            Debug.LogWarning("Tried to trigger StateTrigger.ZeroHP but no state exists");
+        }
   }
 
   /// <summary>
