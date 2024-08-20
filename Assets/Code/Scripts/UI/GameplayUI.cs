@@ -21,6 +21,9 @@ public class GameplayUI : MonoBehaviour
     [SerializeField]
     public GameObject boundsWarning;
 
+    [SerializeField]
+    private GameObject transmissionImage;
+
     private BoundsChecker boundsChecker;
     private PlayerHealth playerHealth;
 
@@ -65,6 +68,11 @@ public class GameplayUI : MonoBehaviour
       }
 
       timerText.text = boundsChecker.TimeLeft.ToString("0.00");
+
+        if (Input.GetKeyDown(KeyCode.Delete)) 
+        {
+            transmissionImage.SetActive(!transmissionImage.active);
+        }
     }
 
     /// <summary>
