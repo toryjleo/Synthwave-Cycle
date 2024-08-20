@@ -27,6 +27,11 @@ public class TransmissionArea : MonoBehaviour
         get => transmissionArea.OutOfBoundsScale;
     }
 
+    public float MaxBoundsFromTransmissionAreaSqr 
+    {
+        get => Width * Width * OutOfBoundsScale * OutOfBoundsScale;
+    }
+
     /// <summary>
     /// A percentage value. 1 is 100% clear and 0 is 0% clear
     /// TODO: Make a better alogrithm when ui and audio implemented for talking head

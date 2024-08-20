@@ -94,10 +94,8 @@ public class BoundsChecker : MonoBehaviour
             }
 
             float distanceSqrToTransmissionAreaCenter = (transform.position - transmissionArea.transform.position).sqrMagnitude;
-            float maxDistanceSqrFromTransmissionAreaCenter = transmissionArea.Width * transmissionArea.Width;
 
-            return distanceSqrToTransmissionAreaCenter >
-            (transmissionArea.OutOfBoundsScale * transmissionArea.OutOfBoundsScale * maxDistanceSqrFromTransmissionAreaCenter);
+            return distanceSqrToTransmissionAreaCenter > transmissionArea.MaxBoundsFromTransmissionAreaSqr;
         }
     }
 
@@ -141,7 +139,7 @@ public class BoundsChecker : MonoBehaviour
             {
                 return timer.NotifyTimerEvent;
             }
-        } 
+        }
     }
 
     // Start is called before the first frame update
@@ -160,7 +158,7 @@ public class BoundsChecker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameStateController.GameIsPlaying()) 
+        if (GameStateController.CanRunGameplay) 
         {
             UpdateTimer(Time.deltaTime);
         }
@@ -173,7 +171,7 @@ public class BoundsChecker : MonoBehaviour
     private bool CanFindTransmissionArea() 
     {
         transmissionArea = FindObjectOfType<TransmissionArea>();
-        return transmissionArea == null;
+        return transmissionArea != null;
     }
 
     /// <summary>
