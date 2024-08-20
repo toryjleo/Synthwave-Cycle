@@ -67,7 +67,6 @@ public class BoundsChecker : MonoBehaviour
             if (timerOn)
             {
                 timeElapsed += deltaTime;
-                Debug.Log("timer at " + timeElapsed + " seconds");
 
                 if (timeElapsed > maxTime)
                 {
@@ -217,7 +216,6 @@ public class BoundsChecker : MonoBehaviour
             if (!PlayerIsOutsideBounds)
             {
                 // in bounds
-                Debug.Log("In bounds");
                 timer.TimerReset();
             }
             else
@@ -229,7 +227,6 @@ public class BoundsChecker : MonoBehaviour
         else if (PlayerIsOutsideBounds)
         {
             // outside of bounds
-            Debug.Log("Out of bounds");
             timer.TimerStart();
         }
     }
