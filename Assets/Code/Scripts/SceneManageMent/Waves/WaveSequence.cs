@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Waves;
 
 namespace EditorObject
 {
@@ -23,11 +24,20 @@ namespace EditorObject
 
         public AudioClip GetCurrentTrackVariation()
         {
-            if (!sequence[currentWave].RadioClip)
+            if (sequence[currentWave].GetWaveType() != WaveType.AudioWave)
             {
                 Debug.Log("No radio clip on wave " + currentWave);
             }
-            return sequence[currentWave].GetTrackVariation();
+
+            if (sequence[currentWave].GetWaveType() != WaveType.LevelComplete)
+            {
+                HostileWave wave = (HostileWave)sequence[currentWave];
+                return wave.GetTrackVariation();
+            }
+            else
+            {
+                return null;
+            }
         }
         /// <summary>
         /// Updates the wave and spawns in wave according to danger level
@@ -35,7 +45,7 @@ namespace EditorObject
         public void SpawnNewWave()
         {
             UpdateCurrentWave();
-            spawner.SpawnWave(sequence[currentWave].GetWaveInfo());
+            spawner.SpawnWave(sequence[currentWave].GetWaveAction());
             previousWave = currentWave;
         }
 
@@ -69,9 +79,17 @@ namespace EditorObject
         /// </summary>
         internal double GetNextWaveTime(double currentTime)
         {
-            AudioClip clipToPlay = sequence[currentWave].GetTrackVariation();
-            double duration = (double)clipToPlay.samples / clipToPlay.frequency;
-            return currentTime + (duration / sequence[currentWave].wavesInTrack);
+            if (sequence[currentWave].GetWaveType() != WaveType.LevelComplete)
+            {
+                HostileWave wave = (HostileWave)sequence[currentWave];
+                AudioClip clipToPlay = wave.GetTrackVariation();
+                double duration = (double)clipToPlay.samples / clipToPlay.frequency;
+                return currentTime + duration;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public void ResetGameObject()
