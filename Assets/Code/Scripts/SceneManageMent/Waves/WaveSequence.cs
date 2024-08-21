@@ -45,7 +45,7 @@ namespace EditorObject
         public void SpawnNewWave()
         {
             UpdateCurrentWave();
-            spawner.SpawnWave(sequence[currentWave].GetWaveAction());
+            spawner.SpawnWave(sequence[currentWave].TriggerWaveAction());
             previousWave = currentWave;
         }
 

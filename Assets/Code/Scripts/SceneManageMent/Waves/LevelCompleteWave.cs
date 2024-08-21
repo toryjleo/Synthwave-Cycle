@@ -11,7 +11,7 @@ public class LevelCompleteWave : Wave
         return WaveType.LevelComplete;
     }
 
-    internal override List<WaveEnemyInfo> GetWaveAction()
+    internal override List<WaveEnemyInfo> TriggerWaveAction()
     {
         GameStateController.HandleTrigger(StateTrigger.LevelComplete);
         return null;

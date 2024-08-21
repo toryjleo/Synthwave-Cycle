@@ -19,7 +19,7 @@ public class HostileWave : Wave
         return WaveType.HostileWave;
     }
 
-    internal override List<WaveEnemyInfo> GetWaveAction()
+    internal override List<WaveEnemyInfo> TriggerWaveAction()
     {
         return waveEnemies;
     }

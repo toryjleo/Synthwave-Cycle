@@ -46,6 +46,6 @@ namespace Waves
         }
 
         // Activates wave properties and returns a list of wave enemies
-        internal abstract List<WaveEnemyInfo> GetWaveAction();
+        internal abstract List<WaveEnemyInfo> TriggerWaveAction();
     }
 }
