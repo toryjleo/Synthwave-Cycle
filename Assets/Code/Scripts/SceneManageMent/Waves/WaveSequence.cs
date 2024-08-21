@@ -23,6 +23,10 @@ namespace EditorObject
 
         public AudioClip GetCurrentTrackVariation()
         {
+            if (!sequence[currentWave].RadioClip)
+            {
+                Debug.Log("No radio clip on wave " + currentWave);
+            }
             return sequence[currentWave].GetTrackVariation();
         }
         /// <summary>
@@ -40,19 +44,16 @@ namespace EditorObject
         /// </summary>
         internal void UpdateCurrentWave()
         {
-            for (int index = sequence.Count - 1; index >= 0; index--)
+            // Iterate backwards and spawn in the waves for the highest danger level
+            if (sequence[currentWave].IsOverThreshold())
             {
-                // Iterate backwards and spawn in the waves for the highest danger level
-                if (sequence[index].IsOverThreshold())
-                {
-                    currentWave = index;
-                    int maxThreshold = (index < (sequence.Count - 1)) ? sequence[index + 1].DLThreshold : int.MaxValue;
-                    DangerLevel.Instance.SetDlThreashold(sequence[index].DLThreshold, maxThreshold);
-                    //Log the wave + 1 because the index starts at 0, but the tracks start at 1
-                    Debug.Log("Current Wave: " + (currentWave + 1) + "/" + (sequence.Count) + "\nDanger Level: " + DangerLevel.Instance.GetDangerLevel());
-                    Debug.Log("DlThreshold: " + sequence[index].DLThreshold);
-                    break;
-                }
+                currentWave += 1;
+                int nextWave = currentWave + 1;
+                int nextThreshold = (currentWave == sequence.Count - 1) ? int.MaxValue : sequence[nextWave].DLThreshold;
+                DangerLevel.Instance.SetDlThreshold(sequence[currentWave].DLThreshold, nextThreshold);
+                //Log the wave + 1 because the index starts at 0, but the tracks start at 1
+                Debug.Log("Current Wave: " + nextWave + "/" + sequence.Count + "\nDanger Level: " + DangerLevel.Instance.GetDangerLevel());
+                Debug.Log("Danger Level Threshold: " + nextThreshold);
             }
         }
 

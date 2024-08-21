@@ -11,9 +11,12 @@ public class Jukebox : MonoBehaviour, IResettable
 {
     //The current WaveSequence in play
     private EditorObject.WaveSequence sequence;
+
+    #region AudioControl
     // An audiosource array with 2 members to switch between with "toggle"
     public AudioSource[] audioSourceArray;
     int toggle;
+    #endregion
 
     double nextAudioLoopTime;
     double nextWaveSpawnTime;

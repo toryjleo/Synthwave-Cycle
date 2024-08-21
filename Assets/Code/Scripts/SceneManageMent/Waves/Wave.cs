@@ -51,6 +51,10 @@ public class Wave : ScriptableObject
     [SerializeField]
     public AudioClip TrackVariation;
 
+    //The transmission audio clip for this wave
+    [SerializeField]
+    public AudioClip RadioClip;
+
     //Determines if current DL is above this wave's threshold
     public bool IsOverThreshold()
     {
