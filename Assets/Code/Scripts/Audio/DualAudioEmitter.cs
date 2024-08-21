@@ -39,12 +39,12 @@ public class DualAudioEmitter : MonoBehaviour
         toggle = 0;
     }
 
-    public void HandlePlayingEnter()
+    public void Pause()
     {
         audioSourceArray[1 - toggle].Play();
     }
 
-    public void HandlePlayingExit() 
+    public void Play() 
     {
         audioSourceArray[1 - toggle].Pause();
     }

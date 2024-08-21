@@ -27,14 +27,8 @@ public class Jukebox : MonoBehaviour, IResettable
         sequence = seq;
         sequence.Init(GameObject.FindObjectOfType<SquadSpawner>());
 
-        if (musicPlayer == null)
-        {
-            Debug.LogError("Jukebox has no DualAudioEmitter assigned");
-        }
-        else 
-        {
-            musicPlayer.Init();
-        }
+        InitializeDualAudioEmitter(musicPlayer);
+        InitializeDualAudioEmitter(radioClipPlayer);
 
 
         canPlay = false;
@@ -63,6 +57,18 @@ public class Jukebox : MonoBehaviour, IResettable
 
     }
 
+    private void InitializeDualAudioEmitter(DualAudioEmitter emitter) 
+    {
+        if (emitter == null)
+        {
+            Debug.LogError("Jukebox needs a DualAudioEmitter assigned");
+        }
+        else
+        {
+            emitter.Init();
+        }
+    }
+
     /// <summary>
     /// Adds the next song to play to the queue of audiosources
     /// </summary>
@@ -73,6 +79,8 @@ public class Jukebox : MonoBehaviour, IResettable
         // Checks how long the Clip will last and updates the Next Start Time with a new value
         double duration = (double)clipToPlay.samples / clipToPlay.frequency;
         nextAudioLoopTime = nextAudioLoopTime + duration;
+
+        // TODO: Handle queueing audiolog
     }
 
     private double GetClipDuration(AudioClip clip)
@@ -84,13 +92,15 @@ public class Jukebox : MonoBehaviour, IResettable
     public void ResetGameObject()
     {
         musicPlayer.ResetGameObject();
+        radioClipPlayer.ResetGameObject();
         canPlay = false;
         nextAudioLoopDifference = 0;
     }
 
     private void HandlePlayingEnter()
     {
-        musicPlayer.HandlePlayingEnter();
+        musicPlayer.Pause();
+        radioClipPlayer.Pause();
 
         double startTime = AudioSettings.dspTime + 0.2;
 
@@ -107,7 +117,8 @@ public class Jukebox : MonoBehaviour, IResettable
 
     private void HandlePlayingExit()
     {
-        musicPlayer.HandlePlayingExit();
+        musicPlayer.Play();
+        radioClipPlayer.Play();
         nextAudioLoopDifference = nextAudioLoopTime - AudioSettings.dspTime;
 
         canPlay = false;
