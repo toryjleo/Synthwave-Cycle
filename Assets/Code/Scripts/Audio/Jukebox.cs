@@ -12,11 +12,7 @@ public class Jukebox : MonoBehaviour, IResettable
     //The current WaveSequence in play
     private EditorObject.WaveSequence sequence;
 
-    #region AudioControl
-    // An audiosource array with 2 members to switch between with "toggle"
-    public AudioSource[] audioSourceArray;
-    int toggle;
-    #endregion
+    [SerializeField] private DualAudioEmitter dualAudioEmitter;
 
     double nextAudioLoopTime;
     double nextWaveSpawnTime;
@@ -29,7 +25,16 @@ public class Jukebox : MonoBehaviour, IResettable
     {
         sequence = seq;
         sequence.Init(GameObject.FindObjectOfType<SquadSpawner>());
-        toggle = 0;
+
+        if (dualAudioEmitter == null)
+        {
+            Debug.LogError("Jukebox has no DualAudioEmitter assigned");
+        }
+        else 
+        {
+            dualAudioEmitter.Init();
+        }
+
 
         canPlay = false;
         nextAudioLoopDifference = 0;
@@ -63,17 +68,11 @@ public class Jukebox : MonoBehaviour, IResettable
     private void QueueNextSong()
     {
         AudioClip clipToPlay = sequence.GetCurrentTrackVariation();
-        // Loads the next Clip to play and schedules when it will start
-        audioSourceArray[toggle].clip = clipToPlay;
-        audioSourceArray[toggle].PlayScheduled(nextAudioLoopTime);
+        dualAudioEmitter.QueueNextSong(clipToPlay, nextAudioLoopTime);
         // Checks how long the Clip will last and updates the Next Start Time with a new value
         double duration = (double)clipToPlay.samples / clipToPlay.frequency;
         nextAudioLoopTime = nextAudioLoopTime + duration;
-        // Switches the toggle to use the other Audio Source next
-        toggle = 1 - toggle;
-
     }
-
 
     private double GetClipDuration(AudioClip clip)
     {
@@ -83,21 +82,14 @@ public class Jukebox : MonoBehaviour, IResettable
 
     public void ResetGameObject()
     {
-        for (int i = 0; i < audioSourceArray.Length; i++)
-        {
-            audioSourceArray[i].Stop();
-            audioSourceArray[i].clip = null;
-        }
-
-        toggle = 0;
-
+        dualAudioEmitter.ResetGameObject();
         canPlay = false;
         nextAudioLoopDifference = 0;
     }
 
     private void HandlePlayingEnter()
     {
-        audioSourceArray[1 - toggle].Play();
+        dualAudioEmitter.HandlePlayingEnter();
 
         double startTime = AudioSettings.dspTime + 0.2;
 
@@ -114,8 +106,7 @@ public class Jukebox : MonoBehaviour, IResettable
 
     private void HandlePlayingExit()
     {
-        audioSourceArray[1 - toggle].Pause();
-
+        dualAudioEmitter.HandlePlayingExit();
         nextAudioLoopDifference = nextAudioLoopTime - AudioSettings.dspTime;
 
         canPlay = false;
