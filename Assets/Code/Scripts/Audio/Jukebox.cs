@@ -82,7 +82,6 @@ public class Jukebox : MonoBehaviour, IResettable
             AudioClip radioClip = sequence.GetCurrentRadioClip;
             if (radioClip != null) 
             {
-                Debug.Log("Queueing radio clip");
                 radioClipPlayer.QueueNextSong(radioClip, nextAudioLoopTime);
             }
             else 
