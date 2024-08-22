@@ -22,8 +22,42 @@ namespace EditorObject
         [SerializeField]
         public string songName;
 
+
+        private bool hasAlreadyPlayedRadioClip = false;
+
+
+        public bool CurrentTrackRadioWaveHasAlreadyPlayed 
+        {
+            get { return hasAlreadyPlayedRadioClip; }
+        }
+        public bool CurrentTrackIsRadioWave
+        {
+            get => sequence[currentWave].GetWaveType() == WaveType.AudioWave;
+        }
+
+        public AudioClip GetCurrentRadioClip
+        {
+            get 
+            {
+                if (sequence[currentWave].GetWaveType() != WaveType.AudioWave) 
+                {
+                    Debug.LogError("Tried to get a radioclip where there is none");
+                    return null;
+                }
+                else 
+                {
+
+                    hasAlreadyPlayedRadioClip = true;
+                    return ((AudioWave)sequence[currentWave]).GetRadioClip;
+                }
+            }
+        }
+
         public AudioClip GetCurrentTrackVariation()
         {
+
+            UpdateCurrentWave();
+
             if (sequence[currentWave].GetWaveType() != WaveType.AudioWave)
             {
                 Debug.Log("No radio clip on wave " + currentWave);
@@ -39,12 +73,12 @@ namespace EditorObject
                 return null;
             }
         }
+
         /// <summary>
         /// Updates the wave and spawns in wave according to danger level
         /// </summary>
         public void SpawnNewWave()
         {
-            UpdateCurrentWave();
             spawner.SpawnWave(sequence[currentWave].TriggerWaveAction());
             previousWave = currentWave;
         }
@@ -57,6 +91,7 @@ namespace EditorObject
             // Iterate backwards and spawn in the waves for the highest danger level
             if (sequence[currentWave].IsOverThreshold())
             {
+                hasAlreadyPlayedRadioClip = false;
                 currentWave += 1;
                 int nextWave = currentWave + 1;
                 int nextThreshold = (currentWave == sequence.Count - 1) ? int.MaxValue : sequence[nextWave].DLThreshold;
@@ -69,6 +104,7 @@ namespace EditorObject
 
         internal void Init(SquadSpawner squadSpawner)
         {
+            hasAlreadyPlayedRadioClip = false;
             spawner = squadSpawner;
             currentWave = 0;
             previousWave = -1;

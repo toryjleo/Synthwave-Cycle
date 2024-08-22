@@ -10,6 +10,14 @@ public class AudioWave : HostileWave
     [SerializeField]
     public AudioClip RadioClip;
 
+    public AudioClip GetRadioClip
+    {
+        get
+        {
+            return RadioClip;
+        }
+    }
+
     public override WaveType GetWaveType()
     {
         return WaveType.AudioWave;

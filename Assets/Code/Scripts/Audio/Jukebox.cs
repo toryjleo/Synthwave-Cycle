@@ -12,11 +12,8 @@ public class Jukebox : MonoBehaviour, IResettable
     //The current WaveSequence in play
     private EditorObject.WaveSequence sequence;
 
-    #region AudioControl
-    // An audiosource array with 2 members to switch between with "toggle"
-    public AudioSource[] audioSourceArray;
-    int toggle;
-    #endregion
+    [SerializeField] private DualAudioEmitter musicPlayer;
+    [SerializeField] private DualAudioEmitter radioClipPlayer;
 
     double nextAudioLoopTime;
     double nextWaveSpawnTime;
@@ -29,7 +26,10 @@ public class Jukebox : MonoBehaviour, IResettable
     {
         sequence = seq;
         sequence.Init(GameObject.FindObjectOfType<SquadSpawner>());
-        toggle = 0;
+
+        InitializeDualAudioEmitter(musicPlayer);
+        InitializeDualAudioEmitter(radioClipPlayer);
+
 
         canPlay = false;
         nextAudioLoopDifference = 0;
@@ -57,23 +57,43 @@ public class Jukebox : MonoBehaviour, IResettable
 
     }
 
+    private void InitializeDualAudioEmitter(DualAudioEmitter emitter) 
+    {
+        if (emitter == null)
+        {
+            Debug.LogError("Jukebox needs a DualAudioEmitter assigned");
+        }
+        else
+        {
+            emitter.Init();
+        }
+    }
+
     /// <summary>
     /// Adds the next song to play to the queue of audiosources
     /// </summary>
     private void QueueNextSong()
     {
         AudioClip clipToPlay = sequence.GetCurrentTrackVariation();
-        // Loads the next Clip to play and schedules when it will start
-        audioSourceArray[toggle].clip = clipToPlay;
-        audioSourceArray[toggle].PlayScheduled(nextAudioLoopTime);
+        musicPlayer.QueueNextSong(clipToPlay, nextAudioLoopTime);
+
+        if (sequence.CurrentTrackIsRadioWave && !sequence.CurrentTrackRadioWaveHasAlreadyPlayed) 
+        {
+            AudioClip radioClip = sequence.GetCurrentRadioClip;
+            if (radioClip != null) 
+            {
+                radioClipPlayer.QueueNextSong(radioClip, nextAudioLoopTime);
+            }
+            else 
+            {
+                Debug.LogError("Radio Wave does not have a radio clip attached");
+            }
+        }
+
         // Checks how long the Clip will last and updates the Next Start Time with a new value
         double duration = (double)clipToPlay.samples / clipToPlay.frequency;
         nextAudioLoopTime = nextAudioLoopTime + duration;
-        // Switches the toggle to use the other Audio Source next
-        toggle = 1 - toggle;
-
     }
-
 
     private double GetClipDuration(AudioClip clip)
     {
@@ -83,21 +103,16 @@ public class Jukebox : MonoBehaviour, IResettable
 
     public void ResetGameObject()
     {
-        for (int i = 0; i < audioSourceArray.Length; i++)
-        {
-            audioSourceArray[i].Stop();
-            audioSourceArray[i].clip = null;
-        }
-
-        toggle = 0;
-
+        musicPlayer.ResetGameObject();
+        radioClipPlayer.ResetGameObject();
         canPlay = false;
         nextAudioLoopDifference = 0;
     }
 
     private void HandlePlayingEnter()
     {
-        audioSourceArray[1 - toggle].Play();
+        musicPlayer.Pause();
+        radioClipPlayer.Pause();
 
         double startTime = AudioSettings.dspTime + 0.2;
 
@@ -114,8 +129,8 @@ public class Jukebox : MonoBehaviour, IResettable
 
     private void HandlePlayingExit()
     {
-        audioSourceArray[1 - toggle].Pause();
-
+        musicPlayer.Play();
+        radioClipPlayer.Play();
         nextAudioLoopDifference = nextAudioLoopTime - AudioSettings.dspTime;
 
         canPlay = false;
