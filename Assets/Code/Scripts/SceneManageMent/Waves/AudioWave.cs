@@ -10,6 +10,22 @@ public class AudioWave : HostileWave
     [SerializeField]
     public AudioClip RadioClip;
 
+    private bool hasPlayedAlready = false;
+
+    public bool HasAlreadyPlayed 
+    {
+        get { return hasPlayedAlready; }
+    }
+
+    public AudioClip GetRadioClip 
+    {
+        get 
+        {
+            hasPlayedAlready = true;
+            return RadioClip;
+        }
+    }
+
     public override WaveType GetWaveType()
     {
         return WaveType.AudioWave;

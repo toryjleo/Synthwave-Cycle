@@ -22,6 +22,44 @@ namespace EditorObject
         [SerializeField]
         public string songName;
 
+
+
+        public bool CurrentTrackIsRadioWave
+        {
+            get => sequence[currentWave].GetWaveType() == WaveType.AudioWave;
+        }
+
+        public bool CurrentTrackRadioWaveHasAlreadyPlayed 
+        {
+            get
+            {
+                if (!CurrentTrackIsRadioWave) 
+                {
+                    return false;
+                }
+                else 
+                {
+                    return ((AudioWave)sequence[currentWave]).HasAlreadyPlayed;
+                }
+            }
+        }
+
+        public AudioClip GetCurrentRadioClip
+        {
+            get 
+            {
+                if (sequence[currentWave].GetWaveType() != WaveType.AudioWave) 
+                {
+                    Debug.LogError("Tried to get a radioclip where there is none");
+                    return null;
+                }
+                else 
+                {
+                    return ((AudioWave)sequence[currentWave]).GetRadioClip;
+                }
+            }
+        }
+
         public AudioClip GetCurrentTrackVariation()
         {
             if (sequence[currentWave].GetWaveType() != WaveType.AudioWave)
@@ -39,6 +77,7 @@ namespace EditorObject
                 return null;
             }
         }
+
         /// <summary>
         /// Updates the wave and spawns in wave according to danger level
         /// </summary>

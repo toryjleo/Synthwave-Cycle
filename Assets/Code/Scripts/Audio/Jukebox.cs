@@ -76,11 +76,24 @@ public class Jukebox : MonoBehaviour, IResettable
     {
         AudioClip clipToPlay = sequence.GetCurrentTrackVariation();
         musicPlayer.QueueNextSong(clipToPlay, nextAudioLoopTime);
+
+        if (sequence.CurrentTrackIsRadioWave && !sequence.CurrentTrackRadioWaveHasAlreadyPlayed) 
+        {
+            AudioClip radioClip = sequence.GetCurrentRadioClip;
+            if (radioClip != null) 
+            {
+                Debug.Log("Queueing radio clip");
+                radioClipPlayer.QueueNextSong(radioClip, nextAudioLoopTime);
+            }
+            else 
+            {
+                Debug.LogError("Radio Wave does not have a radio clip attached");
+            }
+        }
+
         // Checks how long the Clip will last and updates the Next Start Time with a new value
         double duration = (double)clipToPlay.samples / clipToPlay.frequency;
         nextAudioLoopTime = nextAudioLoopTime + duration;
-
-        // TODO: Handle queueing audiolog
     }
 
     private double GetClipDuration(AudioClip clip)
