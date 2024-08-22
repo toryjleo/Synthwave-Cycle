@@ -55,6 +55,9 @@ namespace EditorObject
 
         public AudioClip GetCurrentTrackVariation()
         {
+
+            UpdateCurrentWave();
+
             if (sequence[currentWave].GetWaveType() != WaveType.AudioWave)
             {
                 Debug.Log("No radio clip on wave " + currentWave);
@@ -76,7 +79,6 @@ namespace EditorObject
         /// </summary>
         public void SpawnNewWave()
         {
-            UpdateCurrentWave();
             spawner.SpawnWave(sequence[currentWave].TriggerWaveAction());
             previousWave = currentWave;
         }
