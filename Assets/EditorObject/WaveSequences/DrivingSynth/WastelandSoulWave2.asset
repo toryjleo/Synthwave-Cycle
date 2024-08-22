@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 327e0d072a3926a46be00b473da0fa7a, type: 3}
+  m_Name: WastelandSoulWave2
+  m_EditorClassIdentifier: 
+  DLThreshold: 40
+  waveEnemies:
+  - enemyType: 2
+    spawnLocation: 3
+  TrackVariation: {fileID: 8300000, guid: bce47a2d326b7764cb40d276cc8d3ac9, type: 3}
+  RadioClip: {fileID: 8300000, guid: 590ca4ce7adef564c95f6be55565e799, type: 3}

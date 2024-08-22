@@ -72,6 +72,7 @@ public class DangerLevel : MonoBehaviour, IResettable
     internal void IncreaseDangerLevel(int dlScore)
     {
         dangerLevel += dlScore;
+        dangerLevel = Mathf.Clamp(dangerLevel, minimumThreshold, maximumThreshold);
     }
 
     public void ResetGameObject()
