@@ -23,25 +23,16 @@ namespace EditorObject
         public string songName;
 
 
+        private bool hasAlreadyPlayedRadioClip = false;
 
-        public bool CurrentTrackIsRadioWave
-        {
-            get => sequence[currentWave].GetWaveType() == WaveType.AudioWave;
-        }
 
         public bool CurrentTrackRadioWaveHasAlreadyPlayed 
         {
-            get
-            {
-                if (!CurrentTrackIsRadioWave) 
-                {
-                    return false;
-                }
-                else 
-                {
-                    return ((AudioWave)sequence[currentWave]).HasAlreadyPlayed;
-                }
-            }
+            get { return hasAlreadyPlayedRadioClip; }
+        }
+        public bool CurrentTrackIsRadioWave
+        {
+            get => sequence[currentWave].GetWaveType() == WaveType.AudioWave;
         }
 
         public AudioClip GetCurrentRadioClip
@@ -55,6 +46,8 @@ namespace EditorObject
                 }
                 else 
                 {
+
+                    hasAlreadyPlayedRadioClip = true;
                     return ((AudioWave)sequence[currentWave]).GetRadioClip;
                 }
             }
@@ -96,6 +89,7 @@ namespace EditorObject
             // Iterate backwards and spawn in the waves for the highest danger level
             if (sequence[currentWave].IsOverThreshold())
             {
+                hasAlreadyPlayedRadioClip = false;
                 currentWave += 1;
                 int nextWave = currentWave + 1;
                 int nextThreshold = (currentWave == sequence.Count - 1) ? int.MaxValue : sequence[nextWave].DLThreshold;
@@ -108,6 +102,7 @@ namespace EditorObject
 
         internal void Init(SquadSpawner squadSpawner)
         {
+            hasAlreadyPlayedRadioClip = false;
             spawner = squadSpawner;
             currentWave = 0;
             previousWave = -1;

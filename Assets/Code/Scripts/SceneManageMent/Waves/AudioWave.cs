@@ -10,18 +10,10 @@ public class AudioWave : HostileWave
     [SerializeField]
     public AudioClip RadioClip;
 
-    private bool hasPlayedAlready = false;
-
-    public bool HasAlreadyPlayed 
+    public AudioClip GetRadioClip
     {
-        get { return hasPlayedAlready; }
-    }
-
-    public AudioClip GetRadioClip 
-    {
-        get 
+        get
         {
-            hasPlayedAlready = true;
             return RadioClip;
         }
     }
