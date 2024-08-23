@@ -22,7 +22,9 @@ namespace EditorObject
         [SerializeField]
         public string songName;
         [SerializeField]
-        public Sprite radioFace;
+        private Sprite radioFace;
+
+        public Sprite RadioFace { get => radioFace; }
 
         private bool hasAlreadyPlayedRadioClip = false;
 

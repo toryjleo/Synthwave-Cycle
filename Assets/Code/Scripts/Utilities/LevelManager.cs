@@ -23,7 +23,7 @@ public class LevelManager : MonoBehaviour
 
     public Sprite RadioFace
     {
-        get => currentLevel.WaveSequence.radioFace;
+        get => currentLevel.WaveSequence.RadioFace;
     }
 
     // Start is called before the first frame update
