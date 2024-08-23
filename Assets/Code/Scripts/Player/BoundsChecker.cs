@@ -7,7 +7,7 @@ using UnityEngine;
 /// Attach to a gameobject underneath player
 /// Requires a TransmissionArea in scene
 /// </summary>
-public class BoundsChecker : MonoBehaviour
+public class BoundsChecker : MonoBehaviour, IResettable
 {
     #region Members
     /// <summary>
@@ -27,12 +27,10 @@ public class BoundsChecker : MonoBehaviour
 
     public TransmissionBoundsEvent transmissionBoundsEvent;
 
-    private bool wasLastWithinBounds = false;
+    private bool wasLastWithinBounds = true;
     #endregion
 
     #region Type Definitions
-
-
 
     public delegate void TransmissionBoundsEvent(bool isWithinBounds);
 
@@ -289,6 +287,11 @@ public class BoundsChecker : MonoBehaviour
             // outside of bounds
             timer.TimerStart();
         }
+    }
+
+    public void ResetGameObject()
+    {
+        wasLastWithinBounds = true;
     }
     #endregion
 }

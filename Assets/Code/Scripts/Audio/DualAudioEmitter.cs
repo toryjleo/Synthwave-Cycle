@@ -49,5 +49,9 @@ public class DualAudioEmitter : MonoBehaviour
         audioSourceArray[1 - toggle].Pause();
     }
 
-    // TODO: Create a mute method
+    public void Mute(bool enabled) 
+    {
+        audioSourceArray[1 - toggle].mute = enabled;
+        audioSourceArray[toggle].mute = enabled;
+    }
 }

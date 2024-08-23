@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DualRadioEmitter : DualAudioEmitter
@@ -31,6 +29,7 @@ public class DualRadioEmitter : DualAudioEmitter
 
     private void HandleTransmissionBoundsEvent(bool isWithinBounds) 
     {
+        Mute(!isWithinBounds);
         Debug.Log("Is within bounds: " + isWithinBounds);
     }
 }
