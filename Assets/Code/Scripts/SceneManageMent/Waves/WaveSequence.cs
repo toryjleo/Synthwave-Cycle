@@ -21,12 +21,15 @@ namespace EditorObject
         internal SquadSpawner spawner;
         [SerializeField]
         public string songName;
+        [SerializeField]
+        private Sprite radioFace;
 
+        public Sprite RadioFace { get => radioFace; }
 
         private bool hasAlreadyPlayedRadioClip = false;
 
 
-        public bool CurrentTrackRadioWaveHasAlreadyPlayed 
+        public bool CurrentTrackRadioWaveHasAlreadyPlayed
         {
             get { return hasAlreadyPlayedRadioClip; }
         }
@@ -37,14 +40,14 @@ namespace EditorObject
 
         public AudioClip GetCurrentRadioClip
         {
-            get 
+            get
             {
-                if (sequence[currentWave].GetWaveType() != WaveType.AudioWave) 
+                if (sequence[currentWave].GetWaveType() != WaveType.AudioWave)
                 {
                     Debug.LogError("Tried to get a radioclip where there is none");
                     return null;
                 }
-                else 
+                else
                 {
 
                     hasAlreadyPlayedRadioClip = true;
