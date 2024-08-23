@@ -48,7 +48,6 @@ public class TransmissionRadio : MonoBehaviour
         if (radioFrame.activeSelf) 
         {
             radioFace.color = new Color(1, boundsChecker.TransmissionClarity, boundsChecker.TransmissionClarity, 1);
-            // TODO: apply transmissionclarity
         }
     }
 

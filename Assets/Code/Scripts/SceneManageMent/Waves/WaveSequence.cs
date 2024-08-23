@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Waves;
 
@@ -35,7 +36,7 @@ namespace EditorObject
         }
         public bool CurrentTrackIsRadioWave
         {
-            get => sequence[currentWave].GetWaveType() == WaveType.AudioWave;
+            get => WaveIsRadioWave(currentWave);
         }
 
         public AudioClip GetCurrentRadioClip
@@ -131,10 +132,16 @@ namespace EditorObject
             }
         }
 
+        private bool WaveIsRadioWave(int index) 
+        {
+            return sequence[index].GetWaveType() == WaveType.AudioWave;
+        }
+
         public void ResetGameObject()
         {
             currentWave = 0;
             previousWave = -1;
+            hasAlreadyPlayedRadioClip = false;
         }
     }
 }
