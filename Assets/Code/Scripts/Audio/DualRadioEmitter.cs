@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class DualRadioEmitter : DualAudioEmitter
 {
-
-    private TransmissionArea transmissionArea;
+    private BoundsChecker boundsChecker;
 
     // Start is called before the first frame update
     void Start()
     {
-        transmissionArea = FindObjectOfType<TransmissionArea>();
-        if (transmissionArea == null) 
+
+
+        boundsChecker = FindObjectOfType<BoundsChecker>();
+        if (boundsChecker == null) 
         {
-            Debug.LogWarning("Could not find TransmissionArea in scene");
+            Debug.LogWarning("Could not find BoundsChecker");
+        }
+        else 
+        {
+            boundsChecker.transmissionBoundsEvent += HandleTransmissionBoundsEvent;
         }
         
     }
@@ -22,5 +27,10 @@ public class DualRadioEmitter : DualAudioEmitter
     void Update()
     {
         
+    }
+
+    private void HandleTransmissionBoundsEvent(bool isWithinBounds) 
+    {
+        Debug.Log("Is within bounds: " + isWithinBounds);
     }
 }

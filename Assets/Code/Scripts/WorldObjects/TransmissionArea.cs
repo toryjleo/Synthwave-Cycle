@@ -22,6 +22,11 @@ public class TransmissionArea : MonoBehaviour
         get => transmissionArea.Radius * 2;
     }
 
+    public float RadiusSqr 
+    {
+        get => transmissionArea.Radius * transmissionArea.Radius;
+    }
+
     /// <summary>
     /// A linear scale of how far the player can travel outside the TransmissionArea
     /// </summary>

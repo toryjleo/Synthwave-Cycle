@@ -24,11 +24,19 @@ public class BoundsChecker : MonoBehaviour
     /// Reference to timer object
     /// </summary>
     private Timer timer;
+
+    public TransmissionBoundsEvent transmissionBoundsEvent;
+
+    private bool wasLastWithinBounds = false;
     #endregion
 
     #region Type Definitions
 
-    public delegate void TimerEventHandler(bool timerIsOn);
+
+
+    public delegate void TransmissionBoundsEvent(bool isWithinBounds);
+
+    public delegate void TimerEvent(bool timerIsOn);
 
     /// <summary>
     /// Class that counts up to an elapsed time
@@ -41,8 +49,8 @@ public class BoundsChecker : MonoBehaviour
 
         private bool timerOn = false;
 
-        public TimerEventHandler NotifyTimerEvent;
-        public TimerEventHandler NotifyTimerComplete;
+        public TimerEvent NotifyTimerEvent;
+        public TimerEvent NotifyTimerComplete;
 
         /// <summary>
         /// If the timer has started runnung
@@ -141,6 +149,20 @@ public class BoundsChecker : MonoBehaviour
             return distanceSqrToTransmissionAreaCenter > transmissionArea.MaxBoundsFromTransmissionAreaSqr;
         }
     }
+    private bool PlayerIsInsideTransmissionArea 
+    {
+        get 
+        {
+            if (transmissionArea == null)
+            {
+                Debug.LogError("Trying to find if player outside bounds when there is no TransmissionArea found");
+                return false;
+            }
+            float distanceSqrToTransmissionAreaCenter = (transform.position - transmissionArea.transform.position).sqrMagnitude;
+
+            return distanceSqrToTransmissionAreaCenter < transmissionArea.RadiusSqr;
+        }
+    }
 
     /// <summary>
     /// Returns how much time is left on the timer
@@ -170,7 +192,7 @@ public class BoundsChecker : MonoBehaviour
     /// Notifies the listeners that a timer event has triggered.
     /// Timer events trigger when the player goes out of bounds or enters the bounds again.
     /// </summary>
-    public TimerEventHandler NotifyTimerEvent
+    public TimerEvent NotifyTimerEvent
     {
         get
         {
@@ -206,6 +228,8 @@ public class BoundsChecker : MonoBehaviour
         if (GameStateController.CanRunGameplay)
         {
             UpdateTimer(Time.deltaTime);
+
+            CheckIfInsideBounds();
         }
     }
 
@@ -217,6 +241,15 @@ public class BoundsChecker : MonoBehaviour
     {
         transmissionArea = FindObjectOfType<TransmissionArea>();
         return transmissionArea != null;
+    }
+
+    private void CheckIfInsideBounds() 
+    {
+        if(wasLastWithinBounds != PlayerIsInsideTransmissionArea) 
+        {
+            wasLastWithinBounds = PlayerIsInsideTransmissionArea;
+            transmissionBoundsEvent?.Invoke(PlayerIsInsideTransmissionArea);
+        }
     }
 
     #region Timer
