@@ -187,30 +187,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1588835168}
     m_Modifications:
-    - target: {fileID: 281125569, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
-      propertyPath: m_Volume
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1805576751, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
-      propertyPath: m_Volume
-      value: 0.7
-      objectReference: {fileID: 0}
     - target: {fileID: 3820667865579537716, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
       propertyPath: m_Name
       value: JukeBox
       objectReference: {fileID: 0}
-    - target: {fileID: 3820667865579537718, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
-      propertyPath: trackList.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3820667865579537718, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
-      propertyPath: trackList.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: a2f9cc1666716a942a309e609ba15d69, type: 2}
-    - target: {fileID: 3820667865579537718, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
-      propertyPath: soundTracks.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 56457c03c2aef1d40a2684598b951353, type: 2}
     - target: {fileID: 3820667865579537721, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
       propertyPath: m_RootOrder
       value: 0
