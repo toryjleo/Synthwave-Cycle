@@ -21,3 +21,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 92610e0ecf05d304eafd2efaaf2ddfa2, type: 2}
   - {fileID: 11400000, guid: 0be3048db17d24245a96cca44affed6f, type: 2}
   songName: Wasteland Soul
+  radioFace: {fileID: 21300000, guid: 26d49bc6d1407cd429d6715331dabafe, type: 3}

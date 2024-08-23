@@ -16,9 +16,14 @@ public class LevelManager : MonoBehaviour
 
     List<IResettable> resetObjects;
 
-    public string SongName 
+    public string SongName
     {
         get => currentLevel.WaveSequence.songName;
+    }
+
+    public Sprite RadioFace
+    {
+        get => currentLevel.WaveSequence.radioFace;
     }
 
     // Start is called before the first frame update
