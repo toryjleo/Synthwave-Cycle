@@ -162,6 +162,11 @@ public class BoundsChecker : MonoBehaviour, IResettable
         }
     }
 
+    public float TransmissionClarity
+    {
+        get => transmissionArea.TransmissionClarity(transform.position);
+    }
+
     /// <summary>
     /// Returns how much time is left on the timer
     /// </summary>

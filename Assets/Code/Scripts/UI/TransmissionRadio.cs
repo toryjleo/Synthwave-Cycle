@@ -43,6 +43,15 @@ public class TransmissionRadio : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void Update()
+    {
+        if (radioFrame.activeSelf) 
+        {
+            radioFace.color = new Color(1, boundsChecker.TransmissionClarity, boundsChecker.TransmissionClarity, 1);
+            // TODO: apply transmissionclarity
+        }
+    }
+
     private void HandleTransmissionBoundsEvent(bool isWithinBounds)
     {
         wifiSignal.SetActive(!isWithinBounds);

@@ -54,7 +54,8 @@ public class TransmissionArea : MonoBehaviour
         Vector3 centerToPoint = transform.position - point;
         if (centerToPoint.sqrMagnitude < (transmissionArea.Radius * transmissionArea.Radius)) 
         {
-            return 1;
+            float clarityInverse = centerToPoint.sqrMagnitude / (transmissionArea.Radius * transmissionArea.Radius);
+            return 1 - clarityInverse;
         }
         else
         {
