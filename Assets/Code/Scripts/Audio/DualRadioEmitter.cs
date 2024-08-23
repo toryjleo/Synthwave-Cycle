@@ -30,6 +30,5 @@ public class DualRadioEmitter : DualAudioEmitter
     private void HandleTransmissionBoundsEvent(bool isWithinBounds) 
     {
         Mute(!isWithinBounds);
-        Debug.Log("Is within bounds: " + isWithinBounds);
     }
 }

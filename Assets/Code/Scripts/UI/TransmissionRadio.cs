@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class TransmissionRadio : MonoBehaviour
 {
-    private TransmissionArea transmissionArea;
-    private PlayerMovement playerMovement;
+    private BoundsChecker boundsChecker;
     private LevelManager levelManager;
 
     [SerializeField] private GameObject radioFrame;
@@ -18,8 +17,15 @@ public class TransmissionRadio : MonoBehaviour
     void Start()
     {
         levelManager = FindObjectOfType<LevelManager>();
-        transmissionArea = FindObjectOfType<TransmissionArea>();
-        playerMovement = FindObjectOfType<PlayerMovement>();
+        boundsChecker = FindObjectOfType<BoundsChecker>();
+        if (boundsChecker == null) 
+        {
+            Debug.LogWarning("TransmissionRadio does not have reference to a BoundsChecker in scene");
+        }
+        else 
+        {
+            boundsChecker.transmissionBoundsEvent += HandleTransmissionBoundsEvent;
+        }
 
         if (!levelManager)
         {
@@ -33,37 +39,18 @@ public class TransmissionRadio : MonoBehaviour
         {
             radioFace.sprite = levelManager.RadioFace;
         }
+        // Disable radio at start
+        gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void HandleTransmissionBoundsEvent(bool isWithinBounds)
     {
-        if (transmissionArea != null && playerMovement != null)
-        {
-            if (TransmissionIsComingIn())
-            {
-                // Show radio box
-                wifiSignal.SetActive(false);
-                radioFrame.SetActive(true);
-            }
-            else
-            {
-                wifiSignal.SetActive(true);
-                radioFrame.SetActive(false);
-            }
-        }
-    }
-
-    private bool TransmissionIsComingIn()
-    {
-        return transmissionArea.TransmissionClarity(playerMovement.transform.position) > 0;
+        wifiSignal.SetActive(!isWithinBounds);
+        radioFrame.SetActive(isWithinBounds);
     }
 
     public void Toggle()
     {
         gameObject.SetActive(!gameObject.activeSelf);
-
-        wifiSignal.SetActive(false);
-        radioFrame.SetActive(false);
     }
 }
