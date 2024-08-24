@@ -82,7 +82,12 @@ public class Jukebox : MonoBehaviour, IResettable
             AudioClip radioClip = sequence.GetCurrentRadioClip;
             if (radioClip != null) 
             {
+                
                 radioClipPlayer.QueueNextSong(radioClip, nextAudioLoopTime);
+
+                double radioDuration = (double)radioClip.samples / radioClip.frequency;
+                double radioLogTime = nextAudioLoopTime + radioDuration;
+                musicPlayer.DimForTime(radioLogTime);
             }
             else 
             {

@@ -8,6 +8,9 @@ public class DualAudioEmitter : MonoBehaviour
     // An audiosource array with 2 members to switch between with "toggle"
     public AudioSource[] audioSourceArray;
     int toggle;
+
+    private Coroutine coroutine;
+    private const float fullVolume = .7f;
     #endregion
 
     public void Init()
@@ -53,5 +56,36 @@ public class DualAudioEmitter : MonoBehaviour
     {
         audioSourceArray[1 - toggle].mute = enabled;
         audioSourceArray[toggle].mute = enabled;
+    }
+
+    public void DimForTime(double timeLength)
+    {
+        if (coroutine != null) 
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+            SetVolume(fullVolume);
+        }
+
+        coroutine = StartCoroutine(DimForTimeCoroutine(timeLength));
+    }
+
+    private void SetVolume(float volume) 
+    {
+        audioSourceArray[toggle].volume = volume;
+        audioSourceArray[1 - toggle].volume = volume;
+    }
+
+    private IEnumerator DimForTimeCoroutine(double timeLength) 
+    {
+        float percentageOfFull = .1f;
+        float dimVolume = fullVolume * percentageOfFull;
+
+        SetVolume(dimVolume);
+
+        yield return new WaitForSeconds((float)(timeLength));
+
+        SetVolume(fullVolume);
+        coroutine = null;
     }
 }
