@@ -5867,7 +5867,7 @@ MonoBehaviour:
   drivableSurface:
     serializedVersion: 2
     m_Bits: 4294967295
-  MaxSpeed: 200
+  MaxSpeed: 75
   accelaration: 15
   turn: 60
   rb: {fileID: 2279930515495505838}
