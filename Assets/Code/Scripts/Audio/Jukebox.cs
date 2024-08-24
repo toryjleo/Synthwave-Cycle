@@ -87,6 +87,7 @@ public class Jukebox : MonoBehaviour, IResettable
 
                 double radioDuration = (double)radioClip.samples / radioClip.frequency;
                 double radioLogTime = nextAudioLoopTime + radioDuration;
+                // TODO: hook up to HandleTransmissionBoundsEvent, dim till radioLogTime or leave area
                 musicPlayer.DimForTime(radioLogTime);
             }
             else 

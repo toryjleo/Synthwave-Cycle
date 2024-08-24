@@ -4,18 +4,32 @@ using UnityEngine;
 
 public class DualAudioEmitter : MonoBehaviour
 {
-    #region AudioControl
     // An audiosource array with 2 members to switch between with "toggle"
     public AudioSource[] audioSourceArray;
     int toggle;
 
     private Coroutine coroutine;
     private const float fullVolume = .7f;
-    #endregion
+
+    protected BoundsChecker boundsChecker;
+
+    protected virtual void Start()
+    {
+        boundsChecker = FindObjectOfType<BoundsChecker>();
+        if (boundsChecker == null)
+        {
+            Debug.LogWarning("Could not find BoundsChecker");
+        }
+        else
+        {
+            boundsChecker.transmissionBoundsEvent += HandleTransmissionBoundsEvent;
+        }
+    }
 
     public void Init()
     {
         toggle = 0;
+        StopCoroutineSetFullVolume();
     }
 
     /// <summary>
@@ -38,6 +52,7 @@ public class DualAudioEmitter : MonoBehaviour
             audioSourceArray[i].Stop();
             audioSourceArray[i].clip = null;
         }
+        StopCoroutineSetFullVolume();
 
         toggle = 0;
     }
@@ -60,12 +75,7 @@ public class DualAudioEmitter : MonoBehaviour
 
     public void DimForTime(double timeLength)
     {
-        if (coroutine != null) 
-        {
-            StopCoroutine(coroutine);
-            coroutine = null;
-            SetVolume(fullVolume);
-        }
+        StopCoroutineSetFullVolume();
 
         coroutine = StartCoroutine(DimForTimeCoroutine(timeLength));
     }
@@ -87,5 +97,24 @@ public class DualAudioEmitter : MonoBehaviour
 
         SetVolume(fullVolume);
         coroutine = null;
+    }
+
+    private void StopCoroutineSetFullVolume() 
+    {
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+           
+        }
+        SetVolume(fullVolume);
+    }
+
+    protected virtual void HandleTransmissionBoundsEvent(bool isWithinBounds) 
+    {
+        if (!isWithinBounds)
+        {
+            StopCoroutineSetFullVolume();
+        }
     }
 }
