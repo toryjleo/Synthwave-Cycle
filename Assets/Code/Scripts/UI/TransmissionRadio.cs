@@ -7,10 +7,13 @@ public class TransmissionRadio : MonoBehaviour
 {
     private BoundsChecker boundsChecker;
     private LevelManager levelManager;
+    private bool inBounds;
 
     [SerializeField] private GameObject radioFrame;
     [SerializeField] private Image radioFace;
     [SerializeField] private GameObject wifiSignal;
+    [SerializeField] private AudioSource radio1;
+    [SerializeField] private AudioSource radio2;
 
 
     // Start is called before the first frame update
@@ -18,11 +21,11 @@ public class TransmissionRadio : MonoBehaviour
     {
         levelManager = FindObjectOfType<LevelManager>();
         boundsChecker = FindObjectOfType<BoundsChecker>();
-        if (boundsChecker == null) 
+        if (boundsChecker == null)
         {
             Debug.LogWarning("TransmissionRadio does not have reference to a BoundsChecker in scene");
         }
-        else 
+        else
         {
             boundsChecker.transmissionBoundsEvent += HandleTransmissionBoundsEvent;
         }
@@ -45,14 +48,26 @@ public class TransmissionRadio : MonoBehaviour
 
     private void Update()
     {
-        if (radioFrame.activeSelf) 
+        if (radioFrame.activeSelf)
         {
             radioFace.color = new Color(1, boundsChecker.TransmissionClarity, boundsChecker.TransmissionClarity, 1);
+        }
+
+        if (radioFrame.activeSelf && !radio1.isPlaying && !radio2.isPlaying)
+        {
+            radioFrame.SetActive(false);
+            wifiSignal.SetActive(true);
+        }
+        else if (!radioFrame.activeSelf && inBounds && (radio1.isPlaying || radio2.isPlaying))
+        {
+            radioFrame.SetActive(true);
+            wifiSignal.SetActive(false);
         }
     }
 
     private void HandleTransmissionBoundsEvent(bool isWithinBounds)
     {
+        inBounds = isWithinBounds;
         wifiSignal.SetActive(!isWithinBounds);
         radioFrame.SetActive(isWithinBounds);
     }

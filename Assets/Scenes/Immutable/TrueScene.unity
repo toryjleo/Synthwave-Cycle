@@ -303,6 +303,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &713491939 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4495449611421805189, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
+  m_PrefabInstance: {fileID: 327971194}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &731758854
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,6 +761,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1682716525 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4495449613144793707, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
+  m_PrefabInstance: {fileID: 327971194}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1714521336 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3820667865579537718, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
@@ -795,6 +805,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2625886681432240619, guid: 60a9006d03365304ab467c6a9a64e661, type: 3}
+      propertyPath: radio1
+      value: 
+      objectReference: {fileID: 1682716525}
+    - target: {fileID: 2625886681432240619, guid: 60a9006d03365304ab467c6a9a64e661, type: 3}
+      propertyPath: radio2
+      value: 
+      objectReference: {fileID: 713491939}
     - target: {fileID: 3269430930711782449, guid: 60a9006d03365304ab467c6a9a64e661, type: 3}
       propertyPath: m_Name
       value: GameUI
