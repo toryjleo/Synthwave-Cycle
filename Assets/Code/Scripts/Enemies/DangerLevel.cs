@@ -16,7 +16,7 @@ public class DangerLevel : MonoBehaviour, IResettable
     private int maximumThreshold;
 
     const int DECAY_TICK_MS = 3000;
-    const int START_LEVEL = 1;
+    const int START_LEVEL = 0;
 
     public float PercentProgress
     {
@@ -71,8 +71,10 @@ public class DangerLevel : MonoBehaviour, IResettable
 
     internal void IncreaseDangerLevel(int dlScore)
     {
+        Debug.Log("DL Score: " + dlScore);
         dangerLevel += dlScore;
-        dangerLevel = Mathf.Clamp(dangerLevel, minimumThreshold, maximumThreshold);
+        //dangerLevel = Mathf.Clamp(dangerLevel, minimumThreshold, maximumThreshold);
+        Debug.Log("Danger LEVEL: " + dangerLevel);
     }
 
     public void ResetGameObject()
