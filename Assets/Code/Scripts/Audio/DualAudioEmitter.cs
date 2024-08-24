@@ -12,6 +12,13 @@ public class DualAudioEmitter : MonoBehaviour
     private const float fullVolume = .7f;
 
     protected BoundsChecker boundsChecker;
+    private float timeTillTrackEnds = 0;
+
+    public float TimeTillTrackEnds 
+    {
+        set { timeTillTrackEnds = value; }
+    }
+
 
     protected virtual void Start()
     {
@@ -24,6 +31,13 @@ public class DualAudioEmitter : MonoBehaviour
         {
             boundsChecker.transmissionBoundsEvent += HandleTransmissionBoundsEvent;
         }
+    }
+
+    protected virtual void Update() 
+    {
+        timeTillTrackEnds -= Time.deltaTime;
+
+        Debug.Log("Time till this track ends: " + timeTillTrackEnds);
     }
 
     public void Init()
@@ -73,11 +87,13 @@ public class DualAudioEmitter : MonoBehaviour
         audioSourceArray[toggle].mute = enabled;
     }
 
-    public void DimForTime(double timeLength)
+    private void DimForTime(double timeLength)
     {
         StopCoroutineSetFullVolume();
-
-        coroutine = StartCoroutine(DimForTimeCoroutine(timeLength));
+        if (timeLength > 0) 
+        {
+            coroutine = StartCoroutine(DimForTimeCoroutine(timeLength));
+        }
     }
 
     private void SetVolume(float volume) 
@@ -115,6 +131,10 @@ public class DualAudioEmitter : MonoBehaviour
         if (!isWithinBounds)
         {
             StopCoroutineSetFullVolume();
+        }
+        else 
+        {
+            DimForTime(timeTillTrackEnds);
         }
     }
 }

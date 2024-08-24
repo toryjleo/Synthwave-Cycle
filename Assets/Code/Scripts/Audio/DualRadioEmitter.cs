@@ -24,8 +24,9 @@ public class DualRadioEmitter : DualAudioEmitter
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         noisePlayer.volume = 1 - boundsChecker.TransmissionClarity;
     }
 
