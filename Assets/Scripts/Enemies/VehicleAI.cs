@@ -33,7 +33,7 @@ public abstract class VehicleAi : Ai
 
     public override void NewLife()
     {
-        movementTarget = this.transform;
+        //movementTarget = this.transform;
         TIME_BY_TARGET_TO_ATTACK = Random.Range(3, 11);
         base.NewLife();
     }
@@ -43,29 +43,32 @@ public abstract class VehicleAi : Ai
 
     public override void Update()
     {
-        base.Update();
-        //Handle confidence/attack timing
-        if(movementTarget != null)
+        if (this.alive && this.enabled)
         {
-            if (Vector3.Distance(transform.position, movementTarget.transform.position) <= CONFIDENCE_BUILD_DISTANCE)
+            base.Update();
+            //Handle confidence/attack timing
+            if (movementTarget != null)
             {
-                timeByTarget += Time.deltaTime;
+                if (Vector3.Distance(transform.position, movementTarget.transform.position) <= CONFIDENCE_BUILD_DISTANCE)
+                {
+                    timeByTarget += Time.deltaTime;
+                }
+                else
+                {
+                    timeByTarget -= Time.deltaTime;
+                }
+                if (timeByTarget < 0)
+                {
+                    timeByTarget = 0;
+                }
+                else if (timeByTarget > TIME_BY_TARGET_TO_ATTACK)
+                {
+                    timeByTarget = TIME_BY_TARGET_TO_ATTACK;
+                }
             }
-            else
-            {
-                timeByTarget -= Time.deltaTime;
-            }
-            if (timeByTarget < 0)
-            {
-                timeByTarget = 0;
-            }
-            else if (timeByTarget > TIME_BY_TARGET_TO_ATTACK)
-            {
-                timeByTarget = TIME_BY_TARGET_TO_ATTACK;
-            }
+            //Figure out where to moved based on the child class movement pattern
+            UpdateMovementLocation();
         }
-        //Figure out where to moved based on the child class movement pattern
-        UpdateMovementLocation();
     }
 
     public override void Init()

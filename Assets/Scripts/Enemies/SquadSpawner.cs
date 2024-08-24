@@ -45,7 +45,7 @@ public class SquadSpawner : MonoBehaviour
     private Squad SpawnSquad(WaveEnemyInfo aiInfo)
     {
         Ai enemyAi = SpawnNewEnemy(aiInfo.enemyType, aiInfo.spawnLocation, player.transform.position);
-        if(enemyAi is VehicleAI)
+        if(enemyAi is VehicleAi)
         {
             VehicleSquad squad = new VehicleSquad(squadManager);
             squad.SetTarget(player);

@@ -5796,9 +5796,9 @@ GameObject:
   - component: {fileID: 2279930514937360767}
   - component: {fileID: 2279930514937360736}
   - component: {fileID: 2279930514937360738}
-  - component: {fileID: 2279930514937360739}
+  - component: {fileID: 3840444340308158616}
   m_Layer: 0
-  m_Name: CarEnemy
+  m_Name: RamCar
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6159,28 +6159,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 2279930514937360740}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7159be56941d9b8418f93482a3e0b62d, type: 3}
+  m_Script: {fileID: 11500000, guid: 22d6bb83efa152e40966022e91663b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   rb: {fileID: 2279930514937360765}
-  myGun: {fileID: 1357075174434019674}
-  hp: {fileID: 2279930514937360739}
-  activeConditions: []
-  StartingHP: 500
-  maxSpeed: 150
-  maxForce: 500
-  score: 200
-  dlScore: 0
-  attackRange: 100
-  minimumRange: 100
+  myGun: {fileID: 0}
+  hp: {fileID: 0}
+  StartingHP: 200
+  maxSpeed: 10
+  maxForce: 5
+  score: 100
+  dlScore: 10
+  attackRange: 15
+  minimumRange: 15
   alive: 1
-  speedBoost: 10
+  speedBoost: 0
+  vehicleController: {fileID: 2279930514937360766}
   DamageMultiplyer: 1
-  RamModifier: 1
+  RamModifier: 0.2
   itemDrop: {fileID: 2157447271029124370, guid: f07931c8c60cd724e8844ab074e56069, type: 3}
   movementTarget: {fileID: 0}
---- !u!114 &2279930514937360739
+--- !u!114 &3840444340308158616
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6192,7 +6192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isInvulnurable: 0
+  _hitPoints: 0
 --- !u!1 &2279930514973692283
 GameObject:
   m_ObjectHideFlags: 0
@@ -21923,14 +21923,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7860270618891034725, guid: 7088fbbd6fe8b7d45ac649ee3bd8aae2, type: 3}
   m_PrefabInstance: {fileID: 3046196630198009475}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1357075174434019674 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -5146753335091157031, guid: 7088fbbd6fe8b7d45ac649ee3bd8aae2, type: 3}
-  m_PrefabInstance: {fileID: 3046196630198009475}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13dd56a01b9c8c64594a5b40c354298d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

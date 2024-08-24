@@ -15,8 +15,11 @@ public class RamCarAi : VehicleAi
 
     public override void UpdateMovementLocation()
     {
-        //RamCar just drives directly into the player
-        movementTarget.position = target.transform.position;
-        vehicleController.target = movementTarget;
+        //RamCar just drives directly into the player (if targeted)
+        if (target != null)
+        {
+            movementTarget = target.transform;
+            vehicleController.target = movementTarget;
+        }
     }
 }
