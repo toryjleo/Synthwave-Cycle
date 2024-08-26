@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c61ec59a1beb848b8fe20823b14492, type: 3}
   m_Name: WastelandSoulWave7Complete
   m_EditorClassIdentifier: 
-  DLThreshold: 200
+  DLThreshold: 500

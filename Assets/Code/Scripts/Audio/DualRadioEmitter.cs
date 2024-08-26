@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class DualRadioEmitter : DualAudioEmitter
 {
-
     [SerializeField]
     private AudioSource noisePlayer;
 
@@ -11,6 +10,7 @@ public class DualRadioEmitter : DualAudioEmitter
     protected override void Start()
     {
         base.Start();
+        Mute(true);
 
         if (!noisePlayer)
         {
@@ -30,9 +30,9 @@ public class DualRadioEmitter : DualAudioEmitter
         noisePlayer.volume = 1 - boundsChecker.TransmissionClarity;
     }
 
-    protected override void HandleTransmissionBoundsEvent(bool isWithinBounds)
+    public override void Mute(bool enabled)
     {
-        Mute(!isWithinBounds);
-        noisePlayer.mute = !isWithinBounds;
+        base.Mute(enabled);
+        noisePlayer.mute = enabled;
     }
 }

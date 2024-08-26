@@ -11327,6 +11327,9 @@ MonoBehaviour:
   radioFrame: {fileID: 5277855979701966117}
   radioFace: {fileID: 7969567640976344396}
   wifiSignal: {fileID: 4915985390117432053}
+  radio1: {fileID: 0}
+  radio2: {fileID: 0}
+  radioEmitter: {fileID: 0}
 --- !u!1 &7405927287954241349
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 327e0d072a3926a46be00b473da0fa7a, type: 3}
   m_Name: WastelandSoulWave2
   m_EditorClassIdentifier: 
-  DLThreshold: 40
+  DLThreshold: 160
   waveEnemies:
   - enemyType: 2
     spawnLocation: 3

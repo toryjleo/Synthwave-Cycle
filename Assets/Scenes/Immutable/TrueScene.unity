@@ -235,8 +235,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8783658905416763853, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
+--- !u!114 &327971196 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2872322943645383248, guid: 34966618e7654d949a2a061b8c4388b5, type: 3}
+  m_PrefabInstance: {fileID: 327971194}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d76c663f9e15b4498122f499eff20a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &535875161
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,6 +584,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9074540510313780496, guid: d934ef767c4bc2c44bd1c51ad846fde5, type: 3}
+      propertyPath: transmissionAreaIsViewable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9074540510313780508, guid: d934ef767c4bc2c44bd1c51ad846fde5, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -813,6 +832,10 @@ PrefabInstance:
       propertyPath: radio2
       value: 
       objectReference: {fileID: 713491939}
+    - target: {fileID: 2625886681432240619, guid: 60a9006d03365304ab467c6a9a64e661, type: 3}
+      propertyPath: radioEmitter
+      value: 
+      objectReference: {fileID: 327971196}
     - target: {fileID: 3269430930711782449, guid: 60a9006d03365304ab467c6a9a64e661, type: 3}
       propertyPath: m_Name
       value: GameUI

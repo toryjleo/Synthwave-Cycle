@@ -12,8 +12,7 @@ public class TransmissionRadio : MonoBehaviour
     [SerializeField] private GameObject radioFrame;
     [SerializeField] private Image radioFace;
     [SerializeField] private GameObject wifiSignal;
-    [SerializeField] private AudioSource radio1;
-    [SerializeField] private AudioSource radio2;
+    [SerializeField] private DualRadioEmitter radioEmitter;
 
 
     // Start is called before the first frame update
@@ -53,12 +52,14 @@ public class TransmissionRadio : MonoBehaviour
             radioFace.color = new Color(1, boundsChecker.TransmissionClarity, boundsChecker.TransmissionClarity, 1);
         }
 
-        if (radioFrame.activeSelf && !radio1.isPlaying && !radio2.isPlaying)
+        // IF the radio UI element is still there when no radio log is playing, disable it and enable to tower icon
+        if (radioFrame.activeSelf && !radioEmitter.isPlaying)
         {
             radioFrame.SetActive(false);
             wifiSignal.SetActive(true);
         }
-        else if (!radioFrame.activeSelf && inBounds && (radio1.isPlaying || radio2.isPlaying))
+        // IF the radio UI element is not active and the player is in bounds waiting for the next radio log, enable it when the radio starts again
+        else if (!radioFrame.activeSelf && inBounds && radioEmitter.isPlaying)
         {
             radioFrame.SetActive(true);
             wifiSignal.SetActive(false);
@@ -70,10 +71,26 @@ public class TransmissionRadio : MonoBehaviour
         inBounds = isWithinBounds;
         wifiSignal.SetActive(!isWithinBounds);
         radioFrame.SetActive(isWithinBounds);
+        ToggleRadioEmitter();
     }
 
     public void Toggle()
     {
+        ToggleRadioEmitter();
         gameObject.SetActive(!gameObject.activeSelf);
+    }
+
+    public void ToggleRadioEmitter()
+    {
+        bool isActive = gameObject.activeSelf;
+
+        if (inBounds)
+        {
+            radioEmitter.Mute(!isActive);
+        }
+        else
+        {
+            radioEmitter.Mute(true);
+        }
     }
 }
