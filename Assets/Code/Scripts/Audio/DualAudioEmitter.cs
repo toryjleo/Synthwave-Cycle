@@ -14,9 +14,14 @@ public class DualAudioEmitter : MonoBehaviour
     protected BoundsChecker boundsChecker;
     private float timeTillTrackEnds = 0;
 
-    public float TimeTillTrackEnds 
+    public float TimeTillTrackEnds
     {
         set { timeTillTrackEnds = value; }
+    }
+
+    public bool isPlaying
+    {
+        get { return audioSourceArray[toggle].isPlaying || audioSourceArray[1 - toggle].isPlaying; }
     }
 
 
@@ -33,11 +38,11 @@ public class DualAudioEmitter : MonoBehaviour
         }
     }
 
-    protected virtual void Update() 
+    protected virtual void Update()
     {
         timeTillTrackEnds -= Time.deltaTime;
 
-        Debug.Log("Time till this track ends: " + timeTillTrackEnds);
+        // Debug.Log("Time till this track ends: " + timeTillTrackEnds);
     }
 
     public void Init()
@@ -76,12 +81,12 @@ public class DualAudioEmitter : MonoBehaviour
         audioSourceArray[1 - toggle].Play();
     }
 
-    public void Play() 
+    public void Play()
     {
         audioSourceArray[1 - toggle].Pause();
     }
 
-    public void Mute(bool enabled) 
+    public virtual void Mute(bool enabled)
     {
         audioSourceArray[1 - toggle].mute = enabled;
         audioSourceArray[toggle].mute = enabled;
@@ -90,19 +95,19 @@ public class DualAudioEmitter : MonoBehaviour
     private void DimForTime(double timeLength)
     {
         StopCoroutineSetFullVolume();
-        if (timeLength > 0) 
+        if (timeLength > 0)
         {
             coroutine = StartCoroutine(DimForTimeCoroutine(timeLength));
         }
     }
 
-    private void SetVolume(float volume) 
+    private void SetVolume(float volume)
     {
         audioSourceArray[toggle].volume = volume;
         audioSourceArray[1 - toggle].volume = volume;
     }
 
-    private IEnumerator DimForTimeCoroutine(double timeLength) 
+    private IEnumerator DimForTimeCoroutine(double timeLength)
     {
         float percentageOfFull = .1f;
         float dimVolume = fullVolume * percentageOfFull;
@@ -115,24 +120,24 @@ public class DualAudioEmitter : MonoBehaviour
         coroutine = null;
     }
 
-    private void StopCoroutineSetFullVolume() 
+    private void StopCoroutineSetFullVolume()
     {
         if (coroutine != null)
         {
             StopCoroutine(coroutine);
             coroutine = null;
-           
+
         }
         SetVolume(fullVolume);
     }
 
-    protected virtual void HandleTransmissionBoundsEvent(bool isWithinBounds) 
+    protected virtual void HandleTransmissionBoundsEvent(bool isWithinBounds)
     {
         if (!isWithinBounds)
         {
             StopCoroutineSetFullVolume();
         }
-        else 
+        else
         {
             DimForTime(timeTillTrackEnds);
         }
