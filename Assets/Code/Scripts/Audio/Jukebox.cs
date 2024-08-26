@@ -57,7 +57,7 @@ public class Jukebox : MonoBehaviour, IResettable
 
     }
 
-    private void InitializeDualAudioEmitter(DualAudioEmitter emitter) 
+    private void InitializeDualAudioEmitter(DualAudioEmitter emitter)
     {
         if (emitter == null)
         {
@@ -74,29 +74,32 @@ public class Jukebox : MonoBehaviour, IResettable
     /// </summary>
     private void QueueNextSong()
     {
-        AudioClip clipToPlay = sequence.GetCurrentTrackVariation();
-        musicPlayer.QueueNextSong(clipToPlay, nextAudioLoopTime);
-
-        if (sequence.CurrentTrackIsRadioWave && !sequence.CurrentTrackRadioWaveHasAlreadyPlayed) 
+        if (sequence.CurrentWaveIsFinal)
         {
-            AudioClip radioClip = sequence.GetCurrentRadioClip;
-            if (radioClip != null) 
-            {
-                
-                radioClipPlayer.QueueNextSong(radioClip, nextAudioLoopTime);
-
-                double radioDuration = (double)radioClip.samples / radioClip.frequency;
-                musicPlayer.TimeTillTrackEnds = (float)radioDuration;
-            }
-            else 
-            {
-                Debug.LogError("Radio Wave does not have a radio clip attached");
-            }
+            sequence.SpawnNewWave();
         }
+        else
+        {
+            AudioClip clipToPlay = sequence.GetCurrentTrackVariation();
+            musicPlayer.QueueNextSong(clipToPlay, nextAudioLoopTime);
 
-        // Checks how long the Clip will last and updates the Next Start Time with a new value
-        double duration = (double)clipToPlay.samples / clipToPlay.frequency;
-        nextAudioLoopTime = nextAudioLoopTime + duration;
+            if (sequence.CurrentTrackIsRadioWave && !sequence.CurrentTrackRadioWaveHasAlreadyPlayed)
+            {
+                AudioClip radioClip = sequence.GetCurrentRadioClip;
+                if (radioClip != null)
+                {
+                    radioClipPlayer.QueueNextSong(radioClip, nextAudioLoopTime);
+                }
+                else
+                {
+                    Debug.LogError("Radio Wave does not have a radio clip attached");
+                }
+            }
+
+            // Checks how long the Clip will last and updates the Next Start Time with a new value
+            double duration = (double)clipToPlay.samples / clipToPlay.frequency;
+            nextAudioLoopTime = nextAudioLoopTime + duration;
+        }
     }
 
     private double GetClipDuration(AudioClip clip)

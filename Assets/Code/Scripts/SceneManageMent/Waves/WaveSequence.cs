@@ -39,6 +39,11 @@ namespace EditorObject
             get => WaveIsRadioWave(currentWave);
         }
 
+        public bool CurrentWaveIsFinal
+        {
+            get => currentWave == sequence.Count - 1;
+        }
+
         public AudioClip GetCurrentRadioClip
         {
             get
@@ -84,7 +89,6 @@ namespace EditorObject
         public void SpawnNewWave()
         {
             spawner.SpawnWave(sequence[currentWave].TriggerWaveAction());
-            previousWave = currentWave;
         }
 
         /// <summary>
@@ -92,18 +96,21 @@ namespace EditorObject
         /// </summary>
         internal void UpdateCurrentWave()
         {
+            Debug.Log("CURRENT WAVE before update:" + currentWave);
             // Iterate backwards and spawn in the waves for the highest danger level
             if (sequence[currentWave].IsOverThreshold())
             {
                 hasAlreadyPlayedRadioClip = false;
+                previousWave = currentWave;
                 currentWave += 1;
                 int nextWave = currentWave + 1;
-                int nextThreshold = (currentWave == sequence.Count - 1) ? int.MaxValue : sequence[nextWave].DLThreshold;
-                DangerLevel.Instance.SetDlThreshold(sequence[currentWave].DLThreshold, nextThreshold);
+                int nextThreshold = sequence[currentWave].DLThreshold;
+                DangerLevel.Instance.SetDlThreshold(sequence[previousWave].DLThreshold, nextThreshold);
                 //Log the wave + 1 because the index starts at 0, but the tracks start at 1
                 Debug.Log("Current Wave: " + nextWave + "/" + sequence.Count + "\nDanger Level: " + DangerLevel.Instance.GetDangerLevel());
                 Debug.Log("Danger Level Threshold: " + nextThreshold);
             }
+            Debug.Log("CURRENT WAVE after update:" + currentWave);
         }
 
         internal void Init(SquadSpawner squadSpawner)
@@ -132,7 +139,7 @@ namespace EditorObject
             }
         }
 
-        private bool WaveIsRadioWave(int index) 
+        private bool WaveIsRadioWave(int index)
         {
             return sequence[index].GetWaveType() == WaveType.AudioWave;
         }
