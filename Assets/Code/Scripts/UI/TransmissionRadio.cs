@@ -53,13 +53,13 @@ public class TransmissionRadio : MonoBehaviour
         }
 
         // IF the radio UI element is still there when no radio log is playing, disable it and enable to tower icon
-        if (radioFrame.activeSelf && !radioEmitter.isPlaying)
+        if (radioFrame.activeSelf && !radioEmitter.IsPlaying)
         {
             radioFrame.SetActive(false);
             wifiSignal.SetActive(true);
         }
         // IF the radio UI element is not active and the player is in bounds waiting for the next radio log, enable it when the radio starts again
-        else if (!radioFrame.activeSelf && inBounds && radioEmitter.isPlaying)
+        else if (!radioFrame.activeSelf && inBounds && radioEmitter.IsPlaying)
         {
             radioFrame.SetActive(true);
             wifiSignal.SetActive(false);

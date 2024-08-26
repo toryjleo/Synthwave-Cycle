@@ -118,8 +118,8 @@ public class Jukebox : MonoBehaviour, IResettable
 
     private void HandlePlayingEnter()
     {
-        musicPlayer.Pause();
-        radioClipPlayer.Pause();
+        musicPlayer.Play();
+        radioClipPlayer.Play();
 
         double startTime = AudioSettings.dspTime + 0.2;
 
@@ -136,8 +136,8 @@ public class Jukebox : MonoBehaviour, IResettable
 
     private void HandlePlayingExit()
     {
-        musicPlayer.Play();
-        radioClipPlayer.Play();
+        musicPlayer.Pause();
+        radioClipPlayer.Pause();
         nextAudioLoopDifference = nextAudioLoopTime - AudioSettings.dspTime;
 
         canPlay = false;
