@@ -1,10 +1,14 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Handles logic specific to playing the radio noises
+/// requires: AudioSource with a looping white noise track
+/// </summary>
 public class DualRadioEmitter : DualAudioEmitter
 {
-    [SerializeField]
-    private AudioSource noisePlayer;
+
+    [SerializeField] private AudioSource noisePlayer;
 
     // Start is called before the first frame update
     protected override void Start()

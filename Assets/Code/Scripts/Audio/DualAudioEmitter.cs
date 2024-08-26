@@ -12,7 +12,7 @@ public class DualAudioEmitter : MonoBehaviour
 
     #region Audio Toggling
     // An audiosource array with 2 members to switch between with "toggle"
-    public AudioSource[] audioSourceArray;
+    [SerializeField] private AudioSource[] audioSourceArray;
     int toggle;
     #endregion
 
