@@ -4,15 +4,46 @@ using UnityEngine;
 
 public class DualAudioEmitter : MonoBehaviour
 {
-    #region AudioControl
     // An audiosource array with 2 members to switch between with "toggle"
     public AudioSource[] audioSourceArray;
     int toggle;
-    #endregion
+
+    private Coroutine coroutine;
+    private const float fullVolume = .7f;
+
+    protected BoundsChecker boundsChecker;
+    private float timeTillTrackEnds = 0;
+
+    public float TimeTillTrackEnds 
+    {
+        set { timeTillTrackEnds = value; }
+    }
+
+
+    protected virtual void Start()
+    {
+        boundsChecker = FindObjectOfType<BoundsChecker>();
+        if (boundsChecker == null)
+        {
+            Debug.LogWarning("Could not find BoundsChecker");
+        }
+        else
+        {
+            boundsChecker.transmissionBoundsEvent += HandleTransmissionBoundsEvent;
+        }
+    }
+
+    protected virtual void Update() 
+    {
+        timeTillTrackEnds -= Time.deltaTime;
+
+        Debug.Log("Time till this track ends: " + timeTillTrackEnds);
+    }
 
     public void Init()
     {
         toggle = 0;
+        StopCoroutineSetFullVolume();
     }
 
     /// <summary>
@@ -35,6 +66,7 @@ public class DualAudioEmitter : MonoBehaviour
             audioSourceArray[i].Stop();
             audioSourceArray[i].clip = null;
         }
+        StopCoroutineSetFullVolume();
 
         toggle = 0;
     }
@@ -53,5 +85,56 @@ public class DualAudioEmitter : MonoBehaviour
     {
         audioSourceArray[1 - toggle].mute = enabled;
         audioSourceArray[toggle].mute = enabled;
+    }
+
+    private void DimForTime(double timeLength)
+    {
+        StopCoroutineSetFullVolume();
+        if (timeLength > 0) 
+        {
+            coroutine = StartCoroutine(DimForTimeCoroutine(timeLength));
+        }
+    }
+
+    private void SetVolume(float volume) 
+    {
+        audioSourceArray[toggle].volume = volume;
+        audioSourceArray[1 - toggle].volume = volume;
+    }
+
+    private IEnumerator DimForTimeCoroutine(double timeLength) 
+    {
+        float percentageOfFull = .1f;
+        float dimVolume = fullVolume * percentageOfFull;
+
+        SetVolume(dimVolume);
+
+        yield return new WaitForSeconds((float)(timeLength));
+
+        SetVolume(fullVolume);
+        coroutine = null;
+    }
+
+    private void StopCoroutineSetFullVolume() 
+    {
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+           
+        }
+        SetVolume(fullVolume);
+    }
+
+    protected virtual void HandleTransmissionBoundsEvent(bool isWithinBounds) 
+    {
+        if (!isWithinBounds)
+        {
+            StopCoroutineSetFullVolume();
+        }
+        else 
+        {
+            DimForTime(timeTillTrackEnds);
+        }
     }
 }
