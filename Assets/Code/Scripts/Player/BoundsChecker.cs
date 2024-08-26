@@ -164,7 +164,18 @@ public class BoundsChecker : MonoBehaviour, IResettable
 
     public float TransmissionClarity
     {
-        get => transmissionArea.TransmissionClarity(transform.position);
+        get 
+        {
+            if (transmissionArea == null)
+            {
+                Debug.LogError("Trying to get transmission clarity when there is no TransmissionArea found");
+                return -1;
+            }
+            else 
+            {
+                return transmissionArea.TransmissionClarity(transform.position);
+            }
+        } 
     }
 
     /// <summary>
@@ -195,7 +206,7 @@ public class BoundsChecker : MonoBehaviour, IResettable
     /// Notifies the listeners that a timer event has triggered.
     /// Timer events trigger when the player goes out of bounds or enters the bounds again.
     /// </summary>
-    public NotifyTimerStateChange NotifyTimerEvent
+    public NotifyTimerStateChange OnTimerStateChanged
     {
         get
         {
@@ -232,9 +243,11 @@ public class BoundsChecker : MonoBehaviour, IResettable
         {
             UpdateTimer(Time.deltaTime);
 
-            CheckIfInsideBounds();
+            CheckIfCrossedBounds();
         }
     }
+
+    #region Transmission Area
 
     /// <summary>
     /// Finds transmission area in scene and returns true if it is found.
@@ -246,14 +259,19 @@ public class BoundsChecker : MonoBehaviour, IResettable
         return transmissionArea != null;
     }
 
-    private void CheckIfInsideBounds() 
+    /// <summary>
+    /// Checks if the player crossed the TransmissionArea bounds this frame
+    /// </summary>
+    private void CheckIfCrossedBounds() 
     {
-        if(wasLastWithinBounds != PlayerIsInsideTransmissionArea) 
+        if (wasLastWithinBounds != PlayerIsInsideTransmissionArea) 
         {
             wasLastWithinBounds = PlayerIsInsideTransmissionArea;
             onCrossedTransmissionBounds?.Invoke(PlayerIsInsideTransmissionArea);
         }
     }
+
+    #endregion
 
     #region Timer
 
