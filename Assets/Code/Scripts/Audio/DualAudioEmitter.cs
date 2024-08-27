@@ -34,7 +34,7 @@ public class DualAudioEmitter : MonoBehaviour
         }
         else
         {
-            boundsChecker.transmissionBoundsEvent += HandleTransmissionBoundsEvent;
+            boundsChecker.onCrossedTransmissionBounds += HandleTransmissionBoundsEvent;
         }
     }
 

@@ -55,7 +55,7 @@ public class GameplayUI : MonoBehaviour
       }
       else
       {
-        boundsChecker.NotifyTimerEvent += UpdateTimer;
+        boundsChecker.OnTimerStateChanged += UpdateTimer;
       }
     }
 

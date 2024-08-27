@@ -26,7 +26,7 @@ public class TransmissionRadio : MonoBehaviour
         }
         else
         {
-            boundsChecker.transmissionBoundsEvent += HandleTransmissionBoundsEvent;
+            boundsChecker.onCrossedTransmissionBounds += HandleTransmissionBoundsEvent;
         }
 
         if (!levelManager)
