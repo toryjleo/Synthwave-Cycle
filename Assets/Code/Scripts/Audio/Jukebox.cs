@@ -57,6 +57,10 @@ public class Jukebox : MonoBehaviour, IResettable
 
     }
 
+    /// <summary>
+    /// Calls Init on a DualAudioEmitter with error checking
+    /// </summary>
+    /// <param name="emitter">Emitter to initialize</param>
     private void InitializeDualAudioEmitter(DualAudioEmitter emitter)
     {
         if (emitter == null)
@@ -116,6 +120,9 @@ public class Jukebox : MonoBehaviour, IResettable
         nextAudioLoopDifference = 0;
     }
 
+    /// <summary>
+    /// Handles logic for entering the playing state
+    /// </summary>
     private void HandlePlayingEnter()
     {
         musicPlayer.Play();
@@ -134,6 +141,9 @@ public class Jukebox : MonoBehaviour, IResettable
         canPlay = true;
     }
 
+    /// <summary>
+    /// Handles logic for exiting the playing state
+    /// </summary>
     private void HandlePlayingExit()
     {
         musicPlayer.Pause();
