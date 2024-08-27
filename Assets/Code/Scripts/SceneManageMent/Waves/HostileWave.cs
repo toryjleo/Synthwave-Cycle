@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Waves;
 
+/// <summary>
+/// A wave type derived from the base Wave class and includes a list of enemies, a music track,
+/// and a wave action to spawn the enemies in their locations
+/// </summary>
 [CreateAssetMenu(menuName = "Wave/Hostile Wave", fileName = "New Hostile Wave")]
 public class HostileWave : Wave
 {

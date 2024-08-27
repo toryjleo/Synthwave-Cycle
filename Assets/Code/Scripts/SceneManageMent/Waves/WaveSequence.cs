@@ -17,13 +17,10 @@ namespace EditorObject
     {
         private int previousWave = -1;
         private int currentWave = 0;
-        [SerializeField]
-        public List<Wave> sequence;
+        [SerializeField] public List<Wave> sequence;
         internal SquadSpawner spawner;
-        [SerializeField]
-        public string songName;
-        [SerializeField]
-        private Sprite radioFace;
+        [SerializeField] public string songName;
+        [SerializeField] private Sprite radioFace;
 
         public Sprite RadioFace { get => radioFace; }
 
@@ -64,9 +61,6 @@ namespace EditorObject
 
         public AudioClip GetCurrentTrackVariation()
         {
-
-            UpdateCurrentWave();
-
             if (sequence[currentWave].GetWaveType() != WaveType.AudioWave)
             {
                 Debug.Log("No radio clip on wave " + currentWave);
@@ -84,7 +78,8 @@ namespace EditorObject
         }
 
         /// <summary>
-        /// Updates the wave and spawns in wave according to danger level
+        /// Updates the wave and spawns in wave according to danger level,
+        /// Used to spawn in the next sequential wave
         /// </summary>
         public void SpawnNewWave()
         {
