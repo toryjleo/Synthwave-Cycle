@@ -9,6 +9,8 @@ namespace RadioState
         ToggleRadio,
         InBounds,
         OutOfBounds,
+        RadioIsPlaying,
+        RadioIsNotPlaying,
     }
 
     
@@ -58,7 +60,6 @@ namespace RadioState
 
     public class RadioOn : State
     {
-        // TODO: get boundschecker to listen to this state's notifyListenersEnter. When that triggers, call boundschecker's event
         public override string Name { get => "RadioOn"; }
 
         public override State HandleTrigger(RadioStateController stateController, StateTrigger trigger)
@@ -94,6 +95,12 @@ namespace RadioState
                 case StateTrigger.OutOfBounds:
                     Exit();
                     return stateController.outOfBounds;
+                case StateTrigger.RadioIsPlaying:
+                    Exit();
+                    return stateController.radioPlaying;
+                case StateTrigger.RadioIsNotPlaying:
+                    Exit();
+                    return stateController.radioNotPlaying;
                 default:
                     return null;
             }
@@ -119,6 +126,51 @@ namespace RadioState
                     return null;
             }
         }
+    }
 
+    public class RadioPlaying : State
+    {
+        public override string Name { get => "RadioPlaying"; }
+
+        public override State HandleTrigger(RadioStateController stateController, StateTrigger trigger)
+        {
+            switch (trigger)
+            {
+                case StateTrigger.ToggleRadio:
+                    Exit();
+                    return stateController.radioOff;
+                case StateTrigger.OutOfBounds:
+                    Exit();
+                    return stateController.outOfBounds;
+                case StateTrigger.RadioIsNotPlaying:
+                    Exit();
+                    return stateController.radioNotPlaying;
+                default:
+                    return null;
+            }
+        }
+    }
+
+    public class RadioNotPlaying : State
+    {
+        public override string Name { get => "RadioNotPlaying"; }
+
+        public override State HandleTrigger(RadioStateController stateController, StateTrigger trigger)
+        {
+            switch (trigger)
+            {
+                case StateTrigger.ToggleRadio:
+                    Exit();
+                    return stateController.radioOff;
+                case StateTrigger.OutOfBounds:
+                    Exit();
+                    return stateController.outOfBounds;
+                case StateTrigger.RadioIsPlaying:
+                    Exit();
+                    return stateController.radioPlaying;
+                default:
+                    return null;
+            }
+        }
     }
 }

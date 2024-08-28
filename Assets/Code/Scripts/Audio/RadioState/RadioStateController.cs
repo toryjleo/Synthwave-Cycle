@@ -19,6 +19,8 @@ public class RadioStateController : MonoBehaviour
     public RadioState.RadioOn radioOn;
     public RadioState.InBounds inBounds;
     public RadioState.OutOfBounds outOfBounds;
+    public RadioState.RadioPlaying radioPlaying;
+    public RadioState.RadioNotPlaying radioNotPlaying;
 
     private static bool initialEnter = false;
 
@@ -48,6 +50,8 @@ public class RadioStateController : MonoBehaviour
         radioOn = new RadioOn();
         inBounds = new InBounds();
         outOfBounds = new OutOfBounds();
+        radioPlaying = new RadioPlaying();
+        radioNotPlaying = new RadioNotPlaying();
 
         state = radioOff;
         initialEnter = false;
@@ -70,8 +74,8 @@ public class RadioStateController : MonoBehaviour
         jukebox = GetComponent<Jukebox>();
         if (jukebox != null) 
         {
-
-            // TODO: Set up triggers this class listens to
+            inBounds.notifyListenersEnter += jukebox.HandleInBoundsEnter;
+            jukebox.onRadioStatusUpdate += HandleRadioStatusUpdate;
         }
         else 
         {
@@ -118,6 +122,17 @@ public class RadioStateController : MonoBehaviour
         {
             HandleTrigger(RadioState.StateTrigger.OutOfBounds);
         }
+    }
 
+    private void HandleRadioStatusUpdate(bool radioIsPlaying) 
+    {
+        if (radioIsPlaying) 
+        {
+            HandleTrigger(RadioState.StateTrigger.RadioIsPlaying);
+        }
+        else 
+        {
+            HandleTrigger(RadioState.StateTrigger.RadioIsNotPlaying);
+        }
     }
 }
