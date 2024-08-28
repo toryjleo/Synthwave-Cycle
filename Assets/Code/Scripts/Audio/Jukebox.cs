@@ -74,7 +74,8 @@ public class Jukebox : MonoBehaviour, IResettable
     }
 
     /// <summary>
-    /// Adds the next song to play to the queue of audiosources
+    /// Adds the next song to play to the queue of audiosources, updates the current wave
+    /// which checks to see if wave is progressing
     /// </summary>
     private void QueueNextSong()
     {
@@ -84,6 +85,10 @@ public class Jukebox : MonoBehaviour, IResettable
         }
         else
         {
+            //Check for next wave or same wave again
+            sequence.UpdateCurrentWave();
+
+            //Get music track for the wave
             AudioClip clipToPlay = sequence.GetCurrentTrackVariation();
             musicPlayer.QueueNextSong(clipToPlay, nextAudioLoopTime);
 

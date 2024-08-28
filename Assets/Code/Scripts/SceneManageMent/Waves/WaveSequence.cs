@@ -17,13 +17,11 @@ namespace EditorObject
     {
         private int previousWave = -1;
         private int currentWave = 0;
-        [SerializeField]
-        public List<Wave> sequence;
+        [SerializeField] public List<Wave> sequence;
         internal SquadSpawner spawner;
-        [SerializeField]
-        public string songName;
-        [SerializeField]
-        private Sprite radioFace;
+        [SerializeField] public string songName;
+        [SerializeField] private Sprite radioFace;
+        [SerializeField] private bool debugWaveInfo = false;
 
         public Sprite RadioFace { get => radioFace; }
 
@@ -64,9 +62,6 @@ namespace EditorObject
 
         public AudioClip GetCurrentTrackVariation()
         {
-
-            UpdateCurrentWave();
-
             if (sequence[currentWave].GetWaveType() != WaveType.AudioWave)
             {
                 Debug.Log("No radio clip on wave " + currentWave);
@@ -84,7 +79,8 @@ namespace EditorObject
         }
 
         /// <summary>
-        /// Updates the wave and spawns in wave according to danger level
+        /// Updates the wave and spawns in wave according to danger level,
+        /// Used to spawn in the next sequential wave
         /// </summary>
         public void SpawnNewWave()
         {
@@ -96,7 +92,7 @@ namespace EditorObject
         /// </summary>
         internal void UpdateCurrentWave()
         {
-            Debug.Log("CURRENT WAVE before update:" + currentWave);
+            if (debugWaveInfo) Debug.Log("CURRENT WAVE before update:" + currentWave);
             // Iterate backwards and spawn in the waves for the highest danger level
             if (sequence[currentWave].IsOverThreshold())
             {
@@ -110,7 +106,7 @@ namespace EditorObject
                 Debug.Log("Current Wave: " + nextWave + "/" + sequence.Count + "\nDanger Level: " + DangerLevel.Instance.GetDangerLevel());
                 Debug.Log("Danger Level Threshold: " + nextThreshold);
             }
-            Debug.Log("CURRENT WAVE after update:" + currentWave);
+            if (debugWaveInfo) Debug.Log("CURRENT WAVE after update:" + currentWave);
         }
 
         internal void Init(SquadSpawner squadSpawner)
