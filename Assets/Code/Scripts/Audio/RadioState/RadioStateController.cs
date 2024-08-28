@@ -4,6 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
+/// <summary>
+/// A class to manage and track radio state and notifies front end
+/// Requires:
+/// - BoundsChecker
+/// - Jukebox
+/// </summary>
 public class RadioStateController : MonoBehaviour
 {
     #region Outside References
@@ -11,16 +17,16 @@ public class RadioStateController : MonoBehaviour
     private Jukebox jukebox;
     #endregion
 
-
-
     private static RadioState.State state;
 
+    #region Managed States
     public RadioState.RadioOff radioOff;
     public RadioState.RadioOn radioOn;
     public RadioState.InBounds inBounds;
     public RadioState.OutOfBounds outOfBounds;
     public RadioState.RadioPlaying radioPlaying;
     public RadioState.RadioNotPlaying radioNotPlaying;
+    #endregion
 
     private static bool initialEnter = false;
 
@@ -45,7 +51,6 @@ public class RadioStateController : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        // TODO: Initialize all state classes
         radioOff = new RadioOff();
         radioOn = new RadioOn();
         inBounds = new InBounds();
@@ -63,6 +68,7 @@ public class RadioStateController : MonoBehaviour
         boundsChecker = FindObjectOfType<BoundsChecker>();
         if (boundsChecker != null) 
         {
+            // TODO: remove cyclical event triggers
             radioOn.notifyListenersEnter += boundsChecker.HandleRadioOnEvent;
             boundsChecker.onCrossedTransmissionBounds += HandleBoundsCrossedEvent;
         }
@@ -74,6 +80,7 @@ public class RadioStateController : MonoBehaviour
         jukebox = GetComponent<Jukebox>();
         if (jukebox != null) 
         {
+            // TODO: remove cyclical event triggers
             inBounds.notifyListenersEnter += jukebox.HandleInBoundsEnter;
             jukebox.onRadioStatusUpdate += HandleRadioStatusUpdate;
         }
@@ -99,14 +106,15 @@ public class RadioStateController : MonoBehaviour
     }
     #endregion
 
-
+    /// <summary>
+    /// Passes triggers to states to trigger state transisions
+    /// </summary>
+    /// <param name="trigger">Trigger for current state to handle</param>
     public void HandleTrigger(RadioState.StateTrigger trigger)
     {
-        //Debug.Log("Received Trigger: " + trigger);
         State newState = state.HandleTrigger(this, trigger);
         if (newState != null)
         {
-            //Debug.Log("Entering State: " + newState);
             state = newState;
             newState.Enter();
         }
@@ -114,6 +122,7 @@ public class RadioStateController : MonoBehaviour
 
     private void HandleBoundsCrossedEvent(bool isWithinBounds)
     {
+        // TODO: remove cyclical event triggers
         if (isWithinBounds) 
         {
             HandleTrigger(RadioState.StateTrigger.InBounds);
@@ -126,6 +135,7 @@ public class RadioStateController : MonoBehaviour
 
     private void HandleRadioStatusUpdate(bool radioIsPlaying) 
     {
+        // TODO: remove cyclical event triggers
         if (radioIsPlaying) 
         {
             HandleTrigger(RadioState.StateTrigger.RadioIsPlaying);
