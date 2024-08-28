@@ -46,10 +46,7 @@ public class DualAudioEmitter : MonoBehaviour
         {
             Debug.LogWarning("Could not find BoundsChecker");
         }
-        // else
-        // {
-        //     boundsChecker.onCrossedTransmissionBounds += HandleTransmissionBoundsEvent;
-        // }
+
         radioStateController = FindObjectOfType<RadioStateController>();
         if (radioStateController == null)
         {
