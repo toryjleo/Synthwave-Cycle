@@ -24,7 +24,6 @@ public class DualRadioEmitter : DualAudioEmitter
         {
             noisePlayer.mute = true;
         }
-
     }
 
     // Update is called once per frame
@@ -38,5 +37,15 @@ public class DualRadioEmitter : DualAudioEmitter
     {
         base.Mute(enabled);
         noisePlayer.mute = enabled;
+    }
+
+    protected override void HandleRadioPlaying()
+    {
+        Mute(false);
+    }
+
+    protected override void HandleRadioNotPlaying()
+    {
+        Mute(true);
     }
 }

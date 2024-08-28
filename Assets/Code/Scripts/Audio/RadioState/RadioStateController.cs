@@ -40,7 +40,7 @@ public class RadioStateController : MonoBehaviour
         get => state != null;
     }
 
-    public bool IsInBounds 
+    public bool IsInBounds
     {
         get => boundsChecker.IsInBounds;
     }
@@ -66,27 +66,32 @@ public class RadioStateController : MonoBehaviour
     private void Start()
     {
         boundsChecker = FindObjectOfType<BoundsChecker>();
-        if (boundsChecker != null) 
+        if (boundsChecker != null)
         {
             // TODO: remove cyclical event triggers
             radioOn.notifyListenersEnter += boundsChecker.HandleRadioOnEvent;
             boundsChecker.onCrossedTransmissionBounds += HandleBoundsCrossedEvent;
         }
-        else 
+        else
         {
             Debug.LogWarning("RadioStateController needs a BoundsChecker in the scene but none was found");
         }
 
         jukebox = GetComponent<Jukebox>();
-        if (jukebox != null) 
+        if (jukebox != null)
         {
             // TODO: remove cyclical event triggers
             inBounds.notifyListenersEnter += jukebox.HandleInBoundsEnter;
             jukebox.onRadioStatusUpdate += HandleRadioStatusUpdate;
         }
-        else 
+        else
         {
             Debug.LogWarning("Expected to be attached to object of type Jukebox but no Jukebox component was found");
+        }
+
+        if (GameStateController.StateExists)
+        {
+            GameStateController.playerDead.notifyListenersEnter += HandleDeath;
         }
     }
 
@@ -124,25 +129,34 @@ public class RadioStateController : MonoBehaviour
     {
         // TODO: remove cyclical event triggers
         if (isWithinBounds) 
+
         {
             HandleTrigger(RadioState.StateTrigger.InBounds);
         }
-        else 
+        else
         {
             HandleTrigger(RadioState.StateTrigger.OutOfBounds);
         }
     }
 
-    private void HandleRadioStatusUpdate(bool radioIsPlaying) 
+    private void HandleRadioStatusUpdate(bool radioIsPlaying)
     {
         // TODO: remove cyclical event triggers
         if (radioIsPlaying) 
         {
             HandleTrigger(RadioState.StateTrigger.RadioIsPlaying);
         }
-        else 
+        else
         {
             HandleTrigger(RadioState.StateTrigger.RadioIsNotPlaying);
+        }
+    }
+
+    private void HandleDeath()
+    {
+        if (state != radioOff)
+        {
+            HandleTrigger(RadioState.StateTrigger.ToggleRadio);
         }
     }
 }
