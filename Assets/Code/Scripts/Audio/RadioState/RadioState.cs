@@ -7,6 +7,8 @@ namespace RadioState
     public enum StateTrigger
     {
         ToggleRadio,
+        InBounds,
+        OutOfBounds,
     }
 
     
@@ -19,12 +21,12 @@ namespace RadioState
 
         public abstract State HandleTrigger(RadioStateController stateController, StateTrigger trigger);
 
-        public void PrintStateEnter() 
+        public void PrintStateEnter()
         {
             Debug.Log("RadioState >  " + Name);
         }
 
-        public void Enter()
+        public virtual void Enter()
         {
             PrintStateEnter();
             notifyListenersEnter?.Invoke();
@@ -43,33 +45,80 @@ namespace RadioState
 
         public override State HandleTrigger(RadioStateController stateController, StateTrigger trigger)
         {
-            if (trigger == StateTrigger.ToggleRadio)
+            switch (trigger) 
             {
-                Exit();
-                return stateController.radioOn;
-            }
-            else 
-            {
-                return null;
+                case StateTrigger.ToggleRadio:
+                    Exit();
+                    return stateController.radioOn;
+                default:
+                    return null;
             }
         }
     }
 
     public class RadioOn : State
     {
+        // TODO: get boundschecker to listen to this state's notifyListenersEnter. When that triggers, call boundschecker's event
         public override string Name { get => "RadioOn"; }
 
         public override State HandleTrigger(RadioStateController stateController, StateTrigger trigger)
         {
-            if (trigger == StateTrigger.ToggleRadio)
+            switch (trigger)
             {
-                Exit();
-                return stateController.radioOff;
-            }
-            else 
-            {
-                return null;
+                case StateTrigger.ToggleRadio:
+                    Exit();
+                    return stateController.radioOff;
+                case StateTrigger.OutOfBounds:
+                    Exit();
+                    return stateController.outOfBounds;
+                case StateTrigger.InBounds:
+                    Exit();
+                    return stateController.inBounds;
+                default:
+                    return null;
             }
         }
+    }
+
+    public class InBounds : State 
+    {
+        public override string Name { get => "InBounds"; }
+
+        public override State HandleTrigger(RadioStateController stateController, StateTrigger trigger)
+        {
+            switch (trigger)
+            {
+                case StateTrigger.ToggleRadio:
+                    Exit();
+                    return stateController.radioOff;
+                case StateTrigger.OutOfBounds:
+                    Exit();
+                    return stateController.outOfBounds;
+                default:
+                    return null;
+            }
+        }
+
+    }
+
+    public class OutOfBounds : State
+    {
+        public override string Name { get => "OutOfBounds"; }
+
+        public override State HandleTrigger(RadioStateController stateController, StateTrigger trigger)
+        {
+            switch (trigger)
+            {
+                case StateTrigger.ToggleRadio:
+                    Exit();
+                    return stateController.radioOff;
+                case StateTrigger.InBounds:
+                    Exit();
+                    return stateController.inBounds;
+                default:
+                    return null;
+            }
+        }
+
     }
 }

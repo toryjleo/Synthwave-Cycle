@@ -6,10 +6,19 @@ using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class RadioStateController : MonoBehaviour
 {
+    #region Outside References
+    private BoundsChecker boundsChecker;
+    private Jukebox jukebox;
+    #endregion
+
+
+
     private static RadioState.State state;
 
     public RadioState.RadioOff radioOff;
     public RadioState.RadioOn radioOn;
+    public RadioState.InBounds inBounds;
+    public RadioState.OutOfBounds outOfBounds;
 
     private static bool initialEnter = false;
 
@@ -23,6 +32,11 @@ public class RadioStateController : MonoBehaviour
         get => state != null;
     }
 
+    public bool IsInBounds 
+    {
+        get => boundsChecker.IsInBounds;
+    }
+
     #region MonoBehavior
     /// <summary>
     /// Object referencing a gamestate should hook up events in OnEnable()
@@ -32,6 +46,8 @@ public class RadioStateController : MonoBehaviour
         // TODO: Initialize all state classes
         radioOff = new RadioOff();
         radioOn = new RadioOn();
+        inBounds = new InBounds();
+        outOfBounds = new OutOfBounds();
 
         state = radioOff;
         initialEnter = false;
@@ -40,18 +56,18 @@ public class RadioStateController : MonoBehaviour
 
     private void Start()
     {
-        BoundsChecker boundsChecker = FindObjectOfType<BoundsChecker>();
+        boundsChecker = FindObjectOfType<BoundsChecker>();
         if (boundsChecker != null) 
         {
-
-            // TODO: Set up triggers this class listens to
+            radioOn.notifyListenersEnter += boundsChecker.HandleRadioOnEvent;
+            boundsChecker.onCrossedTransmissionBounds += HandleBoundsCrossedEvent;
         }
         else 
         {
             Debug.LogWarning("RadioStateController needs a BoundsChecker in the scene but none was found");
         }
 
-        Jukebox jukebox = GetComponent<Jukebox>();
+        jukebox = GetComponent<Jukebox>();
         if (jukebox != null) 
         {
 
@@ -90,5 +106,18 @@ public class RadioStateController : MonoBehaviour
             state = newState;
             newState.Enter();
         }
+    }
+
+    private void HandleBoundsCrossedEvent(bool isWithinBounds)
+    {
+        if (isWithinBounds) 
+        {
+            HandleTrigger(RadioState.StateTrigger.InBounds);
+        }
+        else 
+        {
+            HandleTrigger(RadioState.StateTrigger.OutOfBounds);
+        }
+
     }
 }

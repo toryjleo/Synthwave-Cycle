@@ -178,6 +178,11 @@ public class BoundsChecker : MonoBehaviour, IResettable
         } 
     }
 
+    public bool IsInBounds 
+    {
+        get { return wasLastWithinBounds;  }
+    }
+
     /// <summary>
     /// Returns how much time is left on the timer
     /// </summary>
@@ -269,6 +274,12 @@ public class BoundsChecker : MonoBehaviour, IResettable
             wasLastWithinBounds = PlayerIsInsideTransmissionArea;
             onCrossedTransmissionBounds?.Invoke(PlayerIsInsideTransmissionArea);
         }
+    }
+
+
+    public void HandleRadioOnEvent() 
+    {
+        onCrossedTransmissionBounds?.Invoke(wasLastWithinBounds);
     }
 
     #endregion

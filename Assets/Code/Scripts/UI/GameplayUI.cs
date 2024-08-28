@@ -62,10 +62,10 @@ public class GameplayUI : MonoBehaviour
 
         timerText.text = boundsChecker.TimeLeft.ToString("0.00");
 
-        if (Input.GetKeyDown(KeyCode.Delete))
+        /*if (Input.GetKeyDown(KeyCode.Delete))
         {
             transmissionRadio.Toggle();
-        }
+        }*/
     }
 
     /// <summary>
