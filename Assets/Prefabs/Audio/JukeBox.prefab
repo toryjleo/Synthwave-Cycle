@@ -137,6 +137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3820667865579537721}
   - component: {fileID: 3820667865579537718}
+  - component: {fileID: 1012551051907685720}
   m_Layer: 0
   m_Name: JukeBox
   m_TagString: Untagged
@@ -174,6 +175,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicPlayer: {fileID: 7444087139702112361}
   radioClipPlayer: {fileID: 2872322943645383248}
+--- !u!114 &1012551051907685720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3820667865579537716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05558536260813748ab3264b30f328ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5313992428092038053
 PrefabInstance:
   m_ObjectHideFlags: 0
