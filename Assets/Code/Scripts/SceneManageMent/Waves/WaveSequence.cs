@@ -21,6 +21,7 @@ namespace EditorObject
         internal SquadSpawner spawner;
         [SerializeField] public string songName;
         [SerializeField] private Sprite radioFace;
+        [SerializeField] private bool debugWaveInfo = false;
 
         public Sprite RadioFace { get => radioFace; }
 
@@ -91,7 +92,7 @@ namespace EditorObject
         /// </summary>
         internal void UpdateCurrentWave()
         {
-            Debug.Log("CURRENT WAVE before update:" + currentWave);
+            if (debugWaveInfo) Debug.Log("CURRENT WAVE before update:" + currentWave);
             // Iterate backwards and spawn in the waves for the highest danger level
             if (sequence[currentWave].IsOverThreshold())
             {
@@ -105,7 +106,7 @@ namespace EditorObject
                 Debug.Log("Current Wave: " + nextWave + "/" + sequence.Count + "\nDanger Level: " + DangerLevel.Instance.GetDangerLevel());
                 Debug.Log("Danger Level Threshold: " + nextThreshold);
             }
-            Debug.Log("CURRENT WAVE after update:" + currentWave);
+            if (debugWaveInfo) Debug.Log("CURRENT WAVE after update:" + currentWave);
         }
 
         internal void Init(SquadSpawner squadSpawner)
