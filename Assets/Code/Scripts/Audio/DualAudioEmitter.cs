@@ -23,6 +23,7 @@ public class DualAudioEmitter : MonoBehaviour
 
 
     protected BoundsChecker boundsChecker;
+    protected RadioStateController radioStateController;
     private float timeTillTrackEnds = 0;
 
     #endregion
@@ -45,9 +46,18 @@ public class DualAudioEmitter : MonoBehaviour
         {
             Debug.LogWarning("Could not find BoundsChecker");
         }
+
+        radioStateController = FindObjectOfType<RadioStateController>();
+        if (radioStateController == null)
+        {
+            Debug.LogWarning("Could not find RadioStateController");
+        }
         else
         {
-            boundsChecker.onCrossedTransmissionBounds += HandleTransmissionBoundsEvent;
+            radioStateController.radioPlaying.notifyListenersEnter += HandleRadioPlaying;
+            radioStateController.radioNotPlaying.notifyListenersEnter += HandleRadioNotPlaying;
+            radioStateController.outOfBounds.notifyListenersEnter += HandleRadioNotPlaying;
+            radioStateController.radioOff.notifyListenersEnter += HandleRadioNotPlaying;
         }
     }
 
@@ -175,18 +185,16 @@ public class DualAudioEmitter : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles volume dimming when going in and out of the TransmissionArea
+    /// Handles volume dimming when going in and out of the TransmissionArea (determined
+    /// by the Radio State Controller)
     /// </summary>
-    /// <param name="isWithinBounds">True if inside of bounds</param>
-    protected virtual void HandleTransmissionBoundsEvent(bool isWithinBounds)
+    protected virtual void HandleRadioPlaying()
     {
-        if (!isWithinBounds)
-        {
-            StopCoroutineSetFullVolume();
-        }
-        else
-        {
-            DimForTime(timeTillTrackEnds);
-        }
+        DimForTime(timeTillTrackEnds);
+    }
+
+    protected virtual void HandleRadioNotPlaying()
+    {
+        StopCoroutineSetFullVolume();
     }
 }

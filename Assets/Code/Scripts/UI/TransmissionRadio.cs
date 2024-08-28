@@ -7,13 +7,11 @@ public class TransmissionRadio : MonoBehaviour
 {
     private BoundsChecker boundsChecker;
     private LevelManager levelManager;
-    private bool inBounds;
+    private RadioStateController radioStateController;
 
     [SerializeField] private GameObject radioFrame;
     [SerializeField] private Image radioFace;
     [SerializeField] private GameObject wifiSignal;
-    [SerializeField] private DualRadioEmitter radioEmitter;
-
 
     // Start is called before the first frame update
     void Start()
@@ -24,9 +22,17 @@ public class TransmissionRadio : MonoBehaviour
         {
             Debug.LogWarning("TransmissionRadio does not have reference to a BoundsChecker in scene");
         }
+        radioStateController = FindObjectOfType<RadioStateController>();
+        if (radioStateController == null)
+        {
+            Debug.LogWarning("TransmissionRadio does not have reference to a RadioStateController in scene");
+        }
         else
         {
-            boundsChecker.onCrossedTransmissionBounds += HandleTransmissionBoundsEvent;
+            radioStateController.outOfBounds.notifyListenersEnter += HandleRadioIsNotPlaying;
+            radioStateController.radioPlaying.notifyListenersEnter += HandleRadioIsPlaying;
+            radioStateController.radioNotPlaying.notifyListenersEnter += HandleRadioIsNotPlaying;
+            radioStateController.radioOff.notifyListenersEnter += HandleRadioOff;
         }
 
         if (!levelManager)
@@ -41,8 +47,6 @@ public class TransmissionRadio : MonoBehaviour
         {
             radioFace.sprite = levelManager.RadioFace;
         }
-        // Disable radio at start
-        gameObject.SetActive(false);
     }
 
     private void Update()
@@ -51,46 +55,29 @@ public class TransmissionRadio : MonoBehaviour
         {
             radioFace.color = new Color(1, boundsChecker.TransmissionClarity, boundsChecker.TransmissionClarity, 1);
         }
-
-        // IF the radio UI element is still there when no radio log is playing, disable it and enable to tower icon
-        if (radioFrame.activeSelf && !radioEmitter.IsPlaying)
-        {
-            radioFrame.SetActive(false);
-            wifiSignal.SetActive(true);
-        }
-        // IF the radio UI element is not active and the player is in bounds waiting for the next radio log, enable it when the radio starts again
-        else if (!radioFrame.activeSelf && inBounds && radioEmitter.IsPlaying)
-        {
-            radioFrame.SetActive(true);
-            wifiSignal.SetActive(false);
-        }
     }
 
-    private void HandleTransmissionBoundsEvent(bool isWithinBounds)
+    private void HandleRadioIsPlaying()
     {
-        inBounds = isWithinBounds;
-        wifiSignal.SetActive(!isWithinBounds);
-        radioFrame.SetActive(isWithinBounds);
-        ToggleRadioEmitter();
+        wifiSignal.gameObject.SetActive(false);
+        radioFrame.gameObject.SetActive(true);
+    }
+
+    private void HandleRadioIsNotPlaying()
+    {
+        wifiSignal.gameObject.SetActive(true);
+        radioFrame.gameObject.SetActive(false);
+    }
+
+    private void HandleRadioOff()
+    {
+        wifiSignal.gameObject.SetActive(false);
+        radioFrame.gameObject.SetActive(false);
     }
 
     public void Toggle()
     {
-        ToggleRadioEmitter();
+        // ToggleRadioEmitter();
         gameObject.SetActive(!gameObject.activeSelf);
-    }
-
-    public void ToggleRadioEmitter()
-    {
-        bool isActive = gameObject.activeSelf;
-
-        if (inBounds)
-        {
-            radioEmitter.Mute(!isActive);
-        }
-        else
-        {
-            radioEmitter.Mute(true);
-        }
     }
 }
