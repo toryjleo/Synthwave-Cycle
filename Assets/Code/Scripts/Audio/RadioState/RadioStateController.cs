@@ -68,7 +68,6 @@ public class RadioStateController : MonoBehaviour
         boundsChecker = FindObjectOfType<BoundsChecker>();
         if (boundsChecker != null)
         {
-            // TODO: remove cyclical event triggers
             radioOn.notifyListenersEnter += boundsChecker.HandleRadioOnEvent;
             boundsChecker.onCrossedTransmissionBounds += HandleBoundsCrossedEvent;
         }
@@ -80,7 +79,6 @@ public class RadioStateController : MonoBehaviour
         jukebox = GetComponent<Jukebox>();
         if (jukebox != null)
         {
-            // TODO: remove cyclical event triggers
             inBounds.notifyListenersEnter += jukebox.HandleInBoundsEnter;
             jukebox.onRadioStatusUpdate += HandleRadioStatusUpdate;
         }
@@ -127,7 +125,6 @@ public class RadioStateController : MonoBehaviour
 
     private void HandleBoundsCrossedEvent(bool isWithinBounds)
     {
-        // TODO: remove cyclical event triggers
         if (isWithinBounds) 
 
         {
@@ -141,7 +138,6 @@ public class RadioStateController : MonoBehaviour
 
     private void HandleRadioStatusUpdate(bool radioIsPlaying)
     {
-        // TODO: remove cyclical event triggers
         if (radioIsPlaying) 
         {
             HandleTrigger(RadioState.StateTrigger.RadioIsPlaying);
