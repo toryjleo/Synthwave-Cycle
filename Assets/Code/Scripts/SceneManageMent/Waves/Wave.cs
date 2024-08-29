@@ -6,6 +6,12 @@ using UnityEngine.SceneManagement;
 
 namespace Waves
 {
+    /// <summary>
+    /// WaveType is an enum of type HostileWave, LevelComplete, or AudioWave.
+    /// HostileWave spawns enemies and plays music,
+    /// LevelComplete indicates the wave action to trigger game end,
+    /// AudioWave spawns enemies, plays music, AND plays a radio clip
+    /// </summary>
     public enum WaveType
     {
         HostileWave, LevelComplete, AudioWave
@@ -36,6 +42,7 @@ namespace Waves
         [SerializeField]
         public int DLThreshold;
 
+        //Returns the type of wave
         public abstract WaveType GetWaveType();
 
         //Determines if current DL is above this wave's threshold

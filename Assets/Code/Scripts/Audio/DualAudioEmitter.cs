@@ -93,6 +93,7 @@ public class DualAudioEmitter : MonoBehaviour
         {
             audioSourceArray[i].Stop();
             audioSourceArray[i].clip = null;
+            audioSourceArray[i].loop = false;
         }
         StopCoroutineSetFullVolume();
 
@@ -137,6 +138,14 @@ public class DualAudioEmitter : MonoBehaviour
     {
         audioSourceArray[1 - toggle].mute = enabled;
         audioSourceArray[toggle].mute = enabled;
+    }
+
+    /// <summary>
+    /// Looping call for the level complete state entry
+    /// </summary>
+    public void Loop()
+    {
+        audioSourceArray[1 - toggle].loop = enabled;
     }
 
     /// <summary>

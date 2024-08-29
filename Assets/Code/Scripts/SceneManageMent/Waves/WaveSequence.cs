@@ -39,7 +39,7 @@ namespace EditorObject
 
         public bool CurrentWaveIsFinal
         {
-            get => currentWave == sequence.Count - 1;
+            get => sequence[currentWave].GetWaveType() == WaveType.LevelComplete;
         }
 
         public AudioClip GetCurrentRadioClip
@@ -74,7 +74,8 @@ namespace EditorObject
             }
             else
             {
-                return null;
+                LevelCompleteWave wave = (LevelCompleteWave)sequence[currentWave];
+                return wave.GetTrackVariation();
             }
         }
 
@@ -115,6 +116,10 @@ namespace EditorObject
             spawner = squadSpawner;
             currentWave = 0;
             previousWave = -1;
+
+            //Set the initial DlThreshold for the first wave (used in gameplay UI)
+            int nextThreshold = sequence[0].DLThreshold;
+            DangerLevel.Instance.SetDlThreshold(0, nextThreshold);
         }
         /// <summary>
         /// Gets the universal time that the next wave will spawn at,
@@ -145,6 +150,10 @@ namespace EditorObject
             currentWave = 0;
             previousWave = -1;
             hasAlreadyPlayedRadioClip = false;
+
+            //Set the initial DlThreshold for the first wave (used in gameplay UI)
+            int nextThreshold = sequence[0].DLThreshold;
+            DangerLevel.Instance.SetDlThreshold(0, nextThreshold);
         }
     }
 }
