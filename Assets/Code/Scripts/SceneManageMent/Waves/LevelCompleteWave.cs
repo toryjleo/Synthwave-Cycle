@@ -10,6 +10,8 @@ using Waves;
 [CreateAssetMenu(menuName = "Wave/LevelComplete Wave", fileName = "New LevelComplete Wave")]
 public class LevelCompleteWave : Wave
 {
+    [SerializeField] private AudioClip finalMusicLoop;
+
     public override WaveType GetWaveType()
     {
         return WaveType.LevelComplete;
@@ -19,5 +21,10 @@ public class LevelCompleteWave : Wave
     {
         GameStateController.HandleTrigger(StateTrigger.LevelComplete);
         return null;
+    }
+
+    public AudioClip GetTrackVariation()
+    {
+        return finalMusicLoop;
     }
 }

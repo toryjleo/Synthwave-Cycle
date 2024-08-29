@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: WastelandSoulWave7Complete
   m_EditorClassIdentifier: 
   DLThreshold: 500
+  finalMusicLoop: {fileID: 8300000, guid: b3a667885c9de5343b6623f97485c95d, type: 3}

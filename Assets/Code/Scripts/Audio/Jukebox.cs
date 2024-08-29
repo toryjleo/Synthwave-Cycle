@@ -41,6 +41,7 @@ public class Jukebox : MonoBehaviour, IResettable
 
         GameStateController.playing.notifyListenersEnter += HandlePlayingEnter;
         GameStateController.playing.notifyListenersExit += HandlePlayingExit;
+        GameStateController.levelComplete.notifyListenersEnter += HandleLevelComplete;
 
         radioWasPlayingLastFrame = false;
     }
@@ -63,8 +64,7 @@ public class Jukebox : MonoBehaviour, IResettable
         }
 
 
-
-        if (radioClipPlayer.IsPlaying != radioWasPlayingLastFrame) 
+        if (radioClipPlayer.IsPlaying != radioWasPlayingLastFrame)
         {
             radioWasPlayingLastFrame = radioClipPlayer.IsPlaying;
             TriggerRadioStatusUpdate();
@@ -96,6 +96,10 @@ public class Jukebox : MonoBehaviour, IResettable
     {
         if (sequence.CurrentWaveIsFinal)
         {
+            //Play the LevelComplete wave's final audio loop
+            AudioClip clipToPlay = sequence.GetCurrentTrackVariation();
+            musicPlayer.QueueNextSong(clipToPlay, nextAudioLoopTime);
+
             sequence.SpawnNewWave();
         }
         else
@@ -173,12 +177,25 @@ public class Jukebox : MonoBehaviour, IResettable
         canPlay = false;
     }
 
-    public void HandleInBoundsEnter() 
+    /// <summary>
+    /// Handles logic for completing the game
+    /// </summary>
+    private void HandleLevelComplete()
+    {
+        musicPlayer.Play();
+        musicPlayer.Loop();
+        radioClipPlayer.Pause();
+        nextAudioLoopDifference = nextAudioLoopTime - AudioSettings.dspTime;
+
+        canPlay = false;
+    }
+
+    public void HandleInBoundsEnter()
     {
         TriggerRadioStatusUpdate();
     }
 
-    private void TriggerRadioStatusUpdate() 
+    private void TriggerRadioStatusUpdate()
     {
         onRadioStatusUpdate?.Invoke(radioClipPlayer.IsPlaying);
     }
