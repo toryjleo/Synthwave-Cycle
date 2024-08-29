@@ -68,9 +68,7 @@ public class RadioStateController : MonoBehaviour
         boundsChecker = FindObjectOfType<BoundsChecker>();
         if (boundsChecker != null)
         {
-            // TODO: remove cyclical event triggers
-            radioOn.notifyListenersEnter += boundsChecker.HandleRadioOnEvent;
-            boundsChecker.onCrossedTransmissionBounds += HandleBoundsCrossedEvent;
+            radioOn.notifyListenersEnter += HandleEnterRadioOn;
         }
         else
         {
@@ -80,9 +78,7 @@ public class RadioStateController : MonoBehaviour
         jukebox = GetComponent<Jukebox>();
         if (jukebox != null)
         {
-            // TODO: remove cyclical event triggers
-            inBounds.notifyListenersEnter += jukebox.HandleInBoundsEnter;
-            jukebox.onRadioStatusUpdate += HandleRadioStatusUpdate;
+            inBounds.notifyListenersEnter += HandleEnterInBounds;
         }
         else
         {
@@ -91,7 +87,7 @@ public class RadioStateController : MonoBehaviour
 
         if (GameStateController.StateExists)
         {
-            GameStateController.playerDead.notifyListenersEnter += HandleDeath;
+            GameStateController.playerDead.notifyListenersEnter += HandleEnterDeath;
         }
     }
 
@@ -125,11 +121,12 @@ public class RadioStateController : MonoBehaviour
         }
     }
 
-    private void HandleBoundsCrossedEvent(bool isWithinBounds)
+    /// <summary>
+    /// Sends either an InBounds or OutOfBounds trigger
+    /// </summary>
+    private void HandleEnterRadioOn() 
     {
-        // TODO: remove cyclical event triggers
-        if (isWithinBounds) 
-
+        if (boundsChecker.IsInBounds)
         {
             HandleTrigger(RadioState.StateTrigger.InBounds);
         }
@@ -139,10 +136,12 @@ public class RadioStateController : MonoBehaviour
         }
     }
 
-    private void HandleRadioStatusUpdate(bool radioIsPlaying)
+    /// <summary>
+    /// Sends either an RadioIsPlaying or RadioIsNotPlaying trigger
+    /// </summary>
+    private void HandleEnterInBounds() 
     {
-        // TODO: remove cyclical event triggers
-        if (radioIsPlaying) 
+        if (jukebox.RadioClipIsPlaying)
         {
             HandleTrigger(RadioState.StateTrigger.RadioIsPlaying);
         }
@@ -152,7 +151,10 @@ public class RadioStateController : MonoBehaviour
         }
     }
 
-    private void HandleDeath()
+    /// <summary>
+    /// Makes sure the radio is off on death
+    /// </summary>
+    private void HandleEnterDeath()
     {
         if (state != radioOff)
         {

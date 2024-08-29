@@ -22,9 +22,10 @@ public class Jukebox : MonoBehaviour, IResettable
     private bool canPlay;
     double nextAudioLoopDifference;
 
-    public NotifyRadioStatus onRadioStatusUpdate;
-
-    private bool radioWasPlayingLastFrame = false;
+    public bool RadioClipIsPlaying 
+    {
+        get => radioClipPlayer.IsPlaying;
+    }
 
     //Resets the jukebox and starts a new Wave Sequence
     public void Init(EditorObject.WaveSequence seq)
@@ -41,8 +42,6 @@ public class Jukebox : MonoBehaviour, IResettable
 
         GameStateController.playing.notifyListenersEnter += HandlePlayingEnter;
         GameStateController.playing.notifyListenersExit += HandlePlayingExit;
-
-        radioWasPlayingLastFrame = false;
     }
 
     private void Update()
@@ -60,14 +59,6 @@ public class Jukebox : MonoBehaviour, IResettable
                 sequence.SpawnNewWave();
                 nextWaveSpawnTime = sequence.GetNextWaveTime(nextWaveSpawnTime);
             }
-        }
-
-
-
-        if (radioClipPlayer.IsPlaying != radioWasPlayingLastFrame) 
-        {
-            radioWasPlayingLastFrame = radioClipPlayer.IsPlaying;
-            TriggerRadioStatusUpdate();
         }
 
     }
@@ -171,15 +162,5 @@ public class Jukebox : MonoBehaviour, IResettable
         nextAudioLoopDifference = nextAudioLoopTime - AudioSettings.dspTime;
 
         canPlay = false;
-    }
-
-    public void HandleInBoundsEnter() 
-    {
-        TriggerRadioStatusUpdate();
-    }
-
-    private void TriggerRadioStatusUpdate() 
-    {
-        onRadioStatusUpdate?.Invoke(radioClipPlayer.IsPlaying);
     }
 }
