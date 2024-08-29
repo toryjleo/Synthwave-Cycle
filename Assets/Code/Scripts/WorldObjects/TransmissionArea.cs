@@ -22,6 +22,11 @@ public class TransmissionArea : MonoBehaviour
         get => transmissionArea.Radius * 2;
     }
 
+    public float RadiusSqr 
+    {
+        get => transmissionArea.Radius * transmissionArea.Radius;
+    }
+
     /// <summary>
     /// A linear scale of how far the player can travel outside the TransmissionArea
     /// </summary>
@@ -49,7 +54,8 @@ public class TransmissionArea : MonoBehaviour
         Vector3 centerToPoint = transform.position - point;
         if (centerToPoint.sqrMagnitude < (transmissionArea.Radius * transmissionArea.Radius)) 
         {
-            return 1;
+            float clarityInverse = centerToPoint.sqrMagnitude / (transmissionArea.Radius * transmissionArea.Radius);
+            return 1 - clarityInverse;
         }
         else
         {

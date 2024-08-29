@@ -41,6 +41,7 @@ public class PinkMist : Weapon
             if (runningCoroutine != null) 
             {
                 StopCoroutine(runningCoroutine);
+                runningCoroutine = null;
             }
             
             runningCoroutine = StartCoroutine(GrowVolume(CollisionVolume));

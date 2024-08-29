@@ -7,7 +7,7 @@ using UnityEngine;
 /// Attach to a gameobject underneath player
 /// Requires a TransmissionArea in scene
 /// </summary>
-public class BoundsChecker : MonoBehaviour
+public class BoundsChecker : MonoBehaviour, IResettable
 {
     #region Members
     /// <summary>
@@ -24,11 +24,17 @@ public class BoundsChecker : MonoBehaviour
     /// Reference to timer object
     /// </summary>
     private Timer timer;
+
+    public NotifyCrossedTransmissionAreaBounds onCrossedTransmissionBounds;
+
+    private bool wasLastWithinBounds = true;
     #endregion
 
     #region Type Definitions
 
-    public delegate void TimerEventHandler(bool timerIsOn);
+    public delegate void NotifyCrossedTransmissionAreaBounds(bool isWithinBounds);
+
+    public delegate void NotifyTimerStateChange(bool timerIsOn);
 
     /// <summary>
     /// Class that counts up to an elapsed time
@@ -41,8 +47,8 @@ public class BoundsChecker : MonoBehaviour
 
         private bool timerOn = false;
 
-        public TimerEventHandler NotifyTimerEvent;
-        public TimerEventHandler NotifyTimerComplete;
+        public NotifyTimerStateChange ontimerStateChanged;
+        public NotifyTimerStateChange onTimerComplete;
 
         /// <summary>
         /// If the timer has started runnung
@@ -91,7 +97,7 @@ public class BoundsChecker : MonoBehaviour
 
                 if (timeElapsed > maxTime)
                 {
-                    NotifyTimerComplete?.Invoke(false);
+                    onTimerComplete?.Invoke(false);
                     TimerReset();
                 }
             }
@@ -105,7 +111,7 @@ public class BoundsChecker : MonoBehaviour
             if (GameStateController.CanRunGameplay)
             {
                 timerOn = true;
-                NotifyTimerEvent?.Invoke(true);
+                ontimerStateChanged?.Invoke(true);
             }
         }
 
@@ -116,7 +122,7 @@ public class BoundsChecker : MonoBehaviour
         {
             timeElapsed = 0;
             timerOn = false;
-            NotifyTimerEvent?.Invoke(false);
+            ontimerStateChanged?.Invoke(false);
         }
     }
 
@@ -140,6 +146,41 @@ public class BoundsChecker : MonoBehaviour
 
             return distanceSqrToTransmissionAreaCenter > transmissionArea.MaxBoundsFromTransmissionAreaSqr;
         }
+    }
+    private bool PlayerIsInsideTransmissionArea 
+    {
+        get 
+        {
+            if (transmissionArea == null)
+            {
+                Debug.LogError("Trying to find if player outside bounds when there is no TransmissionArea found");
+                return false;
+            }
+            float distanceSqrToTransmissionAreaCenter = (transform.position - transmissionArea.transform.position).sqrMagnitude;
+
+            return distanceSqrToTransmissionAreaCenter < transmissionArea.RadiusSqr;
+        }
+    }
+
+    public float TransmissionClarity
+    {
+        get 
+        {
+            if (transmissionArea == null)
+            {
+                Debug.LogError("Trying to get transmission clarity when there is no TransmissionArea found");
+                return -1;
+            }
+            else 
+            {
+                return transmissionArea.TransmissionClarity(transform.position);
+            }
+        } 
+    }
+
+    public bool IsInBounds 
+    {
+        get { return wasLastWithinBounds;  }
     }
 
     /// <summary>
@@ -170,7 +211,7 @@ public class BoundsChecker : MonoBehaviour
     /// Notifies the listeners that a timer event has triggered.
     /// Timer events trigger when the player goes out of bounds or enters the bounds again.
     /// </summary>
-    public TimerEventHandler NotifyTimerEvent
+    public NotifyTimerStateChange OnTimerStateChanged
     {
         get
         {
@@ -181,10 +222,10 @@ public class BoundsChecker : MonoBehaviour
             }
             else
             {
-                return timer.NotifyTimerEvent;
+                return timer.ontimerStateChanged;
             }
         }
-        set { timer.NotifyTimerEvent = value; }
+        set { timer.ontimerStateChanged = value; }
     }
     #endregion
 
@@ -206,8 +247,12 @@ public class BoundsChecker : MonoBehaviour
         if (GameStateController.CanRunGameplay)
         {
             UpdateTimer(Time.deltaTime);
+
+            CheckIfCrossedBounds();
         }
     }
+
+    #region Transmission Area
 
     /// <summary>
     /// Finds transmission area in scene and returns true if it is found.
@@ -219,6 +264,26 @@ public class BoundsChecker : MonoBehaviour
         return transmissionArea != null;
     }
 
+    /// <summary>
+    /// Checks if the player crossed the TransmissionArea bounds this frame
+    /// </summary>
+    private void CheckIfCrossedBounds() 
+    {
+        if (wasLastWithinBounds != PlayerIsInsideTransmissionArea) 
+        {
+            wasLastWithinBounds = PlayerIsInsideTransmissionArea;
+            onCrossedTransmissionBounds?.Invoke(PlayerIsInsideTransmissionArea);
+        }
+    }
+
+
+    public void HandleRadioOnEvent() 
+    {
+        onCrossedTransmissionBounds?.Invoke(wasLastWithinBounds);
+    }
+
+    #endregion
+
     #region Timer
 
     /// <summary>
@@ -229,7 +294,7 @@ public class BoundsChecker : MonoBehaviour
         timer = new Timer(MAX_TIME);
 
         PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
-        if (playerHealth != null) { timer.NotifyTimerComplete += playerHealth.KillPlayer; }
+        if (playerHealth != null) { timer.onTimerComplete += playerHealth.KillPlayer; }
     }
 
     /// <summary>
@@ -256,6 +321,11 @@ public class BoundsChecker : MonoBehaviour
             // outside of bounds
             timer.TimerStart();
         }
+    }
+
+    public void ResetGameObject()
+    {
+        wasLastWithinBounds = true;
     }
     #endregion
 }

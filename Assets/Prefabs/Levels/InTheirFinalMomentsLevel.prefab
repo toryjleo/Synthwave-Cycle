@@ -43,5 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c69891289777e44284604fee0bad3a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WaveSequence: {fileID: 11400000, guid: 56457c03c2aef1d40a2684598b951353, type: 2}
+  WaveSequence: {fileID: 11400000, guid: cc1039780e25ceb44a9bfd4e75df24ce, type: 2}
   GroundMat: {fileID: 2100000, guid: 3d7f7474b9a85504d93c10cb8e292e9e, type: 2}

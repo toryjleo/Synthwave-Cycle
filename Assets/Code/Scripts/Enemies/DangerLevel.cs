@@ -16,9 +16,9 @@ public class DangerLevel : MonoBehaviour, IResettable
     private int maximumThreshold;
 
     const int DECAY_TICK_MS = 3000;
-    const int START_LEVEL = 1;
+    const int START_LEVEL = 0;
 
-    public float PercentProgress 
+    public float PercentProgress
     {
         get => Mathf.Clamp01((float)(dangerLevel - minimumThreshold) / (float)(maximumThreshold - minimumThreshold));
     }
@@ -37,7 +37,7 @@ public class DangerLevel : MonoBehaviour, IResettable
         StartTimer();
     }
 
-    private void StartTimer() 
+    private void StartTimer()
     {
         // This timer increases the danger level and is used for determining the amount and difficulty of enemies being
         // spawned
@@ -71,7 +71,10 @@ public class DangerLevel : MonoBehaviour, IResettable
 
     internal void IncreaseDangerLevel(int dlScore)
     {
+        Debug.Log("DL Score: " + dlScore);
         dangerLevel += dlScore;
+        //dangerLevel = Mathf.Clamp(dangerLevel, minimumThreshold, maximumThreshold);
+        Debug.Log("Danger LEVEL: " + dangerLevel);
     }
 
     public void ResetGameObject()
@@ -82,7 +85,7 @@ public class DangerLevel : MonoBehaviour, IResettable
         StartTimer();
     }
 
-    public void SetDlThreashold(int newMinimum, int newMaximum = int.MaxValue)
+    public void SetDlThreshold(int newMinimum, int newMaximum = int.MaxValue)
     {
         minimumThreshold = newMinimum;
         maximumThreshold = newMaximum;

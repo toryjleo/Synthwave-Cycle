@@ -25,7 +25,7 @@ public class HealthPointer : MonoBehaviour
         BoundsChecker boundsChecker = FindObjectOfType<BoundsChecker>();
         if (boundsChecker != null) 
         {
-            boundsChecker.NotifyTimerEvent += EnableOutOfBoundsArrows;
+            boundsChecker.OnTimerStateChanged += EnableOutOfBoundsArrows;
 
             if (GameStateController.StateExists) 
             {

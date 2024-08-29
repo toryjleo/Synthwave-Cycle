@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
+using Waves;
 
 namespace EditorObject
 {
@@ -15,24 +17,74 @@ namespace EditorObject
     {
         private int previousWave = -1;
         private int currentWave = 0;
-        [SerializeField]
-        public List<Wave> sequence;
+        [SerializeField] public List<Wave> sequence;
         internal SquadSpawner spawner;
-        [SerializeField]
-        public string songName;
+        [SerializeField] public string songName;
+        [SerializeField] private Sprite radioFace;
+        [SerializeField] private bool debugWaveInfo = false;
+
+        public Sprite RadioFace { get => radioFace; }
+
+        private bool hasAlreadyPlayedRadioClip = false;
+
+
+        public bool CurrentTrackRadioWaveHasAlreadyPlayed
+        {
+            get { return hasAlreadyPlayedRadioClip; }
+        }
+        public bool CurrentTrackIsRadioWave
+        {
+            get => WaveIsRadioWave(currentWave);
+        }
+
+        public bool CurrentWaveIsFinal
+        {
+            get => currentWave == sequence.Count - 1;
+        }
+
+        public AudioClip GetCurrentRadioClip
+        {
+            get
+            {
+                if (sequence[currentWave].GetWaveType() != WaveType.AudioWave)
+                {
+                    Debug.LogError("Tried to get a radioclip where there is none");
+                    return null;
+                }
+                else
+                {
+
+                    hasAlreadyPlayedRadioClip = true;
+                    return ((AudioWave)sequence[currentWave]).GetRadioClip;
+                }
+            }
+        }
 
         public AudioClip GetCurrentTrackVariation()
         {
-            return sequence[currentWave].GetTrackVariation();
+            if (sequence[currentWave].GetWaveType() != WaveType.AudioWave)
+            {
+                Debug.Log("No radio clip on wave " + currentWave);
+            }
+
+            if (sequence[currentWave].GetWaveType() != WaveType.LevelComplete)
+            {
+                HostileWave wave = (HostileWave)sequence[currentWave];
+                return wave.GetTrackVariation();
+            }
+            else
+            {
+                return null;
+            }
         }
+
         /// <summary>
-        /// Updates the wave and spawns in wave according to danger level
+        /// Updates the wave and spawns in wave according to danger level,
+        /// Used to spawn in the next sequential wave
         /// </summary>
         public void SpawnNewWave()
         {
-            UpdateCurrentWave();
-            spawner.SpawnWave(sequence[currentWave].GetWaveInfo());
-            previousWave = currentWave;
+            spawner.SpawnWave(sequence[currentWave].TriggerWaveAction());
         }
 
         /// <summary>
@@ -40,24 +92,26 @@ namespace EditorObject
         /// </summary>
         internal void UpdateCurrentWave()
         {
-            for (int index = sequence.Count - 1; index >= 0; index--)
+            if (debugWaveInfo) Debug.Log("CURRENT WAVE before update:" + currentWave);
+            // Iterate backwards and spawn in the waves for the highest danger level
+            if (sequence[currentWave].IsOverThreshold())
             {
-                // Iterate backwards and spawn in the waves for the highest danger level
-                if (sequence[index].IsOverThreshold())
-                {
-                    currentWave = index;
-                    int maxThreshold = (index < (sequence.Count - 1)) ? sequence[index + 1].DLThreshold : int.MaxValue;
-                    DangerLevel.Instance.SetDlThreashold(sequence[index].DLThreshold, maxThreshold);
-                    //Log the wave + 1 because the index starts at 0, but the tracks start at 1
-                    Debug.Log("Current Wave: " + (currentWave + 1) + "/" + (sequence.Count) + "\nDanger Level: " + DangerLevel.Instance.GetDangerLevel());
-                    Debug.Log("DlThreshold: " + sequence[index].DLThreshold);
-                    break;
-                }
+                hasAlreadyPlayedRadioClip = false;
+                previousWave = currentWave;
+                currentWave += 1;
+                int nextWave = currentWave + 1;
+                int nextThreshold = sequence[currentWave].DLThreshold;
+                DangerLevel.Instance.SetDlThreshold(sequence[previousWave].DLThreshold, nextThreshold);
+                //Log the wave + 1 because the index starts at 0, but the tracks start at 1
+                Debug.Log("Current Wave: " + nextWave + "/" + sequence.Count + "\nDanger Level: " + DangerLevel.Instance.GetDangerLevel());
+                Debug.Log("Danger Level Threshold: " + nextThreshold);
             }
+            if (debugWaveInfo) Debug.Log("CURRENT WAVE after update:" + currentWave);
         }
 
         internal void Init(SquadSpawner squadSpawner)
         {
+            hasAlreadyPlayedRadioClip = false;
             spawner = squadSpawner;
             currentWave = 0;
             previousWave = -1;
@@ -68,15 +122,29 @@ namespace EditorObject
         /// </summary>
         internal double GetNextWaveTime(double currentTime)
         {
-            AudioClip clipToPlay = sequence[currentWave].GetTrackVariation();
-            double duration = (double)clipToPlay.samples / clipToPlay.frequency;
-            return currentTime + (duration / sequence[currentWave].wavesInTrack);
+            if (sequence[currentWave].GetWaveType() != WaveType.LevelComplete)
+            {
+                HostileWave wave = (HostileWave)sequence[currentWave];
+                AudioClip clipToPlay = wave.GetTrackVariation();
+                double duration = (double)clipToPlay.samples / clipToPlay.frequency;
+                return currentTime + duration;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        private bool WaveIsRadioWave(int index)
+        {
+            return sequence[index].GetWaveType() == WaveType.AudioWave;
         }
 
         public void ResetGameObject()
         {
             currentWave = 0;
             previousWave = -1;
+            hasAlreadyPlayedRadioClip = false;
         }
     }
 }

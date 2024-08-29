@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15125cb873be8194b8dd68d612076abd, type: 3}
   m_Name: InTheirFinalMomentsWave1
   m_EditorClassIdentifier: 
-  DLThreshold: 1
-  TrackVariation: {fileID: 8300000, guid: c1ef04b1e32f3f641b7eb74571b6e121, type: 3}
   wavesInTrack: 1
   waveEnemies:
   - enemyType: 0
     spawnLocation: 0
   waveType: 0
+  DLThreshold: 2
+  TrackVariation: {fileID: 8300000, guid: c1ef04b1e32f3f641b7eb74571b6e121, type: 3}
+  RadioClip: {fileID: 8300000, guid: 128ffe0bb2c3c0742a5e8d5de9343b13, type: 3}

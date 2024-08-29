@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: DrivingSynth
   m_EditorClassIdentifier: 
   sequence:
-  - {fileID: 11400000, guid: aec058b25e103c040bcfbe68bc6e6e3e, type: 2}
-  - {fileID: 11400000, guid: 2455057b1d3655f41bc1d1daa836c285, type: 2}
-  - {fileID: 11400000, guid: bc7deb1b23080b843a0c79e39d0fd28f, type: 2}
-  - {fileID: 11400000, guid: 05ac1363172d82b48b31147175c2f46b, type: 2}
-  - {fileID: 11400000, guid: ead42f195c9c91247967021f733734f0, type: 2}
-  - {fileID: 11400000, guid: 996854cbefc84ad4ba0b5af0274b3ab2, type: 2}
+  - {fileID: 11400000, guid: b934e6934dafee941b186b6053aad7a6, type: 2}
+  - {fileID: 11400000, guid: 304c555897a284a45aca19f4e4b320cd, type: 2}
+  - {fileID: 11400000, guid: 558006d74de46c946a6779f9c36a22b3, type: 2}
+  - {fileID: 11400000, guid: 3ed67bb3e8afe0e45a874ecfb979449f, type: 2}
+  - {fileID: 11400000, guid: 5d8287b0513d2514ca7509cabf0021e5, type: 2}
+  - {fileID: 11400000, guid: 92610e0ecf05d304eafd2efaaf2ddfa2, type: 2}
+  - {fileID: 11400000, guid: 0be3048db17d24245a96cca44affed6f, type: 2}
   songName: Wasteland Soul
+  radioFace: {fileID: 21300000, guid: 26d49bc6d1407cd429d6715331dabafe, type: 3}
