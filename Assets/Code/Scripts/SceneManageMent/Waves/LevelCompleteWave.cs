@@ -10,7 +10,7 @@ using Waves;
 [CreateAssetMenu(menuName = "Wave/LevelComplete Wave", fileName = "New LevelComplete Wave")]
 public class LevelCompleteWave : Wave
 {
-    [SerializeField] public AudioClip finalMusicLoop;
+    [SerializeField] private AudioClip finalMusicLoop;
 
     public override WaveType GetWaveType()
     {
