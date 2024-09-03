@@ -16,11 +16,18 @@ public class Gun : MonoBehaviour
     // TODO: Create muzzle flash particlesystem with flashing point light
     // TODO: Create impact particlesystem with flashing point light
 
+    protected BulletPool bulletPool;
+    [SerializeField] private Bullet bulletPrefab;
+    [SerializeField] private int bulletPoolSize = 200;
+
+    private PlayerMovement player;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        InitializeBulletPool();
+        player = FindObjectOfType<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -46,9 +53,23 @@ public class Gun : MonoBehaviour
         this.gunStats = gunStats;
     }
 
+    protected void InitializeBulletPool() 
+    {
+        bulletPool = gameObject.GetComponent<BulletPool>();
+        if (bulletPool == null)
+        {
+            bulletPool = gameObject.AddComponent<BulletPool>();
+        }
+        bulletPool.Init(bulletPrefab, bulletPoolSize);
+    }
+
     private void FireProjectile()
     {
         Debug.Log("Firing Projectile");
+        Bullet bullet = bulletPool.SpawnFromPool();
+        Vector3 shotDir = transform.forward;
+
+        bullet.Shoot(transform.position, shotDir, player.Velocity);
     }
 
     private void FireHitScan()
