@@ -14,11 +14,15 @@ public abstract class InfantryAI : Ai
 
     public override void Attack()
     {
+        // TODO: Fix
+        /*
         if (myGun != null && myGun.CanShootAgain() && alive)
         {
             this.myGun.PrimaryFire(target.transform.position);
             animationStateController.AimWhileWalking(true);
-        }
+        }*/
+
+
     }
 
     public override void Update()
@@ -37,7 +41,8 @@ public abstract class InfantryAI : Ai
         this.Despawn += op_ProcessCompleted;
         hp.Init(StartingHP);
 
-        myGun.Init();
+        // TODO: Fix
+        //myGun.Init();
 
         #region Error Checkers
 

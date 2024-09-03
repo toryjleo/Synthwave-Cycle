@@ -15,7 +15,7 @@ public class Arsenal : MonoBehaviour, IResettable
 
     [SerializeField]
     public AudioSource weaponPickupSFX;
-
+    /*
     private Dictionary<PlayerWeaponType, Weapon> weapons;
     private Weapon currentWeapon = null;
     private Turret turret = null;
@@ -72,7 +72,7 @@ public class Arsenal : MonoBehaviour, IResettable
     void Update()
     {
 #if UNITY_EDITOR
-        /*if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             EquipGun(PlayerWeaponType.DefaultGun);
         }
@@ -83,7 +83,7 @@ public class Arsenal : MonoBehaviour, IResettable
         else if (Input.GetKeyDown(KeyCode.P))
         {
             EquipGun(PlayerWeaponType.Shotty);
-        }*/
+        }
 #endif
     }
 
@@ -205,9 +205,15 @@ public class Arsenal : MonoBehaviour, IResettable
         }
         gunToDiscard.gameObject.SetActive(false);
     }
+*/
 
     public void ResetGameObject()
     {
         DisableAllWeapons();
+    }
+
+    private void DisableAllWeapons()
+    {
+        throw new NotImplementedException();
     }
 }

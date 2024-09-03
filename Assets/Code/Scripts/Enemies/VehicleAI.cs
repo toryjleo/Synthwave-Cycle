@@ -39,10 +39,11 @@ public class VehicleAI : Ai
 
     public override void Attack() 
     {
-        if (myGun != null && myGun.CanShootAgain() && alive)
+        // TODO: Fix
+        /*if (myGun != null && myGun.CanShootAgain() && alive)
         {
             this.myGun.PrimaryFire(target.transform.position);
-        }
+        }*/
     }
 
     public override void Update()

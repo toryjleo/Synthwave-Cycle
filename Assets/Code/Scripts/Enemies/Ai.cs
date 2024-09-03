@@ -20,7 +20,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
 
     public GameObject target;
     public Rigidbody rb;
-    public Gun myGun;
+    // public Gun myGun; TODO: Fix
     public Health hp;
 
     public float StartingHP;
@@ -73,10 +73,11 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
 
             alive = false;
 
-            if (myGun != null)
+            // TODO: Fix
+            /*if (myGun != null)
             {
                 myGun.StopAllCoroutines();
-            }
+            }*/
         }
     }
     /// <summary>
