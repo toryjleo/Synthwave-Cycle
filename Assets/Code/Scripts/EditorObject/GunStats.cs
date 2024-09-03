@@ -16,7 +16,9 @@ namespace EditorObject
     public class GunStats : ScriptableObject
     {
         [SerializeField] private BulletType bulletType;
+        // TODO: Add type of weilded
+        // TODO: add range
 
-        BulletType BulletType { get { return bulletType; } }
+        public BulletType BulletType { get { return bulletType; } }
     }
 }
