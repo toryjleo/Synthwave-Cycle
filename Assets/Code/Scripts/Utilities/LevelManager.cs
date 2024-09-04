@@ -18,7 +18,7 @@ public class LevelManager : MonoBehaviour
 
     public string SongName
     {
-        get => currentLevel.WaveSequence.songName;
+        get => currentLevel.WaveSequence.SongName;
     }
 
     public Sprite RadioFace

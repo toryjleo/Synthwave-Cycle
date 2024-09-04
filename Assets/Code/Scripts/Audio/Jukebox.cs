@@ -111,7 +111,7 @@ public class Jukebox : MonoBehaviour, IResettable
             AudioClip clipToPlay = sequence.GetCurrentTrackVariation();
             musicPlayer.QueueNextSong(clipToPlay, nextAudioLoopTime);
 
-            if (sequence.CurrentTrackIsRadioWave && !sequence.CurrentTrackRadioWaveHasAlreadyPlayed)
+            if (sequence.CurrentTrackIsAudioWave && !sequence.CurrentTrackRadioWaveHasAlreadyPlayed)
             {
                 AudioClip radioClip = sequence.GetCurrentRadioClip;
                 if (radioClip != null)
