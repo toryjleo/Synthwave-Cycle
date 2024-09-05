@@ -63,7 +63,6 @@ public class Gun : MonoBehaviour
 
     private void FireProjectile()
     {
-        Debug.Log("Firing Projectile");
         Bullet bullet = bulletPool.SpawnFromPool();
         Vector3 shotDir = transform.forward;
 
@@ -72,16 +71,35 @@ public class Gun : MonoBehaviour
 
     private void FireHitScan()
     {
-        Debug.Log("Firing Hitscan");
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, gunStats.Range)) 
         {
             Debug.Log(hit.transform.name);
-            // TODO: Check if it is player or enemy
-            // TODO: instantiate and play impact effect particlesystem at hit.point and rotate to normal
-            // https://www.youtube.com/watch?v=THnivyG0Mvo
+
+            if ((hit.transform.tag == "Enemy" && gunStats.PlayerBullet) ||
+                (hit.transform.tag == "Player" && !gunStats.PlayerBullet))
+            {
+                DealDamage(hit.transform.gameObject);
+            }
 
         }
         // TODO: Play muzzleflash particlesystem
+    }
+
+    private void DealDamage(GameObject other)
+    {
+        Health otherHealth = other.GetComponentInChildren<Health>();
+        if (otherHealth == null)
+        {
+            Debug.LogError("Object does not have Health component: " + gameObject.name);
+        }
+        else
+        {
+            otherHealth.TakeDamage(gunStats.DamageDealt);
+
+            // TODO: instantiate and play impact effect particlesystem at hit.point and rotate to normal
+            // https://www.youtube.com/watch?v=THnivyG0Mvo
+        }
+
     }
 }
