@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>Class <c>Bullet</c> A Unity Component which moves a gameobject foreward.</summary>
-public abstract class Bullet : SelfWorldBoundsDespawn
+public class Bullet : SelfWorldBoundsDespawn
 {
 
     protected Vector3 shootDir;
     protected Vector3 initialVelocity;
 
     // Specific to gun
+    protected bool isPlayerBullet = true;
     protected float muzzleVelocity = 0;
     protected float mass = 0;
     protected float boost = 1f;
@@ -81,11 +82,6 @@ public abstract class Bullet : SelfWorldBoundsDespawn
         this.timeSinceShot = 0;
     }
 
-    /// <summary>Deals damage to other and despawns this bullet.</summary>
-    /// <param name="other">GameObject who we will deal damage to. Expects this GameObject to have a Health 
-    /// component.</param>
-    abstract internal void DealDamageAndDespawn(GameObject other);
-
     /// <summary>
     /// Resets bullet properties. This is used when a bullet is spawned from a pool to ensure it gets a fresh start
     /// </summary>
@@ -93,5 +89,52 @@ public abstract class Bullet : SelfWorldBoundsDespawn
     {
         initialVelocity = Vector3.zero;
         gameObject.SetActive(false);
+    }
+
+    public override void Init()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Init(EditorObject.GunStats gunStats)
+    {
+        this.damageDealt = gunStats.DamageDealt;
+        this.mass = gunStats.Mass;
+        this.muzzleVelocity = gunStats.MuzzleVelocity;
+        this.isPlayerBullet = gunStats.PlayerBullet;
+    }
+
+    private void DealDamageAndDespawn(GameObject other)
+    {
+        if (!alreadyHit.Contains(other))
+        {
+            alreadyHit.Add(other);
+            Health otherHealth = other.GetComponentInChildren<Health>();
+            if (otherHealth == null)
+            {
+                Debug.LogError("Object does not have Health component: " + gameObject.name);
+            }
+            else
+            {
+                otherHealth.TakeDamage(damageDealt);
+            }
+            if (!overPenetrates)
+            {
+                OnDespawn();
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.gameObject.tag == "Enemy" && isPlayerBullet)
+        {
+            DealDamageAndDespawn(other.gameObject);
+        }
+        else if (other.gameObject.tag == "Player" && !isPlayerBullet)
+        {
+            DealDamageAndDespawn(other.gameObject);
+        }
     }
 }

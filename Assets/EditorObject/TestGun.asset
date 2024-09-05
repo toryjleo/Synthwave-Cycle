@@ -13,3 +13,9 @@ MonoBehaviour:
   m_Name: TestGun
   m_EditorClassIdentifier: 
   bulletType: 0
+  playerBullet: 1
+  fireRate: 10
+  damageDealt: 70
+  mass: 0.5
+  muzzleVelocity: 60
+  range: 100

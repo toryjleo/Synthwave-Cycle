@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>Class <c>BulletPool</c> A Unity Component works as an object pool for bullets.</summary>
 public class BulletPool : MonoBehaviour, IResettable
 {
+    private EditorObject.GunStats gunStats;
     private Bullet bulletPrefab;
     private int bulletStartAmnt = 0;
 
@@ -13,10 +14,13 @@ public class BulletPool : MonoBehaviour, IResettable
 
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
     /// <param name="bulletPrefab">The template object for this pool.</param>
-    public void Init(Bullet bulletPrefab, int bulletPoolSize = 100) 
+    public void Init(EditorObject.GunStats gunStats, Bullet bulletPrefab, int bulletPoolSize = 100) 
     {
         bulletStartAmnt = bulletPoolSize;
+
+        this.gunStats = gunStats;
         this.bulletPrefab = bulletPrefab;
+
         if (bulletQueue == null)
         {
             bulletQueue = new Queue<Bullet>();
@@ -37,7 +41,7 @@ public class BulletPool : MonoBehaviour, IResettable
     private Bullet CreateNewBullet()
     {
         Bullet newObject = Instantiate(bulletPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        newObject.Init();
+        newObject.Init(gunStats);
         newObject.gameObject.SetActive(false);
         newObject.Despawn += DespawnBullet;
         return newObject;

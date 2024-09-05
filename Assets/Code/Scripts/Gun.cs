@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class Gun : MonoBehaviour
 {
-    [SerializeField] EditorObject.GunStats gunStats;
+    [SerializeField] private EditorObject.GunStats gunStats;
 
     private float nextTimeToFire = 0.0f;
 
@@ -58,7 +58,7 @@ public class Gun : MonoBehaviour
         {
             bulletPool = gameObject.AddComponent<BulletPool>();
         }
-        bulletPool.Init(bulletPrefab, bulletPoolSize);
+        bulletPool.Init(gunStats, bulletPrefab, bulletPoolSize);
     }
 
     private void FireProjectile()

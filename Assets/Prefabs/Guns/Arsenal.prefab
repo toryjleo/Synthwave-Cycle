@@ -153,10 +153,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: DefaultGun
       objectReference: {fileID: 0}
-    - target: {fileID: 3958296069600219860, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3958296069600219862, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -201,16 +197,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3958296070210934523, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3958296070482864195, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3958296069600219863, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
 --- !u!4 &5659365483483944066 stripped
 Transform:

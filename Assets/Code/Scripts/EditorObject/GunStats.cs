@@ -16,15 +16,31 @@ namespace EditorObject
     public class GunStats : ScriptableObject
     {
         [SerializeField] private BulletType bulletType;
+        [SerializeField] private bool playerBullet = true;
         [SerializeField] private float fireRate = 10f;
 
-        #region Raycast
+
+        #region Bullet
+        [SerializeField] private float damageDealt = 70;
+        [SerializeField] private float mass = .5f;
+
+        #region Projectile
+        [SerializeField] private float muzzleVelocity = 60;
+        #endregion
+
+        #region HitScan
         [SerializeField] private float range = 100f;
+        #endregion
         #endregion
 
         #region Properties
         public BulletType BulletType { get { return bulletType; } }
+        public bool PlayerBullet { get { return playerBullet; } }
         public float FireRate { get { return fireRate;  } }
+
+        public float DamageDealt {  get { return damageDealt; } }
+        public float Mass { get { return mass; } }
+        public float MuzzleVelocity {  get { return muzzleVelocity; } }
 
         public float Range { get { return range; } }
 
