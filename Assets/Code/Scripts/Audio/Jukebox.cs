@@ -16,8 +16,10 @@ public class Jukebox : MonoBehaviour, IResettable
 
     [SerializeField] private DualAudioEmitter musicPlayer;
     [SerializeField] private DualAudioEmitter radioClipPlayer;
-    [SerializeField] private float volume = 0.5f;
-    public float Volume { get => volume; set => volume = value; }
+    [SerializeField] private float musicVolume = 0.5f;
+    [SerializeField] private float radioVolume = 0.5f;
+    public float MusicVolume { get => musicVolume; set => musicVolume = value; }
+    public float RadioVolume { get => radioVolume; set => radioVolume = value; }
 
     double nextAudioLoopTime;
     double nextWaveSpawnTime;
@@ -38,7 +40,8 @@ public class Jukebox : MonoBehaviour, IResettable
         InitializeDualAudioEmitter(musicPlayer);
         InitializeDualAudioEmitter(radioClipPlayer);
 
-        musicPlayer.SetVolume(volume);
+        musicPlayer.SetVolume(musicVolume);
+        radioClipPlayer.SetVolume(radioVolume);
 
         canPlay = false;
         nextAudioLoopDifference = 0;
