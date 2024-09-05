@@ -16,9 +16,18 @@ namespace EditorObject
     public class GunStats : ScriptableObject
     {
         [SerializeField] private BulletType bulletType;
-        // TODO: Add type of weilded
-        // TODO: add range
+        [SerializeField] private float fireRate = 10f;
 
+        #region Raycast
+        [SerializeField] private float range = 100f;
+        #endregion
+
+        #region Properties
         public BulletType BulletType { get { return bulletType; } }
+        public float FireRate { get { return fireRate;  } }
+
+        public float Range { get { return range; } }
+
+        #endregion
     }
 }

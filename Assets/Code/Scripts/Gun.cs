@@ -7,18 +7,16 @@ public class Gun : MonoBehaviour
 {
     [SerializeField] EditorObject.GunStats gunStats;
 
-    public float range = 100f;
-    public float fireRate = 15f;
-
     private float nextTimeToFire = 0.0f;
 
 
     // TODO: Create muzzle flash particlesystem with flashing point light
     // TODO: Create impact particlesystem with flashing point light
-
+    #region Bullet Instancing
     protected BulletPool bulletPool;
     [SerializeField] private Bullet bulletPrefab;
     [SerializeField] private int bulletPoolSize = 200;
+    #endregion
 
     private PlayerMovement player;
 
@@ -35,7 +33,7 @@ public class Gun : MonoBehaviour
     {
         if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire)
         {
-            nextTimeToFire = Time.time + (1f / fireRate);
+            nextTimeToFire = Time.time + (1f / gunStats.FireRate);
             switch (gunStats.BulletType) 
             {
                 case EditorObject.BulletType.Projectile:
@@ -76,7 +74,7 @@ public class Gun : MonoBehaviour
     {
         Debug.Log("Firing Hitscan");
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, range)) 
+        if (Physics.Raycast(transform.position, transform.forward, out hit, gunStats.Range)) 
         {
             Debug.Log(hit.transform.name);
             // TODO: Check if it is player or enemy
