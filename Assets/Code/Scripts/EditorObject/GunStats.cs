@@ -22,7 +22,6 @@ namespace EditorObject
 
         #region Bullet
         [SerializeField] private float damageDealt = 70;
-        [SerializeField] private float mass = .5f;
 
         #region Projectile
         [SerializeField] private float muzzleVelocity = 60;
@@ -39,7 +38,6 @@ namespace EditorObject
         public float FireRate { get { return fireRate;  } }
 
         public float DamageDealt {  get { return damageDealt; } }
-        public float Mass { get { return mass; } }
         public float MuzzleVelocity {  get { return muzzleVelocity; } }
 
         public float Range { get { return range; } }

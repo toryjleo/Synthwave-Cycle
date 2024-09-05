@@ -12,8 +12,6 @@ public class Bullet : SelfWorldBoundsDespawn
     // Specific to gun
     protected bool isPlayerBullet = true;
     protected float muzzleVelocity = 0;
-    protected float mass = 0;
-    protected float boost = 1f;
     protected float damageDealt = 0;
     protected bool hasFiniteLifetime = false;
     protected bool overPenetrates = false;
@@ -21,24 +19,6 @@ public class Bullet : SelfWorldBoundsDespawn
     protected float timeSinceShot = 0;
 
     internal List<GameObject> alreadyHit = new List<GameObject>();
-
-    /// <summary>Speed of bullet out of the gun.</summary>
-    public float MuzzleVelocity
-    {
-        get => muzzleVelocity;
-    }
-
-    /// <summary>Mass of the bullet.</summary>
-    public float Mass
-    {
-        get => mass;
-    }
-
-    /// <summary>Amount of additional force given by a bullet (make negative to dampen effect of a shot)</summary>
-    public float Boost
-    {
-        get => boost;
-    }
 
     // Update is called once per frame
     public override void Update()
@@ -99,7 +79,6 @@ public class Bullet : SelfWorldBoundsDespawn
     public void Init(EditorObject.GunStats gunStats)
     {
         this.damageDealt = gunStats.DamageDealt;
-        this.mass = gunStats.Mass;
         this.muzzleVelocity = gunStats.MuzzleVelocity;
         this.isPlayerBullet = gunStats.PlayerBullet;
     }
@@ -128,11 +107,8 @@ public class Bullet : SelfWorldBoundsDespawn
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.tag == "Enemy" && isPlayerBullet)
-        {
-            DealDamageAndDespawn(other.gameObject);
-        }
-        else if (other.gameObject.tag == "Player" && !isPlayerBullet)
+        if ((other.gameObject.tag == "Enemy" && isPlayerBullet) ||
+            (other.gameObject.tag == "Player" && !isPlayerBullet))
         {
             DealDamageAndDespawn(other.gameObject);
         }

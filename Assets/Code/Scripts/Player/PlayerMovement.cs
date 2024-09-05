@@ -309,14 +309,6 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
-    /// <summary>Responds to the gun's NotifyShot event.</summary>
-    /// <param name="forceOfBulletOnBike">The force of the bullet to apply to the bike.</param>
-    public void ApplyShotForce(Vector3 forceOfBulletOnBike)
-    {
-        Rigidbody rb = GetComponent<Rigidbody>();
-        rb.AddForce(new Vector3(forceOfBulletOnBike.x, forceOfBulletOnBike.y, forceOfBulletOnBike.z));
-    }
-
     private void ApplyInitialState() 
     {
         transform.position = start_position;

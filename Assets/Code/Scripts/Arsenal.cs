@@ -59,12 +59,6 @@ public class Arsenal : MonoBehaviour, IResettable
 
             // Add weapon to dictionary
             weapons.Add(arsenalWeapons[i].GetPlayerWeaponType(), arsenalWeapons[i]);
-
-
-            if (arsenalWeapons[i] is Gun)
-            {
-                ((Gun)arsenalWeapons[i]).BulletShot += playerMovement.ApplyShotForce;
-            }
         }
     }
 
