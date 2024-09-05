@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using UnityEngine;
 // TODO: look at https://johnleonardfrench.com/ultimate-guide-to-playscheduled-in-unity/
 
@@ -15,6 +16,8 @@ public class Jukebox : MonoBehaviour, IResettable
 
     [SerializeField] private DualAudioEmitter musicPlayer;
     [SerializeField] private DualAudioEmitter radioClipPlayer;
+    [SerializeField] private float volume = 0.5f;
+    public float Volume { get => volume; set => volume = value; }
 
     double nextAudioLoopTime;
     double nextWaveSpawnTime;
@@ -35,6 +38,7 @@ public class Jukebox : MonoBehaviour, IResettable
         InitializeDualAudioEmitter(musicPlayer);
         InitializeDualAudioEmitter(radioClipPlayer);
 
+        musicPlayer.SetVolume(volume);
 
         canPlay = false;
         nextAudioLoopDifference = 0;
@@ -42,6 +46,7 @@ public class Jukebox : MonoBehaviour, IResettable
         GameStateController.playing.notifyListenersEnter += HandlePlayingEnter;
         GameStateController.playing.notifyListenersExit += HandlePlayingExit;
         GameStateController.levelComplete.notifyListenersEnter += HandleLevelComplete;
+        GameStateController.playerDead.notifyListenersEnter += HandlePlayingExit;
 
         radioWasPlayingLastFrame = false;
     }
@@ -130,12 +135,18 @@ public class Jukebox : MonoBehaviour, IResettable
         }
     }
 
+    /// <summary>
+    /// Returns the duration of the clip
+    /// </summary>
+    /// <param name="clip">Audio clip to measure</param>
+    /// <returns>A double representing time</returns>
     private double GetClipDuration(AudioClip clip)
     {
         double duration = (double)clip.samples / clip.frequency;
         return duration;
     }
 
+    //Resets music and radio players, disallows music playing (due to resetting state)
     public void ResetGameObject()
     {
         musicPlayer.ResetGameObject();
