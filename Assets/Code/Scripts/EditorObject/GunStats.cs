@@ -20,6 +20,7 @@ namespace EditorObject
         [SerializeField] private bool playerBullet = true;
         [SerializeField] private float fireRate = 10f;
 
+        [SerializeField] private bool infiniteAmmo = true;
         [SerializeField] private int magazineSize = 200;
 
 
@@ -40,6 +41,7 @@ namespace EditorObject
         public BulletType BulletType { get { return bulletType; } }
         public bool PlayerBullet { get { return playerBullet; } }
         public float FireRate { get { return fireRate;  } }
+        public bool InfiniteAmmo { get { return infiniteAmmo; } }
         public int MagazineSize { get { return magazineSize; } }
 
         public float DamageDealt {  get { return damageDealt; } }

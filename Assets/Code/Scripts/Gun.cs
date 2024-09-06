@@ -275,7 +275,7 @@ public class Gun : MonoBehaviour
     {
         if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire )
         {
-            if (ammoCount > 0) 
+            if (ammoCount > 0 || gunStats.InfiniteAmmo) 
             {
                 nextTimeToFire = Time.time + (1f / gunStats.FireRate);
                 switch (gunStats.BulletType)
@@ -289,7 +289,6 @@ public class Gun : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Ammo count: " + ammoCount);
     }
 
     /// <summary>
@@ -307,7 +306,8 @@ public class Gun : MonoBehaviour
         Vector3 shotDir = BulletSpawn.transform.forward;
 
         bullet.Shoot(BulletSpawn.transform.position, shotDir, player.Velocity);
-        ammoCount--;
+
+        UpdateAmmo();
     }
 
     private void FireHitScan()
@@ -325,7 +325,12 @@ public class Gun : MonoBehaviour
 
         }
         // TODO: Play muzzleflash particlesystem
-        ammoCount--;
+        UpdateAmmo();
+    }
+
+    private void UpdateAmmo() 
+    {
+        ammoCount = gunStats.InfiniteAmmo ? ammoCount : ammoCount - 1;
     }
 
     private void DealDamage(GameObject other)
