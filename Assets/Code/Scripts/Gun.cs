@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 public class Gun : MonoBehaviour
@@ -207,6 +208,8 @@ public class Gun : MonoBehaviour
 
     private float nextTimeToFire = 0.0f;
 
+    private int ammoCount = 0;
+
 
     // TODO: Create muzzle flash particlesystem with flashing point light
     // TODO: Create impact particlesystem with flashing point light
@@ -228,7 +231,7 @@ public class Gun : MonoBehaviour
 
 
         crossHair.SetActive(gunStats.IsTurret);
-        
+        ResetGameObject();
     }
 
     // Update is called once per frame
@@ -251,10 +254,12 @@ public class Gun : MonoBehaviour
         }
     }
 
-    public void Init(EditorObject.GunStats gunStats)
+    public void ResetGameObject() 
     {
-        this.gunStats = gunStats;
+        ammoCount = gunStats.MagazineSize;
     }
+
+    // TODO: have a method to add ammo and return remainder
 
     protected void InitializeBulletPool() 
     {
@@ -268,19 +273,23 @@ public class Gun : MonoBehaviour
 
     private void UpdateGun() 
     {
-        if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire)
+        if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire )
         {
-            nextTimeToFire = Time.time + (1f / gunStats.FireRate);
-            switch (gunStats.BulletType)
+            if (ammoCount > 0) 
             {
-                case EditorObject.BulletType.Projectile:
-                    FireProjectile();
-                    break;
-                case EditorObject.BulletType.HitScan:
-                    FireHitScan();
-                    break;
+                nextTimeToFire = Time.time + (1f / gunStats.FireRate);
+                switch (gunStats.BulletType)
+                {
+                    case EditorObject.BulletType.Projectile:
+                        FireProjectile();
+                        break;
+                    case EditorObject.BulletType.HitScan:
+                        FireHitScan();
+                        break;
+                }
             }
         }
+        Debug.Log("Ammo count: " + ammoCount);
     }
 
     /// <summary>
@@ -298,6 +307,7 @@ public class Gun : MonoBehaviour
         Vector3 shotDir = BulletSpawn.transform.forward;
 
         bullet.Shoot(BulletSpawn.transform.position, shotDir, player.Velocity);
+        ammoCount--;
     }
 
     private void FireHitScan()
@@ -315,6 +325,7 @@ public class Gun : MonoBehaviour
 
         }
         // TODO: Play muzzleflash particlesystem
+        ammoCount--;
     }
 
     private void DealDamage(GameObject other)

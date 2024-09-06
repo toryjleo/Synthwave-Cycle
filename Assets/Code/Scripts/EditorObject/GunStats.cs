@@ -20,6 +20,8 @@ namespace EditorObject
         [SerializeField] private bool playerBullet = true;
         [SerializeField] private float fireRate = 10f;
 
+        [SerializeField] private int magazineSize = 200;
+
 
         #region Bullet
         [SerializeField] private float damageDealt = 70;
@@ -38,6 +40,7 @@ namespace EditorObject
         public BulletType BulletType { get { return bulletType; } }
         public bool PlayerBullet { get { return playerBullet; } }
         public float FireRate { get { return fireRate;  } }
+        public int MagazineSize { get { return magazineSize; } }
 
         public float DamageDealt {  get { return damageDealt; } }
         public float MuzzleVelocity {  get { return muzzleVelocity; } }
