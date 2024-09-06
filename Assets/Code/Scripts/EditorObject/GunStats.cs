@@ -15,6 +15,7 @@ namespace EditorObject
     [CreateAssetMenu(menuName = "EditorObject/GunStats", fileName = "New GunStats")]
     public class GunStats : ScriptableObject
     {
+        [SerializeField] private bool isTurret = false;
         [SerializeField] private BulletType bulletType;
         [SerializeField] private bool playerBullet = true;
         [SerializeField] private float fireRate = 10f;
@@ -33,6 +34,7 @@ namespace EditorObject
         #endregion
 
         #region Properties
+        public bool IsTurret { get { return isTurret; } }
         public BulletType BulletType { get { return bulletType; } }
         public bool PlayerBullet { get { return playerBullet; } }
         public float FireRate { get { return fireRate;  } }

@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 401f65c6e22c3214ba4591335c82ef86, type: 3}
   m_Name: TestGun
   m_EditorClassIdentifier: 
-  bulletType: 0
+  bulletType: 1
   playerBullet: 1
   fireRate: 10
   damageDealt: 70
-  mass: 0.5
   muzzleVelocity: 60
   range: 100
