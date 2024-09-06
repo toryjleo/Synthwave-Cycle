@@ -223,13 +223,19 @@ public class Gun : MonoBehaviour
         inputManager = new InputManager();
         InitializeBulletPool();
         player = FindObjectOfType<PlayerMovement>();
+
+
+        crossHair.SetActive(gunStats.IsTurret);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        inputManager.UpdateInputMethod();
+        if (gunStats.IsTurret) 
+        {
+            inputManager.UpdateInputMethod();
+        }
 
         UpdateGun();
     }
@@ -237,7 +243,7 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (GameStateController.CanRunGameplay)
+        if (gunStats.IsTurret && GameStateController.CanRunGameplay)
         {
             UpdateTurretDirection();
         }
