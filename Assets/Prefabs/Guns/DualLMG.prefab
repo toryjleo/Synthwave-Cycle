@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2229553529393950632
+--- !u!1 &490074081577700557
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,45 +8,28 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2598309447339540441}
-  - component: {fileID: 1218146661081941940}
+  - component: {fileID: 1140667315233590840}
   m_Layer: 0
-  m_Name: GunLogic [Gun]
+  m_Name: BulletSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2598309447339540441
+--- !u!4 &1140667315233590840
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2229553529393950632}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.3, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_GameObject: {fileID: 490074081577700557}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: -2.0560005, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 8}
   m_Children: []
-  m_Father: {fileID: 3958296069600219862}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &1218146661081941940
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2229553529393950632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3e128714994517489e9ffcccf0cf9ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  crossHair: {fileID: 5114472430233548999}
-  gunStats: {fileID: 11400000, guid: daa7f538aa123c04baf8df49e9dd3632, type: 2}
-  bulletPrefab: {fileID: 5230005726319368862, guid: 084e10c8016e91741a5756a57400916f, type: 3}
-  bulletPoolSize: 200
+  m_Father: {fileID: 3019377646819263275}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3958296069600219860
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,6 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3958296069600219862}
+  - component: {fileID: 282783825117958716}
   m_Layer: 0
   m_Name: DualLMG
   m_TagString: Untagged
@@ -75,11 +59,27 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3019377646819263275}
-  - {fileID: 2598309447339540441}
   - {fileID: 873186383875857243}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &282783825117958716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3958296069600219860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3e128714994517489e9ffcccf0cf9ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crossHair: {fileID: 5114472430233548999}
+  BulletSpawn: {fileID: 490074081577700557}
+  gunStats: {fileID: 11400000, guid: daa7f538aa123c04baf8df49e9dd3632, type: 2}
+  bulletPrefab: {fileID: 5230005726319368862, guid: 084e10c8016e91741a5756a57400916f, type: 3}
+  bulletPoolSize: 200
 --- !u!1 &5114472430233548999
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,7 +109,7 @@ Transform:
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 3958296069600219862}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!212 &6688370472509533041
 SpriteRenderer:
@@ -188,13 +188,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7744950255903025369}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.042, y: -0, z: 0}
+  m_LocalRotation: {x: -0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 1.149}
   m_LocalScale: {x: 1, y: 0.25, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1140667315233590840}
   m_Father: {fileID: 3958296069600219862}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 90}
 --- !u!33 &5088856888192881930
 MeshFilter:
   m_ObjectHideFlags: 0

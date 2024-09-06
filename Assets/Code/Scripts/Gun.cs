@@ -201,6 +201,8 @@ public class Gun : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject crossHair;
 
+    [SerializeField] private GameObject BulletSpawn;
+
     [SerializeField] private EditorObject.GunStats gunStats;
 
     private float nextTimeToFire = 0.0f;
@@ -293,15 +295,15 @@ public class Gun : MonoBehaviour
     private void FireProjectile()
     {
         Bullet bullet = bulletPool.SpawnFromPool();
-        Vector3 shotDir = transform.forward;
+        Vector3 shotDir = BulletSpawn.transform.forward;
 
-        bullet.Shoot(transform.position, shotDir, player.Velocity);
+        bullet.Shoot(BulletSpawn.transform.position, shotDir, player.Velocity);
     }
 
     private void FireHitScan()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, gunStats.Range)) 
+        if (Physics.Raycast(BulletSpawn.transform.position, BulletSpawn.transform.forward, out hit, gunStats.Range)) 
         {
             Debug.Log(hit.transform.name);
 
