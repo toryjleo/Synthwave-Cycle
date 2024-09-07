@@ -271,9 +271,23 @@ public class Gun : MonoBehaviour
         bulletPool.Init(gunStats, bulletPrefab, bulletPoolSize);
     }
 
+    private bool CanShoot() 
+    {
+        bool isTimeToFire = Time.time >= nextTimeToFire;
+        if (gunStats.IsAutomatic)
+        {
+            return Input.GetButton("Fire1") && isTimeToFire;
+        }
+        else
+        {
+            return Input.GetButtonDown("Fire1") && isTimeToFire;
+        }
+        
+    }
+
     private void UpdateGun() 
     {
-        if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire )
+        if (CanShoot())
         {
             if (ammoCount > 0 || gunStats.InfiniteAmmo) 
             {

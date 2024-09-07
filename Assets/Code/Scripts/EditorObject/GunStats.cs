@@ -16,6 +16,7 @@ namespace EditorObject
     public class GunStats : ScriptableObject
     {
         [SerializeField] private bool isTurret = false;
+        [SerializeField] private bool isAutomatic = true;
         [SerializeField] private BulletType bulletType;
         [SerializeField] private bool playerBullet = true;
         [SerializeField] private float fireRate = 10f;
@@ -38,6 +39,7 @@ namespace EditorObject
 
         #region Properties
         public bool IsTurret { get { return isTurret; } }
+        public bool IsAutomatic { get { return isAutomatic; } }
         public BulletType BulletType { get { return bulletType; } }
         public bool PlayerBullet { get { return playerBullet; } }
         public float FireRate { get { return fireRate;  } }
