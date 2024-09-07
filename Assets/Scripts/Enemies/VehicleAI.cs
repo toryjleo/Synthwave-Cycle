@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /// <summary>Class<c>VehicleAI</c> 
 /// VehicleAI holds all the code that makes an enemy Vehicle different form other enemy types
@@ -19,7 +20,8 @@ public abstract class VehicleAi : Ai
     [SerializeField]
     public GameObject itemDrop;
 
-    public Transform movementTarget;
+    [SerializeField]
+    public GameObject movementTargetPosition;
 
     //How much directional/rotational force effects the player on a ram
     private const float MAX_RANDOM_TORQUE = 4500f;
@@ -29,7 +31,7 @@ public abstract class VehicleAi : Ai
     //When it exceeds TIME_BY_TARGET_TO_ATTACK the car is ready to attack
     internal float timeByTarget = 0;
     internal float TIME_BY_TARGET_TO_ATTACK;
-    internal const float CONFIDENCE_BUILD_DISTANCE = 25f;
+    internal const float CONFIDENCE_BUILD_DISTANCE = 45f;
 
     public override void NewLife()
     {
@@ -47,9 +49,9 @@ public abstract class VehicleAi : Ai
         {
             base.Update();
             //Handle confidence/attack timing
-            if (movementTarget != null)
+            if (movementTargetPosition != null)
             {
-                if (Vector3.Distance(transform.position, movementTarget.transform.position) <= CONFIDENCE_BUILD_DISTANCE)
+                if (Vector3.Distance(transform.position, target.transform.position) <= CONFIDENCE_BUILD_DISTANCE)
                 {
                     timeByTarget += Time.deltaTime;
                 }
@@ -117,11 +119,6 @@ public abstract class VehicleAi : Ai
                                 ForceMode.Impulse);
         vehicleController.enabled = false;
         Instantiate(itemDrop, this.transform.position, Quaternion.identity);
-    }
-
-    public override Enemy GetEnemyType()
-    {
-        return Enemy.Car;
     }
 
     public override void Attack()

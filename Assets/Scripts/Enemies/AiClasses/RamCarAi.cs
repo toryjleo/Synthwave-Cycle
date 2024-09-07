@@ -11,6 +11,10 @@ public class RamCarAi : VehicleAi
     public override void Attack()
     {
 
+    } 
+    public override Enemy GetEnemyType()
+    {
+        return Enemy.RamCar;
     }
 
     public override void UpdateMovementLocation()
@@ -18,8 +22,9 @@ public class RamCarAi : VehicleAi
         //RamCar just drives directly into the player (if targeted)
         if (target != null)
         {
-            movementTarget = target.transform;
-            vehicleController.target = movementTarget;
+            movementTargetPosition.transform.position = target.transform.position;
+            //movementTargetPosition.transform.position = (Vector3.Normalize(this.transform.position - target.transform.position) + target.transform.position) * 2;
+            vehicleController.target = movementTargetPosition.transform;
         }
     }
 }

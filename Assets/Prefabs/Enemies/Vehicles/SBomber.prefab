@@ -5795,10 +5795,10 @@ GameObject:
   - component: {fileID: 2279930514937360766}
   - component: {fileID: 2279930514937360767}
   - component: {fileID: 2279930514937360736}
-  - component: {fileID: 2279930514937360738}
   - component: {fileID: 3840444340308158616}
+  - component: {fileID: 613234458188402560}
   m_Layer: 0
-  m_Name: RamCar
+  m_Name: SBomber
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5813,12 +5813,13 @@ Transform:
   m_GameObject: {fileID: 2279930514937360740}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.15591678, y: 0, z: 40.742332}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
   - {fileID: 2279930515495505835}
   - {fileID: 2279930514488642044}
   - {fileID: 5139462360389459686}
-  - {fileID: 8900183797086201551}
+  - {fileID: 6587410343638451361}
+  - {fileID: 1401623557681521575}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5868,9 +5869,9 @@ MonoBehaviour:
   drivableSurface:
     serializedVersion: 2
     m_Bits: 4294967295
-  MaxSpeed: 75
-  accelaration: 15
-  turn: 60
+  MaxSpeed: 65
+  accelaration: 30
+  turn: 80
   rb: {fileID: 2279930515495505838}
   carBody: {fileID: 2279930514937360765}
   frictionCurve:
@@ -6151,36 +6152,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2279930514937360738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2279930514937360740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22d6bb83efa152e40966022e91663b6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  rb: {fileID: 2279930514937360765}
-  myGun: {fileID: 0}
-  hp: {fileID: 0}
-  StartingHP: 200
-  maxSpeed: 10
-  maxForce: 5
-  score: 100
-  dlScore: 10
-  attackRange: 15
-  minimumRange: 15
-  alive: 1
-  speedBoost: 0
-  vehicleController: {fileID: 2279930514937360766}
-  DamageMultiplyer: 1
-  RamModifier: 0.2
-  itemDrop: {fileID: 2157447271029124370, guid: f07931c8c60cd724e8844ab074e56069, type: 3}
-  movementTargetPosition: {fileID: 8202032198735747249}
 --- !u!114 &3840444340308158616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6194,6 +6165,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hitPoints: 0
+--- !u!114 &613234458188402560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2279930514937360740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f7c2bb67d9e4a54abccfd3d0819cdd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  rb: {fileID: 2279930514937360765}
+  myGun: {fileID: 0}
+  hp: {fileID: 0}
+  StartingHP: 50
+  maxSpeed: 10
+  maxForce: 5
+  score: 30
+  dlScore: 5
+  attackRange: 15
+  minimumRange: 15
+  alive: 1
+  speedBoost: 0
+  vehicleController: {fileID: 2279930514937360766}
+  DamageMultiplyer: 1
+  RamModifier: 0.2
+  itemDrop: {fileID: 2157447271029124370, guid: f07931c8c60cd724e8844ab074e56069, type: 3}
+  movementTargetPosition: {fileID: 6796091550952333636}
+  ExplosionDamage: 50
+  AttackTelegraph: {fileID: 6633049976547049146}
 --- !u!1 &2279930514973692283
 GameObject:
   m_ObjectHideFlags: 0
@@ -21862,7 +21865,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &7329361944730113372
+--- !u!1 &6633049976547049146
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21870,45 +21873,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4988832717603164114}
-  - component: {fileID: 7314363514248360517}
-  - component: {fileID: 7664972868109094256}
+  - component: {fileID: 1401623557681521575}
+  - component: {fileID: 3371111785029449987}
+  - component: {fileID: 3685595565479207035}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: AttackCharge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4988832717603164114
+  m_IsActive: 0
+--- !u!4 &1401623557681521575
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7329361944730113372}
+  m_GameObject: {fileID: 6633049976547049146}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.14, y: 2.19, z: -0.41}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
-  m_Father: {fileID: 8900183797086201551}
-  m_RootOrder: 0
+  m_Father: {fileID: 2279930514937360763}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7314363514248360517
+--- !u!33 &3371111785029449987
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7329361944730113372}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &7664972868109094256
+  m_GameObject: {fileID: 6633049976547049146}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &3685595565479207035
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7329361944730113372}
+  m_GameObject: {fileID: 6633049976547049146}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -21943,7 +21946,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &8202032198735747249
+--- !u!1 &6796091550952333636
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21951,7 +21954,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8900183797086201551}
+  - component: {fileID: 6587410343638451361}
   m_Layer: 0
   m_Name: MovementTarget
   m_TagString: Untagged
@@ -21959,18 +21962,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8900183797086201551
+--- !u!4 &6587410343638451361
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8202032198735747249}
+  m_GameObject: {fileID: 6796091550952333636}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3368307, y: -2.0643513, z: -1.1244812}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4988832717603164114}
+  m_LocalPosition: {x: 0.015101135, y: 1.0469143, z: -38.380417}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_Children: []
   m_Father: {fileID: 2279930514937360763}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
