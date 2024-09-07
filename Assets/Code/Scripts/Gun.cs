@@ -282,7 +282,6 @@ public class Gun : MonoBehaviour
         {
             return Input.GetButtonDown("Fire1") && isTimeToFire;
         }
-        
     }
 
     private void UpdateGun() 
@@ -331,8 +330,8 @@ public class Gun : MonoBehaviour
         {
             Debug.Log(hit.transform.name);
 
-            if ((hit.transform.tag == "Enemy" && gunStats.PlayerBullet) ||
-                (hit.transform.tag == "Player" && !gunStats.PlayerBullet))
+            if ((hit.transform.tag == "Enemy" && gunStats.IsPlayerBullet) ||
+                (hit.transform.tag == "Player" && !gunStats.IsPlayerBullet))
             {
                 DealDamage(hit.transform.gameObject);
             }

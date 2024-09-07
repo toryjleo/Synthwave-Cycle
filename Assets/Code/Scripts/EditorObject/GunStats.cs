@@ -18,7 +18,8 @@ namespace EditorObject
         [SerializeField] private bool isTurret = false;
         [SerializeField] private bool isAutomatic = true;
         [SerializeField] private BulletType bulletType;
-        [SerializeField] private bool playerBullet = true;
+        [SerializeField] private bool isPlayerBullet = true;
+        [SerializeField] private bool isBurstFire = false;
         [SerializeField] private float fireRate = 10f;
 
         [SerializeField] private bool infiniteAmmo = true;
@@ -41,7 +42,7 @@ namespace EditorObject
         public bool IsTurret { get { return isTurret; } }
         public bool IsAutomatic { get { return isAutomatic; } }
         public BulletType BulletType { get { return bulletType; } }
-        public bool PlayerBullet { get { return playerBullet; } }
+        public bool IsPlayerBullet { get { return isPlayerBullet; } }
         public float FireRate { get { return fireRate;  } }
         public bool InfiniteAmmo { get { return infiniteAmmo; } }
         public int MagazineSize { get { return magazineSize; } }
