@@ -82,6 +82,8 @@ public abstract class VehicleAi : Ai
         DeadEvent += CarDeath;
         this.Despawn += op_ProcessCompleted;
         hp.Init(StartingHP);
+        base.Init();
+        vehicleController.MaxSpeed = maxSpeed; //Must ba called after base.Init()
     }
 
     public override void SetTarget(GameObject targ)

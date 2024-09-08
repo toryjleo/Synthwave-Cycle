@@ -6168,14 +6168,14 @@ MonoBehaviour:
   myGun: {fileID: 0}
   hp: {fileID: 0}
   StartingHP: 200
-  maxSpeed: 10
   maxForce: 5
   score: 100
   dlScore: 10
   attackRange: 15
   minimumRange: 15
   alive: 1
-  speedBoost: 0
+  movementGroup: 3
+  gearModifier: 0.75
   vehicleController: {fileID: 2279930514937360766}
   DamageMultiplyer: 1
   RamModifier: 0.2

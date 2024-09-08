@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wavesInTrack: 1
   waveEnemies:
-  - enemyType: 0
-    spawnLocation: 0
+  - enemyType: 1
+    spawnLocation: 1
   waveType: 0
   DLThreshold: 1
   TrackVariation: {fileID: 8300000, guid: c1ef04b1e32f3f641b7eb74571b6e121, type: 3}

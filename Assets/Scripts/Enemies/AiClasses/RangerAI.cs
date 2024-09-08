@@ -6,7 +6,7 @@ public class RangerAi : InfantryAI
 {
     public GameObject muzzleLocation; // Empty GameObject set to the location of the barrel
 
-    void Awake()
+    private void Awake()
     {
         Init();
     }

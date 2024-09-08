@@ -25,14 +25,17 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
 
     public float StartingHP;
 
-    public float maxSpeed;
+    internal float maxSpeed;
     public float maxForce;
     public float score;
     public float dlScore;
     public float attackRange;
     public float minimumRange;
     public bool alive;
-    public float speedBoost;
+    [SerializeField]
+    public int movementGroup; //Each enemy's speed is relative to a player's gear
+    [SerializeField]
+    public float gearModifier; //Top speed is determined as a percentage of the gear's max speed
 
     public event NotifyDeath DeadEvent; // event
     public event NotifyRespawn RespawnEvent; // event
@@ -54,6 +57,27 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     void Awake()
     {
         Init();
+    }
+
+    public override void Init()
+    {
+        PlayerMovement pm = FindObjectOfType<PlayerMovement>();
+        if (pm != null)
+        {
+
+            switch (movementGroup)
+            {
+                case 1:
+                    maxSpeed = pm.TopSpeedMovementGroup1 * gearModifier;
+                    break;
+                case 2:
+                    maxSpeed = pm.TopSpeedMovementGroup2 * gearModifier;
+                    break;
+                case 3:
+                    maxSpeed = pm.TopSpeedMovementGroup3 * gearModifier;
+                    break;
+            }
+        }
     }
 
     public virtual void Aim(Vector3 aimAt)
@@ -90,7 +114,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     /// This method works for ranged Enemies that do not get into direct melee range with the target
     /// </summary>
     /// <param name="target"> Vector to target </param>
-    public virtual void Move(Vector3 target, bool speedBoosted = false) //This can be used for Enemies that stay at range and dont run into melee.
+    public virtual void Move(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee.
     {
             Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be
             float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points
@@ -100,16 +124,15 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
                                     // but that movement has to be constant or at least adaptable, which is what the next part does
             transform.LookAt(target);
 
-            //Currently Walking twoards the target
-
+        //Currently Walking twoards the target
+        Debug.Log("Max Speed: " + maxSpeed);
             if (dMag < maxSpeed)
             {
                 desiredVec *= dMag;
-
             }
             else
             {
-                desiredVec *= maxSpeed + (speedBoosted? speedBoost : 0f);
+            desiredVec *= maxSpeed;
             }
             Vector3 steer = desiredVec - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
             applyForce(steer);

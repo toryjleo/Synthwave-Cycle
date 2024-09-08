@@ -1372,14 +1372,14 @@ MonoBehaviour:
   myGun: {fileID: 250586739251281370}
   hp: {fileID: 6314909711948171325}
   StartingHP: 20
-  maxSpeed: 15
   maxForce: 0
   score: 100
   dlScore: 10
   attackRange: 70
   minimumRange: 10
   alive: 1
-  speedBoost: 20
+  movementGroup: 1
+  gearModifier: 0.75
   animationStateController: {fileID: 0}
   muzzleLocation: {fileID: 0}
 --- !u!54 &3874834857555224720
