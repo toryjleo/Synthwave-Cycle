@@ -88,6 +88,11 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        /// <summary>
+        /// Get the top speed of a given gear
+        /// </summary>
+        /// <param name="gear">Gear to query</param>
+        /// <returns>The top speed of the specified gear</returns>
         public float GetSpeedForGearAt(GearType gear)
         {
             if (gears.Count != 3) 
