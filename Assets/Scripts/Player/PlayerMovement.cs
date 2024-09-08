@@ -90,6 +90,10 @@ public class PlayerMovement : MonoBehaviour
 
         public float GetSpeedForGearAt(GearType gear)
         {
+            if (gears.Count != 3) 
+            {
+                Debug.LogError("Not enough gears specified in PlayerMovement");
+            }
             return gears[(int)gear].YScale;
         }
 
@@ -160,17 +164,17 @@ public class PlayerMovement : MonoBehaviour
         } 
     }
 
-    public float MovementGroup1TopSpeed
+    public float TopSpeedMovementGroup1
     {
         get { return gearManager.GetSpeedForGearAt(GearType.Gear1); }
     }
 
-    public float MovementGroup2TopSpeed
+    public float TopSpeedMovementGroup2
     {
         get { return gearManager.GetSpeedForGearAt(GearType.Gear2); }
     }
 
-    public float MovementGroup3TopSpeed
+    public float TopSpeedMovementGroup3
     {
         get { return gearManager.GetSpeedForGearAt(GearType.Gear3); }
     }
