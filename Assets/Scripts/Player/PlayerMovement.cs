@@ -88,6 +88,11 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        public float GetSpeedForGearAt(GearType gear)
+        {
+            return gears[(int)gear].YScale;
+        }
+
     }
     #endregion
 
@@ -153,6 +158,21 @@ public class PlayerMovement : MonoBehaviour
             }
             
         } 
+    }
+
+    public float MovementGroup1TopSpeed
+    {
+        get { return gearManager.GetSpeedForGearAt(GearType.Gear1); }
+    }
+
+    public float MovementGroup2TopSpeed
+    {
+        get { return gearManager.GetSpeedForGearAt(GearType.Gear2); }
+    }
+
+    public float MovementGroup3TopSpeed
+    {
+        get { return gearManager.GetSpeedForGearAt(GearType.Gear3); }
     }
     #endregion
 
