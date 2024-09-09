@@ -20,7 +20,8 @@ namespace EditorObject
         [SerializeField] private BulletType bulletType;
         [SerializeField] private bool isPlayerBullet = true;
         [SerializeField] private bool isBurstFire = false;
-        [SerializeField] private int numBurstShots = 2;
+        [SerializeField] private int numBurstShots = 2; // TODO: Enforce 1 burst shot when burstFire off
+        [SerializeField] private float timeBetweenBurstShots = .01f; // TODO: Enforce positive
         [SerializeField] private float fireRate = 10f;
 
         [SerializeField] private bool infiniteAmmo = true;
@@ -47,6 +48,7 @@ namespace EditorObject
 
         public bool IsBurstFire { get { return isBurstFire; } }
         public int NumBurstShots { get { return numBurstShots; } }
+        public float TimeBetweenBurstShots { get { return timeBetweenBurstShots; } }
 
 
         public float FireRate { get { return fireRate;  } }

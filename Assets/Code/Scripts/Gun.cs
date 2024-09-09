@@ -209,7 +209,7 @@ public class Gun : MonoBehaviour
     private float nextTimeToFire = 0.0f;
 
     private int ammoCount = 0;
-    private int numBurstShotsLeft = 0;
+    private int burstShotsLeftCount = 0;
 
     GunState.StateController stateController = null;
 
@@ -232,13 +232,12 @@ public class Gun : MonoBehaviour
         InitializeBulletPool();
         player = FindObjectOfType<PlayerMovement>();
 
+        stateController = new GunState.StateController();
+        stateController.inUse.notifyListenersEnter += HandleInUseEnter;
+
 
         crossHair.SetActive(gunStats.IsTurret);
         ResetGameObject();
-
-
-        stateController = new GunState.StateController();
-        stateController.inUse.notifyListenersEnter += HandleInUseEnter;
     }
 
     // Update is called once per frame
@@ -281,11 +280,6 @@ public class Gun : MonoBehaviour
 
     private bool CanShoot() 
     {
-        if (gunStats.IsBurstFire && numBurstShotsLeft > 0) 
-        {
-            return false;
-        }
-
         if (gunStats.IsAutomatic)
         {
             return Input.GetButton("Fire1") && stateController.CanShoot && stateController.HasAmmo;
@@ -301,14 +295,30 @@ public class Gun : MonoBehaviour
         nextTimeToFire = Mathf.Clamp(nextTimeToFire - deltaTime, 0, float.MaxValue);
 
         if (nextTimeToFire <= 0) 
-        { 
-            stateController.HandleTrigger(GunState.StateTrigger.TimeToFireComplete);
+        {
+            if (burstShotsLeftCount == 0) 
+            {
+                stateController.HandleTrigger(GunState.StateTrigger.TimeToFireComplete);
+                nextTimeToFire = gunStats.TimeBetweenBurstShots;
+            }
+            else
+            {
+                stateController.HandleTrigger(GunState.StateTrigger.Fire);
+                burstShotsLeftCount--;
+                nextTimeToFire = gunStats.TimeBetweenBurstShots;
+            }
+            
         }
         
         if (CanShoot())
         {
             stateController.HandleTrigger(GunState.StateTrigger.Fire);
-            
+            burstShotsLeftCount = gunStats.NumBurstShots;
+            burstShotsLeftCount--;
+            if (gunStats.IsBurstFire) 
+            {
+                nextTimeToFire = gunStats.TimeBetweenBurstShots;
+            }
         }
     }
 
@@ -327,8 +337,6 @@ public class Gun : MonoBehaviour
         Vector3 shotDir = BulletSpawn.transform.forward;
 
         bullet.Shoot(BulletSpawn.transform.position, shotDir, player.Velocity);
-
-        ReduceAmmo();
     }
 
     private void FireHitScan()
@@ -346,7 +354,6 @@ public class Gun : MonoBehaviour
 
         }
         // TODO: Play muzzleflash particlesystem
-        ReduceAmmo();
     }
 
     private void ReduceAmmo() 
@@ -377,7 +384,6 @@ public class Gun : MonoBehaviour
 
     private void HandleInUseEnter()
     {
-        nextTimeToFire = (1f / gunStats.FireRate);
         switch (gunStats.BulletType)
         {
             case EditorObject.BulletType.Projectile:
@@ -387,5 +393,6 @@ public class Gun : MonoBehaviour
                 FireHitScan();
                 break;
         }
+        ReduceAmmo();
     }
 }

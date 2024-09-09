@@ -108,6 +108,9 @@ namespace GunState
                 case StateTrigger.OutOfAmmo:
                     Exit();
                     return stateController.outOfAmmo;
+                case StateTrigger.Fire:
+                    Exit();
+                    return stateController.inUse;
                 default:
                     return null;
             }
