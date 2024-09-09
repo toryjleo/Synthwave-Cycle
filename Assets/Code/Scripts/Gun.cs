@@ -210,6 +210,8 @@ public class Gun : MonoBehaviour
 
     private int ammoCount = 0;
 
+    GunState.StateController stateController = null;
+
 
     // TODO: Create muzzle flash particlesystem with flashing point light
     // TODO: Create impact particlesystem with flashing point light
@@ -219,7 +221,7 @@ public class Gun : MonoBehaviour
     [SerializeField] private int bulletPoolSize = 200;
     #endregion
 
-    private PlayerMovement player;
+    private PlayerMovement player = null;
 
 
     // Start is called before the first frame update
@@ -257,6 +259,7 @@ public class Gun : MonoBehaviour
     public void ResetGameObject() 
     {
         ammoCount = gunStats.MagazineSize;
+        stateController = new GunState.StateController();
     }
 
     // TODO: have a method to add ammo and return remainder
@@ -271,9 +274,8 @@ public class Gun : MonoBehaviour
         bulletPool.Init(gunStats, bulletPrefab, bulletPoolSize);
     }
 
-    private bool CanShoot() 
+    private bool CanShoot(bool isTimeToFire) 
     {
-        bool isTimeToFire = Time.time >= nextTimeToFire;
         if (gunStats.IsAutomatic)
         {
             return Input.GetButton("Fire1") && isTimeToFire;
@@ -286,8 +288,15 @@ public class Gun : MonoBehaviour
 
     private void UpdateGun() 
     {
-        if (CanShoot())
+        bool isTimeToFire = Time.time >= nextTimeToFire;
+        if (isTimeToFire) 
+        { 
+            stateController.HandleTrigger(GunState.StateTrigger.TimeToFireComplete);
+        }
+        
+        if (CanShoot(isTimeToFire))
         {
+            stateController.HandleTrigger(GunState.StateTrigger.Fire);
             if (ammoCount > 0 || gunStats.InfiniteAmmo) 
             {
                 nextTimeToFire = Time.time + (1f / gunStats.FireRate);
