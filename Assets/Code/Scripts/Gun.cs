@@ -209,6 +209,7 @@ public class Gun : MonoBehaviour
     private float nextTimeToFire = 0.0f;
 
     private int ammoCount = 0;
+    private int numBurstShotsLeft = 0;
 
     GunState.StateController stateController = null;
 
@@ -234,6 +235,10 @@ public class Gun : MonoBehaviour
 
         crossHair.SetActive(gunStats.IsTurret);
         ResetGameObject();
+
+
+        stateController = new GunState.StateController();
+        stateController.inUse.notifyListenersEnter += HandleInUseEnter;
     }
 
     // Update is called once per frame
@@ -244,7 +249,7 @@ public class Gun : MonoBehaviour
             inputManager.UpdateInputMethod();
         }
 
-        UpdateGun();
+        UpdateGun(Time.deltaTime);
     }
 
     // Update is called once per frame
@@ -259,7 +264,7 @@ public class Gun : MonoBehaviour
     public void ResetGameObject() 
     {
         ammoCount = gunStats.MagazineSize;
-        stateController = new GunState.StateController();
+        stateController.Reset();
     }
 
     // TODO: have a method to add ammo and return remainder
@@ -274,42 +279,36 @@ public class Gun : MonoBehaviour
         bulletPool.Init(gunStats, bulletPrefab, bulletPoolSize);
     }
 
-    private bool CanShoot(bool isTimeToFire) 
+    private bool CanShoot() 
     {
+        if (gunStats.IsBurstFire && numBurstShotsLeft > 0) 
+        {
+            return false;
+        }
+
         if (gunStats.IsAutomatic)
         {
-            return Input.GetButton("Fire1") && isTimeToFire;
+            return Input.GetButton("Fire1") && stateController.CanShoot && stateController.HasAmmo;
         }
         else
         {
-            return Input.GetButtonDown("Fire1") && isTimeToFire;
+            return Input.GetButtonDown("Fire1") && stateController.CanShoot && stateController.HasAmmo;
         }
     }
 
-    private void UpdateGun() 
+    private void UpdateGun(float deltaTime) 
     {
-        bool isTimeToFire = Time.time >= nextTimeToFire;
-        if (isTimeToFire) 
+        nextTimeToFire = Mathf.Clamp(nextTimeToFire - deltaTime, 0, float.MaxValue);
+
+        if (nextTimeToFire <= 0) 
         { 
             stateController.HandleTrigger(GunState.StateTrigger.TimeToFireComplete);
         }
         
-        if (CanShoot(isTimeToFire))
+        if (CanShoot())
         {
             stateController.HandleTrigger(GunState.StateTrigger.Fire);
-            if (ammoCount > 0 || gunStats.InfiniteAmmo) 
-            {
-                nextTimeToFire = Time.time + (1f / gunStats.FireRate);
-                switch (gunStats.BulletType)
-                {
-                    case EditorObject.BulletType.Projectile:
-                        FireProjectile();
-                        break;
-                    case EditorObject.BulletType.HitScan:
-                        FireHitScan();
-                        break;
-                }
-            }
+            
         }
     }
 
@@ -329,7 +328,7 @@ public class Gun : MonoBehaviour
 
         bullet.Shoot(BulletSpawn.transform.position, shotDir, player.Velocity);
 
-        UpdateAmmo();
+        ReduceAmmo();
     }
 
     private void FireHitScan()
@@ -347,12 +346,16 @@ public class Gun : MonoBehaviour
 
         }
         // TODO: Play muzzleflash particlesystem
-        UpdateAmmo();
+        ReduceAmmo();
     }
 
-    private void UpdateAmmo() 
+    private void ReduceAmmo() 
     {
         ammoCount = gunStats.InfiniteAmmo ? ammoCount : ammoCount - 1;
+        if (ammoCount <= 0) 
+        {
+            stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
+        }
     }
 
     private void DealDamage(GameObject other)
@@ -370,5 +373,19 @@ public class Gun : MonoBehaviour
             // https://www.youtube.com/watch?v=THnivyG0Mvo
         }
 
+    }
+
+    private void HandleInUseEnter()
+    {
+        nextTimeToFire = (1f / gunStats.FireRate);
+        switch (gunStats.BulletType)
+        {
+            case EditorObject.BulletType.Projectile:
+                FireProjectile();
+                break;
+            case EditorObject.BulletType.HitScan:
+                FireHitScan();
+                break;
+        }
     }
 }

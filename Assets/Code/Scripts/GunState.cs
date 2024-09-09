@@ -8,6 +8,8 @@ namespace GunState
     {
         Fire,
         TimeToFireComplete,
+        OutOfAmmo,
+        AddAmmo,
     }
 
     public class StateController 
@@ -15,13 +17,20 @@ namespace GunState
 
         public Idle idle;
         public InUse inUse;
+        public OutOfAmmo outOfAmmo;
 
         private State state;
+
+        public bool CanShoot {  get => state == idle; }
+
+        public bool HasAmmo { get => state != outOfAmmo; }
 
         public StateController() 
         {
             idle = new Idle();
             inUse = new InUse();
+            outOfAmmo = new OutOfAmmo();
+
 
             state = idle;
         }
@@ -34,6 +43,11 @@ namespace GunState
                 state = newState;
                 newState.Enter();
             }
+        }
+
+        public void Reset() 
+        {
+            state = idle;
         }
     }
 
@@ -89,6 +103,25 @@ namespace GunState
             switch (trigger)
             {
                 case StateTrigger.TimeToFireComplete:
+                    Exit();
+                    return stateController.idle;
+                case StateTrigger.OutOfAmmo:
+                    Exit();
+                    return stateController.outOfAmmo;
+                default:
+                    return null;
+            }
+        }
+    }
+
+    public class OutOfAmmo : State
+    {
+        public override string Name { get => "OutOfAmmo"; }
+        public override State HandleTrigger(StateController stateController, StateTrigger trigger)
+        {
+            switch (trigger)
+            {
+                case StateTrigger.AddAmmo:
                     Exit();
                     return stateController.idle;
                 default:
