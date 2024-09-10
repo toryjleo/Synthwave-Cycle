@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -208,8 +209,9 @@ public class Gun : MonoBehaviour
 
     private float nextTimeToFire = 0.0f;
 
+    private float nextTimeToFireBurst = 0.0f;
+
     private int ammoCount = 0;
-    private int burstShotsLeftCount = 0;
 
     GunState.StateController stateController = null;
 
@@ -232,8 +234,11 @@ public class Gun : MonoBehaviour
         InitializeBulletPool();
         player = FindObjectOfType<PlayerMovement>();
 
-        stateController = new GunState.StateController();
-        stateController.inUse.notifyListenersEnter += HandleInUseEnter;
+        stateController = new GunState.StateController(gunStats.NumBurstShots);
+        // TODO: hook up all listeners
+        stateController.fireSingleShot.notifyListenersEnter += HandleFireSingleShotEnter;
+        stateController.fireBurstShot.notifyListenersEnter += HandleFireBurstShotEnter;
+        stateController.betweenShots.notifyListenersEnter += HandleBetweenShotsEnter;
 
 
         crossHair.SetActive(gunStats.IsTurret);
@@ -249,6 +254,14 @@ public class Gun : MonoBehaviour
         }
 
         UpdateGun(Time.deltaTime);
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.M)) 
+        {
+            AddAmmo(1);
+            Debug.Log("Adding 1 bullet");
+        }
+#endif
     }
 
     // Update is called once per frame
@@ -278,47 +291,49 @@ public class Gun : MonoBehaviour
         bulletPool.Init(gunStats, bulletPrefab, bulletPoolSize);
     }
 
-    private bool CanShoot() 
+    public void AddAmmo(int amount)
+    {
+        ammoCount = Mathf.Clamp(ammoCount + amount, 0, gunStats.MagazineSize);
+        stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
+    }
+
+    private bool FireThisFrame() 
     {
         if (gunStats.IsAutomatic)
         {
-            return Input.GetButton("Fire1") && stateController.CanShoot && stateController.HasAmmo;
+            return Input.GetButton("Fire1") && stateController.CanShoot;
         }
         else
         {
-            return Input.GetButtonDown("Fire1") && stateController.CanShoot && stateController.HasAmmo;
+            return Input.GetButtonDown("Fire1") && stateController.CanShoot;
         }
     }
 
     private void UpdateGun(float deltaTime) 
     {
+        
+        if (FireThisFrame())
+        {
+            if (gunStats.IsBurstFire) 
+            { stateController.HandleTrigger(GunState.StateTrigger.FireBurstShot); }
+            else 
+            { stateController.HandleTrigger(GunState.StateTrigger.FireSingleShot); }
+        }
+
+
         nextTimeToFire = Mathf.Clamp(nextTimeToFire - deltaTime, 0, float.MaxValue);
 
-        if (nextTimeToFire <= 0) 
+        if (nextTimeToFire == 0) 
         {
-            if (burstShotsLeftCount == 0) 
-            {
-                stateController.HandleTrigger(GunState.StateTrigger.TimeToFireComplete);
-                nextTimeToFire = gunStats.TimeBetweenBurstShots;
-            }
-            else
-            {
-                stateController.HandleTrigger(GunState.StateTrigger.Fire);
-                burstShotsLeftCount--;
-                nextTimeToFire = gunStats.TimeBetweenBurstShots;
-            }
-            
+            stateController.HandleTrigger(GunState.StateTrigger.TimeToFireComplete);
         }
-        
-        if (CanShoot())
+
+        nextTimeToFireBurst = Mathf.Clamp(nextTimeToFireBurst - deltaTime, 0, float.MaxValue);
+
+        // Trigger another burst shot if currently ciring burst rounds
+        if (nextTimeToFireBurst == 0 && stateController.FiringBurstRounds)
         {
-            stateController.HandleTrigger(GunState.StateTrigger.Fire);
-            burstShotsLeftCount = gunStats.NumBurstShots;
-            burstShotsLeftCount--;
-            if (gunStats.IsBurstFire) 
-            {
-                nextTimeToFire = gunStats.TimeBetweenBurstShots;
-            }
+            stateController.HandleTrigger(GunState.StateTrigger.FireBurstShot);
         }
     }
 
@@ -359,7 +374,7 @@ public class Gun : MonoBehaviour
     private void ReduceAmmo() 
     {
         ammoCount = gunStats.InfiniteAmmo ? ammoCount : ammoCount - 1;
-        if (ammoCount <= 0) 
+        if (ammoCount == 0) 
         {
             stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
         }
@@ -382,7 +397,24 @@ public class Gun : MonoBehaviour
 
     }
 
-    private void HandleInUseEnter()
+    public void HandleFireSingleShotEnter()
+    {
+        FireSingleReduceAmmo();
+        stateController.HandleTrigger(GunState.StateTrigger.EnterTimeBetween);
+    }
+
+    public void HandleFireBurstShotEnter()
+    {
+        FireSingleReduceAmmo();
+        nextTimeToFireBurst = gunStats.TimeBetweenBurstShots;
+    }
+
+    public void HandleBetweenShotsEnter() 
+    {
+        nextTimeToFire = gunStats.TimeBetweenShots;
+    }
+
+    private void FireSingleReduceAmmo() 
     {
         switch (gunStats.BulletType)
         {

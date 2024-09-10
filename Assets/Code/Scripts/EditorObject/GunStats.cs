@@ -10,8 +10,6 @@ namespace EditorObject
         HitScan,
     }
 
-
-
     [CreateAssetMenu(menuName = "EditorObject/GunStats", fileName = "New GunStats")]
     public class GunStats : ScriptableObject
     {
@@ -22,7 +20,7 @@ namespace EditorObject
         [SerializeField] private bool isBurstFire = false;
         [SerializeField] private int numBurstShots = 2; // TODO: Enforce 1 burst shot when burstFire off
         [SerializeField] private float timeBetweenBurstShots = .01f; // TODO: Enforce positive
-        [SerializeField] private float fireRate = 10f;
+        [SerializeField] private float timeBetweenShots = 10f;
 
         [SerializeField] private bool infiniteAmmo = true;
         [SerializeField] private int magazineSize = 200;
@@ -51,7 +49,7 @@ namespace EditorObject
         public float TimeBetweenBurstShots { get { return timeBetweenBurstShots; } }
 
 
-        public float FireRate { get { return fireRate;  } }
+        public float TimeBetweenShots { get { return timeBetweenShots;  } }
         public bool InfiniteAmmo { get { return infiniteAmmo; } }
         public int MagazineSize { get { return magazineSize; } }
 
