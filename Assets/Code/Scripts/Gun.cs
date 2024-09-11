@@ -51,6 +51,25 @@ public class Gun : MonoBehaviour
 
     private float nextTimeToFireBurst = 0.0f;
 
+    /// <summary>
+    /// Returns true if this gun is firing this frame
+    /// </summary>
+    /// <returns>True if this gun is firing this frame</returns>
+    private bool FireThisFrame
+    {
+        get
+        {
+            if (gunStats.IsAutomatic)
+            {
+                return Input.GetButton("Fire1") && stateController.CanShoot;
+            }
+            else
+            {
+                return Input.GetButtonDown("Fire1") && stateController.CanShoot;
+            }
+        }
+    }
+
 
 
     // Start is called before the first frame update
@@ -60,19 +79,13 @@ public class Gun : MonoBehaviour
 
         HookUpListeners();
 
-        // Turns on crosshair if the gun is a turret
-        
-
-        ResetGameObject();
+        Reset();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gunStats.IsTurret) 
-        {
-            turretInputManager.UpdateInputMethod();
-        }
+        turretInputManager.UpdateInputMethod();
 
         UpdateGun(Time.deltaTime);
 
@@ -94,12 +107,18 @@ public class Gun : MonoBehaviour
         }
     }
 
-    public void ResetGameObject() 
+    /// <summary>
+    /// Sets the state to the initial state at the beginning of a level
+    /// </summary>
+    public void Reset() 
     {
         ammoCount = gunStats.MagazineSize;
         stateController.Reset();
     }
 
+    /// <summary>
+    /// Finds all references this object needs
+    /// </summary>
     private void GatherMemberReferences() 
     {
         turretInputManager = new TurretInputManager(this.transform, crossHair, gunStats.IsTurret);
@@ -110,6 +129,9 @@ public class Gun : MonoBehaviour
         InitializeBulletPool();
     }
 
+    /// <summary>
+    /// Initializes the bullet pool
+    /// </summary>
     protected void InitializeBulletPool() 
     {
         bulletPool = gameObject.GetComponent<BulletPool>();
@@ -130,28 +152,23 @@ public class Gun : MonoBehaviour
         stateController.betweenShots.notifyListenersEnter += HandleBetweenShotsEnter;
     }
 
+    /// <summary>
+    /// Adds ammo to the ammo count
+    /// </summary>
+    /// <param name="amount">Amount of ammo to add</param>
     public void AddAmmo(int amount)
     {
         ammoCount = Mathf.Clamp(ammoCount + amount, 0, gunStats.MagazineSize);
         stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
     }
 
-    private bool FireThisFrame() 
-    {
-        if (gunStats.IsAutomatic)
-        {
-            return Input.GetButton("Fire1") && stateController.CanShoot;
-        }
-        else
-        {
-            return Input.GetButtonDown("Fire1") && stateController.CanShoot;
-        }
-    }
-
+    /// <summary>
+    /// Updates gun logic each frame
+    /// </summary>
+    /// <param name="deltaTime">Amount of time since last frame update</param>
     private void UpdateGun(float deltaTime) 
     {
-        
-        if (FireThisFrame())
+        if (FireThisFrame)
         {
             if (gunStats.IsBurstFire) 
             { stateController.HandleTrigger(GunState.StateTrigger.FireBurstShot); }
@@ -159,14 +176,31 @@ public class Gun : MonoBehaviour
             { stateController.HandleTrigger(GunState.StateTrigger.FireSingleShot); }
         }
 
+        UpdateNextTimeToFire(deltaTime);
 
+        UpdateNextTimeToBurstFire(deltaTime);
+    }
+
+    /// <summary>
+    /// Updates the nextTimeToFire variable. Will trigger TimeToFireComplete when nextTimeToFire ticks down.
+    /// </summary>
+    /// <param name="deltaTime">Amount of time since last frame update</param>
+    private void UpdateNextTimeToFire(float deltaTime) 
+    {
         nextTimeToFire = Mathf.Clamp(nextTimeToFire - deltaTime, 0, float.MaxValue);
 
-        if (nextTimeToFire == 0) 
+        if (nextTimeToFire == 0)
         {
             stateController.HandleTrigger(GunState.StateTrigger.TimeToFireComplete);
         }
+    }
 
+    /// <summary>
+    /// Updates the nextTimeToFireBurst variable. Will trigger FireBurstShot when nextTimeToFireBurst ticks down.
+    /// </summary>
+    /// <param name="deltaTime">Amount of time since last frame update</param>
+    private void UpdateNextTimeToBurstFire(float deltaTime)
+    {
         nextTimeToFireBurst = Mathf.Clamp(nextTimeToFireBurst - deltaTime, 0, float.MaxValue);
 
         // Trigger another burst shot if currently ciring burst rounds
@@ -176,6 +210,9 @@ public class Gun : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Fires a single projectile from the bulletPool
+    /// </summary>
     private void FireProjectile()
     {
         Bullet bullet = bulletPool.SpawnFromPool();
@@ -184,6 +221,9 @@ public class Gun : MonoBehaviour
         bullet.Shoot(BulletSpawn.transform.position, shotDir, player.Velocity);
     }
 
+    /// <summary>
+    /// Fires a single ray
+    /// </summary>
     private void FireHitScan()
     {
         RaycastHit hit;
@@ -201,6 +241,9 @@ public class Gun : MonoBehaviour
         // TODO: Play muzzleflash particlesystem
     }
 
+    /// <summary>
+    /// Reduces ammo by 1. Will trigger OutOfAmmo when ammoCount hits zero
+    /// </summary>
     private void ReduceAmmo() 
     {
         ammoCount = gunStats.InfiniteAmmo ? ammoCount : ammoCount - 1;
@@ -210,6 +253,10 @@ public class Gun : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Inflict gun damage on other
+    /// </summary>
+    /// <param name="other">Object with Health component</param>
     private void DealDamage(GameObject other)
     {
         Health otherHealth = other.GetComponentInChildren<Health>();
@@ -227,6 +274,7 @@ public class Gun : MonoBehaviour
 
     }
 
+    #region Event Handlers
     public void HandleFireSingleShotEnter()
     {
         FireSingleReduceAmmo();
@@ -243,7 +291,11 @@ public class Gun : MonoBehaviour
     {
         nextTimeToFire = gunStats.TimeBetweenShots;
     }
+    #endregion
 
+    /// <summary>
+    /// Fires either a projectile or hitscan and reduces ammo
+    /// </summary>
     private void FireSingleReduceAmmo() 
     {
         switch (gunStats.BulletType)

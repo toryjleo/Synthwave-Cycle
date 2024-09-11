@@ -68,19 +68,22 @@ public class TurretInputManager
     /// </summary>
     public void UpdateInputMethod()
     {
-        Vector3 mouseDelta = Input.mousePosition - lastMouseCoordinate;
-        lastMouseCoordinate = Input.mousePosition;
-
-        Vector2 controllerInput = GetControllerInput();
-
-        // Swap between mouse and controller input
-        if (controllerInput != Vector2.zero)
+        if (crossHair.activeSelf) 
         {
-            isUsingMouse = false;
-        }
-        else if (mouseDelta.sqrMagnitude > minMouseMovementMagnitudeSqr)
-        {
-            isUsingMouse = true;
+            Vector3 mouseDelta = Input.mousePosition - lastMouseCoordinate;
+            lastMouseCoordinate = Input.mousePosition;
+
+            Vector2 controllerInput = GetControllerInput();
+
+            // Swap between mouse and controller input
+            if (controllerInput != Vector2.zero)
+            {
+                isUsingMouse = false;
+            }
+            else if (mouseDelta.sqrMagnitude > minMouseMovementMagnitudeSqr)
+            {
+                isUsingMouse = true;
+            }
         }
     }
 
