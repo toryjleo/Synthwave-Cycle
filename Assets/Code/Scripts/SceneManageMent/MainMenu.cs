@@ -3,18 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
+using EditorObject;
 
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField] private SettingsData settingsData;
+    [SerializeField] public AudioMixer audioMixer;
+
+    void Start()
+    {
+        audioMixer.SetFloat("MainVolume", settingsData.MainVolume);
+        audioMixer.SetFloat("MusicVolume", settingsData.MusicVolume);
+        audioMixer.SetFloat("EffectsVolume", settingsData.EffectsVolume);
+    }
 
     /// <summary>Will load the game.</summary>
-    public void StartOnClick() 
+    public void StartOnClick()
     {
         StartCoroutine(LoadYourAsyncScene("TrueScene"));
     }
 
     /// <summary>Will quit the application.</summary>
-    public void QuitOnClick() 
+    public void QuitOnClick()
     {
         Application.Quit();
     }

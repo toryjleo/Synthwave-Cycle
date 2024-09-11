@@ -1,21 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using EditorObject;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class StartGame : MonoBehaviour
 {
-  // Start is called before the first frame update
-  void Start()
-  {
+    [SerializeField] private SettingsData settingsData;
+    [SerializeField] public AudioMixer audioMixer;
 
-  }
-
-  // Update is called once per frame
-  void Update()
-  {
-    if (Input.GetKeyDown(KeyCode.Space))
+    // Start is called before the first frame update
+    void Start()
     {
-      GameStateController.HandleTrigger(StateTrigger.StartGame);
+        audioMixer.SetFloat("MainVolume", settingsData.MainVolume);
+        audioMixer.SetFloat("MusicVolume", settingsData.MusicVolume);
+        audioMixer.SetFloat("EffectsVolume", settingsData.EffectsVolume);
     }
-  }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GameStateController.HandleTrigger(StateTrigger.StartGame);
+        }
+    }
 }
