@@ -40,7 +40,7 @@ public class Gun : MonoBehaviour
 
     #region Turret Members
 
-    private TurretInputManager inputManager = null;
+    private TurretInputManager turretInputManager = null;
 
     /// <summary>
     /// Child gameObject with a SpriteRenderer of a crosshair
@@ -56,18 +56,13 @@ public class Gun : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        inputManager = new TurretInputManager();
-        InitializeBulletPool();
-        player = FindObjectOfType<PlayerMovement>();
+        GatherMemberReferences();
 
-        stateController = new GunState.StateController(gunStats.NumBurstShots);
-        // TODO: hook up all listeners
-        stateController.fireSingleShot.notifyListenersEnter += HandleFireSingleShotEnter;
-        stateController.fireBurstShot.notifyListenersEnter += HandleFireBurstShotEnter;
-        stateController.betweenShots.notifyListenersEnter += HandleBetweenShotsEnter;
+        HookUpListeners();
 
+        // Turns on crosshair if the gun is a turret
+        
 
-        crossHair.SetActive(gunStats.IsTurret);
         ResetGameObject();
     }
 
@@ -76,7 +71,7 @@ public class Gun : MonoBehaviour
     {
         if (gunStats.IsTurret) 
         {
-            inputManager.UpdateInputMethod();
+            turretInputManager.UpdateInputMethod();
         }
 
         UpdateGun(Time.deltaTime);
@@ -95,7 +90,7 @@ public class Gun : MonoBehaviour
     {
         if (gunStats.IsTurret && GameStateController.CanRunGameplay)
         {
-            UpdateTurretDirection();
+            turretInputManager.FixedUpdate();
         }
     }
 
@@ -105,7 +100,15 @@ public class Gun : MonoBehaviour
         stateController.Reset();
     }
 
-    // TODO: have a method to add ammo and return remainder
+    private void GatherMemberReferences() 
+    {
+        turretInputManager = new TurretInputManager(this.transform, crossHair, gunStats.IsTurret);
+        player = FindObjectOfType<PlayerMovement>();
+
+        stateController = new GunState.StateController(gunStats.NumBurstShots);
+
+        InitializeBulletPool();
+    }
 
     protected void InitializeBulletPool() 
     {
@@ -115,6 +118,16 @@ public class Gun : MonoBehaviour
             bulletPool = gameObject.AddComponent<BulletPool>();
         }
         bulletPool.Init(gunStats, bulletPrefab, bulletPoolSize);
+    }
+
+    /// <summary>
+    /// Hooks up listeners for gun state events
+    /// </summary>
+    private void HookUpListeners()
+    {
+        stateController.fireSingleShot.notifyListenersEnter += HandleFireSingleShotEnter;
+        stateController.fireBurstShot.notifyListenersEnter += HandleFireBurstShotEnter;
+        stateController.betweenShots.notifyListenersEnter += HandleBetweenShotsEnter;
     }
 
     public void AddAmmo(int amount)
@@ -161,15 +174,6 @@ public class Gun : MonoBehaviour
         {
             stateController.HandleTrigger(GunState.StateTrigger.FireBurstShot);
         }
-    }
-
-    /// <summary>
-    /// Updates the turret's and crosshair's transforms. Must be called on FixedUpdate()
-    /// </summary>
-    private void UpdateTurretDirection()
-    {
-        crossHair.transform.position = inputManager.CrosshairPosition(transform);
-        transform.LookAt(crossHair.transform.position);
     }
 
     private void FireProjectile()

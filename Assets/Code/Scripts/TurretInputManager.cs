@@ -1,3 +1,4 @@
+using EditorObject;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,6 +42,26 @@ public class TurretInputManager
     /// Tracking if we are currently using mouse input
     /// </summary>
     private bool isUsingMouse = true;
+
+    private Transform gun = null;
+    private GameObject crossHair = null;
+
+    public TurretInputManager(Transform gun, GameObject crossHair, bool isActive)
+    {
+        this.crossHair = crossHair;
+        this.gun = gun;
+        crossHair.SetActive(isActive);
+    }
+
+
+    /// <summary>
+    /// Updates the turret's and crosshair's transforms. Must be called on a Monobehavior FixedUpdate()
+    /// </summary>
+    public void FixedUpdate()
+    {
+        crossHair.transform.position = CrosshairPosition(gun);
+        gun.LookAt(crossHair.transform.position);
+    }
 
     /// <summary>
     /// Gets called every update
