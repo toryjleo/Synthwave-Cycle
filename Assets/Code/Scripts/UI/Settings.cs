@@ -6,6 +6,10 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
+/// <summary>
+/// Settings manages the user-determined settings, attached to the settings screens
+/// in the unity scenes
+/// </summary>
 public class Settings : MonoBehaviour
 {
     [SerializeField] private SettingsData settingsData;
@@ -21,10 +25,28 @@ public class Settings : MonoBehaviour
 
     void Start()
     {
+        SetSlidersToSettingsData();
+        SetUpResolutionSettings();
+    }
+
+    /// <summary>
+    /// Sets slider values to corresponding settingsData fields
+    /// </summary>
+    private void SetSlidersToSettingsData()
+    {
         mainVolumeSlider.value = settingsData.MainVolume;
         musicVolumeSlider.value = settingsData.MusicVolume;
         effectsVolumeSlider.value = settingsData.EffectsVolume;
+    }
 
+    /// <summary>
+    /// Calculates the possible resolutions for the systems,
+    /// populates the dropdown with those resolutions options,
+    /// determines the resolution the player launched with.
+    /// ALSO: sets the fullScreenToggle checkbox depending on that status at launch
+    /// </summary>
+    private void SetUpResolutionSettings()
+    {
         //Set up options for the resolution-selecting dropdown
         resolutions = Screen.resolutions;
         if (!resolutionDropdown)
@@ -113,8 +135,6 @@ public class Settings : MonoBehaviour
     {
         settingsData.ResetToDefaults();
 
-        mainVolumeSlider.value = settingsData.MainVolume;
-        musicVolumeSlider.value = settingsData.MusicVolume;
-        effectsVolumeSlider.value = settingsData.EffectsVolume;
+        SetSlidersToSettingsData();
     }
 }

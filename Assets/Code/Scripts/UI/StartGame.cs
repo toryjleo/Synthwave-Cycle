@@ -12,9 +12,7 @@ public class StartGame : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        audioMixer.SetFloat("MainVolume", settingsData.MainVolume);
-        audioMixer.SetFloat("MusicVolume", settingsData.MusicVolume);
-        audioMixer.SetFloat("EffectsVolume", settingsData.EffectsVolume);
+        SetMixerNumbers();
     }
 
     // Update is called once per frame
@@ -24,5 +22,15 @@ public class StartGame : MonoBehaviour
         {
             GameStateController.HandleTrigger(StateTrigger.StartGame);
         }
+    }
+
+    /// <summary>
+    /// Sets the audio mixer channels to their corresponding settingsData fields
+    /// </summary>
+    private void SetMixerNumbers()
+    {
+        audioMixer.SetFloat("MainVolume", settingsData.MainVolume);
+        audioMixer.SetFloat("MusicVolume", settingsData.MusicVolume);
+        audioMixer.SetFloat("EffectsVolume", settingsData.EffectsVolume);
     }
 }
