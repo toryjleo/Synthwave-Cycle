@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using EditorObject;
 
+/// <summary>
+/// Handles the main menu scene functions
+/// </summary>
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private SettingsData settingsData;
@@ -13,15 +16,13 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-        audioMixer.SetFloat("MainVolume", settingsData.MainVolume);
-        audioMixer.SetFloat("MusicVolume", settingsData.MusicVolume);
-        audioMixer.SetFloat("EffectsVolume", settingsData.EffectsVolume);
+        SetMixerNumbers();
     }
 
     /// <summary>Will load the game.</summary>
     public void StartOnClick()
     {
-        StartCoroutine(LoadYourAsyncScene("TrueScene"));
+        SetMixerNumbers();
     }
 
     /// <summary>Will quit the application.</summary>
@@ -46,5 +47,15 @@ public class MainMenu : MonoBehaviour
         {
             yield return null;
         }
+    }
+
+    /// <summary>
+    /// Sets the audio mixer channels to their corresponding settingsData fields
+    /// </summary>
+    private void SetMixerNumbers()
+    {
+        audioMixer.SetFloat("MainVolume", settingsData.MainVolume);
+        audioMixer.SetFloat("MusicVolume", settingsData.MusicVolume);
+        audioMixer.SetFloat("EffectsVolume", settingsData.EffectsVolume);
     }
 }

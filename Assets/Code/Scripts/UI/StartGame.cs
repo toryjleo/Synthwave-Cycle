@@ -4,6 +4,9 @@ using EditorObject;
 using UnityEngine;
 using UnityEngine.Audio;
 
+/// <summary>
+/// Handles the GameplayUI screen when loading is finished
+/// </summary>
 public class StartGame : MonoBehaviour
 {
     [SerializeField] private SettingsData settingsData;
