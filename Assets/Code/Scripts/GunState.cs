@@ -14,6 +14,9 @@ namespace GunState
         AddAmmo,
     }
 
+    /// <summary>
+    /// Manages states for a given gun
+    /// </summary>
     public class StateController 
     {
 
@@ -27,6 +30,9 @@ namespace GunState
 
         public bool CanShoot {  get => state == idle; }
 
+        /// <summary>
+        /// True if currently firing a burst round
+        /// </summary>
         public bool FiringBurstRounds { get => state == fireBurstShot; }
 
         public bool HasAmmo { get => state != outOfAmmo; }
@@ -42,6 +48,10 @@ namespace GunState
             state = idle;
         }
 
+        /// <summary>
+        /// Sends a trigger to the current state. May trigger a state change.
+        /// </summary>
+        /// <param name="trigger">Trigger to send to state</param>
         public void HandleTrigger(StateTrigger trigger)
         {
             State newState = state.HandleTrigger(trigger);
@@ -52,40 +62,65 @@ namespace GunState
             }
         }
 
+        /// <summary>
+        /// Set the state machine to the initial configuration
+        /// </summary>
         public void Reset() 
         {
             state = idle;
         }
     }
 
-
+    /// <summary>
+    /// Abstract gun state declaration
+    /// </summary>
     public abstract class State
     {
         public event StateChangeHandler notifyListenersEnter;
         public event StateChangeHandler notifyListenersExit;
 
+        public bool printGunState = false;
+
         protected StateController stateController;
 
-        public State(StateController stateController) 
+        public State(StateController stateController, bool printGunState = false) 
         {
             this.stateController = stateController;
+            this.printGunState = printGunState;
         }
 
         public virtual string Name { get; }
 
+        /// <summary>
+        /// Handles a trigger for this state
+        /// </summary>
+        /// <param name="trigger">Trigger to create a state transition</param>
+        /// <returns>The new state if there is a transision</returns>
         public abstract State HandleTrigger(StateTrigger trigger);
 
+        /// <summary>
+        /// Prints the current state
+        /// </summary>
         public void PrintStateEnter()
         {
-            Debug.Log("GunState >  " + Name);
+            if (printGunState)
+            {
+                Debug.Log("GunState >  " + Name);
+            }
         }
 
+        /// <summary>
+        /// Called when entering this state
+        /// </summary>
         public virtual void Enter()
         {
             PrintStateEnter();
             notifyListenersEnter?.Invoke();
         }
 
+        /// <summary>
+        /// Called when leaving this state
+        /// </summary>
         public void Exit()
         {
             notifyListenersExit?.Invoke();
@@ -93,6 +128,9 @@ namespace GunState
 
     }
 
+    /// <summary>
+    /// Default state for a gun where it can be shot
+    /// </summary>
     public class Idle : State
     {
         public Idle(StateController stateController) : base(stateController)
@@ -117,6 +155,9 @@ namespace GunState
         }
     }
 
+    /// <summary>
+    /// State for a gun that fires a burst shot
+    /// </summary>
     public class FireBurstShot : State
     {
         public FireBurstShot(StateController stateController, int burstShotNum) : base(stateController)
@@ -162,6 +203,9 @@ namespace GunState
         }
     }
 
+    /// <summary>
+    /// State for a gun that files a single shotS
+    /// </summary>
     public class FireSingleShot : State
     {
         public FireSingleShot(StateController stateController) : base(stateController)
@@ -185,6 +229,9 @@ namespace GunState
         }
     }
 
+    /// <summary>
+    /// State for a gun where it is cooling down and waiting to shoot again
+    /// </summary>
     public class BetweenShots : State
     {
         public BetweenShots(StateController stateController) : base(stateController)
@@ -205,6 +252,9 @@ namespace GunState
         }
     }
 
+    /// <summary>
+    /// State for a gun where it is out of ammo
+    /// </summary>
     public class OutOfAmmo : State
     {
         public OutOfAmmo(StateController stateController) : base(stateController)
