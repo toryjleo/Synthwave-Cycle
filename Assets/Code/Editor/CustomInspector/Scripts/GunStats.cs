@@ -48,7 +48,7 @@ namespace CustomInspector
         /// Display Bullet options
         /// </summary>
         /// <param name="gunStats">ScriptableObject to modify</param>
-        private void BulletOptions(EditorObject.GunStats gunStats) 
+        private void BulletOptions(EditorObject.GunStats gunStats)
         {
             EditorGUILayout.Space(5);
 
@@ -74,11 +74,11 @@ namespace CustomInspector
             EditorGUILayout.Space(5);
 
             EditorGUILayout.LabelField("Ammo");
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("infiniteAmmo"));
             if (!gunStats.InfiniteAmmo)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("magazineSize"));
             }
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("infiniteAmmo"));
         }
 
         /// <summary>
