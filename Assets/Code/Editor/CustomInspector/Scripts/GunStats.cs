@@ -9,17 +9,12 @@ namespace CustomInspector
     [CustomEditor(typeof(EditorObject.GunStats))]
     public class GunStats : Editor
     {
-        private string[] generalProps = { "isTurret", "isAutomatic", "isPlayerBullet", "isBurstFire", "timeBetweenShots", "infiniteAmmo", "damageDealt" };
+        private string[] generalProps = { "isTurret", "isAutomatic", "isPlayerBullet", "isBurstFire", "timeBetweenShots", "damageDealt" };
         private string[] burstFireProps = { "numBurstShots", "timeBetweenBurstShots" };
 
         public override void OnInspectorGUI()
         {
             EditorObject.GunStats gunStats = (EditorObject.GunStats)target;
-
-            if (gunStats != null)
-            {
-                EditorGUILayout.LabelField("Yuh");
-            }
 
             FindAndShowProperties(generalProps);
 
@@ -40,6 +35,14 @@ namespace CustomInspector
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("muzzleVelocity"));
             }
+
+            // Ammunition
+            EditorGUILayout.LabelField("Ammo");
+            if (!gunStats.InfiniteAmmo)
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("magazineSize"));
+            }
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("infiniteAmmo"));
 
             serializedObject.ApplyModifiedProperties();
         }
