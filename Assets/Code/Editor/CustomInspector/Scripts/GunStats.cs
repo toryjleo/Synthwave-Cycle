@@ -1,3 +1,4 @@
+using EditorObject;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -18,6 +19,20 @@ namespace CustomInspector
 
             FindAndShowProperties(generalProps);
 
+
+            BurstFire(gunStats);
+            BulletOptions(gunStats);
+            Ammunition(gunStats);
+
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        /// <summary>
+        /// Display Burst Fire options
+        /// </summary>
+        /// <param name="gunStats">ScriptableObject to modify</param>
+        private void BurstFire(EditorObject.GunStats gunStats)
+        {
             EditorGUILayout.Space(5);
 
             EditorGUILayout.LabelField("Burst Fire");
@@ -27,7 +42,14 @@ namespace CustomInspector
             {
                 FindAndShowProperties(burstFireProps);
             }
+        }
 
+        /// <summary>
+        /// Display Bullet options
+        /// </summary>
+        /// <param name="gunStats">ScriptableObject to modify</param>
+        private void BulletOptions(EditorObject.GunStats gunStats) 
+        {
             EditorGUILayout.Space(5);
 
             EditorGUILayout.LabelField("Bullet Options");
@@ -41,18 +63,22 @@ namespace CustomInspector
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("muzzleVelocity"));
             }
+        }
 
+        /// <summary>
+        /// Display Ammo options
+        /// </summary>
+        /// <param name="gunStats">ScriptableObject to modify</param>
+        private void Ammunition(EditorObject.GunStats gunStats)
+        {
             EditorGUILayout.Space(5);
 
-            // Ammunition
             EditorGUILayout.LabelField("Ammo");
             if (!gunStats.InfiniteAmmo)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("magazineSize"));
             }
             EditorGUILayout.PropertyField(serializedObject.FindProperty("infiniteAmmo"));
-
-            serializedObject.ApplyModifiedProperties();
         }
 
         /// <summary>
