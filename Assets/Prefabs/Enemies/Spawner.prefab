@@ -47,13 +47,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
-  - prefab: {fileID: 2850074470081858160, guid: 0eb95e7c3d18e884b99ecde9100043c9, type: 3}
+  - prefab: {fileID: 0}
     poolSize: 30
   - prefab: {fileID: 3874834857555224722, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
     poolSize: 30
   - prefab: {fileID: 8118981365188568940, guid: 96ce3a25c9aa3fb40a86136e9660d45c, type: 3}
     poolSize: 30
-  - prefab: {fileID: 2279930514937360738, guid: 89ba535868233dd438d5e9151af1a050, type: 3}
+  - prefab: {fileID: 613234458188402560, guid: 7e68f47082f738f43834ed59576c7f28, type: 3}
     poolSize: 30
 --- !u!114 &1166159769048400175
 MonoBehaviour:

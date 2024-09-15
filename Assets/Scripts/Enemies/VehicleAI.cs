@@ -49,7 +49,7 @@ public abstract class VehicleAi : Ai
         {
             base.Update();
             //Handle confidence/attack timing
-            if (movementTargetPosition != null)
+            if (movementTargetPosition != null && target != null)
             {
                 if (Vector3.Distance(transform.position, target.transform.position) <= CONFIDENCE_BUILD_DISTANCE)
                 {
