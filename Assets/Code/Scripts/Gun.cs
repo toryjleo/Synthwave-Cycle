@@ -313,10 +313,23 @@ public class Gun : MonoBehaviour
     /// </summary>
     private void FireSingleReduceAmmo() 
     {
+        float radius = gunStats.AngleBetweenProjectiles * (gunStats.ProjectileCountPerShot - 1);
+        float angleStart = radius / 2;
+        Vector3 initialForward = BulletSpawn.transform.forward;
 
-        Vector3 direction = BulletSpawn.transform.forward;
+        Quaternion rotationToApply = Quaternion.AngleAxis(-angleStart, Vector3.up);
+        BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationToApply;
+
+        Quaternion rotationPerIteration = Quaternion.AngleAxis(gunStats.AngleBetweenProjectiles, Vector3.up);
+
         // TODO: Update to fire multiple times
-        FireInDirection(direction);
+        for (int i = 0; i < gunStats.ProjectileCountPerShot; i++)
+        {
+            Vector3 direction = BulletSpawn.transform.forward;
+            FireInDirection(direction);
+            BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationPerIteration;
+        }
+        BulletSpawn.transform.forward = initialForward;
         muzzleFlash.Play();
         ReduceAmmo();
     }
