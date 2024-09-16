@@ -114,7 +114,7 @@ public class Gun : MonoBehaviour
     /// </summary>
     public void Reset() 
     {
-        ammoCount = gunStats.MagazineSize;
+        ammoCount = gunStats.AmmoCount;
         stateController.Reset();
     }
 
@@ -160,7 +160,7 @@ public class Gun : MonoBehaviour
     /// <param name="amount">Amount of ammo to add</param>
     public void AddAmmo(int amount)
     {
-        ammoCount = Mathf.Clamp(ammoCount + amount, 0, gunStats.MagazineSize);
+        ammoCount = Mathf.Clamp(ammoCount + amount, 0, gunStats.AmmoCount);
         stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
     }
 
@@ -215,21 +215,20 @@ public class Gun : MonoBehaviour
     /// <summary>
     /// Fires a single projectile from the bulletPool
     /// </summary>
-    private void FireProjectile()
+    private void FireProjectile(Vector3 direction)
     {
         Bullet bullet = bulletPool.SpawnFromPool();
-        Vector3 shotDir = BulletSpawn.transform.forward;
 
-        bullet.Shoot(BulletSpawn.transform.position, shotDir, player.Velocity);
+        bullet.Shoot(BulletSpawn.transform.position, direction, player.Velocity);
     }
 
     /// <summary>
     /// Fires a single ray
     /// </summary>
-    private void FireHitScan()
+    private void FireHitScan(Vector3 direction)
     {
         RaycastHit hit;
-        if (Physics.Raycast(BulletSpawn.transform.position, BulletSpawn.transform.forward, out hit, gunStats.Range)) 
+        if (Physics.Raycast(BulletSpawn.transform.position, direction, out hit, gunStats.Range)) 
         {
             Debug.Log(hit.transform.name);
 
@@ -253,7 +252,6 @@ public class Gun : MonoBehaviour
             Destroy(g, 2f);
 
         }
-        muzzleFlash.Play();
 
 
     }
@@ -315,15 +313,24 @@ public class Gun : MonoBehaviour
     /// </summary>
     private void FireSingleReduceAmmo() 
     {
+
+        Vector3 direction = BulletSpawn.transform.forward;
+        // TODO: Update to fire multiple times
+        FireInDirection(direction);
+        muzzleFlash.Play();
+        ReduceAmmo();
+    }
+
+    private void FireInDirection(Vector3 direction) 
+    {
         switch (gunStats.BulletType)
         {
             case EditorObject.BulletType.Projectile:
-                FireProjectile();
+                FireProjectile(direction);
                 break;
             case EditorObject.BulletType.HitScan:
-                FireHitScan();
+                FireHitScan(direction);
                 break;
         }
-        ReduceAmmo();
     }
 }

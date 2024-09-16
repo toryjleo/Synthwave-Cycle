@@ -23,7 +23,10 @@ namespace EditorObject
         [SerializeField] private float timeBetweenShots = 10f;
 
         [SerializeField] private bool infiniteAmmo = true;
-        [SerializeField] private int magazineSize = 200;
+        [SerializeField] private int ammoCount = 200;
+
+        [SerializeField] private int projectileCountPerShot = 1;
+        [SerializeField] private float angleBetweenProjectiles = 90;
 
 
         #region Bullet
@@ -51,7 +54,10 @@ namespace EditorObject
 
         public float TimeBetweenShots { get { return timeBetweenShots;  } }
         public bool InfiniteAmmo { get { return infiniteAmmo; } }
-        public int MagazineSize { get { return magazineSize; } }
+        public int AmmoCount { get { return ammoCount; } }
+
+        public int ProjectileCountPerShot { get { return projectileCountPerShot; } }
+        public float AngleBetweenProjectiles {  get { return angleBetweenProjectiles; } }
 
         public float DamageDealt {  get { return damageDealt; } }
         public float MuzzleVelocity {  get { return muzzleVelocity; } }
