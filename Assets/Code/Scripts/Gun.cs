@@ -233,8 +233,8 @@ public class Gun : MonoBehaviour
         {
             Debug.Log(hit.transform.name);
 
-            if ((hit.transform.tag == "Enemy" && gunStats.IsPlayerBullet) ||
-                (hit.transform.tag == "Player" && !gunStats.IsPlayerBullet))
+            if ((hit.transform.tag == "Enemy" && gunStats.IsPlayerGun) ||
+                (hit.transform.tag == "Player" && !gunStats.IsPlayerGun))
             {
                 DealDamage(hit.transform.gameObject);
             }

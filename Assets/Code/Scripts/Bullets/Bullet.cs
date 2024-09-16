@@ -80,7 +80,7 @@ public class Bullet : SelfWorldBoundsDespawn
     {
         this.damageDealt = gunStats.DamageDealt;
         this.muzzleVelocity = gunStats.MuzzleVelocity;
-        this.isPlayerBullet = gunStats.IsPlayerBullet;
+        this.isPlayerBullet = gunStats.IsPlayerGun;
     }
 
     private void DealDamageAndDespawn(GameObject other)
