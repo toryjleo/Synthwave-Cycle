@@ -27,6 +27,7 @@ namespace EditorObject
 
         [SerializeField] private int projectileCountPerShot = 1;
         [SerializeField] private float angleBetweenProjectiles = 90;
+        [SerializeField] private float randomAngleVariationPerProjectile = 0;
 
 
         #region Bullet
@@ -58,6 +59,7 @@ namespace EditorObject
 
         public int ProjectileCountPerShot { get { return projectileCountPerShot; } }
         public float AngleBetweenProjectiles {  get { return angleBetweenProjectiles; } }
+        public float RandomAngleVariationPerProjectile { get { return randomAngleVariationPerProjectile; } }
 
         public float DamageDealt {  get { return damageDealt; } }
         public float MuzzleVelocity {  get { return muzzleVelocity; } }

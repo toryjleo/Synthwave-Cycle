@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
+using Unity.Mathematics;
 
 public class Gun : MonoBehaviour
 {
@@ -53,6 +49,8 @@ public class Gun : MonoBehaviour
 
     private float nextTimeToFireBurst = 0.0f;
 
+    private Unity.Mathematics.Random rand;
+
     /// <summary>
     /// Returns true if this gun is firing this frame
     /// </summary>
@@ -82,6 +80,7 @@ public class Gun : MonoBehaviour
         HookUpListeners();
 
         Reset();
+        rand.InitState();
     }
 
     // Update is called once per frame
@@ -322,12 +321,14 @@ public class Gun : MonoBehaviour
 
         Quaternion rotationPerIteration = Quaternion.AngleAxis(gunStats.AngleBetweenProjectiles, Vector3.up);
 
-        // TODO: Update to fire multiple times
+        
         for (int i = 0; i < gunStats.ProjectileCountPerShot; i++)
         {
+            float randRot = rand.NextFloat(-gunStats.RandomAngleVariationPerProjectile, gunStats.RandomAngleVariationPerProjectile);
+            Quaternion q = Quaternion.AngleAxis(randRot, Vector3.up);
             Vector3 direction = BulletSpawn.transform.forward;
             FireInDirection(direction);
-            BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationPerIteration;
+            BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationPerIteration * q;
         }
         BulletSpawn.transform.forward = initialForward;
         muzzleFlash.Play();
