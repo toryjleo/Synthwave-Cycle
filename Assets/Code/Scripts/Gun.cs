@@ -30,7 +30,9 @@ public class Gun : MonoBehaviour
 
     #endregion
 
-    // TODO: Create muzzle flash particlesystem with flashing point light
+    [SerializeField] private ParticleSystem muzzleFlash = null;
+    [SerializeField] private GameObject impactEffect = null;
+
     // TODO: Create impact particlesystem with flashing point light
     #region Bullet Instancing
     protected BulletPool bulletPool;
@@ -237,8 +239,23 @@ public class Gun : MonoBehaviour
                 DealDamage(hit.transform.gameObject);
             }
 
+            // TODO: create a objectpool for the impactEffect
+            GameObject g = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+            g.GetComponent<ParticleSystem>().Play();
+            Destroy(g, 2f);
+
         }
-        // TODO: Play muzzleflash particlesystem
+        else 
+        {
+            // TODO: create a objectpool for the impactEffect
+            GameObject g = Instantiate(impactEffect, transform.forward * 12, Quaternion.LookRotation(Vector3.up));
+            g.GetComponent<ParticleSystem>().Play();
+            Destroy(g, 2f);
+
+        }
+        muzzleFlash.Play();
+
+
     }
 
     /// <summary>
