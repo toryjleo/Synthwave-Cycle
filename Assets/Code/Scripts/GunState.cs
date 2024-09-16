@@ -12,6 +12,8 @@ namespace GunState
         TimeToFireComplete,
         OutOfAmmo,
         AddAmmo,
+        OverHeated,
+        OverHeatComplete,
     }
 
     /// <summary>
@@ -25,10 +27,15 @@ namespace GunState
         public FireSingleShot fireSingleShot;
         public BetweenShots betweenShots;
         public OutOfAmmo outOfAmmo;
+        public OverHeated overHeated;
 
         private State state;
 
+        public bool printState = false;
+
         public bool CanShoot {  get => state == idle; }
+
+        public bool IsOverHeated { get => state == overHeated; }
 
         /// <summary>
         /// True if currently firing a burst round
@@ -37,15 +44,18 @@ namespace GunState
 
         public bool HasAmmo { get => state != outOfAmmo; }
 
-        public StateController(int burstShotNum) 
+        public StateController(int burstShotNum, bool printState = false) 
         {
             idle           = new Idle(this);
             fireBurstShot  = new FireBurstShot(this, burstShotNum);
             fireSingleShot = new FireSingleShot(this);
             betweenShots   = new BetweenShots(this);
             outOfAmmo      = new OutOfAmmo(this);
+            overHeated     = new OverHeated(this);
 
             state = idle;
+
+            this.printState = printState;
         }
 
         /// <summary>
@@ -57,6 +67,10 @@ namespace GunState
             State newState = state.HandleTrigger(trigger);
             if (newState != null)
             {
+                if (printState)
+                {
+                    state.PrintStateEnter();
+                }
                 state = newState;
                 newState.Enter();
             }
@@ -79,14 +93,11 @@ namespace GunState
         public event StateChangeHandler notifyListenersEnter;
         public event StateChangeHandler notifyListenersExit;
 
-        public bool printGunState = false;
-
         protected StateController stateController;
 
-        public State(StateController stateController, bool printGunState = false) 
+        public State(StateController stateController) 
         {
             this.stateController = stateController;
-            this.printGunState = printGunState;
         }
 
         public virtual string Name { get; }
@@ -103,10 +114,7 @@ namespace GunState
         /// </summary>
         public void PrintStateEnter()
         {
-            if (printGunState)
-            {
-                Debug.Log("GunState >  " + Name);
-            }
+            Debug.Log("GunState >  " + Name);
         }
 
         /// <summary>
@@ -182,6 +190,8 @@ namespace GunState
                 case StateTrigger.OutOfAmmo:
                     Exit();
                     return stateController.outOfAmmo;
+                case StateTrigger.OverHeated:
+                    return stateController.overHeated;
                 default:
                     return null;
             }
@@ -223,6 +233,8 @@ namespace GunState
                 case StateTrigger.OutOfAmmo:
                     Exit();
                     return stateController.outOfAmmo;
+                case StateTrigger.OverHeated:
+                    return stateController.overHeated;
                 default:
                     return null;
             }
@@ -269,6 +281,29 @@ namespace GunState
                 case StateTrigger.AddAmmo:
                     Exit();
                     return stateController.idle;
+                default:
+                    return null;
+            }
+        }
+    }
+
+    /// <summary>
+    /// State for a gun that files a single shotS
+    /// </summary>
+    public class OverHeated : State
+    {
+        public OverHeated(StateController stateController) : base(stateController)
+        {
+        }
+
+        public override string Name { get => "OverHeated"; }
+        public override State HandleTrigger(StateTrigger trigger)
+        {
+            switch (trigger)
+            {
+                case StateTrigger.OverHeatComplete:
+                    Exit();
+                    return stateController.betweenShots;
                 default:
                     return null;
             }

@@ -49,6 +49,8 @@ public class Gun : MonoBehaviour
 
     private float nextTimeToFireBurst = 0.0f;
 
+    private float overHeatPercent = 0.0f;
+
     private Unity.Mathematics.Random rand;
 
     /// <summary>
@@ -114,6 +116,8 @@ public class Gun : MonoBehaviour
     public void Reset() 
     {
         ammoCount = gunStats.AmmoCount;
+        nextTimeToFireBurst = 0.0f;
+        overHeatPercent = 0.0f;
         stateController.Reset();
     }
 
@@ -125,7 +129,7 @@ public class Gun : MonoBehaviour
         turretInputManager = new TurretInputManager(this.transform, crossHair, gunStats.IsTurret);
         player = FindObjectOfType<PlayerMovement>();
 
-        stateController = new GunState.StateController(gunStats.NumBurstShots);
+        stateController = new GunState.StateController(gunStats.NumBurstShots, gunStats.PrintDebugState);
 
         InitializeBulletPool();
     }
@@ -180,6 +184,8 @@ public class Gun : MonoBehaviour
         UpdateNextTimeToFire(deltaTime);
 
         UpdateNextTimeToBurstFire(deltaTime);
+
+        UpdateOverHeat(deltaTime);
     }
 
     /// <summary>
@@ -208,6 +214,16 @@ public class Gun : MonoBehaviour
         if (nextTimeToFireBurst == 0 && stateController.FiringBurstRounds)
         {
             stateController.HandleTrigger(GunState.StateTrigger.FireBurstShot);
+        }
+    }
+
+    private void UpdateOverHeat(float deltaTime)
+    {
+        overHeatPercent = Mathf.Clamp(overHeatPercent - (deltaTime * gunStats.CoolDownPerSecond), 0, 100);
+
+        if (overHeatPercent < gunStats.OverheatBarrier && stateController.IsOverHeated) 
+        {
+            stateController.HandleTrigger(GunState.StateTrigger.OverHeatComplete);
         }
     }
 
@@ -263,6 +279,7 @@ public class Gun : MonoBehaviour
         ammoCount = gunStats.InfiniteAmmo ? ammoCount : ammoCount - 1;
         if (ammoCount == 0) 
         {
+            // This must be called before OverHeated trigger
             stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
         }
     }
@@ -333,6 +350,15 @@ public class Gun : MonoBehaviour
         BulletSpawn.transform.forward = initialForward;
         muzzleFlash.Play();
         ReduceAmmo();
+
+        if (gunStats.CanOverheat) 
+        {
+            overHeatPercent = Mathf.Clamp(overHeatPercent + gunStats.OverHeatPercentPerShot, 0.0f, 100.0f);
+            if (overHeatPercent == 100) 
+            {
+                stateController.HandleTrigger(GunState.StateTrigger.OverHeated);
+            }
+        }
     }
 
     private void FireInDirection(Vector3 direction) 

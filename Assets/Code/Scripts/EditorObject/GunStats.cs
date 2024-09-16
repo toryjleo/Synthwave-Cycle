@@ -25,10 +25,19 @@ namespace EditorObject
         [SerializeField] private bool infiniteAmmo = true;
         [SerializeField] private int ammoCount = 200;
 
+        #region Mutliple Projectiles
         [SerializeField] private int projectileCountPerShot = 1;
         [SerializeField] private float angleBetweenProjectiles = 90;
         [SerializeField] private float randomAngleVariationPerProjectile = 0;
+        #endregion
 
+        #region Overheat
+        [SerializeField] private bool canOverheat = false;
+        [SerializeField] private float overHeatBarrier = 50;
+        [SerializeField] private float overHeatPercentPerShot = 5;
+        [SerializeField] private float coolDownPerSecond = 2.5f;
+        #endregion
+        [SerializeField] private bool printDebugState = false;
 
         #region Bullet
         [SerializeField] private float damageDealt = 70;
@@ -61,6 +70,12 @@ namespace EditorObject
         public float AngleBetweenProjectiles {  get { return angleBetweenProjectiles; } }
         public float RandomAngleVariationPerProjectile { get { return randomAngleVariationPerProjectile; } }
 
+        public bool CanOverheat { get { return canOverheat; } }
+        public float OverheatBarrier { get { return overHeatBarrier; } }
+        public float OverHeatPercentPerShot { get {  return overHeatPercentPerShot; } }
+        public float CoolDownPerSecond { get { return coolDownPerSecond; } }
+
+        public bool PrintDebugState {  get { return printDebugState; } }
         public float DamageDealt {  get { return damageDealt; } }
         public float MuzzleVelocity {  get { return muzzleVelocity; } }
 

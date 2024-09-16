@@ -10,7 +10,8 @@ namespace CustomInspector
     [CustomEditor(typeof(EditorObject.GunStats))]
     public class GunStats : Editor
     {
-        private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", "damageDealt", "projectileCountPerShot", "angleBetweenProjectiles", "randomAngleVariationPerProjectile" };
+        private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", "damageDealt", "projectileCountPerShot", "angleBetweenProjectiles", 
+                                          "randomAngleVariationPerProjectile", "canOverheat", "overHeatPercentPerShot", "coolDownPerSecond" };
         private string[] burstFireProps = { "numBurstShots", "timeBetweenBurstShots" };
 
         public override void OnInspectorGUI()
