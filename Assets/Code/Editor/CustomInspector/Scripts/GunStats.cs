@@ -11,7 +11,7 @@ namespace CustomInspector
     public class GunStats : Editor
     {
         private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", "damageDealt" };
-        private string[] burstFireProps = { "numBurstShots", "timeBetweenBurstShots" };
+        private string[] burstFireProps = { "timeBetweenBurstShots" };
         private string[] overheatProps = { "overHeatBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
         private string[] multipleProjectileProps = { "angleBetweenProjectiles", "randomAngleVariationPerProjectile" };
 
@@ -47,15 +47,12 @@ namespace CustomInspector
             EditorGUILayout.Space(5);
 
             EditorGUILayout.LabelField("Burst Fire");
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("isBurstFire"));
+
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("numBurstShots"));
             //Burst Fire checkbox
             if (gunStats.IsBurstFire)
             {
                 FindAndShowProperties(burstFireProps);
-            }
-            else 
-            {
-                gunStats.BurstShotsOff();
             }
         }
 

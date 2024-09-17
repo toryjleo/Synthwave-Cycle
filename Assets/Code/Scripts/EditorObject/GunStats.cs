@@ -25,8 +25,7 @@ namespace EditorObject
         #endregion
 
         #region Burst Fire
-        [SerializeField] private bool isBurstFire = false;
-        [Range(1, 20)] [SerializeField] private int numBurstShots = 2;
+        [Range(1, 20)] [SerializeField] private int numBurstShots = 1;
         [Range(0.01f, 20f)] [SerializeField] private float timeBetweenBurstShots = .01f; // TODO: Enforce positive
         #endregion
 
@@ -66,7 +65,7 @@ namespace EditorObject
         public bool IsPlayerGun { get { return isPlayerGun; } }
 
         #region Burst Fire
-        public bool IsBurstFire { get { return isBurstFire; } }
+        public bool IsBurstFire { get { return numBurstShots > 1; } }
         public int NumBurstShots { get { return numBurstShots; } }
         public float TimeBetweenBurstShots { get { return timeBetweenBurstShots; } }
         public float TimeBetweenShots { get { return timeBetweenShots; } }
