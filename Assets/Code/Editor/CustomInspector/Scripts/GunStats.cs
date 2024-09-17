@@ -10,9 +10,10 @@ namespace CustomInspector
     [CustomEditor(typeof(EditorObject.GunStats))]
     public class GunStats : Editor
     {
-        private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", "damageDealt", "projectileCountPerShot", "angleBetweenProjectiles", 
-                                          "randomAngleVariationPerProjectile", "canOverheat", "overHeatPercentPerShot", "coolDownPerSecond" };
+        private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", "damageDealt" };
         private string[] burstFireProps = { "numBurstShots", "timeBetweenBurstShots" };
+        private string[] overheatProps = { "overHeatBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
+        private string[] multipleProjectileProps = { "projectileCountPerShot", "angleBetweenProjectiles", "randomAngleVariationPerProjectile" };
 
         public override void OnInspectorGUI()
         {
@@ -20,12 +21,13 @@ namespace CustomInspector
 
             FindAndShowProperties(generalProps);
 
-            if (gunStats != null) 
+            if (gunStats != null)
             {
-
-                BurstFire(gunStats);
-                BulletOptions(gunStats);
                 Ammunition(gunStats);
+                BurstFire(gunStats);
+                MultipleProjectiles(gunStats);
+                Overheat(gunStats);
+                BulletOptions(gunStats);
             }
 
             serializedObject.ApplyModifiedProperties();
@@ -83,6 +85,35 @@ namespace CustomInspector
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("ammoCount"));
             }
+        }
+
+        /// <summary>
+        /// Display Overheat options
+        /// </summary>
+        /// <param name="gunStats">ScriptableObject to modify</param>
+        private void Overheat(EditorObject.GunStats gunStats)
+        {
+            EditorGUILayout.Space(5);
+
+            EditorGUILayout.LabelField("Overheat");
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("canOverheat"));
+            //Overheat checkbox
+            if (gunStats.CanOverheat)
+            {
+                FindAndShowProperties(overheatProps);
+            }
+        }
+
+        /// <summary>
+        /// Display Multiple Projectile options
+        /// </summary>
+        /// <param name="gunStats">ScriptableObject to modify</param>
+        private void MultipleProjectiles(EditorObject.GunStats gunStats)
+        {
+            EditorGUILayout.Space(5);
+
+            EditorGUILayout.LabelField("Multiple Projectiles");
+            FindAndShowProperties(multipleProjectileProps);
         }
 
         /// <summary>
