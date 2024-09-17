@@ -343,6 +343,10 @@ public class Gun : MonoBehaviour
         {
             float randRot = rand.NextFloat(-gunStats.RandomAngleVariationPerProjectile, gunStats.RandomAngleVariationPerProjectile);
             Quaternion q = Quaternion.AngleAxis(randRot, Vector3.up);
+            if (gunStats.ProjectileCountPerShot == 1)
+            {
+                BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * q;
+            }
             Vector3 direction = BulletSpawn.transform.forward;
             FireInDirection(direction);
             BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationPerIteration * q;
