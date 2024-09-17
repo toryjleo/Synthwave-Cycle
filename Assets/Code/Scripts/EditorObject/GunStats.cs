@@ -20,7 +20,7 @@ namespace EditorObject
 
         #region Burst Fire
         [SerializeField] private bool isBurstFire = false;
-        [SerializeField] private int numBurstShots = 2; // TODO: Enforce 1 burst shot when burstFire off
+        [SerializeField] private int numBurstShots = 2;
         [SerializeField] private float timeBetweenBurstShots = .01f; // TODO: Enforce positive
         [SerializeField] private float timeBetweenShots = 10f;
         #endregion
@@ -105,5 +105,34 @@ namespace EditorObject
         #endregion
 
         #endregion
+
+        public void OnValidate()
+        {
+            numBurstShots = Mathf.Clamp(numBurstShots, 0, int.MaxValue);
+            timeBetweenBurstShots = Mathf.Clamp(timeBetweenBurstShots, 0, float.MaxValue);
+            timeBetweenShots = Mathf.Clamp(timeBetweenShots, 0, float.MaxValue);
+            ammoCount = Mathf.Clamp(ammoCount, 0, int.MaxValue);
+            projectileCountPerShot = Mathf.Clamp(projectileCountPerShot, 0, int.MaxValue);
+            angleBetweenProjectiles = Mathf.Clamp(angleBetweenProjectiles, 0, 180);
+            randomAngleVariationPerProjectile = Mathf.Clamp(randomAngleVariationPerProjectile, 0, 180);
+
+            overHeatBarrier = Mathf.Clamp(overHeatBarrier, 0, 100);
+            overHeatPercentPerShot = Mathf.Clamp(overHeatPercentPerShot, 1, 99);
+            coolDownPerSecond = Mathf.Clamp(coolDownPerSecond, 0, 100);
+
+            damageDealt = Mathf.Clamp(damageDealt, 1, float.MaxValue);
+            muzzleVelocity = Mathf.Clamp(muzzleVelocity,0, float.MaxValue);
+            range = Mathf.Clamp(range, 0, float.MaxValue);
+        }
+
+        public void BurstShotsOff()
+        {
+            numBurstShots = 1;
+        }
+
+        public void ValidateBurstShots() 
+        {
+        
+        }
     }
 }

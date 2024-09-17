@@ -16,7 +16,7 @@ namespace CustomInspector
 
         public override void OnInspectorGUI()
         {
-            EditorObject.GunStats gunStats = (EditorObject.GunStats)target;
+            EditorObject.GunStats gunStats = GetGunStats();
 
             FindAndShowProperties(generalProps);
 
@@ -29,6 +29,11 @@ namespace CustomInspector
             }
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private EditorObject.GunStats GetGunStats() 
+        {
+            return (EditorObject.GunStats)target;
         }
 
         /// <summary>
@@ -45,6 +50,10 @@ namespace CustomInspector
             if (gunStats.IsBurstFire)
             {
                 FindAndShowProperties(burstFireProps);
+            }
+            else 
+            {
+                gunStats.BurstShotsOff();
             }
         }
 
