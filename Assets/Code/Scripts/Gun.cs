@@ -1,9 +1,11 @@
 using UnityEngine;
 using Unity.Mathematics;
 
+/// <summary>
+/// Class that implements all gun behavior
+/// </summary>
 public class Gun : MonoBehaviour
 {
-    #region Used by All Guns
     /// <summary>
     /// Data object that defines this gun's stats
     /// </summary>
@@ -19,15 +21,20 @@ public class Gun : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject BulletSpawn = null;
 
+    /// <summary>
+    /// Reference to player
+    /// </summary>
     private PlayerMovement player = null;
 
-    private float nextTimeToFire = 0.0f;
-    private int ammoCount = 0;
-
-    #endregion
-
+    /// <summary>
+    /// Muzzle flash effect
+    /// </summary>
     [SerializeField] private ParticleSystem muzzleFlash = null;
+    /// <summary>
+    /// Effect instantiated at hitscan impact
+    /// </summary>
     [SerializeField] private GameObject impactEffect = null;
+
 
     #region Bullet Instancing
     protected BulletPool bulletPool;
@@ -46,11 +53,28 @@ public class Gun : MonoBehaviour
 
     #endregion
 
+
+    /// <summary>
+    /// Number of seconds until fire can be called again
+    /// </summary>
+    private float nextTimeToFire = 0.0f;
+    /// <summary>
+    /// Number of times this gun can fire
+    /// </summary>
+    private int ammoCount = 0;
+    /// <summary>
+    /// Amount of time until the next burst shot triggers
+    /// </summary>
     private float nextTimeToFireBurst = 0.0f;
-
+    /// <summary>
+    /// How close the gun is to overheating. Overheats at 100%
+    /// </summary>
     private float overHeatPercent = 0.0f;
-
+    /// <summary>
+    /// Random object
+    /// </summary>
     private Unity.Mathematics.Random rand;
+
 
     /// <summary>
     /// Returns true if this gun is firing this frame
