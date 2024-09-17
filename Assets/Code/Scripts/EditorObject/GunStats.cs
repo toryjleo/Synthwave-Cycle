@@ -16,31 +16,31 @@ namespace EditorObject
         [SerializeField] private bool isPlayerGun = true;
         [SerializeField] private bool isTurret = false;
         [SerializeField] private bool isAutomatic = true;
-        [SerializeField] private float timeBetweenShots = 10f;
-        [SerializeField] private float damageDealt = 70;
+        [Range(0.01f, 20f)] [SerializeField] private float timeBetweenShots = 10f;
+        [Range(0, 1000)] [SerializeField] private float damageDealt = 70;
 
         #region Ammo
         [SerializeField] private bool infiniteAmmo = true;
-        [SerializeField] private int ammoCount = 200;
+        [Range(1, 10000)] [SerializeField] private int ammoCount = 200;
         #endregion
 
         #region Burst Fire
         [SerializeField] private bool isBurstFire = false;
-        [SerializeField] private int numBurstShots = 2;
-        [SerializeField] private float timeBetweenBurstShots = .01f; // TODO: Enforce positive
+        [Range(1, 20)] [SerializeField] private int numBurstShots = 2;
+        [Range(0.01f, 20f)] [SerializeField] private float timeBetweenBurstShots = .01f; // TODO: Enforce positive
         #endregion
 
         #region Multiple Projectiles
-        [SerializeField] private int projectileCountPerShot = 1;
-        [SerializeField] private float angleBetweenProjectiles = 90;
-        [SerializeField] private float randomAngleVariationPerProjectile = 0;
+        [Range(1, 1000)] [SerializeField] private int projectileCountPerShot = 1;
+        [Range(0, 180)] [SerializeField] private float angleBetweenProjectiles = 90;
+        [Range(0, 180)] [SerializeField] private float randomAngleVariationPerProjectile = 0;
         #endregion
 
         #region Overheat
         [SerializeField] private bool canOverheat = false;
-        [SerializeField] private float overHeatBarrier = 50;
-        [SerializeField] private float overHeatPercentPerShot = 5;
-        [SerializeField] private float coolDownPerSecond = 2.5f;
+        [Range(0, 100)] [SerializeField] private float overHeatBarrier = 50;
+        [Range(1, 99)] [SerializeField] private float overHeatPercentPerShot = 5;
+        [Range(0, 100)] [SerializeField] private float coolDownPerSecond = 2.5f;
         #endregion
 
         #region DEBUG
@@ -51,11 +51,11 @@ namespace EditorObject
         [SerializeField] private BulletType bulletType;
 
         #region Projectile
-        [SerializeField] private float muzzleVelocity = 60;
+        [Range(0f, 100f)] [SerializeField] private float muzzleVelocity = 60;
         #endregion
 
         #region HitScan
-        [SerializeField] private float range = 100f;
+        [Range(0f, 200f)] [SerializeField] private float range = 100f;
         #endregion
         #endregion
 
@@ -106,33 +106,10 @@ namespace EditorObject
 
         #endregion
 
-        public void OnValidate()
-        {
-            numBurstShots = Mathf.Clamp(numBurstShots, 0, int.MaxValue);
-            timeBetweenBurstShots = Mathf.Clamp(timeBetweenBurstShots, 0, float.MaxValue);
-            timeBetweenShots = Mathf.Clamp(timeBetweenShots, 0, float.MaxValue);
-            ammoCount = Mathf.Clamp(ammoCount, 0, int.MaxValue);
-            projectileCountPerShot = Mathf.Clamp(projectileCountPerShot, 0, int.MaxValue);
-            angleBetweenProjectiles = Mathf.Clamp(angleBetweenProjectiles, 0, 180);
-            randomAngleVariationPerProjectile = Mathf.Clamp(randomAngleVariationPerProjectile, 0, 180);
-
-            overHeatBarrier = Mathf.Clamp(overHeatBarrier, 0, 100);
-            overHeatPercentPerShot = Mathf.Clamp(overHeatPercentPerShot, 1, 99);
-            coolDownPerSecond = Mathf.Clamp(coolDownPerSecond, 0, 100);
-
-            damageDealt = Mathf.Clamp(damageDealt, 1, float.MaxValue);
-            muzzleVelocity = Mathf.Clamp(muzzleVelocity,0, float.MaxValue);
-            range = Mathf.Clamp(range, 0, float.MaxValue);
-        }
 
         public void BurstShotsOff()
         {
             numBurstShots = 1;
-        }
-
-        public void ValidateBurstShots() 
-        {
-        
         }
     }
 }

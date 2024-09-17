@@ -29,11 +29,11 @@ namespace CustomInspector
                 Overheat(gunStats);
                 BulletOptions(gunStats);
             }
-
             serializedObject.ApplyModifiedProperties();
+            
         }
 
-        private EditorObject.GunStats GetGunStats() 
+        private EditorObject.GunStats GetGunStats()
         {
             return (EditorObject.GunStats)target;
         }
