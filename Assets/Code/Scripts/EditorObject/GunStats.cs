@@ -13,21 +13,21 @@ namespace EditorObject
     [CreateAssetMenu(menuName = "EditorObject/GunStats", fileName = "New GunStats")]
     public class GunStats : ScriptableObject
     {
+        [SerializeField] private bool isPlayerGun = true;
         [SerializeField] private bool isTurret = false;
         [SerializeField] private bool isAutomatic = true;
-        [SerializeField] private BulletType bulletType;
-        [SerializeField] private bool isPlayerGun = true;
+        [SerializeField] private float timeBetweenShots = 10f;
+        [SerializeField] private float damageDealt = 70;
+
+        #region Ammo
+        [SerializeField] private bool infiniteAmmo = true;
+        [SerializeField] private int ammoCount = 200;
+        #endregion
 
         #region Burst Fire
         [SerializeField] private bool isBurstFire = false;
         [SerializeField] private int numBurstShots = 2;
         [SerializeField] private float timeBetweenBurstShots = .01f; // TODO: Enforce positive
-        [SerializeField] private float timeBetweenShots = 10f;
-        #endregion
-
-        #region Ammo
-        [SerializeField] private bool infiniteAmmo = true;
-        [SerializeField] private int ammoCount = 200;
         #endregion
 
         #region Multiple Projectiles
@@ -48,7 +48,7 @@ namespace EditorObject
         #endregion
 
         #region Bullet Specification
-        [SerializeField] private float damageDealt = 70;
+        [SerializeField] private BulletType bulletType;
 
         #region Projectile
         [SerializeField] private float muzzleVelocity = 60;
@@ -69,7 +69,7 @@ namespace EditorObject
         public bool IsBurstFire { get { return isBurstFire; } }
         public int NumBurstShots { get { return numBurstShots; } }
         public float TimeBetweenBurstShots { get { return timeBetweenBurstShots; } }
-        public float TimeBetweenShots { get { return timeBetweenShots;  } }
+        public float TimeBetweenShots { get { return timeBetweenShots; } }
         #endregion
 
         #region Ammo
@@ -79,25 +79,25 @@ namespace EditorObject
 
         #region Multiple Projectiles
         public int ProjectileCountPerShot { get { return projectileCountPerShot; } }
-        public float AngleBetweenProjectiles {  get { return angleBetweenProjectiles; } }
+        public float AngleBetweenProjectiles { get { return angleBetweenProjectiles; } }
         public float RandomAngleVariationPerProjectile { get { return randomAngleVariationPerProjectile; } }
         #endregion
 
         #region Overheat
         public bool CanOverheat { get { return canOverheat; } }
         public float OverheatBarrier { get { return overHeatBarrier; } }
-        public float OverHeatPercentPerShot { get {  return overHeatPercentPerShot; } }
+        public float OverHeatPercentPerShot { get { return overHeatPercentPerShot; } }
         public float CoolDownPerSecond { get { return coolDownPerSecond; } }
         #endregion
 
         #region DEBUG
-        public bool PrintDebugState {  get { return printDebugState; } }
+        public bool PrintDebugState { get { return printDebugState; } }
         #endregion
 
         #region Bullet Specification
-        public float DamageDealt {  get { return damageDealt; } }
+        public float DamageDealt { get { return damageDealt; } }
         #region Projectile
-        public float MuzzleVelocity {  get { return muzzleVelocity; } }
+        public float MuzzleVelocity { get { return muzzleVelocity; } }
         #endregion
         #region HitScan
         public float Range { get { return range; } }
