@@ -10,50 +10,113 @@ namespace EditorObject
         HitScan,
     }
 
+    /// <summary>
+    /// Stores the data for a Gun component
+    /// </summary>
     [CreateAssetMenu(menuName = "EditorObject/GunStats", fileName = "New GunStats")]
     public class GunStats : ScriptableObject
     {
+        /// <summary>
+        /// If the gun is for a player. Else an enemy
+        /// </summary>
         [SerializeField] private bool isPlayerGun = true;
+        /// <summary>
+        /// If the gun will follow the mouse
+        /// </summary>
         [SerializeField] private bool isTurret = false;
+        /// <summary>
+        /// If the gun will continue shooting on fire held down
+        /// </summary>
         [SerializeField] private bool isAutomatic = true;
+        /// <summary>
+        /// Number of seconds after the final shot the gun must wait before shooting again
+        /// </summary>
         [Range(0.01f, 20f)] [SerializeField] private float timeBetweenShots = 10f;
+        /// <summary>
+        /// Number of hit points to depleat on bullet hit
+        /// </summary>
         [Range(0, 1000)] [SerializeField] private float damageDealt = 70;
 
         #region Ammo
+        /// <summary>
+        /// If the gun has infinite ammo
+        /// </summary>
         [SerializeField] private bool infiniteAmmo = true;
+        /// <summary>
+        /// Number of shots before the gun runs out of ammo
+        /// </summary>
         [Range(1, 10000)] [SerializeField] private int ammoCount = 200;
         #endregion
 
         #region Burst Fire
+        /// <summary>
+        /// Number of bullet bursts per fire action
+        /// </summary>
         [Range(1, 20)] [SerializeField] private int numBurstShots = 1;
+        /// <summary>
+        /// Time between each bullet burst
+        /// </summary>
         [Range(0.01f, 20f)] [SerializeField] private float timeBetweenBurstShots = .01f; // TODO: Enforce positive
         #endregion
 
         #region Multiple Projectiles
+        /// <summary>
+        /// Number of projectiles shot per gun shot
+        /// </summary>
         [Range(1, 1000)] [SerializeField] private int projectileCountPerShot = 1;
+        /// <summary>
+        /// Angle between each projectile shot
+        /// </summary>
         [Range(0, 180)] [SerializeField] private float angleBetweenProjectiles = 90;
+        /// <summary>
+        /// Adds a random variation to each projectile's shot
+        /// </summary>
         [Range(0, 180)] [SerializeField] private float randomAngleVariationPerProjectile = 0;
         #endregion
 
         #region Overheat
+        /// <summary>
+        /// If the gun can overheat from firing
+        /// </summary>
         [SerializeField] private bool canOverheat = false;
+        /// <summary>
+        /// The amount the gun must cool down to before shooting again
+        /// </summary>
         [Range(0, 100)] [SerializeField] private float overHeatBarrier = 50;
+        /// <summary>
+        /// How much each shot will overheat the gun
+        /// </summary>
         [Range(1, 99)] [SerializeField] private float overHeatPercentPerShot = 5;
+        /// <summary>
+        /// Percentage the gun cools down each second
+        /// </summary>
         [Range(0, 100)] [SerializeField] private float coolDownPerSecond = 2.5f;
         #endregion
 
         #region DEBUG
+        /// <summary>
+        /// If the gun should print its state
+        /// </summary>
         [SerializeField] private bool printDebugState = false;
         #endregion
 
         #region Bullet Specification
+        /// <summary>
+        /// Type of bullet to shoot
+        /// </summary>
         [SerializeField] private BulletType bulletType;
 
         #region Projectile
+        /// <summary>
+        /// Speed at which the bullet travels out of the gun
+        /// </summary>
         [Range(0f, 100f)] [SerializeField] private float muzzleVelocity = 60;
         #endregion
 
         #region HitScan
+        /// <summary>
+        /// Maximum range the projectile travels
+        /// </summary>
         [Range(0f, 200f)] [SerializeField] private float range = 100f;
         #endregion
         #endregion
@@ -104,11 +167,5 @@ namespace EditorObject
         #endregion
 
         #endregion
-
-
-        public void BurstShotsOff()
-        {
-            numBurstShots = 1;
-        }
     }
 }
