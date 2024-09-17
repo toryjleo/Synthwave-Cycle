@@ -54,7 +54,7 @@ public abstract class InfantryAI : Ai
             Debug.LogError("This object needs a health component");
         }
         #endregion
-
+        base.Init();
     }
 
     /// <summary>

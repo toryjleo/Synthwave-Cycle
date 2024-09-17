@@ -1441,7 +1441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isInvulnurable: 0
+  _hitPoints: 0
 --- !u!1 &7830052354036537715
 GameObject:
   m_ObjectHideFlags: 0
@@ -1550,6 +1550,7 @@ GameObject:
   - component: {fileID: 2114404339180774918}
   - component: {fileID: 6293195935236756366}
   - component: {fileID: 6128039659088265392}
+  - component: {fileID: -5125058199241888200}
   m_Layer: 0
   m_Name: CYB_Shotgun
   m_TagString: Enemy
@@ -1590,16 +1591,15 @@ MonoBehaviour:
   rb: {fileID: 2114404339180774918}
   myGun: {fileID: 4935205766387807532}
   hp: {fileID: 0}
-  activeConditions: []
   StartingHP: 40
-  maxSpeed: 10
   maxForce: 0
   score: 300
   dlScore: 5
   attackRange: 7
   minimumRange: 1
   alive: 1
-  speedBoost: 8
+  movementGroup: 1
+  gearModifier: 0.5
   animationStateController: {fileID: 6128039659088265392}
   muzzleLocation: {fileID: 0}
 --- !u!54 &2114404339180774918
@@ -1645,6 +1645,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
+--- !u!114 &-5125058199241888200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7978806473477363408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitPoints: 0
 --- !u!1 &8018095293634881705
 GameObject:
   m_ObjectHideFlags: 0
