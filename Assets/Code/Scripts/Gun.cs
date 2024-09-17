@@ -29,7 +29,6 @@ public class Gun : MonoBehaviour
     [SerializeField] private ParticleSystem muzzleFlash = null;
     [SerializeField] private GameObject impactEffect = null;
 
-    // TODO: Create impact particlesystem with flashing point light
     #region Bullet Instancing
     protected BulletPool bulletPool;
     [SerializeField] private Bullet bulletPrefab;
@@ -167,6 +166,7 @@ public class Gun : MonoBehaviour
         stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
     }
 
+    #region Frame Update
     /// <summary>
     /// Updates gun logic each frame
     /// </summary>
@@ -217,6 +217,10 @@ public class Gun : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Cools down the overheat function and triggers OverHeatComplete if the gun is overheated.
+    /// </summary>
+    /// <param name="deltaTime">Amount of time since last frame update</param>
     private void UpdateOverHeat(float deltaTime)
     {
         overHeatPercent = Mathf.Clamp(overHeatPercent - (deltaTime * gunStats.CoolDownPerSecond), 0, 100);
@@ -226,7 +230,9 @@ public class Gun : MonoBehaviour
             stateController.HandleTrigger(GunState.StateTrigger.OverHeatComplete);
         }
     }
+    #endregion
 
+    #region Gun Firing Methods
     /// <summary>
     /// Fires a single projectile from the bulletPool
     /// </summary>
@@ -243,7 +249,7 @@ public class Gun : MonoBehaviour
     private void FireHitScan(Vector3 direction)
     {
         RaycastHit hit;
-        if (Physics.Raycast(BulletSpawn.transform.position, direction, out hit, gunStats.Range)) 
+        if (Physics.Raycast(BulletSpawn.transform.position, direction, out hit, gunStats.Range)) // Hit case
         {
             Debug.Log(hit.transform.name);
 
@@ -259,7 +265,7 @@ public class Gun : MonoBehaviour
             Destroy(g, 2f);
 
         }
-        else 
+        else // Not hit case
         {
             // TODO: create a objectpool for the impactEffect
             GameObject g = Instantiate(impactEffect, transform.forward * 12, Quaternion.LookRotation(Vector3.up));
@@ -274,7 +280,7 @@ public class Gun : MonoBehaviour
     /// <summary>
     /// Reduces ammo by 1. Will trigger OutOfAmmo when ammoCount hits zero
     /// </summary>
-    private void ReduceAmmo() 
+    private void ReduceAmmo()
     {
         ammoCount = gunStats.InfiniteAmmo ? ammoCount : ammoCount - 1;
         if (ammoCount == 0) 
@@ -305,67 +311,65 @@ public class Gun : MonoBehaviour
 
     }
 
-    #region Event Handlers
-    public void HandleFireSingleShotEnter()
-    {
-        FireSingleReduceAmmo();
-        stateController.HandleTrigger(GunState.StateTrigger.EnterTimeBetween);
-    }
-
-    public void HandleFireBurstShotEnter()
-    {
-        FireSingleReduceAmmo();
-        nextTimeToFireBurst = gunStats.TimeBetweenBurstShots;
-    }
-
-    public void HandleBetweenShotsEnter() 
-    {
-        nextTimeToFire = gunStats.TimeBetweenShots;
-    }
-    #endregion
 
     /// <summary>
-    /// Fires either a projectile or hitscan and reduces ammo
+    /// Fires single or multiple projectiles or hitscans and reduces ammo
     /// </summary>
-    private void FireSingleReduceAmmo() 
+    private void FireOnce()
     {
-        float radius = gunStats.AngleBetweenProjectiles * (gunStats.ProjectileCountPerShot - 1);
-        float angleStart = radius / 2;
-        Vector3 initialForward = BulletSpawn.transform.forward;
-
-        Quaternion rotationToApply = Quaternion.AngleAxis(-angleStart, Vector3.up);
-        BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationToApply;
-
-        Quaternion rotationPerIteration = Quaternion.AngleAxis(gunStats.AngleBetweenProjectiles, Vector3.up);
-
-        
-        for (int i = 0; i < gunStats.ProjectileCountPerShot; i++)
-        {
-            float randRot = rand.NextFloat(-gunStats.RandomAngleVariationPerProjectile, gunStats.RandomAngleVariationPerProjectile);
-            Quaternion q = Quaternion.AngleAxis(randRot, Vector3.up);
-            if (gunStats.ProjectileCountPerShot == 1)
-            {
-                BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * q;
-            }
-            Vector3 direction = BulletSpawn.transform.forward;
-            FireInDirection(direction);
-            BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationPerIteration * q;
-        }
-        BulletSpawn.transform.forward = initialForward;
+        FireAllBulletsThisShot();
         muzzleFlash.Play();
         ReduceAmmo();
 
-        if (gunStats.CanOverheat) 
+        if (gunStats.CanOverheat)
         {
             overHeatPercent = Mathf.Clamp(overHeatPercent + gunStats.OverHeatPercentPerShot, 0.0f, 100.0f);
-            if (overHeatPercent == 100) 
+            if (overHeatPercent == 100)
             {
                 stateController.HandleTrigger(GunState.StateTrigger.OverHeated);
             }
         }
     }
 
-    private void FireInDirection(Vector3 direction) 
+    /// <summary>
+    /// Fires all the bullets needed for this shot
+    /// </summary>
+    private void FireAllBulletsThisShot() 
+    {
+        Vector3 initialForward = BulletSpawn.transform.forward;
+
+        // Rotate the BulletSpawn to the initial firing position
+        float radius = gunStats.AngleBetweenProjectiles * (gunStats.ProjectileCountPerShot - 1);
+        float angleStart = radius / 2;
+        Quaternion rotationToApply = Quaternion.AngleAxis(-angleStart, Vector3.up);
+        BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationToApply;
+
+        Quaternion rotationPerIteration = Quaternion.AngleAxis(gunStats.AngleBetweenProjectiles, Vector3.up);
+
+        for (int i = 0; i < gunStats.ProjectileCountPerShot; i++)
+        {
+            float randDegreeRot = rand.NextFloat(-gunStats.RandomAngleVariationPerProjectile, gunStats.RandomAngleVariationPerProjectile);
+            Quaternion randomRotation = Quaternion.AngleAxis(randDegreeRot, Vector3.up);
+
+            if (gunStats.ProjectileCountPerShot == 1)
+            {
+                // Case for if we are only shooting once and want to apply a random rotation
+                BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * randomRotation;
+            }
+
+            Vector3 direction = BulletSpawn.transform.forward;
+            FireSingleInDirection(direction);
+            BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationPerIteration * randomRotation;
+        }
+        // Return BulletSpawn to its initial position
+        BulletSpawn.transform.forward = initialForward;
+    }
+
+    /// <summary>
+    /// Shoots either a single hitscan or projectile in specified direction
+    /// </summary>
+    /// <param name="direction">Direction of this shot</param>
+    private void FireSingleInDirection(Vector3 direction)
     {
         switch (gunStats.BulletType)
         {
@@ -377,4 +381,35 @@ public class Gun : MonoBehaviour
                 break;
         }
     }
+
+    #endregion
+
+    #region Event Handlers
+    /// <summary>
+    /// Listens to fireSingleShot.notifyListenersEnter
+    /// </summary>
+    public void HandleFireSingleShotEnter()
+    {
+        FireOnce();
+        stateController.HandleTrigger(GunState.StateTrigger.EnterTimeBetween);
+    }
+
+    /// <summary>
+    /// Listens to fireBurstShot.notifyListenersEnter
+    /// </summary>
+    public void HandleFireBurstShotEnter()
+    {
+        FireOnce();
+        nextTimeToFireBurst = gunStats.TimeBetweenBurstShots;
+    }
+
+    /// <summary>
+    /// Listens to betweenShots.notifyListenersEnter
+    /// </summary>
+    public void HandleBetweenShotsEnter()
+    {
+        nextTimeToFire = gunStats.TimeBetweenShots;
+    }
+    #endregion
+
 }
