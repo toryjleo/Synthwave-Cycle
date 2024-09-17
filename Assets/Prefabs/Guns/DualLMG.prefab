@@ -79,7 +79,7 @@ MonoBehaviour:
   gunStats: {fileID: 11400000, guid: daa7f538aa123c04baf8df49e9dd3632, type: 2}
   BulletSpawn: {fileID: 490074081577700557}
   muzzleFlash: {fileID: 5518774448732476214}
-  impactEffect: {fileID: 5518774448732476212}
+  impactEffect: {fileID: 5427340959895493370, guid: ac706fddc359e2949835b202db59647a, type: 3}
   bulletPrefab: {fileID: 5230005726319368862, guid: 084e10c8016e91741a5756a57400916f, type: 3}
   bulletPoolSize: 200
   crossHair: {fileID: 5114472430233548999}
@@ -269,10 +269,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1140667315233590840}
     m_Modifications:
-    - target: {fileID: 3672954440382615352, guid: 7a3c549274ebb5549877e8cc02cbd86e, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3672954440382615353, guid: 7a3c549274ebb5549877e8cc02cbd86e, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -321,17 +317,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gun Test Particle System
       objectReference: {fileID: 0}
-    - target: {fileID: 3672954440382615354, guid: 7a3c549274ebb5549877e8cc02cbd86e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a3c549274ebb5549877e8cc02cbd86e, type: 3}
---- !u!1 &5518774448732476212 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3672954440382615354, guid: 7a3c549274ebb5549877e8cc02cbd86e, type: 3}
-  m_PrefabInstance: {fileID: 9110312028085459982}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5518774448732476215 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3672954440382615353, guid: 7a3c549274ebb5549877e8cc02cbd86e, type: 3}
