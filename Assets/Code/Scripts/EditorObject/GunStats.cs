@@ -17,15 +17,20 @@ namespace EditorObject
         [SerializeField] private bool isAutomatic = true;
         [SerializeField] private BulletType bulletType;
         [SerializeField] private bool isPlayerGun = true;
+
+        #region Burst Fire
         [SerializeField] private bool isBurstFire = false;
         [SerializeField] private int numBurstShots = 2; // TODO: Enforce 1 burst shot when burstFire off
         [SerializeField] private float timeBetweenBurstShots = .01f; // TODO: Enforce positive
         [SerializeField] private float timeBetweenShots = 10f;
+        #endregion
 
+        #region Ammo
         [SerializeField] private bool infiniteAmmo = true;
         [SerializeField] private int ammoCount = 200;
+        #endregion
 
-        #region Mutliple Projectiles
+        #region Multiple Projectiles
         [SerializeField] private int projectileCountPerShot = 1;
         [SerializeField] private float angleBetweenProjectiles = 90;
         [SerializeField] private float randomAngleVariationPerProjectile = 0;
@@ -37,9 +42,12 @@ namespace EditorObject
         [SerializeField] private float overHeatPercentPerShot = 5;
         [SerializeField] private float coolDownPerSecond = 2.5f;
         #endregion
-        [SerializeField] private bool printDebugState = false;
 
-        #region Bullet
+        #region DEBUG
+        [SerializeField] private bool printDebugState = false;
+        #endregion
+
+        #region Bullet Specification
         [SerializeField] private float damageDealt = 70;
 
         #region Projectile
@@ -57,29 +65,44 @@ namespace EditorObject
         public BulletType BulletType { get { return bulletType; } }
         public bool IsPlayerGun { get { return isPlayerGun; } }
 
+        #region Burst Fire
         public bool IsBurstFire { get { return isBurstFire; } }
         public int NumBurstShots { get { return numBurstShots; } }
         public float TimeBetweenBurstShots { get { return timeBetweenBurstShots; } }
-
-
         public float TimeBetweenShots { get { return timeBetweenShots;  } }
+        #endregion
+
+        #region Ammo
         public bool InfiniteAmmo { get { return infiniteAmmo; } }
         public int AmmoCount { get { return ammoCount; } }
+        #endregion
 
+        #region Multiple Projectiles
         public int ProjectileCountPerShot { get { return projectileCountPerShot; } }
         public float AngleBetweenProjectiles {  get { return angleBetweenProjectiles; } }
         public float RandomAngleVariationPerProjectile { get { return randomAngleVariationPerProjectile; } }
+        #endregion
 
+        #region Overheat
         public bool CanOverheat { get { return canOverheat; } }
         public float OverheatBarrier { get { return overHeatBarrier; } }
         public float OverHeatPercentPerShot { get {  return overHeatPercentPerShot; } }
         public float CoolDownPerSecond { get { return coolDownPerSecond; } }
+        #endregion
 
+        #region DEBUG
         public bool PrintDebugState {  get { return printDebugState; } }
-        public float DamageDealt {  get { return damageDealt; } }
-        public float MuzzleVelocity {  get { return muzzleVelocity; } }
+        #endregion
 
+        #region Bullet Specification
+        public float DamageDealt {  get { return damageDealt; } }
+        #region Projectile
+        public float MuzzleVelocity {  get { return muzzleVelocity; } }
+        #endregion
+        #region HitScan
         public float Range { get { return range; } }
+        #endregion
+        #endregion
 
         #endregion
     }
