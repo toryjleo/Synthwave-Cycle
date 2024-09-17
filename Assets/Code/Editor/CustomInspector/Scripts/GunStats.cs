@@ -13,7 +13,7 @@ namespace CustomInspector
         private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", "damageDealt" };
         private string[] burstFireProps = { "numBurstShots", "timeBetweenBurstShots" };
         private string[] overheatProps = { "overHeatBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
-        private string[] multipleProjectileProps = { "projectileCountPerShot", "angleBetweenProjectiles", "randomAngleVariationPerProjectile" };
+        private string[] multipleProjectileProps = { "angleBetweenProjectiles", "randomAngleVariationPerProjectile" };
 
         public override void OnInspectorGUI()
         {
@@ -122,7 +122,11 @@ namespace CustomInspector
             EditorGUILayout.Space(5);
 
             EditorGUILayout.LabelField("Multiple Projectiles");
-            FindAndShowProperties(multipleProjectileProps);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileCountPerShot"));
+            if (gunStats.ProjectileCountPerShot > 1) 
+            {
+                FindAndShowProperties(multipleProjectileProps);
+            }
         }
 
         /// <summary>
