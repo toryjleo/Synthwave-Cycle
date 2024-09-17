@@ -12,9 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 401f65c6e22c3214ba4591335c82ef86, type: 3}
   m_Name: TestGun
   m_EditorClassIdentifier: 
-  bulletType: 1
-  playerBullet: 1
-  fireRate: 10
+  isPlayerGun: 1
+  isTurret: 1
+  isAutomatic: 1
+  timeBetweenShots: 0.5
   damageDealt: 70
+  infiniteAmmo: 1
+  ammoCount: 200
+  isBurstFire: 0
+  numBurstShots: 1
+  timeBetweenBurstShots: 0.01
+  projectileCountPerShot: 1
+  angleBetweenProjectiles: 90
+  randomAngleVariationPerProjectile: 0
+  canOverheat: 0
+  overHeatBarrier: 50
+  overHeatPercentPerShot: 5
+  coolDownPerSecond: 2.5
+  printDebugState: 0
+  bulletType: 1
   muzzleVelocity: 60
   range: 100
