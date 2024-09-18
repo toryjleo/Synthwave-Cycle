@@ -153,20 +153,10 @@ public class Gun : MonoBehaviour
 
         stateController = new GunState.StateController(gunStats.NumBurstShots, gunStats.PrintDebugState);
 
-        InitializeBulletPool();
-    }
-
-    /// <summary>
-    /// Initializes the bullet pool
-    /// </summary>
-    protected void InitializeBulletPool() 
-    {
-        bulletPool = gameObject.GetComponent<ObjectPool>();
         if (bulletPool == null)
         {
-            bulletPool = gameObject.AddComponent<ObjectPool>();
+            bulletPool = new ObjectPool(gunStats, bulletPrefab);
         }
-        bulletPool.Init(gunStats, bulletPrefab);
     }
 
     /// <summary>

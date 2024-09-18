@@ -27,6 +27,14 @@ public class Bullet : IPoolable
         UpdateBulletLifeTime();
         Move();
     }
+
+    public override void Init(EditorObject.GunStats gunStats)
+    {
+        this.damageDealt = gunStats.DamageDealt;
+        this.muzzleVelocity = gunStats.MuzzleVelocity;
+        this.isPlayerBullet = gunStats.IsPlayerGun;
+    }
+
     /// <summary>Updates the object's location this frame.</summary>
     protected virtual void Move()
     {
@@ -69,13 +77,6 @@ public class Bullet : IPoolable
     {
         initialVelocity = Vector3.zero;
         gameObject.SetActive(false);
-    }
-
-    public override void Init(EditorObject.GunStats gunStats)
-    {
-        this.damageDealt = gunStats.DamageDealt;
-        this.muzzleVelocity = gunStats.MuzzleVelocity;
-        this.isPlayerBullet = gunStats.IsPlayerGun;
     }
 
     private void DealDamageAndDespawn(GameObject other)

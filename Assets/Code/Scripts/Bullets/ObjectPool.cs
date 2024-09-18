@@ -12,7 +12,7 @@ public abstract class IPoolable : SelfWorldBoundsDespawn
 
 
 /// <summary>Class <c>ObjectPool</c> A Unity Component works as an object pool for bullets.</summary>
-public class ObjectPool : MonoBehaviour, IResettable
+public class ObjectPool : IResettable
 {
     private const int INFINITE_AMMO_COUNT = 200;
 
@@ -28,7 +28,7 @@ public class ObjectPool : MonoBehaviour, IResettable
     /// </summary>
     /// <param name="gunStats">Gun statistics to query data from</param>
     /// <param name="bulletPrefab">The template object for this pool.</param>
-    public void Init(EditorObject.GunStats gunStats, IPoolable bulletPrefab) 
+    public ObjectPool(EditorObject.GunStats gunStats, IPoolable bulletPrefab) 
     {
         if (gunStats.InfiniteAmmo) 
         {
@@ -61,7 +61,7 @@ public class ObjectPool : MonoBehaviour, IResettable
     /// <returns>A new gameObject created from bulletPrefab.</returns>
     private IPoolable CreateNewBullet()
     {
-        IPoolable newObject = Instantiate(bulletPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        IPoolable newObject = GameObject.Instantiate(bulletPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         newObject.Init(gunStats);
         newObject.gameObject.SetActive(false);
         newObject.Despawn += DespawnBullet;
