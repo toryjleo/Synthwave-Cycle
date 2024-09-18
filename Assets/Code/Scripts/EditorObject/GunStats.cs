@@ -63,7 +63,7 @@ namespace EditorObject
         /// <summary>
         /// Number of projectiles shot per gun shot
         /// </summary>
-        [Range(1, 1000)] [SerializeField] private int projectileCountPerShot = 1;
+        [Range(1, 40)] [SerializeField] private int projectileCountPerShot = 1;
         /// <summary>
         /// Angle between each projectile shot
         /// </summary>
@@ -82,11 +82,11 @@ namespace EditorObject
         /// <summary>
         /// The amount the gun must cool down to before shooting again
         /// </summary>
-        [Range(0, 100)] [SerializeField] private float overHeatBarrier = 50;
+        [Range(0, 100)] [SerializeField] private float coolDownBarrier = 50;
         /// <summary>
         /// How much each shot will overheat the gun
         /// </summary>
-        [Range(1, 99)] [SerializeField] private float overHeatPercentPerShot = 5;
+        [Range(1, 100)] [SerializeField] private float overHeatPercentPerShot = 5;
         /// <summary>
         /// Percentage the gun cools down each second
         /// </summary>
@@ -147,7 +147,7 @@ namespace EditorObject
 
         #region Overheat
         public bool CanOverheat { get { return canOverheat; } }
-        public float OverheatBarrier { get { return overHeatBarrier; } }
+        public float CoolDownBarrier { get { return coolDownBarrier; } }
         public float OverHeatPercentPerShot { get { return overHeatPercentPerShot; } }
         public float CoolDownPerSecond { get { return coolDownPerSecond; } }
         #endregion

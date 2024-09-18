@@ -248,7 +248,7 @@ public class Gun : MonoBehaviour
     {
         overHeatPercent = Mathf.Clamp(overHeatPercent - (deltaTime * gunStats.CoolDownPerSecond), 0, 100);
 
-        if (overHeatPercent < gunStats.OverheatBarrier && stateController.IsOverHeated) 
+        if (overHeatPercent < gunStats.CoolDownBarrier && stateController.IsOverHeated) 
         {
             stateController.HandleTrigger(GunState.StateTrigger.OverHeatComplete);
         }

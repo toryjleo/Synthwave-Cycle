@@ -5,13 +5,14 @@ using UnityEngine;
 /// <summary>Class <c>BulletPool</c> A Unity Component works as an object pool for bullets.</summary>
 public class BulletPool : MonoBehaviour, IResettable
 {
+    private const int INFINITE_AMMO_COUNT = 200;
+
     private EditorObject.GunStats gunStats;
     private Bullet bulletPrefab;
     private int bulletStartAmnt = 0;
 
     private Queue<Bullet> bulletQueue;
     private ArrayList usedBullets;
-
 
     /// <summary>
     /// Initialize this class's variables. A replacement for a constructor.
@@ -20,7 +21,14 @@ public class BulletPool : MonoBehaviour, IResettable
     /// <param name="bulletPrefab">The template object for this pool.</param>
     public void Init(EditorObject.GunStats gunStats, Bullet bulletPrefab) 
     {
-        bulletStartAmnt = gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+        if (gunStats.InfiniteAmmo) 
+        {
+            bulletStartAmnt = INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot;
+        }
+        else 
+        {
+            bulletStartAmnt = gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+        }
 
         this.gunStats = gunStats;
         this.bulletPrefab = bulletPrefab;
