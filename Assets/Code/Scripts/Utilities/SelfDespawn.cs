@@ -10,9 +10,6 @@ public abstract class SelfDespawn : MonoBehaviour
 {
     public event NotifyReadyToDespawn Despawn; // event
 
-
-    public abstract void Init();
-
     protected virtual void OnDespawn() // protected virtual method
     {
         // if Despawn is not null then call delegate

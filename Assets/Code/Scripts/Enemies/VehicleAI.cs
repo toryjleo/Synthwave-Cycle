@@ -30,7 +30,6 @@ public class VehicleAI : Ai
     private float timeByTarget = 0;
     private float TIME_BY_TARGET_TO_ATTACK;
     private const float CONFIDENCE_BUILD_DISTANCE = 25f;
-
     public override void NewLife()
     {
         TIME_BY_TARGET_TO_ATTACK = Random.Range(3, 11);
@@ -136,4 +135,6 @@ public class VehicleAI : Ai
     {
         return Enemy.Car;
     }
+
+
 }

@@ -2,16 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>Class <c>BulletPool</c> A Unity Component works as an object pool for bullets.</summary>
-public class BulletPool : MonoBehaviour, IResettable
+public abstract class IPoolable : SelfWorldBoundsDespawn
+{
+    public abstract void Init(EditorObject.GunStats gunStats);
+
+    // TODO: look into Unity reset()
+    public abstract void Reset();
+}
+
+
+/// <summary>Class <c>ObjectPool</c> A Unity Component works as an object pool for bullets.</summary>
+public class ObjectPool : MonoBehaviour, IResettable
 {
     private const int INFINITE_AMMO_COUNT = 200;
 
     private EditorObject.GunStats gunStats;
-    private Bullet bulletPrefab;
+    private IPoolable bulletPrefab;
     private int bulletStartAmnt = 0;
 
-    private Queue<Bullet> bulletQueue;
+    private Queue<IPoolable> bulletQueue;
     private ArrayList usedBullets;
 
     /// <summary>
@@ -19,7 +28,7 @@ public class BulletPool : MonoBehaviour, IResettable
     /// </summary>
     /// <param name="gunStats">Gun statistics to query data from</param>
     /// <param name="bulletPrefab">The template object for this pool.</param>
-    public void Init(EditorObject.GunStats gunStats, Bullet bulletPrefab) 
+    public void Init(EditorObject.GunStats gunStats, IPoolable bulletPrefab) 
     {
         if (gunStats.InfiniteAmmo) 
         {
@@ -35,7 +44,7 @@ public class BulletPool : MonoBehaviour, IResettable
 
         if (bulletQueue == null)
         {
-            bulletQueue = new Queue<Bullet>();
+            bulletQueue = new Queue<IPoolable>();
         }
         if (usedBullets == null) 
         {
@@ -43,16 +52,16 @@ public class BulletPool : MonoBehaviour, IResettable
         }
         while (bulletQueue.Count < bulletStartAmnt)
         {
-            Bullet newBullet = CreateNewBullet();
+            IPoolable newBullet = CreateNewBullet();
             bulletQueue.Enqueue(newBullet);
         }
     }
 
     /// <summary>Should handle all initialization for a new bullet instance.</summary>
     /// <returns>A new gameObject created from bulletPrefab.</returns>
-    private Bullet CreateNewBullet()
+    private IPoolable CreateNewBullet()
     {
-        Bullet newObject = Instantiate(bulletPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        IPoolable newObject = Instantiate(bulletPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         newObject.Init(gunStats);
         newObject.gameObject.SetActive(false);
         newObject.Despawn += DespawnBullet;
@@ -61,20 +70,20 @@ public class BulletPool : MonoBehaviour, IResettable
 
     /// <summary>Returns an instance of a bullet from the pool if there is an unused bullet.</summary>
     /// <returns>A currently unused bullet.</returns>
-    public Bullet SpawnFromPool() 
+    public IPoolable SpawnFromPool() 
     {
         if (bulletQueue.Count == 0)
         {
-            Bullet newBullet = CreateNewBullet();
+            IPoolable newBullet = CreateNewBullet();
             bulletQueue.Enqueue(newBullet);
         }
 
 
-        Bullet objectToSpawn = bulletQueue.Dequeue();
+        IPoolable objectToSpawn = bulletQueue.Dequeue();
         usedBullets.Add(objectToSpawn);
 
         // Check if object already in world
-        objectToSpawn.ResetBullet();
+        objectToSpawn.Reset();
         objectToSpawn.gameObject.SetActive(true);
         // Add the object to the end of the queue
 
@@ -88,16 +97,16 @@ public class BulletPool : MonoBehaviour, IResettable
     public void DespawnBullet(SelfDespawn bullet)
     {
         bullet.gameObject.SetActive(false);
-        usedBullets.Remove((bullet as Bullet));
-        bulletQueue.Enqueue(bullet as Bullet); // Make sure this is bullet in the future
+        usedBullets.Remove((bullet as IPoolable));
+        bulletQueue.Enqueue(bullet as IPoolable);
     }
 
     public void ResetGameObject()
     {
         for (int i = 0; i < usedBullets.Count; i++) 
         {
-            Bullet b = (Bullet) usedBullets[i];
-            b.ResetBullet();
+            IPoolable b = (IPoolable) usedBullets[i];
+            b.Reset();
             usedBullets.Remove(b);
             bulletQueue.Enqueue(b);
         }

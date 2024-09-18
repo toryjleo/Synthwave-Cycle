@@ -56,6 +56,8 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
         Init();
     }
 
+    public abstract void Init();
+
     public virtual void Aim(Vector3 aimAt)
     {
         transform.LookAt(aimAt);

@@ -37,7 +37,7 @@ public class Gun : MonoBehaviour
 
 
     #region Bullet Instancing
-    protected BulletPool bulletPool;
+    protected ObjectPool bulletPool;
     [SerializeField] private Bullet bulletPrefab;
     #endregion
 
@@ -161,10 +161,10 @@ public class Gun : MonoBehaviour
     /// </summary>
     protected void InitializeBulletPool() 
     {
-        bulletPool = gameObject.GetComponent<BulletPool>();
+        bulletPool = gameObject.GetComponent<ObjectPool>();
         if (bulletPool == null)
         {
-            bulletPool = gameObject.AddComponent<BulletPool>();
+            bulletPool = gameObject.AddComponent<ObjectPool>();
         }
         bulletPool.Init(gunStats, bulletPrefab);
     }
@@ -261,7 +261,7 @@ public class Gun : MonoBehaviour
     /// </summary>
     private void FireProjectile(Vector3 direction)
     {
-        Bullet bullet = bulletPool.SpawnFromPool();
+        Bullet bullet = bulletPool.SpawnFromPool() as Bullet;
 
         bullet.Shoot(BulletSpawn.transform.position, direction, player.Velocity);
     }
