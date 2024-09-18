@@ -56,7 +56,7 @@ namespace EditorObject
         /// <summary>
         /// Time between each bullet burst
         /// </summary>
-        [Range(0.01f, 20f)] [SerializeField] private float timeBetweenBurstShots = .01f; // TODO: Enforce positive
+        [Range(0.01f, 10)] [SerializeField] private float timeBetweenBurstShots = .01f;
         #endregion
 
         #region Multiple Projectiles
@@ -67,11 +67,11 @@ namespace EditorObject
         /// <summary>
         /// Angle between each projectile shot
         /// </summary>
-        [Range(0, 180)] [SerializeField] private float angleBetweenProjectiles = 90;
+        [Range(0, 180)] [SerializeField] private float distanceBetweenProjectiles = 0;
         /// <summary>
         /// Adds a random variation to each projectile's shot
         /// </summary>
-        [Range(0, 180)] [SerializeField] private float randomAngleVariationPerProjectile = 0;
+        [Range(0, 180)] [SerializeField] private float projectileSpread = 0;
         #endregion
 
         #region Overheat
@@ -141,8 +141,8 @@ namespace EditorObject
 
         #region Multiple Projectiles
         public int ProjectileCountPerShot { get { return projectileCountPerShot; } }
-        public float AngleBetweenProjectiles { get { return angleBetweenProjectiles; } }
-        public float RandomAngleVariationPerProjectile { get { return randomAngleVariationPerProjectile; } }
+        public float DistanceBetweenProjectiles { get { return distanceBetweenProjectiles; } }
+        public float ProjectileSpread { get { return projectileSpread; } }
         #endregion
 
         #region Overheat

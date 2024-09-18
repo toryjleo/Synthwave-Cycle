@@ -363,16 +363,16 @@ public class Gun : MonoBehaviour
         Vector3 initialForward = BulletSpawn.transform.forward;
 
         // Rotate the BulletSpawn to the initial firing position
-        float radius = gunStats.AngleBetweenProjectiles * (gunStats.ProjectileCountPerShot - 1);
+        float radius = gunStats.DistanceBetweenProjectiles * (gunStats.ProjectileCountPerShot - 1);
         float angleStart = radius / 2;
         Quaternion rotationToApply = Quaternion.AngleAxis(-angleStart, Vector3.up);
         BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationToApply;
 
-        Quaternion rotationPerIteration = Quaternion.AngleAxis(gunStats.AngleBetweenProjectiles, Vector3.up);
+        Quaternion rotationPerIteration = Quaternion.AngleAxis(gunStats.DistanceBetweenProjectiles, Vector3.up);
 
         for (int i = 0; i < gunStats.ProjectileCountPerShot; i++)
         {
-            float randDegreeRot = rand.NextFloat(-gunStats.RandomAngleVariationPerProjectile, gunStats.RandomAngleVariationPerProjectile);
+            float randDegreeRot = rand.NextFloat(-gunStats.ProjectileSpread, gunStats.ProjectileSpread);
             Quaternion randomRotation = Quaternion.AngleAxis(randDegreeRot, Vector3.up);
 
             if (gunStats.ProjectileCountPerShot == 1)
