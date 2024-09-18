@@ -31,15 +31,17 @@ namespace Gun
         /// Muzzle flash effect
         /// </summary>
         [SerializeField] private ParticleSystem muzzleFlash = null;
+
+
+        #region Object Instancing
+        protected Generic.ObjectPool bulletPool;
+        [SerializeField] private Bullet bulletPrefab;
+
+        protected Generic.ObjectPool impactEffectPool;
         /// <summary>
         /// Effect instantiated at hitscan impact
         /// </summary>
-        [SerializeField] private GameObject impactEffect = null;
-
-
-        #region Bullet Instancing
-        protected Generic.ObjectPool bulletPool;
-        [SerializeField] private Bullet bulletPrefab;
+        [SerializeField] private PooledParticle impactEffectPrefab = null;
         #endregion
 
         #region Turret Members
@@ -158,6 +160,10 @@ namespace Gun
             {
                 bulletPool = new GunObjectPool(gunStats, bulletPrefab);
             }
+            if (impactEffectPool == null) 
+            {
+                impactEffectPool = new GunObjectPool(gunStats, impactEffectPrefab);
+            }
         }
 
         /// <summary>
@@ -273,10 +279,11 @@ namespace Gun
                     DealDamage(hit.transform.gameObject);
                 }
 
-                // TODO: create a objectpool for the impactEffect
-                GameObject g = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-                g.GetComponent<ParticleSystem>().Play();
-                Destroy(g, 2f);
+
+                PooledParticle particle = impactEffectPool.SpawnFromPool() as PooledParticle;
+                particle.transform.position = hit.transform.position;
+                particle.transform.rotation = Quaternion.LookRotation(hit.normal);
+                particle.Play();
 
             }
 

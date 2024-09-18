@@ -13,10 +13,7 @@ public class Bullet : Gun.PoolableGunObject
     protected bool isPlayerBullet = true;
     protected float muzzleVelocity = 0;
     protected float damageDealt = 0;
-    protected bool hasFiniteLifetime = false;
     protected bool overPenetrates = false;
-    protected float lifetime = float.MaxValue;
-    protected float timeSinceShot = 0;
 
     internal List<GameObject> alreadyHit = new List<GameObject>();
 
@@ -24,7 +21,6 @@ public class Bullet : Gun.PoolableGunObject
     public override void Update()
     {
         base.Update();
-        UpdateBulletLifeTime();
         Move();
     }
 
@@ -42,20 +38,6 @@ public class Bullet : Gun.PoolableGunObject
         transform.position = transform.position + distanceThisFrame;
     }
 
-    /// <summary>Code that applies changes to a bullet over its lifetime.</summary>
-    protected virtual void UpdateBulletLifeTime() 
-    {
-        // Check if the bullet's lifetime is up
-        if (hasFiniteLifetime)
-        {
-            timeSinceShot += Time.deltaTime;
-            if (timeSinceShot >= lifetime) 
-            {
-                OnDespawn();
-            }
-        }
-    }
-
     /// <summary>Initializes this bullet to start moving.</summary>
     /// <param name="curPosition">Location to start being shot from.</param>
     /// <param name="direction">Direction in which bullet will move.</param>
@@ -67,7 +49,7 @@ public class Bullet : Gun.PoolableGunObject
         shootDir = direction.normalized;
         transform.rotation = Quaternion.LookRotation(direction);
         this.initialVelocity = initialVelocity;
-        this.timeSinceShot = 0;
+        this.timeInWorld = 0;
     }
 
     /// <summary>
