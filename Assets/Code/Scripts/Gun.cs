@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Mathematics;
+using GunState;
 
 /// <summary>
 /// Class that implements all gun behavior
@@ -95,7 +96,38 @@ public class Gun : MonoBehaviour
         }
     }
 
+    #region Ammo Props for UI
+    public StateController GunStateController
+    {
+        get { return stateController; }
+    }
+    public bool IsInfiniteAmmo
+    {
+        get { return gunStats.InfiniteAmmo; }
+    }
 
+    public int MaxAmmo
+    {
+        get { return gunStats.AmmoCount; }
+    }
+
+    public int AmmoCount
+    {
+        get { return ammoCount; }
+    }
+    #endregion
+
+    #region Overheat Props for UI
+    public bool IsOverheat
+    {
+        get { return gunStats.CanOverheat; }
+    }
+
+    public float OverheatPercent
+    {
+        get { return overHeatPercent; }
+    }
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -116,7 +148,7 @@ public class Gun : MonoBehaviour
         UpdateGun(Time.deltaTime);
 
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.M)) 
+        if (Input.GetKeyDown(KeyCode.M))
         {
             AddAmmo(1);
             Debug.Log("Adding 1 bullet");
@@ -136,7 +168,7 @@ public class Gun : MonoBehaviour
     /// <summary>
     /// Sets the state to the initial state at the beginning of a level
     /// </summary>
-    public void Reset() 
+    public void Reset()
     {
         ammoCount = gunStats.AmmoCount;
         nextTimeToFireBurst = 0.0f;
@@ -147,7 +179,7 @@ public class Gun : MonoBehaviour
     /// <summary>
     /// Finds all references this object needs
     /// </summary>
-    private void GatherMemberReferences() 
+    private void GatherMemberReferences()
     {
         turretInputManager = new TurretInputManager(this.transform, crossHair, gunStats.IsTurret);
         player = FindObjectOfType<PlayerMovement>();
@@ -160,7 +192,7 @@ public class Gun : MonoBehaviour
     /// <summary>
     /// Initializes the bullet pool
     /// </summary>
-    protected void InitializeBulletPool() 
+    protected void InitializeBulletPool()
     {
         bulletPool = gameObject.GetComponent<BulletPool>();
         if (bulletPool == null)
@@ -195,13 +227,13 @@ public class Gun : MonoBehaviour
     /// Updates gun logic each frame
     /// </summary>
     /// <param name="deltaTime">Amount of time since last frame update</param>
-    private void UpdateGun(float deltaTime) 
+    private void UpdateGun(float deltaTime)
     {
         if (FireThisFrame)
         {
-            if (gunStats.IsBurstFire) 
+            if (gunStats.IsBurstFire)
             { stateController.HandleTrigger(GunState.StateTrigger.FireBurstShot); }
-            else 
+            else
             { stateController.HandleTrigger(GunState.StateTrigger.FireSingleShot); }
         }
 
@@ -216,7 +248,7 @@ public class Gun : MonoBehaviour
     /// Updates the nextTimeToFire variable. Will trigger TimeToFireComplete when nextTimeToFire ticks down.
     /// </summary>
     /// <param name="deltaTime">Amount of time since last frame update</param>
-    private void UpdateNextTimeToFire(float deltaTime) 
+    private void UpdateNextTimeToFire(float deltaTime)
     {
         nextTimeToFire = Mathf.Clamp(nextTimeToFire - deltaTime, 0, float.MaxValue);
 
@@ -249,7 +281,7 @@ public class Gun : MonoBehaviour
     {
         overHeatPercent = Mathf.Clamp(overHeatPercent - (deltaTime * gunStats.CoolDownPerSecond), 0, 100);
 
-        if (overHeatPercent < gunStats.OverheatBarrier && stateController.IsOverHeated) 
+        if (overHeatPercent < gunStats.OverheatBarrier && stateController.IsOverHeated)
         {
             stateController.HandleTrigger(GunState.StateTrigger.OverHeatComplete);
         }
@@ -307,7 +339,7 @@ public class Gun : MonoBehaviour
     private void ReduceAmmo()
     {
         ammoCount = gunStats.InfiniteAmmo ? ammoCount : ammoCount - 1;
-        if (ammoCount == 0) 
+        if (ammoCount == 0)
         {
             // This must be called before OverHeated trigger
             stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
@@ -358,7 +390,7 @@ public class Gun : MonoBehaviour
     /// <summary>
     /// Fires all the bullets needed for this shot
     /// </summary>
-    private void FireAllBulletsThisShot() 
+    private void FireAllBulletsThisShot()
     {
         Vector3 initialForward = BulletSpawn.transform.forward;
 
