@@ -12,11 +12,15 @@ public class BulletPool : MonoBehaviour, IResettable
     private Queue<Bullet> bulletQueue;
     private ArrayList usedBullets;
 
-    /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
+
+    /// <summary>
+    /// Initialize this class's variables. A replacement for a constructor.
+    /// </summary>
+    /// <param name="gunStats">Gun statistics to query data from</param>
     /// <param name="bulletPrefab">The template object for this pool.</param>
-    public void Init(EditorObject.GunStats gunStats, Bullet bulletPrefab, int bulletPoolSize = 100) 
+    public void Init(EditorObject.GunStats gunStats, Bullet bulletPrefab) 
     {
-        bulletStartAmnt = bulletPoolSize;
+        bulletStartAmnt = gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
 
         this.gunStats = gunStats;
         this.bulletPrefab = bulletPrefab;
@@ -53,22 +57,21 @@ public class BulletPool : MonoBehaviour, IResettable
     {
         if (bulletQueue.Count == 0)
         {
-            Debug.LogError("Trying to spawn object already in world!");
-            return null;
+            Bullet newBullet = CreateNewBullet();
+            bulletQueue.Enqueue(newBullet);
         }
-        else
-        {
 
-            Bullet objectToSpawn = bulletQueue.Dequeue();
-            usedBullets.Add(objectToSpawn);
 
-            // Check if object already in world
-            objectToSpawn.ResetBullet();
-            objectToSpawn.gameObject.SetActive(true);
-            // Add the object to the end of the queue
+        Bullet objectToSpawn = bulletQueue.Dequeue();
+        usedBullets.Add(objectToSpawn);
 
-            return objectToSpawn;
-        }
+        // Check if object already in world
+        objectToSpawn.ResetBullet();
+        objectToSpawn.gameObject.SetActive(true);
+        // Add the object to the end of the queue
+
+        return objectToSpawn;
+
     }
 
     /// <summary>Handles newObject.Despawn. Sets bullet to inactive and adds it to queue.</summary>

@@ -39,7 +39,6 @@ public class Gun : MonoBehaviour
     #region Bullet Instancing
     protected BulletPool bulletPool;
     [SerializeField] private Bullet bulletPrefab;
-    [SerializeField] private int bulletPoolSize = 200;
     #endregion
 
     #region Turret Members
@@ -167,7 +166,7 @@ public class Gun : MonoBehaviour
         {
             bulletPool = gameObject.AddComponent<BulletPool>();
         }
-        bulletPool.Init(gunStats, bulletPrefab, bulletPoolSize);
+        bulletPool.Init(gunStats, bulletPrefab);
     }
 
     /// <summary>
