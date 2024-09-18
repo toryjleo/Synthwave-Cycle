@@ -30,7 +30,7 @@ public abstract class SelfDespawn : MonoBehaviour
 
 
     #region Has Finite Lifetime
-    /// <summary>Code that applies changes to a bullet over its lifetime.</summary>
+    /// <summary>Reduce object lifetime and despawn if the object has a finite lifetime</summary>
     protected virtual void UpdateLifetime()
     {
         // Check if the bullet's lifetime is up

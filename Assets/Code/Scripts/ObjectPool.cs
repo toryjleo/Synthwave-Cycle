@@ -6,11 +6,14 @@ using UnityEngine;
 namespace Generic
 {
 
-
+    /// <summary>
+    /// Component necessary for an object in the ObjectPool
+    /// </summary>
     public abstract class Poolable : SelfWorldBoundsDespawn
     {
-
-        // TODO: look into Unity reset()
+        /// <summary>
+        /// Initialize all data that changes throughout a level
+        /// </summary>
         public abstract void Reset();
     }
 

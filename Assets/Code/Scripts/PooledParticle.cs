@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace Gun
 {
+    /// <summary>
+    /// Defines behavior that a particle must exhibit when used on a gun.
+    /// Requires: ParticleSystem Component
+    /// </summary>
     public class PooledParticle : PoolableGunObject
     {
         private ParticleSystem particleSystem;
@@ -30,6 +34,9 @@ namespace Gun
             timeInWorld = 0;
         }
 
+        /// <summary>
+        /// Play the attached particle system
+        /// </summary>
         public void Play()
         {
             particleSystem.Play();
