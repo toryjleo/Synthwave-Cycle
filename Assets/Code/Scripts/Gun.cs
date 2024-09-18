@@ -288,14 +288,6 @@ public class Gun : MonoBehaviour
             Destroy(g, 2f);
 
         }
-        else // Not hit case
-        {
-            // TODO: create a objectpool for the impactEffect
-            GameObject g = Instantiate(impactEffect, transform.forward * 12, Quaternion.LookRotation(Vector3.up));
-            g.GetComponent<ParticleSystem>().Play();
-            Destroy(g, 2f);
-
-        }
 
 
     }
