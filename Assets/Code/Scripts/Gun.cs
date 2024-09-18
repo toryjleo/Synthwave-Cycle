@@ -40,7 +40,6 @@ public class Gun : MonoBehaviour
     #region Bullet Instancing
     protected BulletPool bulletPool;
     [SerializeField] private Bullet bulletPrefab;
-    [SerializeField] private int bulletPoolSize = 200;
     #endregion
 
     #region Turret Members
@@ -199,7 +198,7 @@ public class Gun : MonoBehaviour
         {
             bulletPool = gameObject.AddComponent<BulletPool>();
         }
-        bulletPool.Init(gunStats, bulletPrefab, bulletPoolSize);
+        bulletPool.Init(gunStats, bulletPrefab);
     }
 
     /// <summary>
@@ -281,7 +280,7 @@ public class Gun : MonoBehaviour
     {
         overHeatPercent = Mathf.Clamp(overHeatPercent - (deltaTime * gunStats.CoolDownPerSecond), 0, 100);
 
-        if (overHeatPercent < gunStats.OverheatBarrier && stateController.IsOverHeated)
+        if (overHeatPercent < gunStats.CoolDownBarrier && stateController.IsOverHeated)
         {
             stateController.HandleTrigger(GunState.StateTrigger.OverHeatComplete);
         }
@@ -317,14 +316,6 @@ public class Gun : MonoBehaviour
 
             // TODO: create a objectpool for the impactEffect
             GameObject g = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            g.GetComponent<ParticleSystem>().Play();
-            Destroy(g, 2f);
-
-        }
-        else // Not hit case
-        {
-            // TODO: create a objectpool for the impactEffect
-            GameObject g = Instantiate(impactEffect, transform.forward * 12, Quaternion.LookRotation(Vector3.up));
             g.GetComponent<ParticleSystem>().Play();
             Destroy(g, 2f);
 
@@ -395,16 +386,16 @@ public class Gun : MonoBehaviour
         Vector3 initialForward = BulletSpawn.transform.forward;
 
         // Rotate the BulletSpawn to the initial firing position
-        float radius = gunStats.AngleBetweenProjectiles * (gunStats.ProjectileCountPerShot - 1);
+        float radius = gunStats.DistanceBetweenProjectiles * (gunStats.ProjectileCountPerShot - 1);
         float angleStart = radius / 2;
         Quaternion rotationToApply = Quaternion.AngleAxis(-angleStart, Vector3.up);
         BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationToApply;
 
-        Quaternion rotationPerIteration = Quaternion.AngleAxis(gunStats.AngleBetweenProjectiles, Vector3.up);
+        Quaternion rotationPerIteration = Quaternion.AngleAxis(gunStats.DistanceBetweenProjectiles, Vector3.up);
 
         for (int i = 0; i < gunStats.ProjectileCountPerShot; i++)
         {
-            float randDegreeRot = rand.NextFloat(-gunStats.RandomAngleVariationPerProjectile, gunStats.RandomAngleVariationPerProjectile);
+            float randDegreeRot = rand.NextFloat(-gunStats.ProjectileSpread, gunStats.ProjectileSpread);
             Quaternion randomRotation = Quaternion.AngleAxis(randDegreeRot, Vector3.up);
 
             if (gunStats.ProjectileCountPerShot == 1)

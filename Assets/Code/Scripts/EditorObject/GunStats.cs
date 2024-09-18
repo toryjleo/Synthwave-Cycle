@@ -56,22 +56,22 @@ namespace EditorObject
         /// <summary>
         /// Time between each bullet burst
         /// </summary>
-        [Range(0.01f, 20f)] [SerializeField] private float timeBetweenBurstShots = .01f; // TODO: Enforce positive
+        [Range(0.01f, 10)] [SerializeField] private float timeBetweenBurstShots = .01f;
         #endregion
 
         #region Multiple Projectiles
         /// <summary>
         /// Number of projectiles shot per gun shot
         /// </summary>
-        [Range(1, 1000)] [SerializeField] private int projectileCountPerShot = 1;
+        [Range(1, 40)] [SerializeField] private int projectileCountPerShot = 1;
         /// <summary>
         /// Angle between each projectile shot
         /// </summary>
-        [Range(0, 180)] [SerializeField] private float angleBetweenProjectiles = 90;
+        [Range(0, 180)] [SerializeField] private float distanceBetweenProjectiles = 0;
         /// <summary>
         /// Adds a random variation to each projectile's shot
         /// </summary>
-        [Range(0, 180)] [SerializeField] private float randomAngleVariationPerProjectile = 0;
+        [Range(0, 180)] [SerializeField] private float projectileSpread = 0;
         #endregion
 
         #region Overheat
@@ -82,11 +82,11 @@ namespace EditorObject
         /// <summary>
         /// The amount the gun must cool down to before shooting again
         /// </summary>
-        [Range(0, 100)] [SerializeField] private float overHeatBarrier = 50;
+        [Range(0, 100)] [SerializeField] private float coolDownBarrier = 50;
         /// <summary>
         /// How much each shot will overheat the gun
         /// </summary>
-        [Range(1, 99)] [SerializeField] private float overHeatPercentPerShot = 5;
+        [Range(1, 100)] [SerializeField] private float overHeatPercentPerShot = 5;
         /// <summary>
         /// Percentage the gun cools down each second
         /// </summary>
@@ -141,13 +141,13 @@ namespace EditorObject
 
         #region Multiple Projectiles
         public int ProjectileCountPerShot { get { return projectileCountPerShot; } }
-        public float AngleBetweenProjectiles { get { return angleBetweenProjectiles; } }
-        public float RandomAngleVariationPerProjectile { get { return randomAngleVariationPerProjectile; } }
+        public float DistanceBetweenProjectiles { get { return distanceBetweenProjectiles; } }
+        public float ProjectileSpread { get { return projectileSpread; } }
         #endregion
 
         #region Overheat
         public bool CanOverheat { get { return canOverheat; } }
-        public float OverheatBarrier { get { return overHeatBarrier; } }
+        public float CoolDownBarrier { get { return coolDownBarrier; } }
         public float OverHeatPercentPerShot { get { return overHeatPercentPerShot; } }
         public float CoolDownPerSecond { get { return coolDownPerSecond; } }
         #endregion
