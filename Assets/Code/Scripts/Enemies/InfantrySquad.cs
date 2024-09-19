@@ -71,7 +71,7 @@ public class InfantrySquad : Squad
             {
                 //Handle Movement
                 Vector3 desiredVec = ai.transform.position - movementLoc;
-                ai.Move(movementLoc, currentAction == SquadAction.Attacking);
+                ai.Move(movementLoc);
                 //if attacking and in range, fire at will
                 if (currentAction == SquadAction.Attacking && desiredVec.magnitude < ai.attackRange)
                 {
