@@ -37,7 +37,9 @@ public class VehicleSquad : Squad
         {
             Vector3 aimLoc = target.transform.position;
             aimLoc += target.transform.forward * 10;
-            ai.myGun?.transform.LookAt(aimLoc);
+
+            //ai.myGun?.transform.LookAt(aimLoc);
+
             if( Vector3.Distance(ai.transform.position, target.transform.position) <= ai.attackRange)
             {
                 ai.Attack();
