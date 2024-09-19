@@ -6174,13 +6174,13 @@ MonoBehaviour:
   attackRange: 15
   minimumRange: 15
   alive: 1
-  movementGroup: 0
-  gearModifier: 0
+  movementGroup: 3
+  gearModifier: 0.8
   vehicleController: {fileID: 2279930514937360766}
   DamageMultiplyer: 1
   RamModifier: 0.2
   itemDrop: {fileID: 0}
-  movementTargetPosition: {fileID: 0}
+  movementTargetPosition: {fileID: 8202032198735747249}
 --- !u!114 &3840444340308158616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21909,7 +21909,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7329361944730113372}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
