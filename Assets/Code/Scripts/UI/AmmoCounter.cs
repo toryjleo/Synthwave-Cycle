@@ -16,12 +16,12 @@ public class AmmoCounter : MonoBehaviour
     /// Manages the state of the gun
     /// </summary>
     GunState.StateController stateController = null;
-    private Gun playerGun;
+    private Gun.Gun playerGun;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerGun = FindObjectOfType<Gun>();
+        playerGun = FindObjectOfType<Gun.Gun>();
         if (playerGun == null)
         {
             Debug.LogWarning("No gun found for ammo counter!");
