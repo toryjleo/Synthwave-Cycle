@@ -1,7 +1,11 @@
 using UnityEngine;
 using Unity.Mathematics;
+
 namespace Gun
 {
+    //Event to be called when ammo changes
+    public delegate void NotifyAmmo();
+
     /// <summary>
     /// Class that implements all gun behavior
     /// </summary>
@@ -97,7 +101,40 @@ namespace Gun
             }
         }
 
+        #region Ammo Props for UI
+        //Event for the UI to update ammo counter
+        public NotifyAmmo onAmmoChange;
+        public GunState.StateController GunStateController
+        {
+            get { return stateController; }
+        }
+        public bool IsInfiniteAmmo
+        {
+            get { return gunStats.InfiniteAmmo; }
+        }
 
+        public int MaxAmmo
+        {
+            get { return gunStats.AmmoCount; }
+        }
+
+        public int AmmoCount
+        {
+            get { return ammoCount; }
+        }
+        #endregion
+
+        #region Overheat Props for UI
+        public bool IsOverheat
+        {
+            get { return gunStats.CanOverheat; }
+        }
+
+        public float OverheatPercent
+        {
+            get { return overHeatPercent; }
+        }
+        #endregion
 
         // Start is called before the first frame update
         void Start()
@@ -160,7 +197,7 @@ namespace Gun
             {
                 bulletPool = new GunObjectPool(gunStats, bulletPrefab);
             }
-            if (impactEffectPool == null) 
+            if (impactEffectPool == null)
             {
                 impactEffectPool = new GunObjectPool(gunStats, impactEffectPrefab);
             }
@@ -184,6 +221,7 @@ namespace Gun
         {
             ammoCount = Mathf.Clamp(ammoCount + amount, 0, gunStats.AmmoCount);
             stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
+            onAmmoChange.Invoke();
         }
 
         #region Frame Update
@@ -301,6 +339,7 @@ namespace Gun
                 // This must be called before OverHeated trigger
                 stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
             }
+            onAmmoChange.Invoke();
         }
 
         /// <summary>
