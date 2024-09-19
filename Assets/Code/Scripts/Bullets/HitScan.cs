@@ -14,9 +14,16 @@ public class HitScan
 
     public void Shoot(Vector3 curPosition, Vector3 direction, Generic.ObjectPool impactEffectPool)
     {
-        RaycastHit hit;
-        if (Physics.Raycast(curPosition, direction, out hit, gunStats.Range)) // Hit case
+        // Get hits
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(curPosition, direction, gunStats.Range);
+        System.Array.Sort(hits, (a, b) => (a.distance.CompareTo(b.distance)));
+
+        int n = Mathf.Min(gunStats.BulletPenetration + 1, hits.Length);
+
+        for (int i = 0; i < n; i++)
         {
+            RaycastHit hit = hits[i];
             Debug.Log(hit.transform.name);
 
             // TODO: Move to DealDamage
@@ -31,11 +38,8 @@ public class HitScan
             particle.transform.position = hit.transform.position;
             particle.transform.rotation = Quaternion.LookRotation(hit.normal);
             particle.Play();
-
         }
     }
-
-    // TODO: move to Bullet
 
     /// <summary>
     /// Inflict gun damage on other
