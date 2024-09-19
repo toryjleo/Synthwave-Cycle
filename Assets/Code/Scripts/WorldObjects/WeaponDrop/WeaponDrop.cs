@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class WeaponDrop : SelfWorldBoundsDespawn
 {
-    public override void Init()
-    {
-        throw new System.NotImplementedException();
-    }
 
     // TODO: Fix
     /*

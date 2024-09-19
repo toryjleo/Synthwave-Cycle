@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>Class <c>Bullet</c> A Unity Component which moves a gameobject foreward.</summary>
-public class Bullet : SelfWorldBoundsDespawn
+public class Bullet : Gun.PoolableGunObject
 {
 
     protected Vector3 shootDir;
@@ -13,10 +13,7 @@ public class Bullet : SelfWorldBoundsDespawn
     protected bool isPlayerBullet = true;
     protected float muzzleVelocity = 0;
     protected float damageDealt = 0;
-    protected bool hasFiniteLifetime = false;
     protected bool overPenetrates = false;
-    protected float lifetime = float.MaxValue;
-    protected float timeSinceShot = 0;
 
     internal List<GameObject> alreadyHit = new List<GameObject>();
 
@@ -24,28 +21,21 @@ public class Bullet : SelfWorldBoundsDespawn
     public override void Update()
     {
         base.Update();
-        UpdateBulletLifeTime();
         Move();
     }
+
+    public override void Init(EditorObject.GunStats gunStats)
+    {
+        this.damageDealt = gunStats.DamageDealt;
+        this.muzzleVelocity = gunStats.MuzzleVelocity;
+        this.isPlayerBullet = gunStats.IsPlayerGun;
+    }
+
     /// <summary>Updates the object's location this frame.</summary>
     protected virtual void Move()
     {
         Vector3 distanceThisFrame = ((shootDir * muzzleVelocity) + initialVelocity) * Time.deltaTime;
         transform.position = transform.position + distanceThisFrame;
-    }
-
-    /// <summary>Code that applies changes to a bullet over its lifetime.</summary>
-    protected virtual void UpdateBulletLifeTime() 
-    {
-        // Check if the bullet's lifetime is up
-        if (hasFiniteLifetime)
-        {
-            timeSinceShot += Time.deltaTime;
-            if (timeSinceShot >= lifetime) 
-            {
-                OnDespawn();
-            }
-        }
     }
 
     /// <summary>Initializes this bullet to start moving.</summary>
@@ -59,28 +49,16 @@ public class Bullet : SelfWorldBoundsDespawn
         shootDir = direction.normalized;
         transform.rotation = Quaternion.LookRotation(direction);
         this.initialVelocity = initialVelocity;
-        this.timeSinceShot = 0;
+        this.timeInWorld = 0;
     }
 
     /// <summary>
     /// Resets bullet properties. This is used when a bullet is spawned from a pool to ensure it gets a fresh start
     /// </summary>
-    public virtual void ResetBullet()
+    public override void Reset()
     {
         initialVelocity = Vector3.zero;
         gameObject.SetActive(false);
-    }
-
-    public override void Init()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Init(EditorObject.GunStats gunStats)
-    {
-        this.damageDealt = gunStats.DamageDealt;
-        this.muzzleVelocity = gunStats.MuzzleVelocity;
-        this.isPlayerBullet = gunStats.IsPlayerGun;
     }
 
     private void DealDamageAndDespawn(GameObject other)
