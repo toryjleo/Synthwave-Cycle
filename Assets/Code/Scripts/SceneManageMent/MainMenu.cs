@@ -3,18 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
+using EditorObject;
 
+/// <summary>
+/// Handles the main menu scene functions
+/// </summary>
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField] private SettingsData settingsData;
+    [SerializeField] public AudioMixer audioMixer;
+
+    void Start()
+    {
+        SetMixerNumbers();
+    }
 
     /// <summary>Will load the game.</summary>
-    public void StartOnClick() 
+    public void StartOnClick()
     {
-        StartCoroutine(LoadYourAsyncScene("TrueScene"));
+        SetMixerNumbers();
     }
 
     /// <summary>Will quit the application.</summary>
-    public void QuitOnClick() 
+    public void QuitOnClick()
     {
         Application.Quit();
     }
@@ -35,5 +47,15 @@ public class MainMenu : MonoBehaviour
         {
             yield return null;
         }
+    }
+
+    /// <summary>
+    /// Sets the audio mixer channels to their corresponding settingsData fields
+    /// </summary>
+    private void SetMixerNumbers()
+    {
+        audioMixer.SetFloat("MainVolume", settingsData.MainVolume);
+        audioMixer.SetFloat("MusicVolume", settingsData.MusicVolume);
+        audioMixer.SetFloat("EffectsVolume", settingsData.EffectsVolume);
     }
 }

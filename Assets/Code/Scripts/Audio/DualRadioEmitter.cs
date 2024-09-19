@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class DualRadioEmitter : DualAudioEmitter
 {
-
+    //Audio source for playing radio static
     [SerializeField] private AudioSource noisePlayer;
 
     // Start is called before the first frame update
@@ -37,6 +37,12 @@ public class DualRadioEmitter : DualAudioEmitter
     {
         base.Mute(enabled);
         noisePlayer.mute = enabled;
+    }
+
+    public override void SetVolume(float volume)
+    {
+        base.SetVolume(volume);
+        noisePlayer.volume = volume;
     }
 
     protected override void HandleRadioPlaying()

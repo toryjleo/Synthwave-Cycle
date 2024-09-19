@@ -17,13 +17,15 @@ namespace EditorObject
     {
         private int previousWave = -1;
         private int currentWave = 0;
-        [SerializeField] public List<Wave> sequence;
+        [SerializeField] private List<Wave> sequence;
         internal SquadSpawner spawner;
-        [SerializeField] public string songName;
+        [SerializeField] private string songName;
         [SerializeField] private Sprite radioFace;
         [SerializeField] private bool debugWaveInfo = false;
 
         public Sprite RadioFace { get => radioFace; }
+
+        public string SongName { get => songName; }
 
         private bool hasAlreadyPlayedRadioClip = false;
 
@@ -32,9 +34,9 @@ namespace EditorObject
         {
             get { return hasAlreadyPlayedRadioClip; }
         }
-        public bool CurrentTrackIsRadioWave
+        public bool CurrentTrackIsAudioWave
         {
-            get => WaveIsRadioWave(currentWave);
+            get => WaveIsAudioWave(currentWave);
         }
 
         public bool CurrentWaveIsFinal
@@ -60,6 +62,11 @@ namespace EditorObject
             }
         }
 
+        /// <summary>
+        /// Gets the audio to be played as music during a wave. An audio wave does not have
+        /// music while a level complete wave and hostile wave return their music tracks.
+        /// </summary>
+        /// <returns></returns>
         public AudioClip GetCurrentTrackVariation()
         {
             if (sequence[currentWave].GetWaveType() != WaveType.AudioWave)
@@ -140,7 +147,12 @@ namespace EditorObject
             }
         }
 
-        private bool WaveIsRadioWave(int index)
+        /// <summary>
+        /// Verifies if a wave is a radio log playing wave
+        /// </summary>
+        /// <param name="index">Wave index in the wave sequence</param>
+        /// <returns>Boolean whether indexed wave is of type AudioWave</returns>
+        private bool WaveIsAudioWave(int index)
         {
             return sequence[index].GetWaveType() == WaveType.AudioWave;
         }

@@ -90,13 +90,20 @@ namespace Gun
         {
             get
             {
-                if (gunStats.IsAutomatic)
+                if (GameStateController.CanRunGameplay)
                 {
-                    return Input.GetButton("Fire1") && stateController.CanShoot;
+                    if (gunStats.IsAutomatic)
+                    {
+                        return Input.GetButton("Fire1") && stateController.CanShoot;
+                    }
+                    else
+                    {
+                        return Input.GetButtonDown("Fire1") && stateController.CanShoot;
+                    }
                 }
-                else
+                else 
                 {
-                    return Input.GetButtonDown("Fire1") && stateController.CanShoot;
+                    return false;
                 }
             }
         }

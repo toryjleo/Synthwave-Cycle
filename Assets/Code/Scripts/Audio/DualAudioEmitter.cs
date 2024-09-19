@@ -38,7 +38,7 @@ public class DualAudioEmitter : MonoBehaviour
         get { return audioSourceArray[toggle].isPlaying || audioSourceArray[1 - toggle].isPlaying; }
     }
 
-
+    //Finds the bounds checker and radiostate controller, sets up event handlers
     protected virtual void Start()
     {
         boundsChecker = FindObjectOfType<BoundsChecker>();
@@ -55,6 +55,7 @@ public class DualAudioEmitter : MonoBehaviour
         else
         {
             radioStateController.radioPlaying.notifyListenersEnter += HandleRadioPlaying;
+            radioStateController.radioPlaying.notifyListenersExit += HandleRadioNotPlaying;
             radioStateController.radioNotPlaying.notifyListenersEnter += HandleRadioNotPlaying;
             radioStateController.outOfBounds.notifyListenersEnter += HandleRadioNotPlaying;
             radioStateController.radioOff.notifyListenersEnter += HandleRadioNotPlaying;
@@ -63,13 +64,13 @@ public class DualAudioEmitter : MonoBehaviour
 
     protected virtual void Update()
     {
-        timeTillTrackEnds -= Time.deltaTime;
+
     }
 
     public void Init()
     {
         toggle = 0;
-        StopCoroutineSetFullVolume();
+        SetFullVolume();
     }
 
     /// <summary>
@@ -95,7 +96,7 @@ public class DualAudioEmitter : MonoBehaviour
             audioSourceArray[i].clip = null;
             audioSourceArray[i].loop = false;
         }
-        StopCoroutineSetFullVolume();
+        SetFullVolume();
 
         toggle = 0;
     }
@@ -122,7 +123,7 @@ public class DualAudioEmitter : MonoBehaviour
     /// Sets the volume of both audiosources to specified volume.
     /// </summary>
     /// <param name="volume">Volume level to set audiosources to</param>
-    public void SetVolume(float volume)
+    public virtual void SetVolume(float volume)
     {
         audioSourceArray[toggle].volume = volume;
         audioSourceArray[1 - toggle].volume = volume;
@@ -149,47 +150,10 @@ public class DualAudioEmitter : MonoBehaviour
     }
 
     /// <summary>
-    /// Dims the volumes of the tracks for a specified time
+    /// Sets volume back to where it was
     /// </summary>
-    /// <param name="timeLength">Length of time to dim for</param>
-    private void DimForTime(double timeLength)
+    private void SetFullVolume()
     {
-        StopCoroutineSetFullVolume();
-        if (timeLength > 0)
-        {
-            coroutine = StartCoroutine(DimForTimeCoroutine(timeLength));
-        }
-    }
-
-    /// <summary>
-    /// Dims to 10% volume for an amount of time
-    /// </summary>
-    /// <param name="timeLength">Amount of time to dim for</param>
-    /// <returns>IEnumerator</returns>
-    private IEnumerator DimForTimeCoroutine(double timeLength)
-    {
-        float percentageOfFull = .1f;
-        float dimVolume = fullVolume * percentageOfFull;
-
-        SetVolume(dimVolume);
-
-        yield return new WaitForSeconds((float)(timeLength));
-
-        SetVolume(fullVolume);
-        coroutine = null;
-    }
-
-    /// <summary>
-    /// Stops the current coroutine and sets volume back to where it was
-    /// </summary>
-    private void StopCoroutineSetFullVolume()
-    {
-        if (coroutine != null)
-        {
-            StopCoroutine(coroutine);
-            coroutine = null;
-
-        }
         SetVolume(fullVolume);
     }
 
@@ -199,11 +163,14 @@ public class DualAudioEmitter : MonoBehaviour
     /// </summary>
     protected virtual void HandleRadioPlaying()
     {
-        DimForTime(timeTillTrackEnds);
+        float percentageOfFull = .4f;
+        float dimVolume = fullVolume - percentageOfFull;
+
+        SetVolume(dimVolume);
     }
 
     protected virtual void HandleRadioNotPlaying()
     {
-        StopCoroutineSetFullVolume();
+        SetFullVolume();
     }
 }

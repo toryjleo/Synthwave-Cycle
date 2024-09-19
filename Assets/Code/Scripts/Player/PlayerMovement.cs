@@ -88,6 +88,20 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        /// <summary>
+        /// Get the top speed of a given gear
+        /// </summary>
+        /// <param name="gear">Gear to query</param>
+        /// <returns>The top speed of the specified gear</returns>
+        public float GetSpeedForGearAt(GearType gear)
+        {
+            if (gears.Count != 3) 
+            {
+                Debug.LogError("Not enough gears specified in PlayerMovement");
+            }
+            return gears[(int)gear].YScale;
+        }
+
     }
     #endregion
 
@@ -153,6 +167,21 @@ public class PlayerMovement : MonoBehaviour
             }
             
         } 
+    }
+
+    public float TopSpeedMovementGroup1
+    {
+        get { return gearManager.GetSpeedForGearAt(GearType.Gear1); }
+    }
+
+    public float TopSpeedMovementGroup2
+    {
+        get { return gearManager.GetSpeedForGearAt(GearType.Gear2); }
+    }
+
+    public float TopSpeedMovementGroup3
+    {
+        get { return gearManager.GetSpeedForGearAt(GearType.Gear3); }
     }
     #endregion
 

@@ -39,13 +39,13 @@ public class SquadSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     private Squad SpawnSquad(Waves.WaveEnemyInfo aiInfo)
     {
         Ai enemyAi = SpawnNewEnemy(aiInfo.enemyType, aiInfo.spawnLocation, player.transform.position);
-        if (enemyAi is VehicleAI)
+        if(enemyAi is VehicleAi)
         {
             VehicleSquad squad = new VehicleSquad(squadManager);
             squad.SetTarget(player);
@@ -106,7 +106,7 @@ public class SquadSpawner : MonoBehaviour
     {
         Vector3 forwardVector = player.transform.forward;
         List<Vector3> vectors = new List<Vector3>();
-        switch (loc)
+        switch(loc)
         {
             case (SpawnLocation.Front):
                 vectors.Add(forwardVector);
