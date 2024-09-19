@@ -3,12 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface Bullet 
-{
-    public void Shoot(Vector3 curPosition, Vector3 direction, Generic.ObjectPool impactEffectPool);
-}
-
-public class HitScan : Bullet
+public class HitScan
 {
 
     private EditorObject.GunStats gunStats = null;
