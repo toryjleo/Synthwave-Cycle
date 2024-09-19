@@ -105,12 +105,17 @@ namespace EditorObject
         /// Type of bullet to shoot
         /// </summary>
         [SerializeField] private BulletType bulletType;
+        /// <summary>
+        /// Number of enemies that bullet can penetrate before despawning
+        /// </summary>
+        [Range(0, 20)] [SerializeField] private int bulletPenetration;
 
         #region Projectile
         /// <summary>
         /// Speed at which the bullet travels out of the gun
         /// </summary>
         [Range(0f, 100f)] [SerializeField] private float muzzleVelocity = 60;
+        [SerializeField] private Vector3 projectileScale = Vector3.one;
         #endregion
 
         #region HitScan
@@ -158,8 +163,10 @@ namespace EditorObject
 
         #region Bullet Specification
         public float DamageDealt { get { return damageDealt; } }
+        public int BulletPenetration { get { return bulletPenetration; } }
         #region Projectile
         public float MuzzleVelocity { get { return muzzleVelocity; } }
+        public Vector3 ProjectileScale { get { return projectileScale; } }
         #endregion
         #region HitScan
         public float Range { get { return range; } }
