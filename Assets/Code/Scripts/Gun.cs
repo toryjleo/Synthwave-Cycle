@@ -39,7 +39,9 @@ namespace Gun
 
         #region Object Instancing
         protected Generic.ObjectPool bulletPool;
-        [SerializeField] private Bullet bulletPrefab;
+        [SerializeField] private Projectile bulletPrefab;
+
+        protected HitScan hitScan = null;
 
         protected Generic.ObjectPool impactEffectPool;
         /// <summary>
@@ -204,6 +206,10 @@ namespace Gun
             {
                 bulletPool = new GunObjectPool(gunStats, bulletPrefab);
             }
+            if (hitScan == null) 
+            {
+                hitScan = new HitScan(gunStats);
+            }
             if (impactEffectPool == null)
             {
                 impactEffectPool = new GunObjectPool(gunStats, impactEffectPrefab);
@@ -303,7 +309,7 @@ namespace Gun
         /// </summary>
         private void FireProjectile(Vector3 direction)
         {
-            Bullet bullet = bulletPool.SpawnFromPool() as Bullet;
+            Projectile bullet = bulletPool.SpawnFromPool() as Projectile;
 
             bullet.Shoot(BulletSpawn.transform.position, direction, player.Velocity);
         }
@@ -313,25 +319,8 @@ namespace Gun
         /// </summary>
         private void FireHitScan(Vector3 direction)
         {
-            RaycastHit hit;
-            if (Physics.Raycast(BulletSpawn.transform.position, direction, out hit, gunStats.Range)) // Hit case
-            {
-                Debug.Log(hit.transform.name);
-
-                if ((hit.transform.tag == "Enemy" && gunStats.IsPlayerGun) ||
-                    (hit.transform.tag == "Player" && !gunStats.IsPlayerGun))
-                {
-                    DealDamage(hit.transform.gameObject);
-                }
-
-
-                PooledParticle particle = impactEffectPool.SpawnFromPool() as PooledParticle;
-                particle.transform.position = hit.transform.position;
-                particle.transform.rotation = Quaternion.LookRotation(hit.normal);
-                particle.Play();
-
-            }
-
+            hitScan.Shoot(BulletSpawn.transform.position, direction, impactEffectPool);
+            // TODO: Call Hitscan.Shoot(Vector3 curPosition, Vector3 direction)
 
         }
 
@@ -347,27 +336,6 @@ namespace Gun
                 stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
             }
             onAmmoChange.Invoke();
-        }
-
-        /// <summary>
-        /// Inflict gun damage on other
-        /// </summary>
-        /// <param name="other">Object with Health component</param>
-        private void DealDamage(GameObject other)
-        {
-            Health otherHealth = other.GetComponentInChildren<Health>();
-            if (otherHealth == null)
-            {
-                Debug.LogError("Object does not have Health component: " + gameObject.name);
-            }
-            else
-            {
-                otherHealth.TakeDamage(gunStats.DamageDealt);
-
-                // TODO: instantiate and play impact effect particlesystem at hit.point and rotate to normal
-                // https://www.youtube.com/watch?v=THnivyG0Mvo
-            }
-
         }
 
 

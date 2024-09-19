@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>Class <c>Bullet</c> A Unity Component which moves a gameobject foreward.</summary>
-public class Bullet : Gun.PoolableGunObject
+public class Projectile : Gun.PoolableGunObject
 {
 
     protected Vector3 shootDir;
