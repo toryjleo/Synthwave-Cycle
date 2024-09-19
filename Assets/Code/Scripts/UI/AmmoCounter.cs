@@ -48,7 +48,7 @@ public class AmmoCounter : MonoBehaviour
             overheatCounter.gameObject.SetActive(false);
         }
 
-        ammoCounter.value = playerGun.AmmoCount / playerGun.MaxAmmo;
+        SetAmmoCounter();
         overheatCounter.value = 0f;
         overheatFill.color = Color.cyan;
 
@@ -66,18 +66,12 @@ public class AmmoCounter : MonoBehaviour
     /// </summary>
     private void HookUpListeners()
     {
-        stateController.fireSingleShot.notifyListenersExit += HandleFireSingleShotExit;
-        stateController.fireBurstShot.notifyListenersExit += HandleFireBurstShotExit;
         stateController.overHeated.notifyListenersEnter += HandleOverheatedEnter;
         stateController.overHeated.notifyListenersExit += HandleOverheatedExit;
+        playerGun.onAmmoChange += SetAmmoCounter;
     }
 
-    private void HandleFireSingleShotExit()
-    {
-        ammoCounter.value = (float)playerGun.AmmoCount / playerGun.MaxAmmo;
-    }
-
-    private void HandleFireBurstShotExit()
+    private void SetAmmoCounter()
     {
         ammoCounter.value = (float)playerGun.AmmoCount / playerGun.MaxAmmo;
     }

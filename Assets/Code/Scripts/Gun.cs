@@ -2,6 +2,9 @@ using UnityEngine;
 using Unity.Mathematics;
 using GunState;
 
+//Event to be called when ammo changes
+public delegate void NotifyAmmo();
+
 /// <summary>
 /// Class that implements all gun behavior
 /// </summary>
@@ -96,6 +99,8 @@ public class Gun : MonoBehaviour
     }
 
     #region Ammo Props for UI
+    //Event for the UI to update ammo counter
+    public NotifyAmmo onAmmoChange;
     public StateController GunStateController
     {
         get { return stateController; }
@@ -219,6 +224,7 @@ public class Gun : MonoBehaviour
     {
         ammoCount = Mathf.Clamp(ammoCount + amount, 0, gunStats.AmmoCount);
         stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
+        onAmmoChange.Invoke();
     }
 
     #region Frame Update
@@ -335,6 +341,7 @@ public class Gun : MonoBehaviour
             // This must be called before OverHeated trigger
             stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
         }
+        onAmmoChange.Invoke();
     }
 
     /// <summary>
