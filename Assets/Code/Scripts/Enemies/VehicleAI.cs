@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /// <summary>Class<c>VehicleAI</c> 
 /// VehicleAI holds all the code that makes an enemy Vehicle different form other enemy types
-public class VehicleAI : Ai
+public abstract class VehicleAi : Ai
 {
     public ArcadeAiVehicleController vehicleController;
 
@@ -19,7 +20,8 @@ public class VehicleAI : Ai
     [SerializeField]
     public GameObject itemDrop;
 
-    public GameObject movementTarget;
+    [SerializeField]
+    public GameObject movementTargetPosition;
 
     //How much directional/rotational force effects the player on a ram
     private const float MAX_RANDOM_TORQUE = 4500f;
@@ -27,9 +29,9 @@ public class VehicleAI : Ai
 
     //This is the time the Vehicle has spent within CONFIDENCE_BUILD_DISTANCE to it's target
     //When it exceeds TIME_BY_TARGET_TO_ATTACK the car is ready to attack
-    private float timeByTarget = 0;
-    private float TIME_BY_TARGET_TO_ATTACK;
-    private const float CONFIDENCE_BUILD_DISTANCE = 25f;
+    internal float timeByTarget = 0;
+    internal float TIME_BY_TARGET_TO_ATTACK;
+    internal const float CONFIDENCE_BUILD_DISTANCE = 45f;
 
     public override void NewLife()
     {
@@ -37,44 +39,37 @@ public class VehicleAI : Ai
         base.NewLife();
     }
 
-    public override void Attack() 
-    {
-        if (myGun != null && myGun.CanShootAgain() && alive)
-        {
-            this.myGun.PrimaryFire(target.transform.position);
-        }
-    }
+    //All vehicles have a target, but some vehicles interact with their targets in different ways
+    public abstract void UpdateMovementLocation();
 
     public override void Update()
     {
-        base.Update();
-        if(movementTarget != null)
+        if (this.alive && this.enabled)
         {
-            if (Vector3.Distance(transform.position, movementTarget.transform.position) <= CONFIDENCE_BUILD_DISTANCE)
+            base.Update();
+            //Handle confidence/attack timing
+            if (movementTargetPosition != null && target != null)
             {
-                timeByTarget += Time.deltaTime;
+                if (Vector3.Distance(transform.position, target.transform.position) <= CONFIDENCE_BUILD_DISTANCE)
+                {
+                    timeByTarget += Time.deltaTime;
+                }
+                else
+                {
+                    timeByTarget -= Time.deltaTime;
+                }
+                if (timeByTarget < 0)
+                {
+                    timeByTarget = 0;
+                }
+                else if (timeByTarget > TIME_BY_TARGET_TO_ATTACK)
+                {
+                    timeByTarget = TIME_BY_TARGET_TO_ATTACK;
+                }
             }
-            else
-            {
-                timeByTarget -= Time.deltaTime;
-            }
-            if (timeByTarget < 0)
-            {
-                timeByTarget = 0;
-            }
-            else if (timeByTarget > TIME_BY_TARGET_TO_ATTACK)
-            {
-                timeByTarget = TIME_BY_TARGET_TO_ATTACK;
-            }
+            //Figure out where to moved based on the child class movement pattern
+            UpdateMovementLocation();
         }
-    }
-
-
-
-    //If Car has spent enough time by the player, ATTACK!
-    public bool IsConfident()
-    {
-        return timeByTarget >= TIME_BY_TARGET_TO_ATTACK;
     }
 
     public override void Init()
@@ -86,18 +81,14 @@ public class VehicleAI : Ai
         DeadEvent += CarDeath;
         this.Despawn += op_ProcessCompleted;
         hp.Init(StartingHP);
+        base.Init();
+        vehicleController.MaxSpeed = maxSpeed; //Must ba called after base.Init()
     }
 
     public override void SetTarget(GameObject targ)
     {
         vehicleController.enabled = true;
         base.SetTarget(targ);
-    }
-
-    public void SetMovementTarget(GameObject targ)
-    {
-        movementTarget = targ;
-        vehicleController.target = targ.transform;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -131,8 +122,4 @@ public class VehicleAI : Ai
         Instantiate(itemDrop, this.transform.position, Quaternion.identity);
     }
 
-    public override Enemy GetEnemyType()
-    {
-        return Enemy.Car;
-    }
 }
