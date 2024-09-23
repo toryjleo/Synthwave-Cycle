@@ -3,15 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class containing logic for raycast weapons
+/// </summary>
 public class HitScan
 {
 
     private EditorObject.GunStats gunStats = null;
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="gunStats">Stats to use</param>
     public HitScan(EditorObject.GunStats gunStats) 
     {
         this.gunStats = gunStats;
     }
 
+    /// <summary>
+    /// Shoots in a specified direction
+    /// </summary>
+    /// <param name="curPosition">Place to spawn ray</param>
+    /// <param name="direction">Direction vector for ray</param>
+    /// <param name="impactEffectPool">Effect to play on impact</param>
     public void Shoot(Vector3 curPosition, Vector3 direction, Generic.ObjectPool impactEffectPool)
     {
         // Get hits
@@ -26,7 +40,6 @@ public class HitScan
             RaycastHit hit = hits[i];
             Debug.Log(hit.transform.name);
 
-            // TODO: Move to DealDamage
             if ((hit.transform.tag == "Enemy" && gunStats.IsPlayerGun) ||
                 (hit.transform.tag == "Player" && !gunStats.IsPlayerGun))
             {
