@@ -82,6 +82,10 @@ namespace Gun
         /// Random object
         /// </summary>
         private Unity.Mathematics.Random rand;
+        /// <summary>
+        /// Used by GunTester to automatically fire this gun
+        /// </summary>
+        public bool externalFire = false;
 
 
         /// <summary>
@@ -96,11 +100,11 @@ namespace Gun
                 {
                     if (gunStats.IsAutomatic)
                     {
-                        return Input.GetButton("Fire1") && stateController.CanShoot;
+                        return (Input.GetButton("Fire1") || externalFire) && stateController.CanShoot;
                     }
                     else
                     {
-                        return Input.GetButtonDown("Fire1") && stateController.CanShoot;
+                        return (Input.GetButtonDown("Fire1") || externalFire) && stateController.CanShoot;
                     }
                 }
                 else 
@@ -250,6 +254,8 @@ namespace Gun
                 { stateController.HandleTrigger(GunState.StateTrigger.FireBurstShot); }
                 else
                 { stateController.HandleTrigger(GunState.StateTrigger.FireSingleShot); }
+
+                externalFire = false;
             }
 
             UpdateNextTimeToFire(deltaTime);
@@ -311,7 +317,7 @@ namespace Gun
         {
             Projectile bullet = bulletPool.SpawnFromPool() as Projectile;
 
-            bullet.Shoot(BulletSpawn.transform.position, direction, player.Velocity);
+            bullet.Shoot(BulletSpawn.transform.position, direction, player ? player.Velocity : Vector3.zero);
         }
 
         /// <summary>
@@ -335,7 +341,7 @@ namespace Gun
                 // This must be called before OverHeated trigger
                 stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
             }
-            onAmmoChange.Invoke();
+            onAmmoChange?.Invoke();
         }
 
 
