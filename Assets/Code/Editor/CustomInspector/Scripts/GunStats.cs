@@ -178,8 +178,6 @@ namespace CustomInspector
             {
                 EditorGUILayout.LabelField("Time To Cool After Overheat: " + timeToCoolAfterOverheat + " seconds");
             }
-
-            // TODO: Make a visual of object so you can see scale applied in realtime
         }
         #endregion
     }
