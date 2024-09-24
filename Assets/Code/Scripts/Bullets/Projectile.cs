@@ -1,19 +1,17 @@
+using Generic;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>Class <c>Bullet</c> A Unity Component which moves a gameobject foreward.</summary>
-public class Bullet : Gun.PoolableGunObject
+public class Projectile : Gun.PoolableGunObject
 {
 
     protected Vector3 shootDir;
     protected Vector3 initialVelocity;
 
-    // Specific to gun
-    protected bool isPlayerBullet = true;
-    protected float muzzleVelocity = 0;
-    protected float damageDealt = 0;
-    protected bool overPenetrates = false;
+    protected EditorObject.GunStats gunStats = null;
+    protected int penetrationCount = 0;
 
     internal List<GameObject> alreadyHit = new List<GameObject>();
 
@@ -26,15 +24,13 @@ public class Bullet : Gun.PoolableGunObject
 
     public override void Init(EditorObject.GunStats gunStats)
     {
-        this.damageDealt = gunStats.DamageDealt;
-        this.muzzleVelocity = gunStats.MuzzleVelocity;
-        this.isPlayerBullet = gunStats.IsPlayerGun;
+        this.gunStats = gunStats;
     }
 
     /// <summary>Updates the object's location this frame.</summary>
     protected virtual void Move()
     {
-        Vector3 distanceThisFrame = ((shootDir * muzzleVelocity) + initialVelocity) * Time.deltaTime;
+        Vector3 distanceThisFrame = ((shootDir * gunStats.MuzzleVelocity) + initialVelocity) * Time.deltaTime;
         transform.position = transform.position + distanceThisFrame;
     }
 
@@ -44,6 +40,7 @@ public class Bullet : Gun.PoolableGunObject
     /// <param name="initialVelocity">Velocity of the object shooting.</param>
     public virtual void Shoot(Vector3 curPosition, Vector3 direction, Vector3 initialVelocity)
     {
+        this.transform.localScale = gunStats.ProjectileScale;
         transform.position = curPosition;
         direction.y = 0; // Do not travel vertically
         shootDir = direction.normalized;
@@ -57,6 +54,7 @@ public class Bullet : Gun.PoolableGunObject
     /// </summary>
     public override void Reset()
     {
+        penetrationCount = 0;
         initialVelocity = Vector3.zero;
         gameObject.SetActive(false);
     }
@@ -65,6 +63,7 @@ public class Bullet : Gun.PoolableGunObject
     {
         if (!alreadyHit.Contains(other))
         {
+            penetrationCount++;
             alreadyHit.Add(other);
             Health otherHealth = other.GetComponentInChildren<Health>();
             if (otherHealth == null)
@@ -73,9 +72,9 @@ public class Bullet : Gun.PoolableGunObject
             }
             else
             {
-                otherHealth.TakeDamage(damageDealt);
+                otherHealth.TakeDamage(gunStats.DamageDealt);
             }
-            if (!overPenetrates)
+            if (penetrationCount > gunStats.BulletPenetration)
             {
                 OnDespawn();
             }
@@ -85,8 +84,8 @@ public class Bullet : Gun.PoolableGunObject
     private void OnTriggerEnter(Collider other)
     {
 
-        if ((other.gameObject.tag == "Enemy" && isPlayerBullet) ||
-            (other.gameObject.tag == "Player" && !isPlayerBullet))
+        if ((other.gameObject.tag == "Enemy" && gunStats.IsPlayerGun) ||
+            (other.gameObject.tag == "Player" && !gunStats.IsPlayerGun))
         {
             DealDamageAndDespawn(other.gameObject);
         }

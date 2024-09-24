@@ -88,6 +88,7 @@ namespace CustomInspector
             else
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("muzzleVelocity"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileScale"));
             }
         }
 
@@ -100,6 +101,7 @@ namespace CustomInspector
             EditorGUILayout.Space(SECTION_SPACE);
 
             EditorGUILayout.LabelField("Ammo");
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("infiniteAmmo"));
             if (!gunStats.InfiniteAmmo)
             {
@@ -177,6 +179,6 @@ namespace CustomInspector
                 EditorGUILayout.LabelField("Time To Cool After Overheat: " + timeToCoolAfterOverheat + " seconds");
             }
         }
-#endregion
+        #endregion
     }
 }
