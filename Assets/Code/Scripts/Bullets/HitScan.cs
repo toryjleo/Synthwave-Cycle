@@ -69,9 +69,6 @@ public class HitScan
         else
         {
             otherHealth.TakeDamage(gunStats.DamageDealt);
-
-            // TODO: instantiate and play impact effect particlesystem at hit.point and rotate to normal
-            // https://www.youtube.com/watch?v=THnivyG0Mvo
         }
 
     }
