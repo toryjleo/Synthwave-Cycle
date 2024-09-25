@@ -22,6 +22,7 @@ public class LevelSelector : MonoBehaviour
         if (objs.Length > 1)
         {
             Destroy(this.gameObject);
+            Debug.Log("Deleting duplicate LevelSelector!");
         }
 
         DontDestroyOnLoad(this.gameObject);
