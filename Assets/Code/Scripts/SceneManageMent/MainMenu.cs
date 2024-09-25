@@ -23,6 +23,7 @@ public class MainMenu : MonoBehaviour
     public void StartOnClick()
     {
         SetMixerNumbers();
+        StartCoroutine(LoadYourAsyncScene("TrueScene"));
     }
 
     /// <summary>Will quit the application.</summary>

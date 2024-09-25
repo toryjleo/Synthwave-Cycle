@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Controls level gameplay objects and initializes/resets gameplay controlled features (Jukebox, WorldGenerator, etc.)
+/// </summary>
 public class LevelManager : MonoBehaviour
 {
     [SerializeField]
@@ -12,7 +15,7 @@ public class LevelManager : MonoBehaviour
     public WorldGenerator worldGenerator;
 
     [SerializeField]
-    public GameLevel currentLevel;
+    public EditorObject.GameLevel currentLevel;
 
     List<IResettable> resetObjects;
 
@@ -24,6 +27,20 @@ public class LevelManager : MonoBehaviour
     public Sprite RadioFace
     {
         get => currentLevel.WaveSequence.RadioFace;
+    }
+
+    void Awake()
+    {
+        LevelSelector levelSelector = FindObjectOfType<LevelSelector>();
+        if (!levelSelector)
+        {
+            Debug.LogWarning("No level selector found!");
+            return;
+        }
+        else
+        {
+            currentLevel = levelSelector.SelectedLevel;
+        }
     }
 
     // Start is called before the first frame update
