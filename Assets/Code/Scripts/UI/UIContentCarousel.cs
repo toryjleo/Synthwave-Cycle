@@ -268,17 +268,17 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
         }
     }
 
-    // private void RotateContent()
-    // {
-    //     for (int i = 0; i < totalPages; i++)
-    //     {
-    //         GameObject content = gridLayoutGroup.transform.GetChild(i).gameObject;
-    //         float rotationAngle = Mathf.Lerp(0f, maxRotationAngle, Mathf.Abs(currentIndex - i) / (float)totalPages);
-    //         Quaternion targetRotation = Quaternion.Euler(0f, 0f, rotationAngle);
+    private void RotateContent()
+    {
+        for (int i = 0; i < totalPages; i++)
+        {
+            GameObject content = gridLayoutGroup.transform.GetChild(i).gameObject;
+            float rotationAngle = Mathf.Lerp(0f, maxRotationAngle, Mathf.Abs(currentIndex - i) / (float)totalPages);
+            Quaternion targetRotation = Quaternion.Euler(0f, 0f, rotationAngle);
 
-    //         content.transform.rotation = Quaternion.Slerp(content.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-    //     }
-    // }
+            content.transform.rotation = Quaternion.Slerp(content.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        }
+    }
 
     private void MoveToPreviousPage()
     {
