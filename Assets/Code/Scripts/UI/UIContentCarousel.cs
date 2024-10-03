@@ -2,8 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Carousel controls for a carousel grouping of UI objects, details are given in the inspector for this script
+/// </summary>
 public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandler
 {
+    #region Inspector Variables
     [Header("Important Information")]
     [Tooltip("Ensure that a GridLayoutGroup is assigned to CONTENT. The correct layout group is crucial for the proper functioning of the carousel.")]
     [TextArea(3, 5)]
@@ -94,8 +98,9 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
 
     [Tooltip("Manages the layout of page elements.")]
     public GridLayoutGroup gridLayoutGroup;
+    #endregion
 
-    //private variables//...
+    //private variables
     private ScrollRect scrollRect;
     private RectTransform contentRectTransform;
     private float targetPosition;
@@ -146,6 +151,40 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
         }
     }
 
+    private void Update()
+    {
+        if (autoMove)
+        {
+            autoMoveTimerCountdown -= Time.deltaTime;
+            if (autoMoveTimerCountdown <= 0f)
+            {
+                MoveToNextPage();
+                autoMoveTimerCountdown = autoMoveTimer;
+            }
+        }
+
+        if (!isDragging)
+        {
+            contentRectTransform.anchoredPosition = Vector2.Lerp(
+                contentRectTransform.anchoredPosition,
+                new Vector2(targetPosition, contentRectTransform.anchoredPosition.y),
+                Time.deltaTime * snapSpeed
+            );
+
+            // Smoothly update dot sizes based on the current index
+            UpdateDotSizes();
+
+            // Rotate content based on its position
+            RotateContent();
+
+            // TODO: Keyboard Controls
+        }
+    }
+
+    /// <summary>
+    /// Creates navigation dot visuals beneath the carousel depending on how 
+    /// many content slides there are
+    /// </summary>
     private void InitializeNavigationDots()
     {
         for (int i = 0; i < totalPages; i++)
@@ -157,6 +196,11 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
         }
     }
 
+    /// <summary>
+    /// Sets the dot color based on inspector variable
+    /// </summary>
+    /// <param name="dot">Dot to change</param>
+    /// <param name="color">Color to change to</param>
     private void SetDotColor(GameObject dot, Color color)
     {
         Image dotImage = dot.GetComponent<Image>();
@@ -166,6 +210,11 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
         }
     }
 
+    /// <summary>
+    /// Sets the dot size based on inspector variable
+    /// </summary>
+    /// <param name="dot">Dot to change</param>
+    /// <param name="size">Size to change to</param>
     private void SetDotSize(GameObject dot, Vector2 size)
     {
         RectTransform dotRect = dot.GetComponent<RectTransform>();
@@ -175,12 +224,19 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
         }
     }
 
+    /// <summary>
+    /// Sets total pages to the number of slides divided by layout group constraints
+    /// </summary>
     private void CalculateTotalPages()
     {
         int itemCount = gridLayoutGroup.transform.childCount;
         totalPages = Mathf.CeilToInt((float)itemCount / gridLayoutGroup.constraintCount);
     }
 
+    /// <summary>
+    /// Sets the target position for the animation to snap to
+    /// </summary>
+    /// <param name="page">Slide number</param>
     private void SetSnapTarget(int page)
     {
         if (infiniteLooping)
@@ -197,6 +253,10 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
         currentIndex = page;
     }
 
+    /// <summary>
+    /// Dragging event for mouse navigation
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)
     {
         isDragging = true;
@@ -204,6 +264,10 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
         lastDragTime = Time.unscaledTime;
     }
 
+    /// <summary>
+    /// End drag event for mouse navigation
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
         isDragging = false;
@@ -240,36 +304,9 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
         }
     }
 
-    private void Update()
-    {
-        if (autoMove)
-        {
-            autoMoveTimerCountdown -= Time.deltaTime;
-            if (autoMoveTimerCountdown <= 0f)
-            {
-                MoveToNextPage();
-                autoMoveTimerCountdown = autoMoveTimer;
-            }
-        }
-
-        if (!isDragging)
-        {
-            contentRectTransform.anchoredPosition = Vector2.Lerp(
-                contentRectTransform.anchoredPosition,
-                new Vector2(targetPosition, contentRectTransform.anchoredPosition.y),
-                Time.deltaTime * snapSpeed
-            );
-
-            // Smoothly update dot sizes based on the current index
-            UpdateDotSizes();
-
-            // Rotate content based on its position
-            // RotateContent();
-
-            // TODO: Keyboard Controls
-        }
-    }
-
+    /// <summary>
+    /// Rotates content during page change
+    /// </summary>
     private void RotateContent()
     {
         for (int i = 0; i < totalPages; i++)
@@ -282,6 +319,9 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
         }
     }
 
+    /// <summary>
+    /// Moves to previous page in sequence
+    /// </summary>
     private void MoveToPreviousPage()
     {
         if (infiniteLooping)
@@ -296,6 +336,9 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
         }
     }
 
+    /// <summary>
+    /// Moves to next page in sequence
+    /// </summary>
     private void MoveToNextPage()
     {
         if (infiniteLooping)
@@ -310,6 +353,10 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
         }
     }
 
+    /// <summary>
+    /// Called in 'Update', scales the dots and changes between colors over time,
+    /// rather than instantly
+    /// </summary>
     private void UpdateDotSizes()
     {
         for (int i = 0; i < dotsContainer.transform.childCount; i++)
