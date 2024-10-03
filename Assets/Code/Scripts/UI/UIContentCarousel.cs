@@ -265,6 +265,8 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
 
             // Rotate content based on its position
             // RotateContent();
+
+            // TODO: Keyboard Controls
         }
     }
 
