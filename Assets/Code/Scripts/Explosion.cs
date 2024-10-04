@@ -4,35 +4,56 @@ using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
+    [SerializeField] bool hasDelay = false;
     [SerializeField] private float delay = 1.0f;
+
     [SerializeField] private float radius = 5.0f;
     [SerializeField] private float force = 20000;
     [SerializeField] private bool explodeOnCollision = false;
 
     private float delayTimer = 0.0f;
 
+    #region Graphic
+    private MeshRenderer meshRenderer = null;
+    private float timeToShowGraphic = .25f;
+    private float meshRendererTimer = 0;
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
         delayTimer = 0.0f;
+
+        meshRenderer = GetComponent<MeshRenderer>();
+        if (!meshRenderer) 
+        {
+            Debug.LogError("Explosion needs attached spherical MeshRenderer for graphic");
+        }
+        else
+        {
+            meshRenderer.enabled = false;
+        }
+        meshRendererTimer = 0;
     }
 
 
 
     // Update is called once per frame
-    public  void Update()
+    public void Update()
     {
+        DelayedExplosion(Time.deltaTime);
 
-        delayTimer += Time.deltaTime;
+        UpdateEffects(Time.deltaTime);
 
-        if (delayTimer >= delay && !explodeOnCollision) 
+#if DEBUG
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             DoExplosion();
-            Destroy(gameObject);
         }
+#endif
     }
 
-    private void DoExplosion() 
+    public void DoExplosion()
     {
         HandleEffects();
         HandleDestruction();
@@ -40,7 +61,20 @@ public class Explosion : MonoBehaviour
 
     private void HandleEffects()
     {
-        // TODO: flash our child sphere for time
+        meshRendererTimer = 0;
+        meshRenderer.enabled = true;
+    }
+
+    private void UpdateEffects(float deltaTime) 
+    {
+        if (meshRenderer.enabled)
+        {
+            meshRendererTimer += deltaTime;
+            if (meshRendererTimer > timeToShowGraphic) 
+            {
+                meshRenderer.enabled = false;
+            }
+        }
     }
 
     private void HandleDestruction() 
@@ -56,6 +90,19 @@ public class Explosion : MonoBehaviour
                 // TODO: make sure this force is 1D
                 rb.AddExplosionForce(force, transform.position, radius);
                 // TODO: deal damage as well
+            }
+        }
+    }
+
+    private void DelayedExplosion(float deltaTime) 
+    {
+        if (hasDelay)
+        {
+            delayTimer += deltaTime;
+
+            if (delayTimer >= delay && !explodeOnCollision)
+            {
+                DoExplosion();
             }
         }
     }
