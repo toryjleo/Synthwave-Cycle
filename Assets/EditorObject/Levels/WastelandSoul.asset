@@ -15,5 +15,5 @@ MonoBehaviour:
   waveSequence: {fileID: 11400000, guid: cc1039780e25ceb44a9bfd4e75df24ce, type: 2}
   groundMat: {fileID: 2100000, guid: 3d7f7474b9a85504d93c10cb8e292e9e, type: 2}
   levelName: Wasteland
-  levelImage: {fileID: 0}
+  levelImage: {fileID: 21300000, guid: 26d49bc6d1407cd429d6715331dabafe, type: 3}
   levelCosmetics: []

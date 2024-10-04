@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace EditorObject
 {
@@ -25,7 +24,7 @@ namespace EditorObject
         /// <summary>
         /// Image to be used in Level Select
         /// </summary>
-        [SerializeField] private Image levelImage;
+        [SerializeField] private Sprite levelImage;
         /// <summary>
         /// Level cosmetics including particle effects and other visuals
         /// </summary>
@@ -36,7 +35,7 @@ namespace EditorObject
         public WaveSequence WaveSequence { get { return waveSequence; } }
         public Material GroundMat { get { return groundMat; } }
         public string LevelName { get { return levelName; } }
-        public Image LevelImage { get { return levelImage; } }
+        public Sprite LevelImage { get { return levelImage; } }
         public GameObject[] LevelCosmetics { get { return levelCosmetics; } }
         #endregion
     }

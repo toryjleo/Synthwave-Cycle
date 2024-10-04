@@ -21,7 +21,7 @@ public class LevelSelector : MonoBehaviour
 
         if (objs.Length > 1)
         {
-            Destroy(this.gameObject);
+            Destroy(objs[0].gameObject);
             Debug.Log("Deleting duplicate LevelSelector!");
         }
 
@@ -35,6 +35,6 @@ public class LevelSelector : MonoBehaviour
     public void SetSelectedLevel(GameLevel level)
     {
         selectedLevel = level;
-        //Debug.Log("Level set to: " + selectedLevel.LevelName);
+        Debug.Log("Level set to: " + selectedLevel.LevelName);
     }
 }
