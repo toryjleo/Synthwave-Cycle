@@ -29,33 +29,57 @@ public class LevelButton : MonoBehaviour
         else
         {
             // Find main menu script
-            menu = FindObjectOfType<MainMenu>();
-            if (!menu)
-            {
-                Debug.LogError("No menu to load level!");
-            }
+            FindMenu();
 
             // Check field for level
-            if (!level)
-            {
-                Debug.LogError("No level on level select button!");
-            }
-            else
-            {
-                Image buttonImage = this.gameObject.GetComponent<Image>();
-                buttonImage.sprite = level.LevelImage;
-                textArea.text = level.LevelName;
-            }
+            CheckLevel();
 
             // Find level selector
-            selector = FindObjectOfType<LevelSelector>();
-            if (!selector)
-            {
-                Debug.LogError("No level selector in scene!");
-            }
+            FindLevelSelector();
 
             //Set event handler
             button.onClick.AddListener(HandleOnClick);
+        }
+    }
+
+    /// <summary>
+    /// Finds MainMenu script in scene
+    /// </summary>
+    private void FindMenu()
+    {
+        menu = FindObjectOfType<MainMenu>();
+        if (!menu)
+        {
+            Debug.LogError("No menu to load level!");
+        }
+    }
+
+    /// <summary>
+    /// Checks the GameLevel field in the prefab
+    /// </summary>
+    private void CheckLevel()
+    {
+        if (!level)
+        {
+            Debug.LogError("No level on level select button!");
+        }
+        else
+        {
+            Image buttonImage = this.gameObject.GetComponent<Image>();
+            buttonImage.sprite = level.LevelImage;
+            textArea.text = level.LevelName;
+        }
+    }
+
+    /// <summary>
+    /// Finds LevelSelector in scene
+    /// </summary>
+    private void FindLevelSelector()
+    {
+        selector = FindObjectOfType<LevelSelector>();
+        if (!selector)
+        {
+            Debug.LogError("No level selector in scene!");
         }
     }
 
