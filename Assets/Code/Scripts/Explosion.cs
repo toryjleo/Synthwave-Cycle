@@ -1,9 +1,11 @@
+using EditorObject;
+using Generic;
 using Gun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Explosion : MonoBehaviour
+public class Explosion : PoolableGunObject
 {
     [SerializeField] bool hasDelay = false;
     [SerializeField] private float delay = 1.0f;
@@ -15,34 +17,35 @@ public class Explosion : MonoBehaviour
 
     private float delayTimer = 0.0f;
 
+    private GunStats gunStats;
+
     #region Graphic
     private MeshRenderer meshRenderer = null;
     private float timeToShowGraphic = 1f;
     private float meshRendererTimer = 0;
     #endregion
 
-    // Start is called before the first frame update
-    void Start()
+    public override void Init(GunStats gunStats)
     {
-        Init();
-    }
-
-    public void Init()
-    {
-        delayTimer = 0.0f;
+        this.gunStats = gunStats;
 
         meshRenderer = GetComponent<MeshRenderer>();
         if (!meshRenderer)
         {
             Debug.LogError("Explosion needs attached spherical MeshRenderer for graphic");
         }
-        else
-        {
-            meshRenderer.enabled = false;
-        }
+
+        Reset();
+    }
+
+    public override void Reset()
+    {
+        delayTimer = 0.0f;
+
         meshRendererTimer = 0;
 
         transform.localScale = new Vector3(radius, radius, radius);
+        transform.rotation = Quaternion.identity;
     }
 
 
@@ -64,7 +67,6 @@ public class Explosion : MonoBehaviour
 
     public void DoExplosion()
     {
-        Init();
         HandleEffects();
         HandleDestruction();
     }

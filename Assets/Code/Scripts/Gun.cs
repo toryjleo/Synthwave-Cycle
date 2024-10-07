@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Mathematics;
+using Generic;
 
 namespace Gun
 {
@@ -44,16 +45,17 @@ namespace Gun
         /// </summary>
         [SerializeField] private ParticleSystem muzzleFlash = null;
 
-        [SerializeField] private Explosion explosion = null;
-
 
         #region Object Instancing
-        protected ProjectileObjectPool projectilePool;
-        [SerializeField] private Projectile bulletPrefab;
+        protected ProjectileObjectPool projectilePool = null;
+        [SerializeField] private Projectile bulletPrefab = null;
 
         protected HitScan hitScan = null;
 
-        protected Generic.ObjectPool impactEffectPool;
+        protected GunObjectPool explosionPool = null;
+        [SerializeField] private Explosion explosionPrefab = null;
+
+        protected Generic.ObjectPool impactEffectPool = null;
         /// <summary>
         /// Effect instantiated at hitscan impact
         /// </summary>
@@ -224,6 +226,10 @@ namespace Gun
             {
                 hitScan = new HitScan(gunStats);
             }
+            if (explosionPool == null) 
+            {
+                explosionPool = new GunObjectPool(gunStats, explosionPrefab);
+            }
             if (impactEffectPool == null)
             {
                 impactEffectPool = new GunObjectPool(gunStats, impactEffectPrefab);
@@ -247,16 +253,22 @@ namespace Gun
         {
             if (gunStats.IsExplosive)
             {
-                if (!explosion)
+                if (!explosionPrefab)
                 {
                     Debug.LogError("Need explosion prefab reference");
                 }
                 else
                 {
-                    // TODO: Queue Explosions
-                    Explosion e = Instantiate<Explosion>(explosion, hitPoint, Quaternion.identity);
-                    e.Init();
-                    e.DoExplosion();
+                    Explosion explosion = explosionPool.SpawnFromPool() as Explosion; //Instantiate<Explosion>(explosionPrefab, hitPoint, Quaternion.identity);
+                    if (!explosion)
+                    {
+                        Debug.Log("Explosion pool does not contain explosions");
+                    }
+                    else
+                    {
+                        explosion.transform.localPosition = hitPoint;
+                        explosion.DoExplosion();
+                    }
                 }
             }
             
