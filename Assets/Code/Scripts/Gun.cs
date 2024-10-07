@@ -3,8 +3,16 @@ using Unity.Mathematics;
 
 namespace Gun
 {
-    //Event to be called when ammo changes
+    /// <summary>
+    /// Event to be called when ammo changes
+    /// </summary>
     public delegate void NotifyAmmo();
+
+    /// <summary>
+    /// Event to be called when a bullet hits
+    /// </summary>
+    /// <param name="position"></param>
+    public delegate void BulletHitHandler(Vector3 position);
 
     /// <summary>
     /// Class that implements all gun behavior
@@ -40,7 +48,7 @@ namespace Gun
 
 
         #region Object Instancing
-        protected Generic.ObjectPool bulletPool;
+        protected Generic.ObjectPool projectilePool;
         [SerializeField] private Projectile bulletPrefab;
 
         protected HitScan hitScan = null;
@@ -208,9 +216,9 @@ namespace Gun
 
             stateController = new GunState.StateController(gunStats.NumBurstShots, gunStats.PrintDebugState);
 
-            if (bulletPool == null)
+            if (projectilePool == null)
             {
-                bulletPool = new GunObjectPool(gunStats, bulletPrefab);
+                projectilePool = new GunObjectPool(gunStats, bulletPrefab, this);
             }
             if (hitScan == null) 
             {
@@ -218,7 +226,7 @@ namespace Gun
             }
             if (impactEffectPool == null)
             {
-                impactEffectPool = new GunObjectPool(gunStats, impactEffectPrefab);
+                impactEffectPool = new GunObjectPool(gunStats, impactEffectPrefab, this);
             }
         }
 
@@ -232,9 +240,10 @@ namespace Gun
             stateController.betweenShots.notifyListenersEnter += HandleBetweenShotsEnter;
 
             hitScan.notifyListenersHit += HandleBulletHit;
+
         }
 
-        private void HandleBulletHit(Vector3 hitPoint) 
+        public void HandleBulletHit(Vector3 hitPoint) 
         {
             // Explosive
             if (!explosion) 
@@ -243,6 +252,7 @@ namespace Gun
             }
             else
             {
+                // TODO: Queue Explosions
                 Explosion e = Instantiate<Explosion>(explosion, hitPoint, Quaternion.identity);
                 e.DoExplosion();
             }
@@ -333,7 +343,7 @@ namespace Gun
         /// </summary>
         private void FireProjectile(Vector3 direction)
         {
-            Projectile bullet = bulletPool.SpawnFromPool() as Projectile;
+            Projectile bullet = projectilePool.SpawnFromPool() as Projectile;
 
             bullet.Shoot(BulletSpawn.transform.position, direction, player ? player.Velocity : Vector3.zero);
         }

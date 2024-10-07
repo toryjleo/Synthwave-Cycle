@@ -10,6 +10,7 @@ public class Explosion : MonoBehaviour
     [SerializeField] private float radius = 5.0f;
     [SerializeField] private float force = 20000;
     [SerializeField] private bool explodeOnCollision = false;
+    [SerializeField] private float damage = 25;
 
     private float delayTimer = 0.0f;
 
@@ -97,9 +98,12 @@ public class Explosion : MonoBehaviour
 
             if (rb) 
             {
-                // TODO: make sure this force is 1D
                 rb.AddExplosionForce(force, transform.position, radius);
-                // TODO: deal damage as well
+            }
+            if (health) 
+            {
+                // TODO: decide who is hurt
+                health.TakeDamage(damage);
             }
         }
     }

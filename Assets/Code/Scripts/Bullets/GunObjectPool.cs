@@ -7,6 +7,13 @@ namespace Gun
 {
     public abstract class PoolableGunObject : Generic.Poolable
     {
+        // TODO: Consider moving to another level
+        public event BulletHitHandler notifyListenersHit;
+
+        public void TriggerNotifyListenersHit()
+        {
+            notifyListenersHit?.Invoke(transform.position);
+        }
 
         public abstract void Init(EditorObject.GunStats gunStats);
     }
@@ -15,10 +22,13 @@ namespace Gun
     {
         private const int INFINITE_AMMO_COUNT = 200;
 
-        private EditorObject.GunStats gunStats;
-        public GunObjectPool(GunStats gunStats, Generic.Poolable bulletPrefab) : base(bulletPrefab)
+        private EditorObject.GunStats gunStats = null;
+        private Gun parent = null;
+
+        public GunObjectPool(GunStats gunStats, Generic.Poolable bulletPrefab, Gun parent) : base(bulletPrefab)
         {
             this.gunStats = gunStats;
+            this.parent = parent;
 
             if (gunStats.InfiniteAmmo)
             {
@@ -44,6 +54,8 @@ namespace Gun
             newObject.Init(gunStats);
             newObject.gameObject.SetActive(false);
             newObject.Despawn += DespawnObject;
+            // TODO: Move. This is specific to Projectile
+            newObject.notifyListenersHit += parent.HandleBulletHit;
             return newObject;
         }
     }
