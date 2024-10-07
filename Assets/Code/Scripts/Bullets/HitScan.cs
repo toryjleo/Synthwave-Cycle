@@ -1,15 +1,17 @@
 using Gun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+public delegate void BulletHitHandler(Vector3 position);
 
 /// <summary>
 /// Class containing logic for raycast weapons
 /// </summary>
+/// 
 public class HitScan
 {
-
     private EditorObject.GunStats gunStats = null;
+
+    public event BulletHitHandler notifyListenersHit;
 
     /// <summary>
     /// Constructor
@@ -40,9 +42,12 @@ public class HitScan
             RaycastHit hit = hits[i];
             Debug.Log(hit.transform.name);
 
+            notifyListenersHit?.Invoke(hit.point);
+
             if ((hit.transform.tag == "Enemy" && gunStats.IsPlayerGun) ||
                 (hit.transform.tag == "Player" && !gunStats.IsPlayerGun))
             {
+
                 DealDamage(hit.transform.gameObject);
             }
 
@@ -60,7 +65,7 @@ public class HitScan
     /// <param name="other">Object with Health component</param>
     private void DealDamage(GameObject other)
     {
-        
+
         Health otherHealth = other.GetComponentInChildren<Health>();
         if (otherHealth == null)
         {

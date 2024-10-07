@@ -22,10 +22,15 @@ public class Explosion : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Init();
+    }
+
+    private void Init()
+    {
         delayTimer = 0.0f;
 
         meshRenderer = GetComponent<MeshRenderer>();
-        if (!meshRenderer) 
+        if (!meshRenderer)
         {
             Debug.LogError("Explosion needs attached spherical MeshRenderer for graphic");
         }
@@ -34,6 +39,8 @@ public class Explosion : MonoBehaviour
             meshRenderer.enabled = false;
         }
         meshRendererTimer = 0;
+
+        transform.localScale = new Vector3(radius, radius, radius);
     }
 
 
@@ -55,6 +62,7 @@ public class Explosion : MonoBehaviour
 
     public void DoExplosion()
     {
+        Init();
         HandleEffects();
         HandleDestruction();
     }
@@ -73,6 +81,7 @@ public class Explosion : MonoBehaviour
             if (meshRendererTimer > timeToShowGraphic) 
             {
                 meshRenderer.enabled = false;
+                Destroy(this);
             }
         }
     }
@@ -84,6 +93,7 @@ public class Explosion : MonoBehaviour
         foreach (Collider collider in colliders)
         {
             Rigidbody rb = collider.GetComponent<Rigidbody>();
+            Health health = collider.GetComponent<Health>();
 
             if (rb) 
             {

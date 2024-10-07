@@ -36,6 +36,8 @@ namespace Gun
         /// </summary>
         [SerializeField] private ParticleSystem muzzleFlash = null;
 
+        [SerializeField] private Explosion explosion = null;
+
 
         #region Object Instancing
         protected Generic.ObjectPool bulletPool;
@@ -228,6 +230,22 @@ namespace Gun
             stateController.fireSingleShot.notifyListenersEnter += HandleFireSingleShotEnter;
             stateController.fireBurstShot.notifyListenersEnter += HandleFireBurstShotEnter;
             stateController.betweenShots.notifyListenersEnter += HandleBetweenShotsEnter;
+
+            hitScan.notifyListenersHit += HandleBulletHit;
+        }
+
+        private void HandleBulletHit(Vector3 hitPoint) 
+        {
+            // Explosive
+            if (!explosion) 
+            {
+                Debug.LogError("Need explosion prefab reference");
+            }
+            else
+            {
+                Explosion e = Instantiate<Explosion>(explosion, hitPoint, Quaternion.identity);
+                e.DoExplosion();
+            }
         }
 
         /// <summary>
@@ -326,8 +344,6 @@ namespace Gun
         private void FireHitScan(Vector3 direction)
         {
             hitScan.Shoot(BulletSpawn.transform.position, direction, impactEffectPool);
-            // TODO: Call Hitscan.Shoot(Vector3 curPosition, Vector3 direction)
-
         }
 
         /// <summary>
