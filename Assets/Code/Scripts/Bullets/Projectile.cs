@@ -9,6 +9,7 @@ namespace Gun
     /// <summary>Class <c>Bullet</c> A Unity Component which moves a gameobject foreward.</summary>
     public class Projectile : PoolableGunObject
     {
+        public event BulletHitHandler notifyListenersHit;
 
         protected Vector3 shootDir;
         protected Vector3 initialVelocity;
@@ -90,7 +91,7 @@ namespace Gun
             if ((other.gameObject.tag == "Enemy" && gunStats.IsPlayerGun) ||
                 (other.gameObject.tag == "Player" && !gunStats.IsPlayerGun))
             {
-                TriggerNotifyListenersHit();
+                notifyListenersHit?.Invoke(transform.position);
                 DealDamageAndDespawn(other.gameObject);
             }
         }

@@ -48,7 +48,7 @@ namespace Gun
 
 
         #region Object Instancing
-        protected Generic.ObjectPool projectilePool;
+        protected ProjectileObjectPool projectilePool;
         [SerializeField] private Projectile bulletPrefab;
 
         protected HitScan hitScan = null;
@@ -218,7 +218,7 @@ namespace Gun
 
             if (projectilePool == null)
             {
-                projectilePool = new GunObjectPool(gunStats, bulletPrefab, this);
+                projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, this);
             }
             if (hitScan == null) 
             {
@@ -226,7 +226,7 @@ namespace Gun
             }
             if (impactEffectPool == null)
             {
-                impactEffectPool = new GunObjectPool(gunStats, impactEffectPrefab, this);
+                impactEffectPool = new GunObjectPool(gunStats, impactEffectPrefab);
             }
         }
 
