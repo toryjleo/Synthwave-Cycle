@@ -23,6 +23,8 @@ namespace Gun
         {
             this.gunStats = gunStats;
 
+            // TODO: Factor in how many explosions to pool
+
             if (gunStats.InfiniteAmmo)
             {
                 instantiateCount = INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot;

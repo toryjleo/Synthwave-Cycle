@@ -79,8 +79,8 @@ MonoBehaviour:
   gunStats: {fileID: 11400000, guid: daa7f538aa123c04baf8df49e9dd3632, type: 2}
   BulletSpawn: {fileID: 490074081577700557}
   muzzleFlash: {fileID: 5518774448732476214}
-  explosion: {fileID: 9119689495678711475, guid: cc24d4655da824149a5f30afcfbfef85, type: 3}
   bulletPrefab: {fileID: 5230005726319368862, guid: 084e10c8016e91741a5756a57400916f, type: 3}
+  explosionPrefab: {fileID: 9119689495678711475, guid: cc24d4655da824149a5f30afcfbfef85, type: 3}
   impactEffectPrefab: {fileID: 2481258670572446118, guid: ac706fddc359e2949835b202db59647a, type: 3}
   crossHair: {fileID: 5114472430233548999}
   externalFire: 0
