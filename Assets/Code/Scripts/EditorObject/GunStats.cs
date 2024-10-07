@@ -124,6 +124,10 @@ namespace EditorObject
         /// </summary>
         [Range(0f, 200f)] [SerializeField] private float range = 100f;
         #endregion
+
+        #region Explosion
+        [SerializeField] private bool isExplosive = false;
+        #endregion
         #endregion
 
         #region Properties
@@ -171,6 +175,7 @@ namespace EditorObject
         #region HitScan
         public float Range { get { return range; } }
         #endregion
+        public bool IsExplosive { get { return isExplosive; } }
         #endregion
 
         #endregion

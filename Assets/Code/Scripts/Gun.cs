@@ -245,17 +245,21 @@ namespace Gun
 
         public void HandleBulletHit(Vector3 hitPoint) 
         {
-            // Explosive
-            if (!explosion) 
+            if (gunStats.IsExplosive)
             {
-                Debug.LogError("Need explosion prefab reference");
+                if (!explosion)
+                {
+                    Debug.LogError("Need explosion prefab reference");
+                }
+                else
+                {
+                    // TODO: Queue Explosions
+                    Explosion e = Instantiate<Explosion>(explosion, hitPoint, Quaternion.identity);
+                    e.Init();
+                    e.DoExplosion();
+                }
             }
-            else
-            {
-                // TODO: Queue Explosions
-                Explosion e = Instantiate<Explosion>(explosion, hitPoint, Quaternion.identity);
-                e.DoExplosion();
-            }
+            
         }
 
         /// <summary>

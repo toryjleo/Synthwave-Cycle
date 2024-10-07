@@ -1,3 +1,4 @@
+using Gun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class Explosion : MonoBehaviour
 
     #region Graphic
     private MeshRenderer meshRenderer = null;
-    private float timeToShowGraphic = .25f;
+    private float timeToShowGraphic = 1f;
     private float meshRendererTimer = 0;
     #endregion
 
@@ -26,7 +27,7 @@ public class Explosion : MonoBehaviour
         Init();
     }
 
-    private void Init()
+    public void Init()
     {
         delayTimer = 0.0f;
 
@@ -93,17 +94,21 @@ public class Explosion : MonoBehaviour
 
         foreach (Collider collider in colliders)
         {
-            Rigidbody rb = collider.GetComponent<Rigidbody>();
-            Health health = collider.GetComponent<Health>();
+            // Do not apply explosion force to projectiles
+            if (collider.GetComponent<Projectile>() == null)
+            {
+                Rigidbody rb = collider.GetComponent<Rigidbody>();
+                Health health = collider.GetComponent<Health>();
 
-            if (rb) 
-            {
-                rb.AddExplosionForce(force, transform.position, radius);
-            }
-            if (health) 
-            {
-                // TODO: decide who is hurt
-                health.TakeDamage(damage);
+                if (rb)
+                {
+                    rb.AddExplosionForce(force, transform.position, radius);
+                }
+                if (health)
+                {
+                    // TODO: decide who is hurt
+                    health.TakeDamage(damage);
+                }
             }
         }
     }

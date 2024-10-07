@@ -16,7 +16,7 @@ namespace CustomInspector
         #region Members
         private const int SECTION_SPACE = 8;
 
-        private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", "projectileSpread", "damageDealt" };
+        private string[] generalProps = { "isExplosive", "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", "projectileSpread", "damageDealt" };
         private string[] burstFireProps = { "timeBetweenBurstShots" };
         private string[] overheatProps = { "coolDownBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
         private string[] multipleProjectileProps = { "distanceBetweenProjectiles" };
