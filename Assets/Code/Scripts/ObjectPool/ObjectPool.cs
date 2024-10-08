@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace Generic
 {
+    /// <summary>
+    /// Used in initializing a Poolable object
+    /// </summary>
+    public interface IPoolableInstantiateData {};
 
     /// <summary>
     /// Component necessary for an object in the ObjectPool
@@ -12,23 +16,30 @@ namespace Generic
     public abstract class Poolable : SelfWorldBoundsDespawn
     {
         /// <summary>
+        /// Set the poolable object to its initial state before spawning
+        /// </summary>
+        /// <param name="stats">The stats to apply to this poolable object</param>
+        public abstract void Init(IPoolableInstantiateData stats);
+
+        /// <summary>
         /// Initialize all data that changes throughout a level
         /// </summary>
         public abstract void Reset();
     }
 
 
-    /// <summary>Class <c>ObjectPool</c> A Unity Component works as an object pool for Poolable objects.</summary>
-    public abstract class ObjectPool : IResettable
+    /// <summary> A Unity Component works as an object pool for Poolable objects.</summary>
+    public class ObjectPool : IResettable
     {
         /// <summary>
         /// Prefab to duplicate
         /// </summary>
         protected Poolable prefab;
+
         /// <summary>
-        /// Number of prefabs to instantiate
+        /// Data used to initialize a Poolable object
         /// </summary>
-        protected int instantiateCount = 0;
+        protected IPoolableInstantiateData instantiateData;
 
         /// <summary>
         /// Pooled objects that can be returned at a moment's notice
@@ -39,13 +50,18 @@ namespace Generic
         /// </summary>
         private ArrayList objectsInWorld;
 
+        protected IPoolableInstantiateData stats = null;
+
         /// <summary>
         /// The class contructor
         /// </summary>
-        /// <param name="bulletPrefab">The template object for this pool.</param>
-        public ObjectPool(Poolable bulletPrefab)
+        /// <param name="prefab">The template object for this pool.</param>
+        public ObjectPool(IPoolableInstantiateData stats, Poolable prefab)
         {
-            this.prefab = bulletPrefab;
+
+            this.stats = stats;
+
+            this.prefab = prefab;
 
             if (objectsAwaitingSpawn == null)
             {
@@ -55,10 +71,26 @@ namespace Generic
             {
                 objectsInWorld = new ArrayList();
             }
-            while (objectsAwaitingSpawn.Count < instantiateCount)
+        }
+
+        /// <summary>
+        /// Must be called after constructor. Fills obect pool with objects
+        /// </summary>
+        /// <param name="instantiateCount">number of times to instantiate prefab</param>
+        public void PoolObjects(int instantiateCount)
+        {
+            if (objectsAwaitingSpawn == null) 
             {
-                Poolable newBullet = CreateNewPoolableObject();
-                objectsAwaitingSpawn.Enqueue(newBullet);
+
+                while (objectsAwaitingSpawn.Count < instantiateCount)
+                {
+                    Poolable newBullet = CreateNewPoolableObject();
+                    objectsAwaitingSpawn.Enqueue(newBullet);
+                }
+            }
+            else 
+            {
+                Debug.LogWarning("Trying to pool objects multiple times");
             }
         }
 
@@ -66,7 +98,16 @@ namespace Generic
         /// Instantiates a new poolable object
         /// </summary>
         /// <returns>A newly instantiated GameObject with a poolable component</returns>
-        protected abstract Poolable CreateNewPoolableObject();
+        /// <summary>Should handle all initialization for a new Poolable instance.</summary>
+        /// <returns>A new gameObject instance with a Poolable component.</returns>
+        protected virtual Generic.Poolable CreateNewPoolableObject()
+        {
+            Poolable newObject = GameObject.Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+            newObject.Init(stats);
+            newObject.gameObject.SetActive(false);
+            newObject.Despawn += DespawnObject;
+            return newObject;
+        }
 
         /// <summary>Returns an instance of a Poolable object from the pool.</summary>
         /// <returns>A currently unused Poolable object.</returns>

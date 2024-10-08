@@ -20,6 +20,8 @@ namespace CustomInspector
         private string[] burstFireProps = { "timeBetweenBurstShots" };
         private string[] overheatProps = { "coolDownBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
         private string[] multipleProjectileProps = { "distanceBetweenProjectiles" };
+        private string[] explosionProps = { "radius", "force", "explosionDamage", "isCountDownExplosion" };
+        private string[] countdownExplosionProps = { "secondsBeforeExplode" };
         #endregion
 
         private EditorObject.GunStats GetGunStats
@@ -42,11 +44,12 @@ namespace CustomInspector
                 MultipleProjectiles(gunStats);
                 Overheat(gunStats);
                 BulletOptions(gunStats);
+                Explosions(gunStats);
 
                 GeneratedStats(gunStats);
             }
             serializedObject.ApplyModifiedProperties();
-            
+
         }
         #endregion
 
@@ -136,9 +139,29 @@ namespace CustomInspector
 
             EditorGUILayout.LabelField("Multiple Projectiles");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileCountPerShot"));
-            if (gunStats.ProjectileCountPerShot > 1) 
+            if (gunStats.ProjectileCountPerShot > 1)
             {
                 FindAndShowProperties(multipleProjectileProps);
+            }
+        }
+
+        /// <summary>
+        /// Display Explosion options
+        /// </summary>
+        /// <param name="gunStats">ScriptableObject to modify</param>
+        private void Explosions(EditorObject.GunStats gunStats)
+        {
+            EditorGUILayout.Space(SECTION_SPACE);
+
+            EditorGUILayout.LabelField("Explosions");
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("isExplosive"));
+            if (gunStats.IsExplosive)
+            {
+                FindAndShowProperties(explosionProps);
+                if (gunStats.IsCountDownExplosion)
+                {
+                    FindAndShowProperties(countdownExplosionProps);
+                }
             }
         }
 
@@ -174,7 +197,7 @@ namespace CustomInspector
 
             // Time To Cool After Overheat
             float timeToCoolAfterOverheat = (100 - gunStats.CoolDownBarrier) / gunStats.CoolDownPerSecond;
-            if (gunStats.CanOverheat) 
+            if (gunStats.CanOverheat)
             {
                 EditorGUILayout.LabelField("Time To Cool After Overheat: " + timeToCoolAfterOverheat + " seconds");
             }

@@ -1,10 +1,19 @@
 using UnityEngine;
 using Unity.Mathematics;
+using Generic;
 
 namespace Gun
 {
-    //Event to be called when ammo changes
+    /// <summary>
+    /// Event to be called when ammo changes
+    /// </summary>
     public delegate void NotifyAmmo();
+
+    /// <summary>
+    /// Event to be called when a bullet hits
+    /// </summary>
+    /// <param name="position"></param>
+    public delegate void BulletHitHandler(Vector3 position);
 
     /// <summary>
     /// Class that implements all gun behavior
@@ -38,15 +47,19 @@ namespace Gun
 
 
         #region Object Instancing
-        protected Generic.ObjectPool bulletPool;
-        [SerializeField] private Projectile bulletPrefab;
 
+        // Bullets
+        private const int INFINITE_AMMO_COUNT = 200;
+        protected ProjectileObjectPool projectilePool = null;
+        [SerializeField] private Projectile bulletPrefab = null;
         protected HitScan hitScan = null;
 
-        protected Generic.ObjectPool impactEffectPool;
-        /// <summary>
-        /// Effect instantiated at hitscan impact
-        /// </summary>
+        // Explosions
+        protected Generic.ObjectPool explosionPool = null;
+        [SerializeField] private Explosion explosionPrefab = null;
+
+        // Impact Effect
+        protected Generic.ObjectPool impactEffectPool = null;
         [SerializeField] private PooledParticle impactEffectPrefab = null;
         #endregion
 
@@ -166,14 +179,6 @@ namespace Gun
             turretInputManager.UpdateInputMethod();
 
             UpdateGun(Time.deltaTime);
-
-#if UNITY_EDITOR
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                AddAmmo(1);
-                Debug.Log("Adding 1 bullet");
-            }
-#endif
         }
 
         // Update is called once per frame
@@ -206,17 +211,32 @@ namespace Gun
 
             stateController = new GunState.StateController(gunStats.NumBurstShots, gunStats.PrintDebugState);
 
-            if (bulletPool == null)
+            if (projectilePool == null)
             {
-                bulletPool = new GunObjectPool(gunStats, bulletPrefab);
+                int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
+                                                               gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, HandleBulletHit);
+                projectilePool.PoolObjects(instantiateCount);
             }
             if (hitScan == null) 
             {
                 hitScan = new HitScan(gunStats);
             }
+            if (explosionPool == null) 
+            {
+                int numberOfHits = gunStats.BulletPenetration + 1; // Needs to be 1 more than penetration to get bullet hit number
+                int instantiateCount = gunStats.InfiniteAmmo ? 
+                                       INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot * numberOfHits :
+                                       gunStats.AmmoCount * gunStats.ProjectileCountPerShot * numberOfHits;
+                explosionPool = new Generic.ObjectPool(gunStats, explosionPrefab);
+                explosionPool.PoolObjects(instantiateCount);
+            }
             if (impactEffectPool == null)
             {
-                impactEffectPool = new GunObjectPool(gunStats, impactEffectPrefab);
+                int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
+                                                               gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                impactEffectPool = new Generic.ObjectPool(gunStats, impactEffectPrefab);
+                impactEffectPool.PoolObjects(instantiateCount);
             }
         }
 
@@ -228,6 +248,38 @@ namespace Gun
             stateController.fireSingleShot.notifyListenersEnter += HandleFireSingleShotEnter;
             stateController.fireBurstShot.notifyListenersEnter += HandleFireBurstShotEnter;
             stateController.betweenShots.notifyListenersEnter += HandleBetweenShotsEnter;
+
+            hitScan.notifyListenersHit += HandleBulletHit;
+
+        }
+
+        /// <summary>
+        /// Applies effects when a bullet hits something
+        /// </summary>
+        /// <param name="hitPoint">The location where the bullet hit</param>
+        public void HandleBulletHit(Vector3 hitPoint) 
+        {
+            if (gunStats.IsExplosive)
+            {
+                if (!explosionPrefab)
+                {
+                    Debug.LogError("Need explosion prefab reference");
+                }
+                else
+                {
+                    Explosion explosion = explosionPool.SpawnFromPool() as Explosion;
+                    if (!explosion)
+                    {
+                        Debug.Log("Explosion pool does not contain explosions");
+                    }
+                    else
+                    {
+                        explosion.transform.localPosition = hitPoint;
+                        explosion.TriggerExplosiveAbility();
+                    }
+                }
+            }
+            
         }
 
         /// <summary>
@@ -315,7 +367,7 @@ namespace Gun
         /// </summary>
         private void FireProjectile(Vector3 direction)
         {
-            Projectile bullet = bulletPool.SpawnFromPool() as Projectile;
+            Projectile bullet = projectilePool.SpawnFromPool() as Projectile;
 
             bullet.Shoot(BulletSpawn.transform.position, direction, player ? player.Velocity : Vector3.zero);
         }
@@ -326,8 +378,6 @@ namespace Gun
         private void FireHitScan(Vector3 direction)
         {
             hitScan.Shoot(BulletSpawn.transform.position, direction, impactEffectPool);
-            // TODO: Call Hitscan.Shoot(Vector3 curPosition, Vector3 direction)
-
         }
 
         /// <summary>
