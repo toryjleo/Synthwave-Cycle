@@ -1,6 +1,7 @@
 using EditorObject;
 using Generic;
 using Gun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,18 +13,18 @@ namespace Gun
     /// </summary>
     public class ProjectileObjectPool : GunObjectPool
     {
-        private Gun parent = null;
+        BulletHitHandler hitHandler = null;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="gunStats">stats for this gun</param>
         /// <param name="prefab">Prefab of projectile to fire</param>
-        /// <param name="parent">Reference to gun who will be using this object pool</param>
+        /// <param name="hitHandler">Reference to gun who will be using this object pool</param>
         /// <param name="instantiateCount">number of times to instantiate prefab</param>
-        public ProjectileObjectPool(GunStats gunStats, Poolable prefab, Gun parent, int instantiateCount) : base(gunStats, prefab, instantiateCount)
+        public ProjectileObjectPool(GunStats gunStats, Poolable prefab, BulletHitHandler hitHandler, int instantiateCount) : base(gunStats, prefab, instantiateCount)
         {
-            this.parent = parent;
+            this.hitHandler = hitHandler;
         }
 
         /// <summary>Should handle all initialization for a new bullet instance.</summary>
@@ -35,7 +36,7 @@ namespace Gun
 
             if (projectile)
             {
-                projectile.notifyListenersHit += parent.HandleBulletHit;
+                projectile.notifyListenersHit += hitHandler;
             }
             else
             {

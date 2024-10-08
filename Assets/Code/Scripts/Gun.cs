@@ -225,7 +225,7 @@ namespace Gun
             {
                 int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
                                                                gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
-                projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, this, instantiateCount);
+                projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, HandleBulletHit, instantiateCount);
             }
             if (hitScan == null) 
             {
