@@ -15,7 +15,7 @@ public class Explosion : PoolableGunObject
     #endregion
 
     private float radius = 5.0f;
-    private float force = 20000;
+    private float force = 12000;
     private float damage = 25;
 
     private GunStats gunStats;
@@ -40,7 +40,7 @@ public class Explosion : PoolableGunObject
 
         meshRendererTimer = 0;
 
-        transform.localScale = new Vector3(radius, radius, radius);
+        transform.localScale = new Vector3(radius * 2, radius * 2, radius * 2);
         transform.rotation = Quaternion.identity;
 
         meshRenderer.enabled = false;
