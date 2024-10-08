@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Generic
 {
+    /// <summary>
+    /// Used in initializing a Poolable object
+    /// </summary>
     public interface IPoolableInstantiateData {};
 
     /// <summary>
@@ -33,6 +36,9 @@ namespace Generic
         /// </summary>
         protected Poolable prefab;
 
+        /// <summary>
+        /// Data used to initialize a Poolable object
+        /// </summary>
         protected IPoolableInstantiateData instantiateData;
 
         /// <summary>

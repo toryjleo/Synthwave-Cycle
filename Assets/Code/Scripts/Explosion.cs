@@ -5,6 +5,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Adds an explosion ability to a bullet.
+/// Requires:
+/// - a mesh to represent explosion
+/// - A child mesh to represent AOE of the countdown explosion
+/// </summary>
 public class Explosion : Generic.Poolable
 {
     #region Countdown Explosion
@@ -13,14 +19,13 @@ public class Explosion : Generic.Poolable
     [SerializeField] private MeshRenderer countDownMesh = null;
     #endregion
 
-    private GunStats gunStats;
-
     #region Graphic
     [SerializeField] private MeshRenderer meshRenderer = null;
     private float timeToShowGraphic = 1f;
     private float meshRendererTimer = 0;
     #endregion
 
+    private GunStats gunStats;
 
     public override void Init(IPoolableInstantiateData data)
     {
@@ -57,6 +62,9 @@ public class Explosion : Generic.Poolable
         UpdateEffects(Time.deltaTime);
     }
 
+    /// <summary>
+    /// Triggers an explosion if this explosion is not a countdown
+    /// </summary>
     public void TriggerExplosiveAbility()
     {
         if (!gunStats.IsCountDownExplosion)
@@ -66,18 +74,28 @@ public class Explosion : Generic.Poolable
         // Else case is handled in update with the countdown explosion
     }
 
+    /// <summary>
+    /// Triggers the explosion to go off
+    /// </summary>
     private void DoExplosion()
     {
         HandleEffects();
         HandleDestruction();
     }
 
+    /// <summary>
+    /// Handles explosion visuals
+    /// </summary>
     private void HandleEffects()
     {
         meshRendererTimer = 0;
         meshRenderer.enabled = true;
     }
 
+    /// <summary>
+    /// Updates effects. Gets called every update
+    /// </summary>
+    /// <param name="deltaTime">Time since last update</param>
     private void UpdateEffects(float deltaTime)
     {
         if (meshRenderer.enabled)
@@ -91,7 +109,9 @@ public class Explosion : Generic.Poolable
         }
     }
 
-
+    /// <summary>
+    /// Handles the physics and damage delt from explosion
+    /// </summary>
     private void HandleDestruction()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, gunStats.Radius);
@@ -120,7 +140,10 @@ public class Explosion : Generic.Poolable
         }
     }
 
-
+    /// <summary>
+    /// Updates the countdown if this explosion is a countdown
+    /// </summary>
+    /// <param name="deltaTime">Time since last update</param>
     private void UpdateCountdownExplosion(float deltaTime)
     {
         if (countDownMesh.enabled)

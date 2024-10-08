@@ -48,21 +48,18 @@ namespace Gun
 
         #region Object Instancing
 
+        // Bullets
         private const int INFINITE_AMMO_COUNT = 200;
-
         protected ProjectileObjectPool projectilePool = null;
         [SerializeField] private Projectile bulletPrefab = null;
-
         protected HitScan hitScan = null;
 
+        // Explosions
         protected Generic.ObjectPool explosionPool = null;
         [SerializeField] private Explosion explosionPrefab = null;
 
-        // TODO: Remove temporarily
+        // Impact Effect
         protected Generic.ObjectPool impactEffectPool = null;
-        /// <summary>
-        /// Effect instantiated at hitscan impact
-        /// </summary>
         [SerializeField] private PooledParticle impactEffectPrefab = null;
         #endregion
 
@@ -256,6 +253,10 @@ namespace Gun
 
         }
 
+        /// <summary>
+        /// Applies effects when a bullet hits something
+        /// </summary>
+        /// <param name="hitPoint">The location where the bullet hit</param>
         public void HandleBulletHit(Vector3 hitPoint) 
         {
             if (gunStats.IsExplosive)
