@@ -55,7 +55,7 @@ namespace Gun
 
         protected HitScan hitScan = null;
 
-        protected GunObjectPool explosionPool = null;
+        protected Generic.ObjectPool explosionPool = null;
         [SerializeField] private Explosion explosionPrefab = null;
 
         // TODO: Remove temporarily
@@ -231,14 +231,14 @@ namespace Gun
                 int instantiateCount = gunStats.InfiniteAmmo ? 
                                        INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot * numberOfHits :
                                        gunStats.AmmoCount * gunStats.ProjectileCountPerShot * numberOfHits;
-                explosionPool = new GunObjectPool(gunStats, explosionPrefab, instantiateCount);
+                explosionPool = new Generic.ObjectPool(gunStats, explosionPrefab, instantiateCount);
                 explosionPool.PoolObjects();
             }
             if (impactEffectPool == null)
             {
                 int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
                                                                gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
-                impactEffectPool = new GunObjectPool(gunStats, impactEffectPrefab, instantiateCount);
+                impactEffectPool = new Generic.ObjectPool(gunStats, impactEffectPrefab, instantiateCount);
                 impactEffectPool.PoolObjects();
             }
         }

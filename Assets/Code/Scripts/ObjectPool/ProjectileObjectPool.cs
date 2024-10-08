@@ -11,7 +11,7 @@ namespace Gun
     /// <summary>
     /// A Unity Component works as an object pool for GunObjectPool objects. Adapted for use with Projectiles.
     /// </summary>
-    public class ProjectileObjectPool : GunObjectPool
+    public class ProjectileObjectPool : Generic.ObjectPool
     {
         BulletHitHandler hitHandler = null;
 

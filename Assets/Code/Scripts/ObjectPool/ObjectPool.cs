@@ -26,7 +26,7 @@ namespace Generic
 
 
     /// <summary> A Unity Component works as an object pool for Poolable objects.</summary>
-    public abstract class ObjectPool : IResettable
+    public class ObjectPool : IResettable
     {
         /// <summary>
         /// Prefab to duplicate
