@@ -274,7 +274,7 @@ namespace Gun
                 }
                 else
                 {
-                    Explosion explosion = explosionPool.SpawnFromPool() as Explosion; //Instantiate<Explosion>(explosionPrefab, hitPoint, Quaternion.identity);
+                    Explosion explosion = explosionPool.SpawnFromPool() as Explosion;
                     if (!explosion)
                     {
                         Debug.Log("Explosion pool does not contain explosions");
