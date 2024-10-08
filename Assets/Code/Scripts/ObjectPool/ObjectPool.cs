@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Generic
 {
-
     /// <summary>
     /// Component necessary for an object in the ObjectPool
     /// </summary>
@@ -18,7 +17,7 @@ namespace Generic
     }
 
 
-    /// <summary>Class <c>ObjectPool</c> A Unity Component works as an object pool for Poolable objects.</summary>
+    /// <summary> A Unity Component works as an object pool for Poolable objects.</summary>
     public abstract class ObjectPool : IResettable
     {
         /// <summary>
@@ -42,10 +41,10 @@ namespace Generic
         /// <summary>
         /// The class contructor
         /// </summary>
-        /// <param name="bulletPrefab">The template object for this pool.</param>
-        public ObjectPool(Poolable bulletPrefab)
+        /// <param name="prefab">The template object for this pool.</param>
+        public ObjectPool(Poolable prefab)
         {
-            this.prefab = bulletPrefab;
+            this.prefab = prefab;
 
             if (objectsAwaitingSpawn == null)
             {

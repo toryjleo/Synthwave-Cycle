@@ -47,6 +47,9 @@ namespace Gun
 
 
         #region Object Instancing
+
+        private const int INFINITE_AMMO_COUNT = 200;
+
         protected ProjectileObjectPool projectilePool = null;
         [SerializeField] private Projectile bulletPrefab = null;
 
@@ -220,7 +223,9 @@ namespace Gun
 
             if (projectilePool == null)
             {
-                projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, this);
+                int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
+                                                               gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, this, instantiateCount);
             }
             if (hitScan == null) 
             {
@@ -228,11 +233,17 @@ namespace Gun
             }
             if (explosionPool == null) 
             {
-                explosionPool = new GunObjectPool(gunStats, explosionPrefab);
+                int numberOfHits = gunStats.BulletPenetration + 1; // Needs to be 1 more than penetration to get bullet hit number
+                int instantiateCount = gunStats.InfiniteAmmo ? 
+                                       INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot * numberOfHits :
+                                       gunStats.AmmoCount * gunStats.ProjectileCountPerShot * numberOfHits;
+                explosionPool = new GunObjectPool(gunStats, explosionPrefab, instantiateCount);
             }
             if (impactEffectPool == null)
             {
-                impactEffectPool = new GunObjectPool(gunStats, impactEffectPrefab);
+                int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
+                                                               gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                impactEffectPool = new GunObjectPool(gunStats, impactEffectPrefab, instantiateCount);
             }
         }
 

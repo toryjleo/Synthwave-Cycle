@@ -56,13 +56,6 @@ public class Explosion : PoolableGunObject
         DelayedExplosion(Time.deltaTime);
 
         UpdateEffects(Time.deltaTime);
-
-#if DEBUG
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            DoExplosion();
-        }
-#endif
     }
 
     public void DoExplosion()
@@ -85,7 +78,7 @@ public class Explosion : PoolableGunObject
             if (meshRendererTimer > timeToShowGraphic) 
             {
                 meshRenderer.enabled = false;
-                Destroy(this);
+                OnDespawn();
             }
         }
     }
