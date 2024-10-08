@@ -31,11 +31,11 @@ namespace EditorObject
         /// <summary>
         /// Number of seconds after the final shot the gun must wait before shooting again
         /// </summary>
-        [Range(0.01f, 20f)] [SerializeField] private float timeBetweenShots = 10f;
+        [Range(0.01f, 20f)][SerializeField] private float timeBetweenShots = 10f;
         /// <summary>
         /// Number of hit points to depleat on bullet hit
         /// </summary>
-        [Range(0, 1000)] [SerializeField] private float damageDealt = 70;
+        [Range(0, 1000)][SerializeField] private float damageDealt = 70;
 
         #region Ammo
         /// <summary>
@@ -45,33 +45,33 @@ namespace EditorObject
         /// <summary>
         /// Number of shots before the gun runs out of ammo
         /// </summary>
-        [Range(1, 10000)] [SerializeField] private int ammoCount = 200;
+        [Range(1, 10000)][SerializeField] private int ammoCount = 200;
         #endregion
 
         #region Burst Fire
         /// <summary>
         /// Number of bullet bursts per fire action
         /// </summary>
-        [Range(1, 20)] [SerializeField] private int numBurstShots = 1;
+        [Range(1, 20)][SerializeField] private int numBurstShots = 1;
         /// <summary>
         /// Time between each bullet burst
         /// </summary>
-        [Range(0.01f, 10)] [SerializeField] private float timeBetweenBurstShots = .01f;
+        [Range(0.01f, 10)][SerializeField] private float timeBetweenBurstShots = .01f;
         #endregion
 
         #region Multiple Projectiles
         /// <summary>
         /// Number of projectiles shot per gun shot
         /// </summary>
-        [Range(1, 40)] [SerializeField] private int projectileCountPerShot = 1;
+        [Range(1, 40)][SerializeField] private int projectileCountPerShot = 1;
         /// <summary>
         /// Angle between each projectile shot
         /// </summary>
-        [Range(0, 180)] [SerializeField] private float distanceBetweenProjectiles = 0;
+        [Range(0, 180)][SerializeField] private float distanceBetweenProjectiles = 0;
         /// <summary>
         /// Adds a random variation to each projectile's shot
         /// </summary>
-        [Range(0, 180)] [SerializeField] private float projectileSpread = 0;
+        [Range(0, 180)][SerializeField] private float projectileSpread = 0;
         #endregion
 
         #region Overheat
@@ -82,15 +82,15 @@ namespace EditorObject
         /// <summary>
         /// The amount the gun must cool down to before shooting again
         /// </summary>
-        [Range(0, 100)] [SerializeField] private float coolDownBarrier = 50;
+        [Range(0, 100)][SerializeField] private float coolDownBarrier = 50;
         /// <summary>
         /// How much each shot will overheat the gun
         /// </summary>
-        [Range(1, 100)] [SerializeField] private float overHeatPercentPerShot = 5;
+        [Range(1, 100)][SerializeField] private float overHeatPercentPerShot = 5;
         /// <summary>
         /// Percentage the gun cools down each second
         /// </summary>
-        [Range(0, 100)] [SerializeField] private float coolDownPerSecond = 2.5f;
+        [Range(0, 100)][SerializeField] private float coolDownPerSecond = 2.5f;
         #endregion
 
         #region DEBUG
@@ -108,13 +108,13 @@ namespace EditorObject
         /// <summary>
         /// Number of enemies that bullet can penetrate before despawning
         /// </summary>
-        [Range(0, 20)] [SerializeField] private int bulletPenetration;
+        [Range(0, 20)][SerializeField] private int bulletPenetration;
 
         #region Projectile
         /// <summary>
         /// Speed at which the bullet travels out of the gun
         /// </summary>
-        [Range(0f, 100f)] [SerializeField] private float muzzleVelocity = 60;
+        [Range(0f, 100f)][SerializeField] private float muzzleVelocity = 60;
         [SerializeField] private Vector3 projectileScale = Vector3.one;
         #endregion
 
@@ -122,12 +122,16 @@ namespace EditorObject
         /// <summary>
         /// Maximum range the projectile travels
         /// </summary>
-        [Range(0f, 200f)] [SerializeField] private float range = 100f;
+        [Range(0f, 200f)][SerializeField] private float range = 100f;
         #endregion
 
         #region Explosion
         [SerializeField] private bool isExplosive = false;
         [SerializeField] private bool isCountDownExplosion = false;
+        [SerializeField] private float radius = 5.0f;
+        [SerializeField] private float force = 12000;
+        [SerializeField] private float explosionDamage = 25;
+        [SerializeField] private float secondsBeforeExplode = 1.0f;
         #endregion
         #endregion
 
@@ -178,6 +182,13 @@ namespace EditorObject
         #endregion
         public bool IsExplosive { get { return isExplosive; } }
         public bool IsCountDownExplosion { get { return isCountDownExplosion; } }
+        #endregion
+
+        #region Explosion
+        public float Radius { get { return radius; } }
+        public float Force { get { return force; } }
+        public float ExplosionDamage { get { return explosionDamage; } }
+        public float SecondsBeforeExplode { get { return secondsBeforeExplode; } }
         #endregion
 
         #endregion

@@ -8,15 +8,10 @@ using UnityEngine;
 public class Explosion : Generic.Poolable
 {
     #region Countdown Explosion
-    [SerializeField] private float secondsBeforeExplode = 1.0f;
     private float countDownTimer = 0.0f;
 
     [SerializeField] private MeshRenderer countDownMesh = null;
     #endregion
-
-    private float radius = 5.0f;
-    private float force = 12000;
-    private float damage = 25;
 
     private GunStats gunStats;
 
@@ -30,7 +25,7 @@ public class Explosion : Generic.Poolable
     public override void Init(IPoolableInstantiateData data)
     {
         GunStats gunStats = data as GunStats;
-        if (!gunStats) 
+        if (!gunStats)
         {
             Debug.LogError("Explosion needs to get initialized by a GunStats object.");
         }
@@ -45,7 +40,7 @@ public class Explosion : Generic.Poolable
 
         meshRendererTimer = 0;
 
-        transform.localScale = new Vector3(radius * 2, radius * 2, radius * 2);
+        transform.localScale = new Vector3(gunStats.Radius * 2, gunStats.Radius * 2, gunStats.Radius * 2);
         transform.rotation = Quaternion.identity;
 
         meshRenderer.enabled = false;
@@ -62,9 +57,9 @@ public class Explosion : Generic.Poolable
         UpdateEffects(Time.deltaTime);
     }
 
-    public void TriggerExplosiveAbility() 
+    public void TriggerExplosiveAbility()
     {
-        if (!gunStats.IsCountDownExplosion) 
+        if (!gunStats.IsCountDownExplosion)
         {
             DoExplosion();
         }
@@ -83,12 +78,12 @@ public class Explosion : Generic.Poolable
         meshRenderer.enabled = true;
     }
 
-    private void UpdateEffects(float deltaTime) 
+    private void UpdateEffects(float deltaTime)
     {
         if (meshRenderer.enabled)
         {
             meshRendererTimer += deltaTime;
-            if (meshRendererTimer > timeToShowGraphic) 
+            if (meshRendererTimer > timeToShowGraphic)
             {
                 meshRenderer.enabled = false;
                 OnDespawn();
@@ -97,9 +92,9 @@ public class Explosion : Generic.Poolable
     }
 
 
-    private void HandleDestruction() 
+    private void HandleDestruction()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, gunStats.Radius);
 
         foreach (Collider collider in colliders)
         {
@@ -111,14 +106,14 @@ public class Explosion : Generic.Poolable
 
                 if (rb)
                 {
-                    rb.AddExplosionForce(force, transform.position, radius);
+                    rb.AddExplosionForce(gunStats.Force, transform.position, gunStats.Radius);
                 }
                 if (health)
                 {
                     if ((health.gameObject.tag == "Enemy") ||
-                        (health.gameObject.tag == "Player" && !gunStats.IsPlayerGun)) 
+                        (health.gameObject.tag == "Player" && !gunStats.IsPlayerGun))
                     {
-                        health.TakeDamage(damage);
+                        health.TakeDamage(gunStats.ExplosionDamage);
                     }
                 }
             }
@@ -126,13 +121,13 @@ public class Explosion : Generic.Poolable
     }
 
 
-    private void UpdateCountdownExplosion(float deltaTime) 
+    private void UpdateCountdownExplosion(float deltaTime)
     {
         if (countDownMesh.enabled)
         {
             countDownTimer += deltaTime;
 
-            if (countDownTimer >= secondsBeforeExplode)
+            if (countDownTimer >= gunStats.SecondsBeforeExplode)
             {
                 countDownMesh.enabled = false;
                 DoExplosion();
