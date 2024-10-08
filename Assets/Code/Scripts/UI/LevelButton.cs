@@ -89,6 +89,6 @@ public class LevelButton : MonoBehaviour
     private void HandleOnClick()
     {
         selector.SetSelectedLevel(level);
-        menu.StartOnClick();
+        menu.StartGame();
     }
 }

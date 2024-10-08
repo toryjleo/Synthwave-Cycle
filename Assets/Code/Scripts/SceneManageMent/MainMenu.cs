@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using EditorObject;
+using TMPro;
 
 /// <summary>
 /// Handles the main menu scene functions
@@ -13,14 +14,32 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] private SettingsData settingsData;
     [SerializeField] public AudioMixer audioMixer;
+    [SerializeField] private GameSave gameSave;
+    [SerializeField] private TextMeshProUGUI startText;
+
+    private LevelSelector selector;
 
     void Start()
     {
         SetMixerNumbers();
+        SetStartButtonText();
+
+        // Find level selector
+        FindLevelSelector();
     }
 
-    /// <summary>Will load the game.</summary>
+    /// <summary>Will load the game via the start button.</summary>
     public void StartOnClick()
+    {
+        FindLevelSelector();
+        selector.SetSelectedLevel(gameSave.levelSequence[0]);
+        StartGame();
+    }
+
+    /// <summary>
+    /// Starts the game
+    /// </summary>
+    public void StartGame()
     {
         SetMixerNumbers();
         StartCoroutine(LoadYourAsyncScene("TrueScene"));
@@ -58,5 +77,29 @@ public class MainMenu : MonoBehaviour
         audioMixer.SetFloat("MainVolume", settingsData.MainVolume);
         audioMixer.SetFloat("MusicVolume", settingsData.MusicVolume);
         audioMixer.SetFloat("EffectsVolume", settingsData.EffectsVolume);
+    }
+
+    private void SetStartButtonText()
+    {
+        if (gameSave)
+        {
+            if (gameSave.MaxLevelProgess > 0)
+            {
+                startText.text = "Continue";
+            }
+            else
+            {
+                startText.text = "Start Game";
+            }
+        }
+    }
+
+    private void FindLevelSelector()
+    {
+        selector = FindObjectOfType<LevelSelector>();
+        if (!selector)
+        {
+            Debug.LogError("No level selector in scene!");
+        }
     }
 }

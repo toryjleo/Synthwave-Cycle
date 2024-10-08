@@ -572,6 +572,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingsData: {fileID: 11400000, guid: e09b9fdf4eb0a2c4ebe8c7c5972e35a3, type: 2}
   audioMixer: {fileID: 24100000, guid: 394271e6c078d5a4f9aa63708dca8d39, type: 2}
+  gameSave: {fileID: 11400000, guid: 6d81f4290e086894a9e92935c673f450, type: 2}
+  startText: {fileID: 617157196}
 --- !u!1 &94186046
 GameObject:
   m_ObjectHideFlags: 0
@@ -5315,18 +5317,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 788523230}
-        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
-        m_MethodName: SetSelectedLevel
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 38be2f417604d784ba0a1d6bc7865a43, type: 2}
-          m_ObjectArgumentAssemblyTypeName: EditorObject.GameLevel, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1608738442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7146,6 +7136,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingsData: {fileID: 11400000, guid: e09b9fdf4eb0a2c4ebe8c7c5972e35a3, type: 2}
   audioMixer: {fileID: 24100000, guid: 394271e6c078d5a4f9aa63708dca8d39, type: 2}
+  gameSave: {fileID: 11400000, guid: 6d81f4290e086894a9e92935c673f450, type: 2}
+  startText: {fileID: 617157196}
 --- !u!1 &1868972714
 GameObject:
   m_ObjectHideFlags: 0
