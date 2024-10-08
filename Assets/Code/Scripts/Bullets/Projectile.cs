@@ -7,7 +7,7 @@ namespace Gun
 {
 
     /// <summary>Class <c>Bullet</c> A Unity Component which moves a gameobject foreward.</summary>
-    public class Projectile : PoolableGunObject
+    public class Projectile : Generic.Poolable
     {
         public event BulletHitHandler notifyListenersHit;
 
@@ -26,9 +26,17 @@ namespace Gun
             Move();
         }
 
-        public override void Init(EditorObject.GunStats gunStats)
+        public override void Init(IPoolableInstantiateData stats)
         {
-            this.gunStats = gunStats;
+            EditorObject.GunStats gunStats = stats as EditorObject.GunStats;
+            if (gunStats != null)
+            {
+                this.gunStats = gunStats;
+            }
+            else 
+            {
+                Debug.LogError("Expects to be handed a GunStats reference.");
+            }
         }
 
         /// <summary>Updates the object's location this frame.</summary>

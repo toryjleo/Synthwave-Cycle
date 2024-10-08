@@ -1,4 +1,5 @@
 using EditorObject;
+using Generic;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,11 +10,11 @@ namespace Gun
     /// Defines behavior that a particle must exhibit when used on a gun.
     /// Requires: ParticleSystem Component
     /// </summary>
-    public class PooledParticle : PoolableGunObject
+    public class PooledParticle : Poolable
     {
         private ParticleSystem particleSystem;
 
-        public override void Init(GunStats gunStats)
+        public override void Init(IPoolableInstantiateData data)
         {
             particleSystem = GetComponent<ParticleSystem>();
             hasFiniteLifetime = true;

@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Explosion : PoolableGunObject
+public class Explosion : Generic.Poolable
 {
     #region Countdown Explosion
     [SerializeField] private float secondsBeforeExplode = 1.0f;
@@ -27,8 +27,13 @@ public class Explosion : PoolableGunObject
     #endregion
 
 
-    public override void Init(GunStats gunStats)
+    public override void Init(IPoolableInstantiateData data)
     {
+        GunStats gunStats = data as GunStats;
+        if (!gunStats) 
+        {
+            Debug.LogError("Explosion needs to get initialized by a GunStats object.");
+        }
         this.gunStats = gunStats;
 
         Reset();

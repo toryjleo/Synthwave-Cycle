@@ -13,6 +13,12 @@ namespace Generic
     public abstract class Poolable : SelfWorldBoundsDespawn
     {
         /// <summary>
+        /// Set the poolable object to its initial state before spawning
+        /// </summary>
+        /// <param name="gunStats">The stats of this gun to use</param>
+        public abstract void Init(IPoolableInstantiateData stats);
+
+        /// <summary>
         /// Initialize all data that changes throughout a level
         /// </summary>
         public abstract void Reset();
@@ -82,7 +88,16 @@ namespace Generic
         /// Instantiates a new poolable object
         /// </summary>
         /// <returns>A newly instantiated GameObject with a poolable component</returns>
-        protected abstract Poolable CreateNewPoolableObject();
+        /// <summary>Should handle all initialization for a new Poolable instance.</summary>
+        /// <returns>A new gameObject instance with a Poolable component.</returns>
+        protected virtual Generic.Poolable CreateNewPoolableObject()
+        {
+            Poolable newObject = GameObject.Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+            newObject.Init(stats);
+            newObject.gameObject.SetActive(false);
+            newObject.Despawn += DespawnObject;
+            return newObject;
+        }
 
         /// <summary>Returns an instance of a Poolable object from the pool.</summary>
         /// <returns>A currently unused Poolable object.</returns>

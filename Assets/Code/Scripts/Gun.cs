@@ -182,14 +182,6 @@ namespace Gun
             turretInputManager.UpdateInputMethod();
 
             UpdateGun(Time.deltaTime);
-
-#if UNITY_EDITOR
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                AddAmmo(1);
-                Debug.Log("Adding 1 bullet");
-            }
-#endif
         }
 
         // Update is called once per frame

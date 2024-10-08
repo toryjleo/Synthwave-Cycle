@@ -34,7 +34,7 @@ namespace Gun
             Poolable poolable = base.CreateNewPoolableObject();
             Projectile projectile = poolable.GetComponent<Projectile>();
 
-            if (projectile)
+            if (projectile != null)
             {
                 projectile.notifyListenersHit += hitHandler;
             }
