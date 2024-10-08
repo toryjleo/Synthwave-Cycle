@@ -22,7 +22,7 @@ namespace Gun
         /// <param name="prefab">Prefab of projectile to fire</param>
         /// <param name="hitHandler">Reference to gun who will be using this object pool</param>
         /// <param name="instantiateCount">number of times to instantiate prefab</param>
-        public ProjectileObjectPool(GunStats gunStats, Poolable prefab, BulletHitHandler hitHandler, int instantiateCount) : base(gunStats, prefab, instantiateCount)
+        public ProjectileObjectPool(GunStats gunStats, Poolable prefab, BulletHitHandler hitHandler) : base(gunStats, prefab)
         {
             this.hitHandler = hitHandler;
         }

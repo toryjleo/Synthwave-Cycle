@@ -218,8 +218,8 @@ namespace Gun
             {
                 int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
                                                                gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
-                projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, HandleBulletHit, instantiateCount);
-                projectilePool.PoolObjects();
+                projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, HandleBulletHit);
+                projectilePool.PoolObjects(instantiateCount);
             }
             if (hitScan == null) 
             {
@@ -231,15 +231,15 @@ namespace Gun
                 int instantiateCount = gunStats.InfiniteAmmo ? 
                                        INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot * numberOfHits :
                                        gunStats.AmmoCount * gunStats.ProjectileCountPerShot * numberOfHits;
-                explosionPool = new Generic.ObjectPool(gunStats, explosionPrefab, instantiateCount);
-                explosionPool.PoolObjects();
+                explosionPool = new Generic.ObjectPool(gunStats, explosionPrefab);
+                explosionPool.PoolObjects(instantiateCount);
             }
             if (impactEffectPool == null)
             {
                 int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
                                                                gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
-                impactEffectPool = new Generic.ObjectPool(gunStats, impactEffectPrefab, instantiateCount);
-                impactEffectPool.PoolObjects();
+                impactEffectPool = new Generic.ObjectPool(gunStats, impactEffectPrefab);
+                impactEffectPool.PoolObjects(instantiateCount);
             }
         }
 

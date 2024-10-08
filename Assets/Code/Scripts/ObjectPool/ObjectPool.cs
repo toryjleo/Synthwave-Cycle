@@ -15,7 +15,7 @@ namespace Generic
         /// <summary>
         /// Set the poolable object to its initial state before spawning
         /// </summary>
-        /// <param name="gunStats">The stats of this gun to use</param>
+        /// <param name="stats">The stats to apply to this poolable object</param>
         public abstract void Init(IPoolableInstantiateData stats);
 
         /// <summary>
@@ -32,10 +32,6 @@ namespace Generic
         /// Prefab to duplicate
         /// </summary>
         protected Poolable prefab;
-        /// <summary>
-        /// Number of prefabs to instantiate
-        /// </summary>
-        protected int instantiateCount = 0;
 
         protected IPoolableInstantiateData instantiateData;
 
@@ -48,20 +44,16 @@ namespace Generic
         /// </summary>
         private ArrayList objectsInWorld;
 
-
-
         protected IPoolableInstantiateData stats = null;
 
         /// <summary>
         /// The class contructor
         /// </summary>
         /// <param name="prefab">The template object for this pool.</param>
-        /// <param name="instantiateCount">number of times to instantiate prefab</param>
-        public ObjectPool(IPoolableInstantiateData stats, Poolable prefab, int instantiateCount)
+        public ObjectPool(IPoolableInstantiateData stats, Poolable prefab)
         {
 
             this.stats = stats;
-            this.instantiateCount = instantiateCount;
 
             this.prefab = prefab;
 
@@ -75,12 +67,24 @@ namespace Generic
             }
         }
 
-        public void PoolObjects()
+        /// <summary>
+        /// Must be called after constructor. Fills obect pool with objects
+        /// </summary>
+        /// <param name="instantiateCount">number of times to instantiate prefab</param>
+        public void PoolObjects(int instantiateCount)
         {
-            while (objectsAwaitingSpawn.Count < instantiateCount)
+            if (objectsAwaitingSpawn == null) 
             {
-                Poolable newBullet = CreateNewPoolableObject();
-                objectsAwaitingSpawn.Enqueue(newBullet);
+
+                while (objectsAwaitingSpawn.Count < instantiateCount)
+                {
+                    Poolable newBullet = CreateNewPoolableObject();
+                    objectsAwaitingSpawn.Enqueue(newBullet);
+                }
+            }
+            else 
+            {
+                Debug.LogWarning("Trying to pool objects multiple times");
             }
         }
 
