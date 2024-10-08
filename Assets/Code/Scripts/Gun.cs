@@ -58,6 +58,7 @@ namespace Gun
         protected GunObjectPool explosionPool = null;
         [SerializeField] private Explosion explosionPrefab = null;
 
+        // TODO: Remove temporarily
         protected Generic.ObjectPool impactEffectPool = null;
         /// <summary>
         /// Effect instantiated at hitscan impact
@@ -226,6 +227,7 @@ namespace Gun
                 int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
                                                                gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
                 projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, HandleBulletHit, instantiateCount);
+                projectilePool.PoolObjects();
             }
             if (hitScan == null) 
             {
@@ -238,12 +240,14 @@ namespace Gun
                                        INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot * numberOfHits :
                                        gunStats.AmmoCount * gunStats.ProjectileCountPerShot * numberOfHits;
                 explosionPool = new GunObjectPool(gunStats, explosionPrefab, instantiateCount);
+                explosionPool.PoolObjects();
             }
             if (impactEffectPool == null)
             {
                 int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
                                                                gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
                 impactEffectPool = new GunObjectPool(gunStats, impactEffectPrefab, instantiateCount);
+                impactEffectPool.PoolObjects();
             }
         }
 
@@ -278,7 +282,7 @@ namespace Gun
                     else
                     {
                         explosion.transform.localPosition = hitPoint;
-                        explosion.DoExplosion();
+                        explosion.TriggerExplosiveAbility();
                     }
                 }
             }

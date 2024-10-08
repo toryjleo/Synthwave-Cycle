@@ -50,7 +50,7 @@ namespace Gun
                     DealDamage(hit.transform.gameObject);
                 }
 
-
+                // TODO: Move the particle spawning logic to Gun.HandleBulletHit
                 PooledParticle particle = impactEffectPool.SpawnFromPool() as PooledParticle;
                 particle.transform.position = hit.transform.position;
                 particle.transform.rotation = Quaternion.LookRotation(hit.normal);

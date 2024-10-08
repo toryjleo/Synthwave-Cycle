@@ -14,7 +14,7 @@ namespace EditorObject
     /// Stores the data for a Gun component
     /// </summary>
     [CreateAssetMenu(menuName = "EditorObject/GunStats", fileName = "New GunStats")]
-    public class GunStats : ScriptableObject
+    public class GunStats : ScriptableObject, Generic.IPoolableInstantiateData
     {
         /// <summary>
         /// If the gun is for a player. Else an enemy
@@ -127,6 +127,7 @@ namespace EditorObject
 
         #region Explosion
         [SerializeField] private bool isExplosive = false;
+        [SerializeField] private bool isCountDownExplosion = false;
         #endregion
         #endregion
 
@@ -176,6 +177,7 @@ namespace EditorObject
         public float Range { get { return range; } }
         #endregion
         public bool IsExplosive { get { return isExplosive; } }
+        public bool IsCountDownExplosion { get { return isCountDownExplosion; } }
         #endregion
 
         #endregion

@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace Generic
 {
+    public interface IPoolableInstantiateData {};
+
     /// <summary>
     /// Component necessary for an object in the ObjectPool
     /// </summary>
@@ -29,6 +31,8 @@ namespace Generic
         /// </summary>
         protected int instantiateCount = 0;
 
+        protected IPoolableInstantiateData instantiateData;
+
         /// <summary>
         /// Pooled objects that can be returned at a moment's notice
         /// </summary>
@@ -38,12 +42,21 @@ namespace Generic
         /// </summary>
         private ArrayList objectsInWorld;
 
+
+
+        protected IPoolableInstantiateData stats = null;
+
         /// <summary>
         /// The class contructor
         /// </summary>
         /// <param name="prefab">The template object for this pool.</param>
-        public ObjectPool(Poolable prefab)
+        /// <param name="instantiateCount">number of times to instantiate prefab</param>
+        public ObjectPool(IPoolableInstantiateData stats, Poolable prefab, int instantiateCount)
         {
+
+            this.stats = stats;
+            this.instantiateCount = instantiateCount;
+
             this.prefab = prefab;
 
             if (objectsAwaitingSpawn == null)
@@ -54,6 +67,10 @@ namespace Generic
             {
                 objectsInWorld = new ArrayList();
             }
+        }
+
+        public void PoolObjects()
+        {
             while (objectsAwaitingSpawn.Count < instantiateCount)
             {
                 Poolable newBullet = CreateNewPoolableObject();

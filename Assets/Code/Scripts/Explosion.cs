@@ -7,45 +7,44 @@ using UnityEngine;
 
 public class Explosion : PoolableGunObject
 {
-    [SerializeField] bool hasDelay = false;
-    [SerializeField] private float delay = 1.0f;
+    #region Countdown Explosion
+    [SerializeField] private float secondsBeforeExplode = 1.0f;
+    private float countDownTimer = 0.0f;
 
-    [SerializeField] private float radius = 5.0f;
-    [SerializeField] private float force = 20000;
-    [SerializeField] private bool explodeOnCollision = false;
-    [SerializeField] private float damage = 25;
+    [SerializeField] private MeshRenderer countDownMesh = null;
+    #endregion
 
-    private float delayTimer = 0.0f;
+    private float radius = 5.0f;
+    private float force = 20000;
+    private float damage = 25;
 
     private GunStats gunStats;
 
     #region Graphic
-    private MeshRenderer meshRenderer = null;
+    [SerializeField] private MeshRenderer meshRenderer = null;
     private float timeToShowGraphic = 1f;
     private float meshRendererTimer = 0;
     #endregion
 
+
     public override void Init(GunStats gunStats)
     {
         this.gunStats = gunStats;
-
-        meshRenderer = GetComponent<MeshRenderer>();
-        if (!meshRenderer)
-        {
-            Debug.LogError("Explosion needs attached spherical MeshRenderer for graphic");
-        }
 
         Reset();
     }
 
     public override void Reset()
     {
-        delayTimer = 0.0f;
+        countDownTimer = 0.0f;
 
         meshRendererTimer = 0;
 
         transform.localScale = new Vector3(radius, radius, radius);
         transform.rotation = Quaternion.identity;
+
+        meshRenderer.enabled = false;
+        countDownMesh.enabled = gunStats.IsCountDownExplosion;
     }
 
 
@@ -53,12 +52,21 @@ public class Explosion : PoolableGunObject
     // Update is called once per frame
     public void Update()
     {
-        DelayedExplosion(Time.deltaTime);
+        UpdateCountdownExplosion(Time.deltaTime);
 
         UpdateEffects(Time.deltaTime);
     }
 
-    public void DoExplosion()
+    public void TriggerExplosiveAbility() 
+    {
+        if (!gunStats.IsCountDownExplosion) 
+        {
+            DoExplosion();
+        }
+        // Else case is handled in update with the countdown explosion
+    }
+
+    private void DoExplosion()
     {
         HandleEffects();
         HandleDestruction();
@@ -82,6 +90,7 @@ public class Explosion : PoolableGunObject
             }
         }
     }
+
 
     private void HandleDestruction() 
     {
@@ -108,14 +117,16 @@ public class Explosion : PoolableGunObject
         }
     }
 
-    private void DelayedExplosion(float deltaTime) 
-    {
-        if (hasDelay)
-        {
-            delayTimer += deltaTime;
 
-            if (delayTimer >= delay && !explodeOnCollision)
+    private void UpdateCountdownExplosion(float deltaTime) 
+    {
+        if (gunStats.IsCountDownExplosion)
+        {
+            countDownTimer += deltaTime;
+
+            if (countDownTimer >= secondsBeforeExplode)
             {
+                countDownMesh.enabled = false;
                 DoExplosion();
             }
         }

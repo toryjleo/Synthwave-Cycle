@@ -12,6 +12,7 @@ namespace Gun
     /// </summary>
     public abstract class PoolableGunObject : Generic.Poolable
     {
+        // TODO: Move down a level
         /// <summary>
         /// Set the poolable object to its initial state before spawning
         /// </summary>
@@ -25,24 +26,32 @@ namespace Gun
     public class GunObjectPool : Generic.ObjectPool
     {
 
-        private EditorObject.GunStats gunStats = null;
+        protected GunStats GunStats 
+        {
+            get { return stats as GunStats; }
+        }
+
+        protected PoolableGunObject PoolableGunObject 
+        {
+            get { return prefab as PoolableGunObject; }
+        }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="gunStats">stats for this gun</param>
+        /// <param name="stats">stats for this gun</param>
         /// <param name="prefab">prefab to instantiate</param>
         /// <param name="instantiateCount">number of times to instantiate prefab</param>
-        public GunObjectPool(GunStats gunStats, Generic.Poolable prefab, int instantiateCount) : base(prefab)
+        public GunObjectPool(IPoolableInstantiateData stats, Generic.Poolable prefab, int instantiateCount) : base(stats, prefab, instantiateCount)
         {
-            this.gunStats = gunStats;
-
-            this.instantiateCount = instantiateCount;
-
             // Catch errors
             if ((base.prefab as PoolableGunObject) == null)
             {
                 Debug.LogError("GunObjectPool prefab must have component of type 'PoolableGunObject'");
+            }
+            if (GunStats == null) 
+            {
+                Debug.LogError("GunObjectPool prefab must be passed stats of type 'EditorObject.GunStats'");
             }
         }
 
@@ -50,8 +59,10 @@ namespace Gun
         /// <returns>A new gameObject instance with a Poolable component.</returns>
         protected override Generic.Poolable CreateNewPoolableObject()
         {
+
             PoolableGunObject newObject = GameObject.Instantiate(prefab as PoolableGunObject, new Vector3(0, 0, 0), Quaternion.identity);
-            newObject.Init(gunStats);
+            // TODO: Move down a level
+            newObject.Init(GunStats);
             newObject.gameObject.SetActive(false);
             newObject.Despawn += DespawnObject;
             return newObject;
