@@ -110,8 +110,11 @@ public class Explosion : PoolableGunObject
                 }
                 if (health)
                 {
-                    // TODO: decide who is hurt
-                    health.TakeDamage(damage);
+                    if ((health.gameObject.tag == "Enemy") ||
+                        (health.gameObject.tag == "Player" && !gunStats.IsPlayerGun)) 
+                    {
+                        health.TakeDamage(damage);
+                    }
                 }
             }
         }
@@ -120,7 +123,7 @@ public class Explosion : PoolableGunObject
 
     private void UpdateCountdownExplosion(float deltaTime) 
     {
-        if (gunStats.IsCountDownExplosion)
+        if (countDownMesh.enabled)
         {
             countDownTimer += deltaTime;
 
