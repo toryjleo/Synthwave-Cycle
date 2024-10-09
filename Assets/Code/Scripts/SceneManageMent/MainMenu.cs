@@ -32,7 +32,7 @@ public class MainMenu : MonoBehaviour
     public void StartOnClick()
     {
         FindLevelSelector();
-        selector.SetSelectedLevel(gameSave.levelSequence[0]);
+        selector.SetSelectedLevel(gameSave.levelSequence[gameSave.MaxLevelProgess]);
         StartGame();
     }
 
@@ -79,6 +79,10 @@ public class MainMenu : MonoBehaviour
         audioMixer.SetFloat("EffectsVolume", settingsData.EffectsVolume);
     }
 
+    /// <summary>
+    /// Sets the text of the start button to 'continue' if the player has gotten past the
+    /// first level
+    /// </summary>
     private void SetStartButtonText()
     {
         if (gameSave)
@@ -94,6 +98,9 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Finds the level selector in scene (or in persistent scene)
+    /// </summary>
     private void FindLevelSelector()
     {
         selector = FindObjectOfType<LevelSelector>();
@@ -101,5 +108,14 @@ public class MainMenu : MonoBehaviour
         {
             Debug.LogError("No level selector in scene!");
         }
+    }
+
+    /// <summary>
+    /// Calls the game save to reset save fields to defaults
+    /// </summary>
+    public void ResetGameProgess()
+    {
+        gameSave.ResetToDefaults();
+        SetStartButtonText();
     }
 }

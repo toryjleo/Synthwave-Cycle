@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace EditorObject
 {
+    /// <summary>
+    /// Holds the level and weapon unlock progress, also defines the sequence of levels in order
+    /// </summary>
     [CreateAssetMenu(menuName = "Game/GameSave", fileName = "New Game Save")]
     public class GameSave : ScriptableObject
     {
