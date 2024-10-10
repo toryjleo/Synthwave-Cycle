@@ -32,7 +32,7 @@ public class MainMenu : MonoBehaviour
     public void StartOnClick()
     {
         FindLevelSelector();
-        selector.SetSelectedLevel(gameSave.levelSequence[gameSave.MaxLevelProgess]);
+        selector.SetSelectedLevel(gameSave.levelSequence[gameSave.CurrentLevel]);
         StartGame();
     }
 
@@ -89,7 +89,7 @@ public class MainMenu : MonoBehaviour
         {
             if (gameSave.MaxLevelProgess > 0)
             {
-                startText.text = "Continue";
+                startText.text = "Continue\nLevel " + (gameSave.CurrentLevel + 1);
             }
             else
             {

@@ -671,6 +671,7 @@ MonoBehaviour:
   jukebox: {fileID: 1714521336}
   worldGenerator: {fileID: 2121570724}
   currentLevel: {fileID: 11400000, guid: b95916e96c129754dbd7c706986cae41, type: 2}
+  gameSave: {fileID: 11400000, guid: 6d81f4290e086894a9e92935c673f450, type: 2}
 --- !u!1 &1597613941
 GameObject:
   m_ObjectHideFlags: 0

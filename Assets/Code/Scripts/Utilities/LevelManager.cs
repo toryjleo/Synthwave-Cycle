@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using EditorObject;
 using UnityEngine;
 
 /// <summary>
@@ -9,13 +10,11 @@ using UnityEngine;
 /// </summary>
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField]
-    public Jukebox jukebox;
-    [SerializeField]
-    public WorldGenerator worldGenerator;
+    [SerializeField] public Jukebox jukebox;
+    [SerializeField] public WorldGenerator worldGenerator;
 
-    [SerializeField]
-    public EditorObject.GameLevel currentLevel;
+    [SerializeField] public GameLevel currentLevel;
+    [SerializeField] private GameSave gameSave;
 
     List<IResettable> resetObjects;
 
@@ -51,7 +50,7 @@ public class LevelManager : MonoBehaviour
         resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
 
         GameStateController.resetting.notifyListenersEnter += GameReset;
-
+        GameStateController.levelComplete.notifyListenersEnter += GameComplete;
 
         Initialize();
     }
@@ -76,5 +75,26 @@ public class LevelManager : MonoBehaviour
         }
         currentLevel.WaveSequence.ResetGameObject();
         Initialize();
+    }
+
+    /// <summary>
+    /// Updates the level progress for the game save
+    /// </summary>
+    private void GameComplete()
+    {
+        // If the current level you're on is the last level: go back to the first level (for 'Continue' purposes)
+        if (currentLevel.LevelNumber + 1 > gameSave.levelSequence.Length - 1)
+        {
+            gameSave.CurrentLevel = 0;
+        }
+        // Else, your next level to continue with will be the next level
+        else gameSave.CurrentLevel += currentLevel.LevelNumber + 1;
+
+        // If you beat the max level you have unlocked, increase the max level to the next one
+        // UNLESS: it ends up being greater than the number of levels that exist, then just keep it at max progress
+        if (gameSave.MaxLevelProgess == currentLevel.LevelNumber && gameSave.MaxLevelProgess < gameSave.levelSequence.Length)
+        {
+            gameSave.MaxLevelProgess += 1;
+        }
     }
 }

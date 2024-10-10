@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33202be31aaa9e447bd120991ca12e6d, type: 3}
   m_Name: GameSave
   m_EditorClassIdentifier: 
-  currentLevel: 0
-  maxLevelProgress: 0
+  currentLevel: 1
+  maxLevelProgress: 1
   gunTrackProgressLevel: 0
   gunTrackProgressPercent: 0
   levelSequence:

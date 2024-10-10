@@ -29,6 +29,10 @@ namespace EditorObject
         /// Level cosmetics including particle effects and other visuals
         /// </summary>
         [SerializeField] private GameObject[] levelCosmetics;
+        /// <summary>
+        /// The place in the level sequence this level is
+        /// </summary>
+        [SerializeField] private int levelNumber;
         #endregion
 
         #region Properties
@@ -37,6 +41,7 @@ namespace EditorObject
         public string LevelName { get { return levelName; } }
         public Sprite LevelImage { get { return levelImage; } }
         public GameObject[] LevelCosmetics { get { return levelCosmetics; } }
+        public int LevelNumber { get { return levelNumber; } }
         #endregion
     }
 }
