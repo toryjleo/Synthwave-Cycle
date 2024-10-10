@@ -8,6 +8,7 @@ namespace EditorObject
     {
         Projectile,
         HitScan,
+        AreaOfEffect,
     }
 
     /// <summary>

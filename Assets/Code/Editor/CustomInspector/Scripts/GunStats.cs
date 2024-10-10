@@ -83,15 +83,20 @@ namespace CustomInspector
 
             EditorGUILayout.LabelField("Bullet Options");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletType"));
-            //Bullet Type is ray cast
-            if (gunStats.BulletType == EditorObject.BulletType.HitScan)
+
+
+            switch (gunStats.BulletType) 
             {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("range"));
-            }
-            else
-            {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("muzzleVelocity"));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileScale"));
+                case EditorObject.BulletType.HitScan:
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("range"));
+                    break;
+                case EditorObject.BulletType.AreaOfEffect:
+                    // TODO: Add FireAreaOfEffect specific fields
+                case EditorObject.BulletType.Projectile:
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("muzzleVelocity"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileScale"));
+                    break;
+
             }
         }
 
