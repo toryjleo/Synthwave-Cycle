@@ -15,20 +15,28 @@ MonoBehaviour:
   isPlayerGun: 1
   isTurret: 1
   isAutomatic: 1
-  timeBetweenShots: 0.25
+  timeBetweenShots: 0.18
   damageDealt: 70
-  infiniteAmmo: 0
+  infiniteAmmo: 1
   ammoCount: 200
-  numBurstShots: 3
-  timeBetweenBurstShots: 0.05
+  numBurstShots: 1
+  timeBetweenBurstShots: 0.86
   projectileCountPerShot: 3
-  angleBetweenProjectiles: 15
-  randomAngleVariationPerProjectile: 0
-  canOverheat: 1
-  overHeatBarrier: 50
+  distanceBetweenProjectiles: 0
+  projectileSpread: 0
+  canOverheat: 0
+  coolDownBarrier: 50
   overHeatPercentPerShot: 5
   coolDownPerSecond: 10
   printDebugState: 0
-  bulletType: 0
-  muzzleVelocity: 75
+  bulletType: 2
+  bulletPenetration: 0
+  muzzleVelocity: 9.7
+  projectileScale: {x: 3, y: 1, z: 3}
   range: 100
+  isExplosive: 1
+  isCountDownExplosion: 1
+  radius: 5
+  force: 12000
+  explosionDamage: 25
+  secondsBeforeExplode: 1

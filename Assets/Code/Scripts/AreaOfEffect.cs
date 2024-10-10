@@ -9,9 +9,9 @@ namespace Gun
     {
 
         // Update is called once per frame
-        void Update()
+        public override void Update()
         {
-
+            base.Update();
             // TODO: Adjust scale
             // TODO: Have lifetime
         }
