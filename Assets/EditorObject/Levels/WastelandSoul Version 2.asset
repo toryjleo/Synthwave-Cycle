@@ -17,3 +17,4 @@ MonoBehaviour:
   levelName: Other Wasteland
   levelImage: {fileID: 0}
   levelCosmetics: []
+  levelNumber: 1

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using EditorObject;
 
 /// <summary>
 /// Carousel controls for a carousel grouping of UI objects, details are given in the inspector for this script
@@ -108,6 +109,7 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
     private Vector2 dragStartPos;
     private float lastDragTime;
     private float autoMoveTimerCountdown;
+    [SerializeField] private GameSave gameSave;
 
     private void Start()
     {
@@ -182,6 +184,27 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
     }
 
     /// <summary>
+    /// Resets the status of the carousel, recalculating nav dots and level statuses
+    /// </summary>
+    public void Reset()
+    {
+        // Reset navigation dots
+        Button[] dots = dotsContainer.GetComponentsInChildren<Button>();
+        foreach (Button child in dots)
+        {
+            Destroy(child.gameObject);
+        }
+
+        LevelButton[] levels = gridLayoutGroup.GetComponentsInChildren<LevelButton>();
+        foreach (LevelButton child in levels)
+        {
+            child.CheckUnlock();
+        }
+
+        Start();
+    }
+
+    /// <summary>
     /// Creates navigation dot visuals beneath the carousel depending on how 
     /// many content slides there are
     /// </summary>
@@ -229,7 +252,9 @@ public class UIContentCarousel : MonoBehaviour, IEndDragHandler, IBeginDragHandl
     /// </summary>
     private void CalculateTotalPages()
     {
-        int itemCount = gridLayoutGroup.transform.childCount;
+        // int itemCount = gridLayoutGroup.transform.childCount;
+        int itemCount = gameSave.MaxLevelProgess + 1;
+
         totalPages = Mathf.CeilToInt((float)itemCount / gridLayoutGroup.constraintCount);
     }
 

@@ -8,144 +8,145 @@ using TMPro;
 /// </summary>
 public class MenuManager : MonoBehaviour
 {
-  [SerializeField] public GameObject loadingScreen;
-  [SerializeField] public GameObject loadingFinishedScreen;
-  [SerializeField] public GameObject pauseScreen;
-  [SerializeField] public GameObject gameplayUI;
-  [SerializeField] public GameObject playerDeadScreen;
-  [SerializeField] public GameObject levelCompleteScreen;
+    [SerializeField] public GameObject loadingScreen;
+    [SerializeField] public GameObject loadingFinishedScreen;
+    [SerializeField] public GameObject pauseScreen;
+    [SerializeField] public GameObject gameplayUI;
+    [SerializeField] public GameObject playerDeadScreen;
+    [SerializeField] public GameObject levelCompleteScreen;
 
-  [SerializeField] public TextMeshProUGUI songDisplayText;
-  private LevelManager levelManager;
+    [SerializeField] public TextMeshProUGUI songDisplayText;
+    private LevelManager levelManager;
 
-  void Start()
-  {
-    levelManager = FindObjectOfType<LevelManager>();
-
-    if (!levelManager)
+    void Start()
     {
-      songDisplayText.text = "Current Song: " + " by Shadow Mage";
-    }
-    else
-    {
-      songDisplayText.text = "Current Song: " + levelManager.SongName + " by Shadow Mage";
-    }
+        levelManager = FindObjectOfType<LevelManager>();
 
-    if (GameStateController.StateExists)
-    {
-      //Loading
-      GameStateController.loading.notifyListenersEnter += HandleLoadingEnter;
-      GameStateController.loading.notifyListenersExit += HandleLoadingExit;
+        if (!levelManager)
+        {
+            songDisplayText.text = "Current Song: " + " by Shadow Mage";
+        }
+        else
+        {
+            songDisplayText.text = "Current Song: " + levelManager.SongName + " by Shadow Mage";
+        }
 
-      //Loading complete/GameStartPaused
-      GameStateController.gamesStartPaused.notifyListenersEnter += HandleLoadingFinishedEnter;
-      GameStateController.gamesStartPaused.notifyListenersExit += HandleLoadingFinishedExit;
+        if (GameStateController.StateExists)
+        {
+            //Loading
+            GameStateController.loading.notifyListenersEnter += HandleLoadingEnter;
+            GameStateController.loading.notifyListenersExit += HandleLoadingExit;
 
-      //Playing
-      GameStateController.playing.notifyListenersEnter += HandlePlayingEnter;
-      GameStateController.playing.notifyListenersExit += StopTimeScale;
+            //Loading complete/GameStartPaused
+            GameStateController.gamesStartPaused.notifyListenersEnter += HandleLoadingFinishedEnter;
+            GameStateController.gamesStartPaused.notifyListenersExit += HandleLoadingFinishedExit;
 
-      //Paused
-      GameStateController.gamePlayPaused.notifyListenersEnter += HandlePausingFinishedEnter;
-      GameStateController.gamePlayPaused.notifyListenersExit += HandlePausingFinishedExit;
+            //Playing
+            GameStateController.playing.notifyListenersEnter += HandlePlayingEnter;
+            GameStateController.playing.notifyListenersExit += StopTimeScale;
 
-      //Player dead
-      GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
-      GameStateController.playerDead.notifyListenersExit += HandlePlayerDeadExit;
+            //Paused
+            GameStateController.gamePlayPaused.notifyListenersEnter += HandlePausingFinishedEnter;
+            GameStateController.gamePlayPaused.notifyListenersExit += HandlePausingFinishedExit;
 
-      //Level Complete
-      GameStateController.levelComplete.notifyListenersEnter += HandleLevelCompleteEnter;
-      GameStateController.levelComplete.notifyListenersExit += HandleLevelCompleteExit;
+            //Player dead
+            GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
+            GameStateController.playerDead.notifyListenersExit += HandlePlayerDeadExit;
 
-      //Reset
-      GameStateController.resetting.notifyListenersEnter += HandleLoadingEnter;
-      GameStateController.resetting.notifyListenersExit += HandleLoadingExit;
-    }
-  }
+            //Level Complete
+            GameStateController.levelComplete.notifyListenersEnter += HandleLevelCompleteEnter;
+            GameStateController.levelComplete.notifyListenersExit += HandleLevelCompleteExit;
 
-  // Update is called once per frame
-  void Update()
-  {
-    if (Input.GetKeyDown(KeyCode.Escape))
-    {
-      GameStateController.HandleTrigger(StateTrigger.StartGame);
+            //Reset
+            GameStateController.resetting.notifyListenersEnter += HandleLoadingEnter;
+            GameStateController.resetting.notifyListenersExit += HandleLoadingExit;
+        }
     }
 
-    if (Input.GetKeyDown(KeyCode.R))
+    // Update is called once per frame
+    void Update()
     {
-      GameStateController.HandleTrigger(StateTrigger.Reset);
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameStateController.HandleTrigger(StateTrigger.StartGame);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            GameStateController.HandleTrigger(StateTrigger.Reset);
+        }
     }
-  }
 
-  private void StartTimeScale()
-  {
-    Time.timeScale = 1;
-  }
+    private void StartTimeScale()
+    {
+        Time.timeScale = 1;
+    }
 
-  private void StopTimeScale()
-  {
-    Time.timeScale = 0;
-  }
+    private void StopTimeScale()
+    {
+        Time.timeScale = 0;
+    }
 
-  private void HandleLoadingEnter()
-  {
-    loadingScreen.SetActive(true);
-  }
+    private void HandleLoadingEnter()
+    {
+        loadingScreen.SetActive(true);
+    }
 
-  private void HandleLoadingExit()
-  {
-    loadingScreen.SetActive(false);
-  }
+    private void HandleLoadingExit()
+    {
+        loadingScreen.SetActive(false);
+    }
 
-  private void HandleLoadingFinishedEnter()
-  {
-    loadingFinishedScreen.SetActive(true);
-    StopTimeScale();
-  }
+    private void HandleLoadingFinishedEnter()
+    {
+        loadingFinishedScreen.SetActive(true);
+        StopTimeScale();
+    }
 
-  private void HandleLoadingFinishedExit()
-  {
-    loadingFinishedScreen.SetActive(false);
-    StartTimeScale();
-  }
+    private void HandleLoadingFinishedExit()
+    {
+        loadingFinishedScreen.SetActive(false);
+        StartTimeScale();
+    }
 
-  private void HandlePausingFinishedEnter()
-  {
-    pauseScreen.SetActive(true);
-  }
+    private void HandlePausingFinishedEnter()
+    {
+        pauseScreen.SetActive(true);
+    }
 
-  private void HandlePausingFinishedExit()
-  {
-    pauseScreen.SetActive(false);
-  }
+    private void HandlePausingFinishedExit()
+    {
+        pauseScreen.SetActive(false);
+    }
 
-  private void HandlePlayingEnter()
-  {
-    gameplayUI.SetActive(true);
-    StartTimeScale();
-  }
+    private void HandlePlayingEnter()
+    {
+        gameplayUI.SetActive(true);
+        StartTimeScale();
+    }
 
-  private void HandlePlayerDeadEnter()
-  {
-    playerDeadScreen.SetActive(true);
-    gameplayUI.SetActive(false);
-    StartTimeScale();
-  }
+    private void HandlePlayerDeadEnter()
+    {
+        playerDeadScreen.SetActive(true);
+        gameplayUI.SetActive(false);
+        StartTimeScale();
+    }
 
-  private void HandlePlayerDeadExit()
-  {
-    playerDeadScreen.SetActive(false);
-    StopTimeScale();
-  }
+    private void HandlePlayerDeadExit()
+    {
+        playerDeadScreen.SetActive(false);
+        StopTimeScale();
+    }
 
-  private void HandleLevelCompleteEnter()
-  {
-    gameplayUI.SetActive(false);
-    levelCompleteScreen.SetActive(true);
-  }
+    private void HandleLevelCompleteEnter()
+    {
+        gameplayUI.SetActive(false);
+        levelCompleteScreen.SetActive(true);
+    }
 
-  private void HandleLevelCompleteExit()
-  {
-    levelCompleteScreen.SetActive(false);
-  }
+    private void HandleLevelCompleteExit()
+    {
+        levelCompleteScreen.SetActive(false);
+        StartTimeScale();
+    }
 }
