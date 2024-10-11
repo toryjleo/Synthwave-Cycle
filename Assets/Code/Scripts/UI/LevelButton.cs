@@ -40,6 +40,9 @@ public class LevelButton : MonoBehaviour
             //Set event handler
             button.onClick.AddListener(HandleOnClick);
         }
+
+        // Level Progress check
+        CheckUnlock();
     }
 
     /// <summary>
@@ -80,6 +83,21 @@ public class LevelButton : MonoBehaviour
         if (!selector)
         {
             Debug.LogError("No level selector in scene!");
+        }
+    }
+
+    /// <summary>
+    /// Checks to see if this level is unlocked, will disable if it is not unlocked
+    /// </summary>
+    public void CheckUnlock()
+    {
+        if (menu.gameSave.MaxLevelProgess < level.LevelNumber)
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            gameObject.SetActive(true);
         }
     }
 

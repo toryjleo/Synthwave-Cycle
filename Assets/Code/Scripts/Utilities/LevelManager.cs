@@ -92,7 +92,7 @@ public class LevelManager : MonoBehaviour
 
         // If you beat the max level you have unlocked, increase the max level to the next one
         // UNLESS: it ends up being greater than the number of levels that exist, then just keep it at max progress
-        if (gameSave.MaxLevelProgess == currentLevel.LevelNumber && gameSave.MaxLevelProgess < gameSave.levelSequence.Length)
+        if (gameSave.MaxLevelProgess == currentLevel.LevelNumber && gameSave.MaxLevelProgess < gameSave.levelSequence.Length - 1)
         {
             gameSave.MaxLevelProgess += 1;
         }

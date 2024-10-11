@@ -693,6 +693,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1019099319}
+        m_TargetAssemblyTypeName: UIContentCarousel, Assembly-CSharp
+        m_MethodName: Reset
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &85240729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4096,6 +4108,7 @@ MonoBehaviour:
   totalPages: 0
   currentIndex: 0
   gridLayoutGroup: {fileID: 881505181}
+  gameSave: {fileID: 11400000, guid: 6d81f4290e086894a9e92935c673f450, type: 2}
 --- !u!114 &1019099320
 MonoBehaviour:
   m_ObjectHideFlags: 0

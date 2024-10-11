@@ -14,7 +14,7 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] private SettingsData settingsData;
     [SerializeField] public AudioMixer audioMixer;
-    [SerializeField] private GameSave gameSave;
+    [SerializeField] public GameSave gameSave;
     [SerializeField] private TextMeshProUGUI startText;
 
     private LevelSelector selector;
