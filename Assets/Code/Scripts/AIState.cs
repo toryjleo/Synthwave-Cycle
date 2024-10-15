@@ -245,7 +245,7 @@ namespace AIState
                     return stateController.following;
                 case StateTrigger.CountownToAttackComplete:
                     Exit();
-                    return stateController.wandering;
+                    return stateController.attacking;
                 default:
                     return null;
             }
