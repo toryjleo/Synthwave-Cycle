@@ -53,7 +53,7 @@ public class AITest : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            controller.HandleTrigger(AIState.StateTrigger.PlayerDead);
+            controller.HandleTrigger(AIState.StateTrigger.TargetRemoved);
         }
     }
 }

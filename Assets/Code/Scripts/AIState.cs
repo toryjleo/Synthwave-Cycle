@@ -15,7 +15,7 @@ namespace AIState
         CountownToAttackComplete,
         FollowAgain,
         Despawned,
-        PlayerDead,
+        TargetRemoved,
     }
 
     /// <summary>
@@ -206,7 +206,7 @@ namespace AIState
                 case StateTrigger.AiKilled:
                     Exit();
                     return stateController.dead;
-                case StateTrigger.PlayerDead:
+                case StateTrigger.TargetRemoved:
                     Exit();
                     return stateController.wandering;
                 case StateTrigger.InRange:
@@ -237,7 +237,7 @@ namespace AIState
                 case StateTrigger.AiKilled:
                     Exit();
                     return stateController.dead;
-                case StateTrigger.PlayerDead:
+                case StateTrigger.TargetRemoved:
                     Exit();
                     return stateController.wandering;
                 case StateTrigger.OutOfRange:
@@ -271,7 +271,7 @@ namespace AIState
                 case StateTrigger.AiKilled:
                     Exit();
                     return stateController.dead;
-                case StateTrigger.PlayerDead:
+                case StateTrigger.TargetRemoved:
                     Exit();
                     return stateController.wandering;
                 case StateTrigger.OutOfRange:
