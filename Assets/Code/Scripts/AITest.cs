@@ -35,10 +35,6 @@ public class AITest : MonoBehaviour
         {
             controller.HandleTrigger(AIState.StateTrigger.InRange);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            controller.HandleTrigger(AIState.StateTrigger.OutOfRange);
-        }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             controller.HandleTrigger(AIState.StateTrigger.CountownToAttackComplete);
