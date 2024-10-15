@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8579180907413031318}
   - component: {fileID: 8610469206652896614}
   - component: {fileID: 876733522086653541}
-  - component: {fileID: -4795468542068541559}
+  - component: {fileID: 5230005726319368862}
   m_Layer: 0
   m_Name: LMGBullet
   m_TagString: Untagged
@@ -113,7 +113,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-4795468542068541559
+--- !u!114 &5230005726319368862
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,6 +122,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6709974543186267795}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a851912fde91df14ca5f83509bd8c9d0, type: 3}
+  m_Script: {fileID: 11500000, guid: fe92ff41072c28e48addf9ce03785a48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

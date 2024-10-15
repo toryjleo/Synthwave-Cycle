@@ -108,7 +108,7 @@ public class DualAudioEmitter : MonoBehaviour
     /// </summary>
     public void Play()
     {
-        audioSourceArray[1 - toggle].Play();
+         audioSourceArray[1 - toggle].Play();
     }
 
     /// <summary>

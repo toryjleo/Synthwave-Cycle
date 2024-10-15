@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class WeaponDrop : SelfWorldBoundsDespawn
 {
+
+    // TODO: Fix
+    /*
     // Tracks the possible guns which this drop can represent
     private Dictionary<PlayerWeaponType, GameObject> attachedGuns;
 
@@ -106,7 +109,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
             attachedGuns[gunType.GetPlayerGunType()] = gunType.gameObject;
             gunType.gameObject.SetActive(false);
         }
-    }
+    }*/
 
 
     /// <summary>
@@ -132,8 +135,9 @@ public class WeaponDrop : SelfWorldBoundsDespawn
             }
             else
             {
+                // TODO: Fix
                 //Debug.Log("Equipping gun type: " + gunType);
-                arsenal.EquipGun(gunType);
+                // arsenal.EquipGun(gunType);
                 OnDespawn();
             }
         }

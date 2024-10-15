@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 401f65c6e22c3214ba4591335c82ef86, type: 3}
+  m_Name: TestGun
+  m_EditorClassIdentifier: 
+  isPlayerGun: 1
+  isTurret: 1
+  isAutomatic: 1
+  timeBetweenShots: 0.25
+  damageDealt: 70
+  infiniteAmmo: 0
+  ammoCount: 200
+  numBurstShots: 3
+  timeBetweenBurstShots: 0.05
+  projectileCountPerShot: 3
+  angleBetweenProjectiles: 15
+  randomAngleVariationPerProjectile: 0
+  canOverheat: 1
+  overHeatBarrier: 50
+  overHeatPercentPerShot: 5
+  coolDownPerSecond: 10
+  printDebugState: 0
+  bulletType: 0
+  muzzleVelocity: 75
+  range: 100
