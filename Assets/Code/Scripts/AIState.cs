@@ -11,7 +11,6 @@ namespace AIState
         ArrivedAtLocation,
         HasTarget,
         InRange,
-        OutOfRange,
         CountownToAttackComplete,
         FollowAgain,
         Despawned,
@@ -240,7 +239,7 @@ namespace AIState
                 case StateTrigger.TargetRemoved:
                     Exit();
                     return stateController.wandering;
-                case StateTrigger.OutOfRange:
+                case StateTrigger.FollowAgain:
                     Exit();
                     return stateController.following;
                 case StateTrigger.CountownToAttackComplete:
@@ -274,9 +273,6 @@ namespace AIState
                 case StateTrigger.TargetRemoved:
                     Exit();
                     return stateController.wandering;
-                case StateTrigger.OutOfRange:
-                    Exit();
-                    return stateController.following;
                 case StateTrigger.FollowAgain:
                     Exit();
                     return stateController.following;
