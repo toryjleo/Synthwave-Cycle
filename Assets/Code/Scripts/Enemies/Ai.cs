@@ -9,7 +9,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
 {
     public abstract Enemy GetEnemyType();
 
-    // THis is the method that sets the entity to Deactive and bascially is uesd to kill the entitiy
+    // THis is the method that sets the entity to Deactive and bascially is used to kill the entity
     public void op_ProcessCompleted(SelfDespawn entity)
     {
         entity.gameObject.SetActive(false);
@@ -18,9 +18,11 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
 
     #region Variables for Setup.
 
+    protected AIState.StateController stateController = null;
     public GameObject target;
     public Rigidbody rb;
     public Gun myGun;
+    public bool canAim = false;
     public Health hp;
 
     public float StartingHP;
@@ -31,11 +33,12 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     public float dlScore;
     public float attackRange;
     public float minimumRange;
+    internal float TIME_BY_TARGET_TO_ATTACK;
+    internal float timeByTarget = 0;
+
     public bool alive;
-    [SerializeField]
-    public int movementGroup; //Each enemy's speed is relative to a player's gear
-    [SerializeField]
-    public float gearModifier; //Top speed is determined as a percentage of the gear's max speed
+    [SerializeField] public int movementGroup; //Each enemy's speed is relative to a player's gear
+    [SerializeField] public float gearModifier; //Top speed is determined as a percentage of the gear's max speed
 
     public event NotifyDeath DeadEvent; // event
     public event NotifyRespawn RespawnEvent; // event
@@ -47,10 +50,28 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     {
         base.Update();
 
-        //Dead
+        // Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
             Die();
+        }
+
+        if (stateController.isWandering)
+        {
+            Wander();
+        }
+        else if (stateController.isFollowing)
+        {
+            Move(target.transform.position);
+        }
+        else if (stateController.isInRange)
+        {
+            CountDownTimeByTarget(Time.deltaTime);
+        }
+
+        if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
+        {
+            stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
         }
     }
 
@@ -80,6 +101,63 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
         }
     }
 
+    public void InitStateController()
+    {
+        stateController = new AIState.StateController(true);
+        stateController.inRange.notifyListenersEnter += HandleInRangeEnter;
+        stateController.attacking.notifyListenersEnter += HandleAttackingEnter;
+        GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
+        Despawn += HandleDespawned;
+    }
+
+    public void Spawn(Vector3 position, Vector3 playerLocation)
+    {
+        transform.position = position;
+        transform.rotation = Quaternion.LookRotation(playerLocation - position);
+        gameObject.SetActive(true);
+
+        TIME_BY_TARGET_TO_ATTACK = 2.0f;
+
+        stateController.HandleTrigger(AIState.StateTrigger.Spawning);
+    }
+
+    public void CountDownTimeByTarget(float deltaTime)
+    {
+        // TODO: Subtract deltaTime if out of range, rather than set it to 0
+        // Handle attack timing
+        timeByTarget += deltaTime;
+        if (timeByTarget > TIME_BY_TARGET_TO_ATTACK)
+        {
+            stateController.HandleTrigger(AIState.StateTrigger.CountdownToAttackComplete);
+        }
+    }
+
+    public void HandleInRangeEnter()
+    {
+        timeByTarget = 0;
+    }
+
+    public void HandleAttackingEnter()
+    {
+        if (canAim)
+        {
+            Aim(target.transform.position);
+        }
+        Attack();
+
+        stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
+    }
+
+    public void HandlePlayerDeadEnter()
+    {
+        stateController.HandleTrigger(AIState.StateTrigger.TargetRemoved);
+    }
+
+    public void HandleDespawned(SelfDespawn entity)
+    {
+        stateController.HandleTrigger(AIState.StateTrigger.Despawned);
+    }
+
     public virtual void Aim(Vector3 aimAt)
     {
         transform.LookAt(aimAt);
@@ -101,6 +179,9 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
             {
                 myGun.StopAllCoroutines();
             }
+
+            // TODO: Replace alive boolean with checking stateController for if (isAlive)
+            stateController.HandleTrigger(AIState.StateTrigger.AiKilled);
         }
     }
     /// <summary>
@@ -116,52 +197,52 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     /// <param name="target"> Vector to target </param>
     public virtual void Move(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee.
     {
-            Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be
-            float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points
-            dMag -= minimumRange; // dmag is the distance between the two objects, by subtracking this, I make it so the object doesn't desire to move as far.
+        Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be
+        float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points
+        dMag -= minimumRange; // dMag is the distance between the two objects, by subtracting this, I make it so the object doesn't desire to move as far.
 
-            desiredVec.Normalize(); // one the distance is measured this vector can now be used to actually generate movement,
-                                    // but that movement has to be constant or at least adaptable, which is what the next part does
-            transform.LookAt(target);
+        desiredVec.Normalize(); // one the distance is measured this vector can now be used to actually generate movement,
+                                // but that movement has to be constant or at least adaptable, which is what the next part does
+        transform.LookAt(target);
 
-            //Currently Walking twoards the target
+        //Currently Walking twoards the target
 
-            if (dMag < maxSpeed)
-            {
-                desiredVec *= dMag;
-            }
-            else
-            {
+        if (dMag < maxSpeed)
+        {
+            desiredVec *= dMag;
+        }
+        else
+        {
             desiredVec *= maxSpeed;
-            }
-            Vector3 steer = desiredVec - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
-            applyForce(steer);
+        }
+        Vector3 steer = desiredVec - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
+        applyForce(steer);
     }
 
     /// <summary>
-    /// This method is used for when an AI has no target and will move around in a Boid fashoion
+    /// This method is used for when an AI has no target and will move around in a Boid(?) fashion
     /// </summary>
     public void Wander() //cause the character to wander
     {
 
-        Vector3 forward = rb.transform.forward; //The normaized vector of which direction the RB is facing
-        Vector3 offset = new Vector3(0,0,1); //This is the random change vector that is uses to create natural wandering movement
-       /* Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
-        forward *= 10;
-        offset = ranRot * offset;
+        Vector3 forward = rb.transform.forward; //The normalized vector of which direction the RB is facing
+        Vector3 offset = new Vector3(0, 0, 1); //This is the random change vector that is uses to create natural wandering movement
+        /* Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
+         forward *= 10;
+         offset = ranRot * offset;
 
 
-        Debug.DrawRay(rb.transform.position, forward, Color.blue);
-        Debug.DrawRay(rb.transform.position+forward, offset, Color.red);
-        Debug.DrawRay(rb.transform.position, forward + offset, Color.green);
-        */
+         Debug.DrawRay(rb.transform.position, forward, Color.blue);
+         Debug.DrawRay(rb.transform.position+forward, offset, Color.red);
+         Debug.DrawRay(rb.transform.position, forward + offset, Color.green);
+         */
         forward += offset; //adds a small offset to the forward vector.
 
-        transform.LookAt(forward+transform.position); //TODO make this look way nicer
-        
+        transform.LookAt(forward + transform.position); //TODO make this look way nicer
+
         Vector3 steer = forward - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
         applyForce(steer);
-        
+
     }
 
     public void applyForce(Vector3 force)
@@ -171,15 +252,15 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
 
     #endregion
 
-    #region SEPERATE
+    #region SEPARATE
 
     /// <summary>
     /// This method requires the entire of AI
     /// </summary>
     /// <param name="pool"></param> Pool is the grouping of all of the AI controlled entities in the boid that need to be seperateed from one another
-    public void Seperate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI
+    public void Separate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI
     {
-        float desiredSeperation = 110;
+        float desiredSeparation = 110;
 
         Vector3 sum = new Vector3(); //the vector that will be used to calculate flee beheavior if a too close interaction happens
         int count = 0; //this couunts how many TOOCLOSE interactions an entity has, if it has more than one
@@ -191,7 +272,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
 
             float d = Vector3.Distance(g.transform.position, transform.position);
 
-             if (g.transform.position != transform.position && d < desiredSeperation)
+            if (g.transform.position != transform.position && d < desiredSeparation)
             {
                 Vector3 diff = transform.position - g.transform.position; // creats vec between two objects
                 diff.Normalize();
@@ -225,20 +306,24 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     {
         return alive;
     }
+
     public float GetScore()
     {
         return score;
     }
+
     /// <summary>
     /// This method sets the target of the entity TODO: Will eventually equip a gun?
     /// </summary>
     /// <param name="targ"></param>
     public virtual void SetTarget(GameObject targ)//sets the target of the entity and equips the gun
-
     {
         target = targ;
         //myGun = gunToEquip;
+
+        stateController.HandleTrigger(AIState.StateTrigger.HasTarget);
     }
+
     /// <summary>
     /// This method is called to reset the entity's health and alive status. Use every time they spawn.
     /// </summary>
@@ -255,6 +340,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
         return hp;
     }
     #endregion & Setup
+
     public void ResetGameObject()
     {
         OnDespawn();

@@ -53,25 +53,26 @@ public class EnemyPool : MonoBehaviour
 
 
     public List<Pool> pools; //Pools
-    public Dictionary<Enemy,Queue<Ai>> poolDictionary; //These are the keys 
+    public Dictionary<Enemy, Queue<Ai>> poolDictionary; //These are the keys 
 
 
     //Creates Pools for each object type 
     void Start()
-    {   
+    {
         //Create Dictionary of tags for each if the pools
         poolDictionary = new Dictionary<Enemy, Queue<Ai>>();
 
-        
+
 
         foreach (Pool pool in pools)
         {
             Queue<Ai> objectPool = new Queue<Ai>();
 
             //instantiate the objects with 
-            for(int i =0; i< pool.poolSize; i++)
-            {   
-                Ai obj = Instantiate(pool.prefab); 
+            for (int i = 0; i < pool.poolSize; i++)
+            {
+                Ai obj = Instantiate(pool.prefab);
+                obj.InitStateController();
                 obj.Despawn += ObjAi_Despawn;
                 objectPool.Enqueue(obj);
             }
@@ -101,22 +102,24 @@ public class EnemyPool : MonoBehaviour
     {
         if (!poolDictionary.ContainsKey(tag))
         {
-            Debug.LogWarning("Pool with tag " + tag+" doesn't exist");
+            Debug.LogWarning("Pool with tag " + tag + " doesn't exist");
             return null;
         }
 
+        // Moving the newly spawned enemy to the back of the queue
         Ai objectToSpawn = poolDictionary[tag].Dequeue();
 
-        objectToSpawn.transform.position = position;
-        objectToSpawn.transform.rotation = Quaternion.LookRotation(playerLocation - position);
-        objectToSpawn.gameObject.SetActive(true);
+        // objectToSpawn.transform.position = position;
+        // objectToSpawn.transform.rotation = Quaternion.LookRotation(playerLocation - position);
+        // objectToSpawn.gameObject.SetActive(true);
+        objectToSpawn.Spawn(position, playerLocation);
 
         poolDictionary[tag].Enqueue(objectToSpawn);
 
         return objectToSpawn;
     }
 
-   
+
 
 
 }

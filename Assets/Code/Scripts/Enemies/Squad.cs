@@ -44,7 +44,7 @@ public abstract class Squad
 
         HandleMovement();
 
-        Debug.DrawLine(squadCenter, movementLoc, currentAction==SquadAction.Attacking?Color.yellow:Color.cyan);
+        Debug.DrawLine(squadCenter, movementLoc, currentAction == SquadAction.Attacking ? Color.yellow : Color.cyan);
     }
 
     //Updates the state of the squad based on the action
@@ -85,7 +85,7 @@ public abstract class Squad
     internal float GetHitPoints(GameObject target)
     {
         PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
-        if(playerHealth != null) 
+        if (playerHealth != null)
         {
             return playerHealth.HitPoints;
         }

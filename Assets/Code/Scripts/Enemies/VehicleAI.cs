@@ -14,7 +14,7 @@ public abstract class VehicleAi : Ai
     public float DamageMultiplyer = 1.0f;
 
     //How much additional force does a ram apply
-    [SerializeField] 
+    [SerializeField]
     public float RamModifier = 0.2f;
 
     [SerializeField]
@@ -30,12 +30,12 @@ public abstract class VehicleAi : Ai
     //This is the time the Vehicle has spent within CONFIDENCE_BUILD_DISTANCE to it's target
     //When it exceeds TIME_BY_TARGET_TO_ATTACK the car is ready to attack
     internal float timeByTarget = 0;
-    internal float TIME_BY_TARGET_TO_ATTACK;
+    // internal float TIME_BY_TARGET_TO_ATTACK;
     internal const float CONFIDENCE_BUILD_DISTANCE = 45f;
 
     public override void NewLife()
     {
-        TIME_BY_TARGET_TO_ATTACK = Random.Range(3, 11);
+        // TIME_BY_TARGET_TO_ATTACK = Random.Range(3, 11);
         base.NewLife();
     }
 
@@ -98,10 +98,10 @@ public abstract class VehicleAi : Ai
             PlayerMovement playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
             PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
 
-            
+
             Debug.DrawLine(transform.position, transform.position + vehicleController.carVelocity);
             //Damage player bike based on difference in velocity * multiplier
-            playerHealth.TakeDamage(DamageMultiplyer * 
+            playerHealth.TakeDamage(DamageMultiplyer *
                 (vehicleController.carVelocity - playerMovement.Velocity).magnitude);
 
             //bikeRB.AddTorque(Vector3.up * Random.Range(-MAX_RANDOM_TORQUE, MAX_RANDOM_TORQUE), ForceMode.Impulse);
@@ -114,9 +114,9 @@ public abstract class VehicleAi : Ai
         rb.angularDrag = 1;
         rb.constraints = RigidbodyConstraints.None;
         rb.AddForce(new Vector3(0, 20f, 0), ForceMode.Impulse);
-        rb.AddTorque(new Vector3(Random.Range(-minMaxTorque, minMaxTorque), 
-                                Random.Range(-minMaxTorque, minMaxTorque), 
-                                Random.Range(-minMaxTorque, minMaxTorque)), 
+        rb.AddTorque(new Vector3(Random.Range(-minMaxTorque, minMaxTorque),
+                                Random.Range(-minMaxTorque, minMaxTorque),
+                                Random.Range(-minMaxTorque, minMaxTorque)),
                                 ForceMode.Impulse);
         vehicleController.enabled = false;
         Instantiate(itemDrop, this.transform.position, Quaternion.identity);

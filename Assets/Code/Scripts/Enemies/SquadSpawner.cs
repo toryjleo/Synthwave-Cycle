@@ -39,17 +39,18 @@ public class SquadSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private Squad SpawnSquad(Waves.WaveEnemyInfo aiInfo)
     {
+        // TODO: Call SetTarget on each AI we spawn in
         Ai enemyAi = SpawnNewEnemy(aiInfo.enemyType, aiInfo.spawnLocation, player.transform.position);
-        if(enemyAi is VehicleAi)
+        if (enemyAi is VehicleAi)
         {
             VehicleSquad squad = new VehicleSquad(squadManager);
-            squad.SetTarget(player);
-            enemyAi.SetTarget(player);
+            // squad.SetTarget(player);
+            // enemyAi.SetTarget(player);
             squad.AddToSquad(enemyAi);
             squadManager.currentEnemies.Add(enemyAi);
             return squad;
@@ -57,7 +58,7 @@ public class SquadSpawner : MonoBehaviour
         else if (enemyAi is InfantryAI)
         {
             InfantrySquad s = new InfantrySquad(squadManager);
-            s.SetTarget(player);
+            // s.SetTarget(player);
             s.AddToSquad(enemyAi);
             for (int i = 0; i < 4; i++) //for now, a squad will always have 5 units
             {
@@ -84,7 +85,7 @@ public class SquadSpawner : MonoBehaviour
     /// <summary>
     /// This will spawn an enemy of a specific type and then returns that enemy
     /// </summary>
-    /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enenemy Type, AI type, and Gun loadout
+    /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enemy Type, AI type, and Gun loadout
     public Ai SpawnNewEnemy(Enemy type, SpawnLocation loc, Vector3 targetLocation)
     {
         Ai enemy;
@@ -106,7 +107,7 @@ public class SquadSpawner : MonoBehaviour
     {
         Vector3 forwardVector = player.transform.forward;
         List<Vector3> vectors = new List<Vector3>();
-        switch(loc)
+        switch (loc)
         {
             case (SpawnLocation.Front):
                 vectors.Add(forwardVector);

@@ -65,7 +65,7 @@ public class InfantrySquad : Squad
         {
             if (target == null)
             {
-                ai.Wander();
+                // ai.Wander();
             }
             else
             {
@@ -78,13 +78,13 @@ public class InfantrySquad : Squad
                     ai.Aim(target.transform.position);
                     ai.Attack();
                 }
-                //if following, take a pot shot
-                else if (currentAction == SquadAction.Following && Time.time > nextShot)
-                {
-                    ai.Aim(target.transform.position);
-                    ai.Attack();
-                    nextShot = Time.time + ((timeBetweenPotShotsMS + UnityEngine.Random.Range(-potShotVarianceMS, potShotVarianceMS)) / 1000);
-                }
+                // if following, take a pot shot
+                // else if (currentAction == SquadAction.Following && Time.time > nextShot)
+                // {
+                //     ai.Aim(target.transform.position);
+                //     ai.Attack();
+                //     nextShot = Time.time + ((timeBetweenPotShotsMS + UnityEngine.Random.Range(-potShotVarianceMS, potShotVarianceMS)) / 1000);
+                // }
             }
         }
     }

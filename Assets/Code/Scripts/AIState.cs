@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AIState 
+namespace AIState
 {
-    public enum StateTrigger 
+    public enum StateTrigger
     {
         Spawning,
         AiKilled,
         ArrivedAtLocation,
         HasTarget,
         InRange,
-        CountownToAttackComplete,
+        CountdownToAttackComplete,
         FollowAgain,
         Despawned,
         TargetRemoved,
@@ -20,7 +20,7 @@ namespace AIState
     /// <summary>
     /// Manages states for a given AI
     /// </summary>
-    public class StateController 
+    public class StateController
     {
         #region States
         public InPool inPool = null;
@@ -35,6 +35,11 @@ namespace AIState
         private State state;
 
         public bool printState = false;
+
+        public bool isWandering { get => state == wandering; }
+        public bool isFollowing { get => state == following; }
+        public bool isInRange { get => state == inRange; }
+        public bool isAttacking { get => state == attacking; }
 
         public StateController(bool printState = false)
         {
@@ -242,7 +247,7 @@ namespace AIState
                 case StateTrigger.FollowAgain:
                     Exit();
                     return stateController.following;
-                case StateTrigger.CountownToAttackComplete:
+                case StateTrigger.CountdownToAttackComplete:
                     Exit();
                     return stateController.attacking;
                 default:
