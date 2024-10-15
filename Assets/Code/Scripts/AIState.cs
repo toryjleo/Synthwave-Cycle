@@ -23,17 +23,17 @@ namespace AIState
     /// </summary>
     public class StateController 
     {
+        #region States
         public InPool inPool = null;
         public Wandering wandering = null;
         public Following following = null;
         public InRange inRange = null;
         public Attacking attacking = null;
         public Dead dead = null;
+        #endregion
 
 
         private State state;
-
-
 
         public bool printState = false;
 
@@ -46,7 +46,7 @@ namespace AIState
             attacking = new Attacking(this);
             dead = new Dead(this);
 
-            state = inPool;
+            Reset();
 
             this.printState = printState;
         }
@@ -75,6 +75,10 @@ namespace AIState
         public void Reset()
         {
             state = inPool;
+            if (printState)
+            {
+                state.PrintStateEnter();
+            }
         }
     }
 
@@ -129,6 +133,7 @@ namespace AIState
 
     }
 
+    #region State Implementation
     /// <summary>
     /// Initial state. When the enemy gets pooled or returns to pool.
     /// </summary>
@@ -153,6 +158,9 @@ namespace AIState
         }
     }
 
+    /// <summary>
+    /// State for wandering behavior
+    /// </summary>
     public class Wandering : State
     {
         public override string Name { get => "Wandering"; }
@@ -181,6 +189,9 @@ namespace AIState
         }
     }
 
+    /// <summary>
+    /// State for following behavior
+    /// </summary>
     public class Following : State
     {
         public override string Name { get => "Following"; }
@@ -208,6 +219,9 @@ namespace AIState
         }
     }
 
+    /// <summary>
+    /// State for when ai is in range of target
+    /// </summary>
     public class InRange : State
     {
         public override string Name { get => "InRange"; }
@@ -238,6 +252,10 @@ namespace AIState
             }
         }
     }
+
+    /// <summary>
+    /// State for when ai is attacking
+    /// </summary>
     public class Attacking : State
     {
         public override string Name { get => "Attacking"; }
@@ -269,6 +287,9 @@ namespace AIState
         }
     }
 
+    /// <summary>
+    /// State for when an ai is dead
+    /// </summary>
     public class Dead : State
     {
         public override string Name { get => "Dead"; }
@@ -289,4 +310,5 @@ namespace AIState
             }
         }
     }
+    #endregion
 }
