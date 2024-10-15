@@ -62,7 +62,7 @@ namespace AIState
             {
                 if (printState)
                 {
-                    state.PrintStateEnter();
+                    newState.PrintStateEnter();
                 }
                 state = newState;
                 newState.Enter();
