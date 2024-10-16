@@ -29,7 +29,7 @@ public abstract class VehicleAi : Ai
 
     //This is the time the Vehicle has spent within CONFIDENCE_BUILD_DISTANCE to it's target
     //When it exceeds TIME_BY_TARGET_TO_ATTACK the car is ready to attack
-    internal float timeByTarget = 0;
+    // internal float timeByTarget = 0;
     // internal float TIME_BY_TARGET_TO_ATTACK;
     internal const float CONFIDENCE_BUILD_DISTANCE = 45f;
 

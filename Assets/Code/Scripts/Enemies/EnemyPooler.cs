@@ -98,7 +98,7 @@ public class EnemyPooler : MonoBehaviour
     /// <param name="position">Spawn location for the enemy</param>
     /// <param name="playerLocation">Player's current location, the direction the enemy will spawn facing</param>
     /// <returns></returns>
-    public Ai SpawnFromPool(Enemy tag, Vector3 position, Vector3 playerLocation)
+    public Ai RetrieveFromPool(Enemy tag)
     {
         if (!poolDictionary.ContainsKey(tag))
         {
@@ -112,7 +112,7 @@ public class EnemyPooler : MonoBehaviour
         // objectToSpawn.transform.position = position;
         // objectToSpawn.transform.rotation = Quaternion.LookRotation(playerLocation - position);
         // objectToSpawn.gameObject.SetActive(true);
-        objectToSpawn.Spawn(position, playerLocation);
+        // objectToSpawn.Spawn(position, playerLocation);
 
         poolDictionary[tag].Enqueue(objectToSpawn);
 

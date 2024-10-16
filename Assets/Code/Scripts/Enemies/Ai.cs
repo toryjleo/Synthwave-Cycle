@@ -19,6 +19,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     #region Variables for Setup.
 
     protected AIState.StateController stateController = null;
+    public GameObject player;
     public GameObject target;
     public Rigidbody rb;
     public Gun myGun;
@@ -69,23 +70,26 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
             CountDownTimeByTarget(Time.deltaTime);
         }
 
-        if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
+        if (stateController.isInRange || stateController.isAttacking)
         {
-            stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
+            if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
+            {
+                stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
+            }
         }
     }
 
-    void Awake()
+    void Start()
     {
         Init();
     }
 
     public override void Init()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         PlayerMovement pm = FindObjectOfType<PlayerMovement>();
         if (pm != null)
         {
-
             switch (movementGroup)
             {
                 case 1:
@@ -319,9 +323,14 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     public virtual void SetTarget(GameObject targ)//sets the target of the entity and equips the gun
     {
         target = targ;
-        //myGun = gunToEquip;
-
-        stateController.HandleTrigger(AIState.StateTrigger.HasTarget);
+        if (!targ)
+        {
+            stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
+        }
+        else
+        {
+            stateController.HandleTrigger(AIState.StateTrigger.HasTarget);
+        }
     }
 
     /// <summary>
@@ -333,7 +342,9 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
         hp.Init(StartingHP);
         RespawnEvent?.Invoke();
         rb.detectCollisions = true;
-    }// this restets the enemies HP and sets them to alive;
+
+        SetTarget(player);
+    }// this resets the enemies HP and sets them to alive;
 
     public Health CurrentHP()
     {

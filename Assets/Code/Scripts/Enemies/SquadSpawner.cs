@@ -52,11 +52,10 @@ public class SquadSpawner : MonoBehaviour
     /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enemy Type, AI type, and Gun loadout
     public Ai SpawnNewEnemy(Enemy type, SpawnLocation loc, Vector3 targetLocation)
     {
-        Ai enemy;
+        Ai enemy = ops.RetrieveFromPool(type);
+        enemy.Spawn(biasSpawnVector(loc), targetLocation);
 
-        enemy = ops.SpawnFromPool(type, biasSpawnVector(loc), targetLocation);
-
-        //Init Enemy
+        //Initialize enemy health and life properties
         enemy.NewLife();
         return enemy;
     }

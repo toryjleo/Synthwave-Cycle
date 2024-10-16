@@ -39,8 +39,7 @@ public abstract class InfantryAI : Ai
 
         myGun.Init();
 
-        #region Error Checkers
-
+        // Error checking
         if (animationStateController == null)
         {
             Debug.LogError("This object needs a CyborgAnimationStateController component");
@@ -53,7 +52,7 @@ public abstract class InfantryAI : Ai
         {
             Debug.LogError("This object needs a health component");
         }
-        #endregion
+
         base.Init();
     }
 
@@ -86,7 +85,7 @@ public abstract class InfantryAI : Ai
         base.Die();
     }
 
-    public override void NewLife() 
+    public override void NewLife()
     {
         rb.constraints = RigidbodyConstraints.FreezePositionY;
         animationStateController.SetAlive(true);
