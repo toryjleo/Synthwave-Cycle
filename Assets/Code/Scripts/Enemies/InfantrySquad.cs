@@ -70,14 +70,14 @@ public class InfantrySquad : Squad
             else
             {
                 //Handle Movement
-                Vector3 desiredVec = ai.transform.position - movementLoc;
+                // Vector3 desiredVec = ai.transform.position - movementLoc;
                 ai.Move(movementLoc);
                 //if attacking and in range, fire at will
-                if (currentAction == SquadAction.Attacking && desiredVec.magnitude < ai.attackRange)
-                {
-                    ai.Aim(target.transform.position);
-                    ai.Attack();
-                }
+                // if (currentAction == SquadAction.Attacking && desiredVec.magnitude < ai.attackRange)
+                // {
+                //     ai.Aim(target.transform.position);
+                //     ai.Attack();
+                // }
                 // if following, take a pot shot
                 // else if (currentAction == SquadAction.Following && Time.time > nextShot)
                 // {

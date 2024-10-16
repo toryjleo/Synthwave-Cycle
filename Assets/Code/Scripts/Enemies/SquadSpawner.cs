@@ -19,7 +19,7 @@ public enum SpawnLocation
 public class SquadSpawner : MonoBehaviour
 {
     public GameObject player;
-    public EnemyPool ops;
+    public EnemyPooler ops;
 
     //Spawning Variables
     [SerializeField] private int spawnDistance;
@@ -31,7 +31,7 @@ public class SquadSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ops = EnemyPool.Instance;
+        ops = EnemyPooler.Instance;
         player = GameObject.FindGameObjectWithTag("Player");
         squadManager = GameObject.FindObjectOfType<SquadManager>();
     }

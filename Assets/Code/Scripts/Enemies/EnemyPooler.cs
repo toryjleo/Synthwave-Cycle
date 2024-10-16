@@ -21,7 +21,7 @@ public enum Enemy
 /// They are instead enabled and put into place when they are ready to be used so we don't have to
 /// spawn a new enemy in every time we need one
 /// </summary>
-public class EnemyPool : MonoBehaviour
+public class EnemyPooler : MonoBehaviour
 {
     /// <summary>
     /// Creates a single Pool of objects for Enemies, each with their own Enemy Tag, prefab, and predetermined size.
@@ -44,7 +44,7 @@ public class EnemyPool : MonoBehaviour
         }
     }
 
-    public static EnemyPool Instance;
+    public static EnemyPooler Instance;
 
     private void Awake()
     {
