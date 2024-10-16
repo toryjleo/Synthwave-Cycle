@@ -25,15 +25,11 @@ public class SquadSpawner : MonoBehaviour
     [SerializeField] private int spawnDistance;
     [SerializeField] private int spawnBiasAngle;
 
-    internal SquadManager squadManager;
-
-
     // Start is called before the first frame update
     void Start()
     {
         ops = EnemyPooler.Instance;
         player = GameObject.FindGameObjectWithTag("Player");
-        squadManager = GameObject.FindObjectOfType<SquadManager>();
     }
 
     // Update is called once per frame
@@ -42,43 +38,11 @@ public class SquadSpawner : MonoBehaviour
 
     }
 
-    private Squad SpawnSquad(Waves.WaveEnemyInfo aiInfo)
+    internal void SpawnWave(List<Waves.WaveEnemyInfo> enemiesToSpawn)
     {
-        // TODO: Call SetTarget on each AI we spawn in
-        Ai enemyAi = SpawnNewEnemy(aiInfo.enemyType, aiInfo.spawnLocation, player.transform.position);
-        if (enemyAi is VehicleAi)
+        foreach (Waves.WaveEnemyInfo enemyInfo in enemiesToSpawn)
         {
-            VehicleSquad squad = new VehicleSquad(squadManager);
-            // squad.SetTarget(player);
-            // enemyAi.SetTarget(player);
-            squad.AddToSquad(enemyAi);
-            squadManager.currentEnemies.Add(enemyAi);
-            return squad;
-        }
-        else if (enemyAi is InfantryAI)
-        {
-            InfantrySquad s = new InfantrySquad(squadManager);
-            // s.SetTarget(player);
-            s.AddToSquad(enemyAi);
-            for (int i = 0; i < 4; i++) //for now, a squad will always have 5 units
-            {
-                enemyAi = SpawnNewEnemy(aiInfo.enemyType, aiInfo.spawnLocation, player.transform.position) as InfantryAI;
-                s.AddToSquad(enemyAi);
-                squadManager.currentEnemies.Add(enemyAi);
-            }
-            return s;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    internal void SpawnWave(List<Waves.WaveEnemyInfo> ais)
-    {
-        foreach (Waves.WaveEnemyInfo aiInfo in ais)
-        {
-            squadManager.RegisterSquad(SpawnSquad(aiInfo));
+            SpawnNewEnemy(enemyInfo.enemyType, enemyInfo.spawnLocation, player.transform.position);
         }
     }
 

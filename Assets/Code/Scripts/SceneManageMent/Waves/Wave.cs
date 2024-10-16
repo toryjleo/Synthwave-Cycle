@@ -20,13 +20,15 @@ namespace Waves
 
     /// <summary>
     /// Serializable Tuple holding information for how each individual squad will be spawned
-    /// Has an enemy type and a position relative to the player for where the squad will spawn in
+    /// Has an enemy type and a position relative to the player for where the squad will spawn in,
+    /// Also has an enemy amount, as in, the number of enemies to spawn in
     /// </summary>
     [Serializable]
     public class WaveEnemyInfo
     {
         public Enemy enemyType;
         public SpawnLocation spawnLocation;
+        public int enemyAmount;
     }
 
 
