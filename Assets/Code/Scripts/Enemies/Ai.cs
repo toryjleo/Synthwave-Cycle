@@ -9,7 +9,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
 {
     public abstract Enemy GetEnemyType();
 
-    // THis is the method that sets the entity to Deactive and bascially is used to kill the entity
+    // THis is the method that sets the entity to Deactive and basically is used to kill the entity
     public void op_ProcessCompleted(SelfDespawn entity)
     {
         entity.gameObject.SetActive(false);
@@ -32,7 +32,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     public float maxForce;
     public float score;
     public float dlScore;
-    public float attackRange;
+    protected float attackRange = 15;
     public float minimumRange;
     internal float TIME_BY_TARGET_TO_ATTACK;
     internal float timeByTarget = 0;
@@ -67,7 +67,13 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
         }
         else if (stateController.isInRange)
         {
+            Move(target.transform.position);
             CountDownTimeByTarget(Time.deltaTime);
+        }
+
+        if (Vector3.Distance(transform.position, target.transform.position) <= attackRange)
+        {
+            stateController.HandleTrigger(AIState.StateTrigger.InRange);
         }
 
         if (stateController.isInRange || stateController.isAttacking)
@@ -189,17 +195,17 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
         }
     }
     /// <summary>
-    /// This method is called when the entitiy wants to attack. Checks if it has a gun
+    /// This method is called when the entity wants to attack. Checks if it has a gun
     /// </summary>
     public abstract void Attack();
 
-
+    // TODO: Make a new class (NOT Monobehavior) that holds all the movement functions
     #region MOVEMENT
     /// <summary>
     /// This method works for ranged Enemies that do not get into direct melee range with the target
     /// </summary>
     /// <param name="target"> Vector to target </param>
-    public virtual void Move(Vector3 target) //This can be used for Enemies that stay at range and dont run into melee.
+    public virtual void Move(Vector3 target) //This can be used for Enemies that stay at range and don't run into melee.
     {
         Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be
         float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points
@@ -224,12 +230,13 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
     }
 
     /// <summary>
-    /// This method is used for when an AI has no target and will move around in a Boid(?) fashion
+    /// This method is used for when an AI has no target and will move around in a Boid fashion
     /// </summary>
     public void Wander() //cause the character to wander
     {
 
         Vector3 forward = rb.transform.forward; //The normalized vector of which direction the RB is facing
+        // TODO: Make this offset vector actually random
         Vector3 offset = new Vector3(0, 0, 1); //This is the random change vector that is uses to create natural wandering movement
         /* Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
          forward *= 10;
@@ -254,20 +261,16 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
         rb.AddForce(force);
     }
 
-    #endregion
-
-    #region SEPARATE
-
     /// <summary>
     /// This method requires the entire of AI
     /// </summary>
-    /// <param name="pool"></param> Pool is the grouping of all of the AI controlled entities in the boid that need to be seperateed from one another
+    /// <param name="pool">Pool is the grouping of all of the AI controlled entities in the boid that need to be separated from one another</param>
     public void Separate(List<Ai> pool) //this function will edit the steer of an AI so it moves away from nearby other AI
     {
         float desiredSeparation = 110;
 
-        Vector3 sum = new Vector3(); //the vector that will be used to calculate flee beheavior if a too close interaction happens
-        int count = 0; //this couunts how many TOOCLOSE interactions an entity has, if it has more than one
+        Vector3 sum = new Vector3(); //the vector that will be used to calculate flee behavior if a too close interaction happens
+        int count = 0; //this counts how many TOO CLOSE interactions an entity has, if it has more than one
                        //it adds the sum vector
 
 
@@ -278,7 +281,7 @@ public abstract class Ai : SelfWorldBoundsDespawn, IResettable
 
             if (g.transform.position != transform.position && d < desiredSeparation)
             {
-                Vector3 diff = transform.position - g.transform.position; // creats vec between two objects
+                Vector3 diff = transform.position - g.transform.position; // creates vec between two objects
                 diff.Normalize();
                 sum += diff; // sum is the flee direction added together
                 count++;
