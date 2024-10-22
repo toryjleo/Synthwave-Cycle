@@ -50,27 +50,17 @@ public class EnemyPooler : MonoBehaviour
     //Creates Pools for each object type 
     void Start()
     {
-        //Create Dictionary of tags for each if the pools
-        // poolDictionary = new Dictionary<Enemy, Queue<Ai>>();
-        // poolDictionary = new Dictionary<Enemy, ObjectPool>();
-
-        // foreach (Pool pool in pools)
-        // {
-        //     ObjectPool objectPool = new ObjectPool(testAi, prefab);
-
-        //     //instantiate the objects with 
-        //     for (int i = 0; i < pool.poolSize; i++)
-        //     {
-        //         Ai obj = Instantiate(pool.prefab);
-        //         obj.InitStateController();
-        //         obj.Despawn += ObjAi_Despawn;
-        //         objectPool.Enqueue(obj);
-        //     }
-
-        //     poolDictionary.Add(pool.GetTag(), objectPool);
-        // }
         objectPool = new ObjectPool(testAi, prefab);
         objectPool.PoolObjects(5);
+    }
+
+    void Update()
+    {
+        ArrayList enemiesInWorld = objectPool.ObjectsInWorld;
+        foreach (Ai ai in enemiesInWorld)
+        {
+            ai.ManualUpdate();
+        }
     }
 
     /// <summary>
@@ -82,22 +72,7 @@ public class EnemyPooler : MonoBehaviour
     /// <returns></returns>
     public Ai RetrieveFromPool(Enemy tag)
     {
-        // if (!poolDictionary.ContainsKey(tag))
-        // {
-        //     Debug.LogWarning("Pool with tag " + tag + " doesn't exist");
-        //     return null;
-        // }
-
-        // Moving the newly spawned enemy to the back of the queue
-        // Ai objectToSpawn = poolDictionary[tag].Dequeue();
         Ai objectToSpawn = (Ai)objectPool.SpawnFromPool();
-
-        // objectToSpawn.transform.position = position;
-        // objectToSpawn.transform.rotation = Quaternion.LookRotation(playerLocation - position);
-        // objectToSpawn.gameObject.SetActive(true);
-        // objectToSpawn.Spawn(position, playerLocation);
-
-        // poolDictionary[tag].Enqueue(objectToSpawn);
 
         if (!objectToSpawn)
         {
@@ -106,8 +81,4 @@ public class EnemyPooler : MonoBehaviour
 
         return objectToSpawn;
     }
-
-
-
-
 }

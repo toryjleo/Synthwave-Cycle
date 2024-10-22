@@ -23,10 +23,10 @@ public abstract class InfantryAI : Ai
         }
     }
 
-    public override void Update()
+    public override void ManualUpdate()
     {
         SetAnimationSpeed(rb.velocity.magnitude);
-        base.Update();
+        base.ManualUpdate();
     }
 
     public override void Init(IPoolableInstantiateData stats)

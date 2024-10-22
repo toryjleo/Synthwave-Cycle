@@ -8,7 +8,7 @@ namespace Generic
     /// <summary>
     /// Used in initializing a Poolable object
     /// </summary>
-    public interface IPoolableInstantiateData {};
+    public interface IPoolableInstantiateData { };
 
     /// <summary>
     /// Component necessary for an object in the ObjectPool
@@ -50,6 +50,8 @@ namespace Generic
         /// </summary>
         private ArrayList objectsInWorld;
 
+        public ArrayList ObjectsInWorld { get => objectsInWorld; }
+
         protected IPoolableInstantiateData stats = null;
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace Generic
         /// <param name="instantiateCount">number of times to instantiate prefab</param>
         public void PoolObjects(int instantiateCount)
         {
-            if (objectsAwaitingSpawn == null) 
+            if (objectsAwaitingSpawn == null)
             {
 
                 while (objectsAwaitingSpawn.Count < instantiateCount)
@@ -88,7 +90,7 @@ namespace Generic
                     objectsAwaitingSpawn.Enqueue(newBullet);
                 }
             }
-            else 
+            else
             {
                 Debug.LogWarning("Trying to pool objects multiple times");
             }

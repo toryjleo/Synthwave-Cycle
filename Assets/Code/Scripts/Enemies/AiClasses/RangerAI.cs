@@ -11,9 +11,9 @@ public class RangerAi : InfantryAI
 
     }
 
-    public override void Update()
+    public override void ManualUpdate()
     {
-        base.Update();
+        base.ManualUpdate();
     }
 
     public override Enemy GetEnemyType()

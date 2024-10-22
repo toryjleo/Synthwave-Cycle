@@ -53,6 +53,7 @@ public class SquadSpawner : MonoBehaviour
         enemy.Spawn(biasSpawnVector(loc), targetLocation);
 
         //Initialize enemy health and life properties
+        // TODO: Move NewLife to enemy's reset
         enemy.NewLife();
         return enemy;
     }

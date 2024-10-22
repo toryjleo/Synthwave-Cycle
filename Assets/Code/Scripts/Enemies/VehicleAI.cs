@@ -42,11 +42,11 @@ public abstract class VehicleAi : Ai
     //All vehicles have a target, but some vehicles interact with their targets in different ways
     public abstract void UpdateMovementLocation();
 
-    public override void Update()
+    public override void ManualUpdate()
     {
         if (this.alive && this.enabled)
         {
-            base.Update();
+            base.ManualUpdate();
             //Handle confidence/attack timing
             if (movementTargetPosition != null && target != null)
             {

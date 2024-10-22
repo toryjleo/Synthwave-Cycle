@@ -51,10 +51,8 @@ public abstract class Ai : Poolable
     #endregion
 
     // Update is called once per frame
-    public override void Update()
+    public virtual void ManualUpdate()
     {
-        base.Update();
-
         // Dead
         if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
         {
@@ -294,7 +292,7 @@ public abstract class Ai : Poolable
     /// This function will edit the steer of an AI so it moves away from nearby other AI
     /// </summary>
     /// <param name="pool">Pool is the grouping of all of the AI controlled entities in the boid that need to be separated from one another</param>
-    public void Separate(List<Ai> pool)
+    public void Separate(ArrayList pool)
     {
         float desiredSeparation = 110;
 
@@ -341,7 +339,7 @@ public abstract class Ai : Poolable
     /// Used to group enemies together if they get too separated
     /// </summary>
     /// <param name="pool"></param>
-    public void Group(List<Ai> pool)
+    public void Group(ArrayList pool)
     {
         float desiredSeparation = 110;
 
