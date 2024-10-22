@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EditorObject;
+using Generic;
 using UnityEngine;
 
 /// <summary>Class<c>InfantryAI</c> 
@@ -27,15 +29,21 @@ public abstract class InfantryAI : Ai
         base.Update();
     }
 
-    public override void Init()
+    public override void Init(IPoolableInstantiateData stats)
     {
+        TestAi aiStats = stats as TestAi;
+        if (!aiStats)
+        {
+            Debug.LogWarning("InfantryAi stats are not readable as TestAi!");
+        }
+
         alive = true;
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
         animationStateController = GetComponent<CyborgAnimationStateController>();
         this.Despawn += op_ProcessCompleted;
-        hp.Init(StartingHP);
+        hp.Init(aiStats.Health);
 
         myGun.Init();
 
@@ -53,7 +61,7 @@ public abstract class InfantryAI : Ai
             Debug.LogError("This object needs a health component");
         }
 
-        base.Init();
+        base.Init(stats);
     }
 
     /// <summary>

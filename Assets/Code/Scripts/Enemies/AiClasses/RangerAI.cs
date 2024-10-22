@@ -8,7 +8,7 @@ public class RangerAi : InfantryAI
 
     void Awake()
     {
-        Init();
+
     }
 
     public override void Update()
@@ -19,5 +19,10 @@ public class RangerAi : InfantryAI
     public override Enemy GetEnemyType()
     {
         return Enemy.Ranger;
+    }
+
+    public override void Initialize()
+    {
+
     }
 }

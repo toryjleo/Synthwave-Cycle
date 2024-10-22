@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>Class <c>BasicRifleBullet</c> Basic enemy bullet.</summary>
 public class ShotgunPellet : EnemyBullet
 {
-    public override void Init()
+    public override void Initialize()
     {
         muzzleVelocity = 60;
         mass = .5f;

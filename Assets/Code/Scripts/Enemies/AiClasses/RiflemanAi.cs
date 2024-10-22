@@ -8,4 +8,9 @@ public class RiflemanAi : InfantryAI
     {
         return Enemy.Rifleman;
     }
+
+    public override void Initialize()
+    {
+
+    }
 }

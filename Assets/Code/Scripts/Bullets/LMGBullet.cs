@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LMGBullet : PlayerBullet
 {
-    public override void Init()
+    public override void Initialize()
     {
         muzzleVelocity = 180;
         mass = .1f; //The Mass controlls how slowed down the bike is by recoil

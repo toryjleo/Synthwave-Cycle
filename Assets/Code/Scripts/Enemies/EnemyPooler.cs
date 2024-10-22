@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using EditorObject;
+using Generic;
 using UnityEngine;
 
 
@@ -23,26 +25,15 @@ public enum Enemy
 /// </summary>
 public class EnemyPooler : MonoBehaviour
 {
-    /// <summary>
-    /// Creates a single Pool of objects for Enemies, each with their own Enemy Tag, prefab, and predetermined size.
-    /// </summary>
-    [System.Serializable]
-    public class Pool //One individual pool of objects that has a tag, a prefab, and a size 
+    public Ai prefab;
+    public TestAi testAi;
+    public int poolSize;
+
+    public Enemy GetTag()
     {
-        public Ai prefab;
-        public int poolSize;
-
-        public Pool(Ai Prefab, int Size)
-        {
-            prefab = Prefab;
-            poolSize = Size;
-        }
-
-        public Enemy GetTag()
-        {
-            return prefab.GetEnemyType();
-        }
+        return prefab.GetEnemyType();
     }
+    ObjectPool objectPool;
 
     public static EnemyPooler Instance;
 
@@ -52,44 +43,35 @@ public class EnemyPooler : MonoBehaviour
     }
 
 
-    public List<Pool> pools; //Pools
-    public Dictionary<Enemy, Queue<Ai>> poolDictionary; //These are the keys 
+    // public List<Pool> pools; //Pools
+    public Dictionary<Enemy, ObjectPool> poolDictionary; //These are the keys 
 
 
     //Creates Pools for each object type 
     void Start()
     {
         //Create Dictionary of tags for each if the pools
-        poolDictionary = new Dictionary<Enemy, Queue<Ai>>();
+        // poolDictionary = new Dictionary<Enemy, Queue<Ai>>();
+        // poolDictionary = new Dictionary<Enemy, ObjectPool>();
 
+        // foreach (Pool pool in pools)
+        // {
+        //     ObjectPool objectPool = new ObjectPool(testAi, prefab);
 
+        //     //instantiate the objects with 
+        //     for (int i = 0; i < pool.poolSize; i++)
+        //     {
+        //         Ai obj = Instantiate(pool.prefab);
+        //         obj.InitStateController();
+        //         obj.Despawn += ObjAi_Despawn;
+        //         objectPool.Enqueue(obj);
+        //     }
 
-        foreach (Pool pool in pools)
-        {
-            Queue<Ai> objectPool = new Queue<Ai>();
-
-            //instantiate the objects with 
-            for (int i = 0; i < pool.poolSize; i++)
-            {
-                Ai obj = Instantiate(pool.prefab);
-                obj.InitStateController();
-                obj.Despawn += ObjAi_Despawn;
-                objectPool.Enqueue(obj);
-            }
-
-            poolDictionary.Add(pool.GetTag(), objectPool);
-        }
+        //     poolDictionary.Add(pool.GetTag(), objectPool);
+        // }
+        objectPool = new ObjectPool(testAi, prefab);
+        objectPool.PoolObjects(5);
     }
-
-    //This Method is called When the Entity dies 
-    private void ObjAi_Despawn(SelfDespawn entity)
-    {
-        //TODO fuuuuck, figure out how to use the enum to fix all of this shiiiit 
-        entity.gameObject.SetActive(false);
-        //poolDictionary.Enqueue(entity as Ai); // Make sure this is bullet in the future
-        //Debug.Log("Despawned, Size of queue: " + bulletQueue.Count);
-    }
-
 
     /// <summary>
     /// Spawns in a single enemy AI based on the given tag
@@ -100,21 +82,27 @@ public class EnemyPooler : MonoBehaviour
     /// <returns></returns>
     public Ai RetrieveFromPool(Enemy tag)
     {
-        if (!poolDictionary.ContainsKey(tag))
-        {
-            Debug.LogWarning("Pool with tag " + tag + " doesn't exist");
-            return null;
-        }
+        // if (!poolDictionary.ContainsKey(tag))
+        // {
+        //     Debug.LogWarning("Pool with tag " + tag + " doesn't exist");
+        //     return null;
+        // }
 
         // Moving the newly spawned enemy to the back of the queue
-        Ai objectToSpawn = poolDictionary[tag].Dequeue();
+        // Ai objectToSpawn = poolDictionary[tag].Dequeue();
+        Ai objectToSpawn = (Ai)objectPool.SpawnFromPool();
 
         // objectToSpawn.transform.position = position;
         // objectToSpawn.transform.rotation = Quaternion.LookRotation(playerLocation - position);
         // objectToSpawn.gameObject.SetActive(true);
         // objectToSpawn.Spawn(position, playerLocation);
 
-        poolDictionary[tag].Enqueue(objectToSpawn);
+        // poolDictionary[tag].Enqueue(objectToSpawn);
+
+        if (!objectToSpawn)
+        {
+            Debug.LogError("Object pool didn't pool AI type!");
+        }
 
         return objectToSpawn;
     }

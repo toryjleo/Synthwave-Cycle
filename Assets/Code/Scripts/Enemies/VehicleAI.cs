@@ -72,7 +72,8 @@ public abstract class VehicleAi : Ai
         }
     }
 
-    public override void Init()
+    // TODO: rename to Init
+    public override void Initialize()
     {
         alive = true;
         hp = GetComponentInChildren<Health>();
@@ -81,7 +82,7 @@ public abstract class VehicleAi : Ai
         DeadEvent += CarDeath;
         this.Despawn += op_ProcessCompleted;
         hp.Init(StartingHP);
-        base.Init();
+        // base.Initialize();
         vehicleController.MaxSpeed = maxSpeed; //Must ba called after base.Init()
     }
 

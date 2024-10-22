@@ -7,7 +7,7 @@ public class ShottyPellet : PlayerBullet
 {
     private float growthSpeed = 4f;
     private float maxSize = 10f;
-    public override void Init()
+    public override void Initialize()
     {
         muzzleVelocity = 90;
         mass = .2f;

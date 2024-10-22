@@ -9,7 +9,7 @@ public class Shotgunner : InfantryAI
 
     void Awake()
     {
-        Init();
+
     }
 
     public override void Update()
@@ -20,5 +20,10 @@ public class Shotgunner : InfantryAI
     public override Enemy GetEnemyType()
     {
         return Enemy.Shotgun;
+    }
+
+    public override void Initialize()
+    {
+
     }
 }
