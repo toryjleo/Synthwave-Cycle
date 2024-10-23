@@ -185,6 +185,9 @@ namespace AIState
                 case StateTrigger.HasTarget:
                     Exit();
                     return stateController.following;
+                case StateTrigger.Despawned:
+                    Exit();
+                    return stateController.inPool;
 
                 default:
                     return null;
@@ -216,6 +219,10 @@ namespace AIState
                 case StateTrigger.InRange:
                     Exit();
                     return stateController.inRange;
+                case StateTrigger.Despawned:
+                    Exit();
+                    return stateController.inPool;
+
                 default:
                     return null;
             }
@@ -250,6 +257,10 @@ namespace AIState
                 case StateTrigger.CountdownToAttackComplete:
                     Exit();
                     return stateController.attacking;
+                case StateTrigger.Despawned:
+                    Exit();
+                    return stateController.inPool;
+
                 default:
                     return null;
             }
@@ -281,6 +292,10 @@ namespace AIState
                 case StateTrigger.FollowAgain:
                     Exit();
                     return stateController.following;
+                case StateTrigger.Despawned:
+                    Exit();
+                    return stateController.inPool;
+
                 default:
                     return null;
             }

@@ -152,9 +152,11 @@ namespace Generic
             {
                 Poolable b = (Poolable)objectsInWorld[i];
                 b.Reset();
-                objectsInWorld.Remove(b);
+                // objectsInWorld.Remove(b);
                 objectsAwaitingSpawn.Enqueue(b);
             }
+
+            objectsInWorld = new ArrayList();
         }
     }
 }

@@ -18,7 +18,7 @@ public class SBomberAi : VehicleAi
 
     public override void Attack()
     {
-        if (timeByTarget >= TIME_BY_TARGET_TO_ATTACK && IsAlive())
+        if (timeByTarget >= TIME_BY_TARGET_TO_ATTACK)
         {
             //Dive bomb the player
             vehicleController.enabled = false;

@@ -33,20 +33,14 @@ public abstract class VehicleAi : Ai
     // internal float TIME_BY_TARGET_TO_ATTACK;
     internal const float CONFIDENCE_BUILD_DISTANCE = 45f;
 
-    public override void NewLife()
-    {
-        // TIME_BY_TARGET_TO_ATTACK = Random.Range(3, 11);
-        base.NewLife();
-    }
-
     //All vehicles have a target, but some vehicles interact with their targets in different ways
     public abstract void UpdateMovementLocation();
 
-    public override void ManualUpdate()
+    public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection)
     {
-        if (this.alive && this.enabled)
+        if (this.enabled)
         {
-            base.ManualUpdate();
+            base.ManualUpdate(enemies, wanderDirection);
             //Handle confidence/attack timing
             if (movementTargetPosition != null && target != null)
             {
@@ -75,12 +69,10 @@ public abstract class VehicleAi : Ai
     // TODO: rename to Init
     public override void Initialize()
     {
-        alive = true;
         hp = GetComponentInChildren<Health>();
         vehicleController = GetComponent<ArcadeAiVehicleController>();
         vehicleController.enabled = false;
         DeadEvent += CarDeath;
-        this.Despawn += op_ProcessCompleted;
         hp.Init(StartingHP);
         // base.Initialize();
         vehicleController.MaxSpeed = maxSpeed; //Must ba called after base.Init()

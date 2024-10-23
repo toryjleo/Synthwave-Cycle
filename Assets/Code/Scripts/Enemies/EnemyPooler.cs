@@ -23,7 +23,7 @@ public enum Enemy
 /// They are instead enabled and put into place when they are ready to be used so we don't have to
 /// spawn a new enemy in every time we need one
 /// </summary>
-public class EnemyPooler : MonoBehaviour
+public class EnemyPooler : MonoBehaviour, IResettable
 {
     public Ai prefab;
     public TestAi testAi;
@@ -33,7 +33,9 @@ public class EnemyPooler : MonoBehaviour
     {
         return prefab.GetEnemyType();
     }
-    ObjectPool objectPool;
+    private ObjectPool objectPool;
+
+    private Vector3 wanderDirection = new Vector3(0, 0, 1);
 
     public static EnemyPooler Instance;
 
@@ -52,6 +54,7 @@ public class EnemyPooler : MonoBehaviour
     {
         objectPool = new ObjectPool(testAi, prefab);
         objectPool.PoolObjects(5);
+        wanderDirection = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
     }
 
     void Update()
@@ -59,8 +62,10 @@ public class EnemyPooler : MonoBehaviour
         ArrayList enemiesInWorld = objectPool.ObjectsInWorld;
         foreach (Ai ai in enemiesInWorld)
         {
-            ai.ManualUpdate();
+            ai.ManualUpdate(enemiesInWorld, wanderDirection);
         }
+
+        // TODO: Add another foreach to update their positions AFTER they decide where they're going
     }
 
     /// <summary>
@@ -80,5 +85,10 @@ public class EnemyPooler : MonoBehaviour
         }
 
         return objectToSpawn;
+    }
+
+    public void ResetGameObject()
+    {
+        objectPool.ResetGameObject();
     }
 }

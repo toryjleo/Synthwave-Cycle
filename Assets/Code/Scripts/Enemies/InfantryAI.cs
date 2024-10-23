@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,17 +17,17 @@ public abstract class InfantryAI : Ai
 
     public override void Attack()
     {
-        if (myGun != null && myGun.CanShootAgain() && alive)
+        if (myGun != null && myGun.CanShootAgain())
         {
             this.myGun.PrimaryFire(target.transform.position);
             animationStateController.AimWhileWalking(true);
         }
     }
 
-    public override void ManualUpdate()
+    public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection)
     {
         SetAnimationSpeed(rb.velocity.magnitude);
-        base.ManualUpdate();
+        base.ManualUpdate(enemies, wanderDirection);
     }
 
     public override void Init(IPoolableInstantiateData stats)
@@ -37,12 +38,9 @@ public abstract class InfantryAI : Ai
             Debug.LogWarning("InfantryAi stats are not readable as TestAi!");
         }
 
-        alive = true;
-
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
         animationStateController = GetComponent<CyborgAnimationStateController>();
-        this.Despawn += op_ProcessCompleted;
         hp.Init(aiStats.Health);
 
         myGun.Init();
@@ -80,23 +78,20 @@ public abstract class InfantryAI : Ai
     {
         rb.constraints = RigidbodyConstraints.FreezeAll;
 
-        if (alive)
-        {
-            animationStateController.TriggerDeathA();//TODO: add catch
+        animationStateController.TriggerDeathA();//TODO: add catch
 
-            animationStateController.TriggerDeathA();
+        animationStateController.TriggerDeathA();
 
-            rb.detectCollisions = false;
-            animationStateController.SetAlive(false);
+        rb.detectCollisions = false;
+        animationStateController.SetAlive(false);
 
-        }
         base.Die();
     }
 
-    public override void NewLife()
+    public override void Reset()
     {
         rb.constraints = RigidbodyConstraints.FreezePositionY;
         animationStateController.SetAlive(true);
-        base.NewLife();
+        base.Reset();
     }
 }

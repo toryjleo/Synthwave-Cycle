@@ -12,11 +12,6 @@ public class Shotgunner : InfantryAI
 
     }
 
-    public override void ManualUpdate()
-    {
-        base.ManualUpdate();
-    }
-
     public override Enemy GetEnemyType()
     {
         return Enemy.Shotgun;

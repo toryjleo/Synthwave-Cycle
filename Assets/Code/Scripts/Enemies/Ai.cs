@@ -10,17 +10,10 @@ public abstract class Ai : Poolable
 {
     public abstract Enemy GetEnemyType();
 
-    // This is the method that sets the entity to Disabled and basically is used to kill the entity
-    public void op_ProcessCompleted(SelfDespawn entity)
-    {
-        entity.gameObject.SetActive(false);
-        //TODO: Add Logic here to make sure Entity either remains in the pool or becomes a new entity
-    }
-
     #region Variables for Setup.
 
     protected AIState.StateController stateController = null;
-    public GameObject player;
+    public PlayerHealth playerHealth;
     public GameObject target;
     public Rigidbody rb;
     public Gun myGun;
@@ -38,7 +31,7 @@ public abstract class Ai : Poolable
     internal float TIME_BY_TARGET_TO_ATTACK;
     internal float timeByTarget = 0;
 
-    public bool alive;
+    public bool inWorld = false;
 
     //Each enemy's speed is relative to a player's gear
     [SerializeField] public int movementGroup;
@@ -51,25 +44,31 @@ public abstract class Ai : Poolable
     #endregion
 
     // Update is called once per frame
-    public virtual void ManualUpdate()
+    public virtual void ManualUpdate(ArrayList enemies, Vector3 wanderDirection)
     {
-        // Dead
-        if (hp.HitPoints <= 0) //this signifies that the enemy Died and wasn't merely Despawned
+        playerHealth = FindObjectOfType<PlayerHealth>();
+
+        if (playerHealth != null && playerHealth.HitPoints > 0)
         {
-            Die();
+            SetTarget(playerHealth.gameObject);
+        }
+
+        if (hp.HitPoints <= 0)
+        {
+            stateController.HandleTrigger(AIState.StateTrigger.AiKilled);
         }
 
         if (stateController.isWandering)
         {
-            Wander();
+            Wander(wanderDirection);
         }
         else if (stateController.isFollowing)
         {
-            Move(target.transform.position);
+            Move(target.transform.position, enemies);
         }
         else if (stateController.isInRange)
         {
-            Move(target.transform.position);
+            Move(target.transform.position, enemies);
             CountDownTimeByTarget(Time.deltaTime);
         }
 
@@ -95,7 +94,7 @@ public abstract class Ai : Poolable
     public override void Init(IPoolableInstantiateData stats)
     {
         InitStateController();
-        player = GameObject.FindGameObjectWithTag("Player");
+
         PlayerMovement pm = FindObjectOfType<PlayerMovement>();
         if (pm != null)
         {
@@ -122,6 +121,8 @@ public abstract class Ai : Poolable
         stateController = new AIState.StateController(true);
         stateController.inRange.notifyListenersEnter += HandleInRangeEnter;
         stateController.attacking.notifyListenersEnter += HandleAttackingEnter;
+        stateController.inPool.notifyListenersExit += HandleInPoolExit;
+        stateController.dead.notifyListenersEnter += Die;
         GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
         Despawn += HandleDespawned;
     }
@@ -140,6 +141,7 @@ public abstract class Ai : Poolable
         TIME_BY_TARGET_TO_ATTACK = 2.0f;
 
         stateController.HandleTrigger(AIState.StateTrigger.Spawning);
+        inWorld = true;
     }
 
     /// <summary>
@@ -163,20 +165,12 @@ public abstract class Ai : Poolable
     /// </summary>
     public virtual void Die()
     {
-        if (alive == true)
+        //Notify all listeners that this AI has died
+        DeadEvent?.Invoke();
+
+        if (myGun != null)
         {
-            //Notify all listeners that this AI has died
-            DeadEvent?.Invoke();
-
-            alive = false;
-
-            if (myGun != null)
-            {
-                myGun.StopAllCoroutines();
-            }
-
-            // TODO: Replace alive boolean with checking stateController for if (isAlive)
-            stateController.HandleTrigger(AIState.StateTrigger.AiKilled);
+            myGun.StopAllCoroutines();
         }
     }
 
@@ -211,6 +205,15 @@ public abstract class Ai : Poolable
         stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
     }
 
+    public void HandleInPoolExit()
+    {
+        hp.Init(StartingHP);
+        RespawnEvent?.Invoke();
+        rb.detectCollisions = true;
+
+        inWorld = true;
+    }
+
     public void HandlePlayerDeadEnter()
     {
         stateController.HandleTrigger(AIState.StateTrigger.TargetRemoved);
@@ -218,7 +221,9 @@ public abstract class Ai : Poolable
 
     public void HandleDespawned(SelfDespawn entity)
     {
+        gameObject.SetActive(false);
         stateController.HandleTrigger(AIState.StateTrigger.Despawned);
+        inWorld = false;
     }
     #endregion
 
@@ -228,18 +233,30 @@ public abstract class Ai : Poolable
     /// This method works for ranged Enemies that do not get into direct melee range with the target
     /// </summary>
     /// <param name="target"> Vector to target </param>
-    public virtual void Move(Vector3 target) //This can be used for Enemies that stay at range and don't run into melee.
+    public virtual void Move(Vector3 target, ArrayList enemyList) //This can be used for Enemies that stay at range and don't run into melee.
     {
-        Vector3 desiredVec = target - transform.position; //this logic creates the vector between where the entity is and where it wants to be
-        float dMag = desiredVec.magnitude; //this creates a magnitude of the desired vector. This is the distance between the points
-        dMag -= minimumRange; // dMag is the distance between the two objects, by subtracting this, I make it so the object doesn't desire to move as far.
+        Chase(target);
+        Separate(enemyList);
+        Group(enemyList);
+    }
 
-        desiredVec.Normalize(); // one the distance is measured this vector can now be used to actually generate movement,
-                                // but that movement has to be constant or at least adaptable, which is what the next part does
+    public void Chase(Vector3 target)
+    {
+        float desiredChase = 1;
+
+        // this logic creates the vector between where the entity is and where it wants to be
+        Vector3 desiredVec = target - transform.position;
+        // this creates a magnitude of the desired vector. This is the distance between the points
+        float dMag = desiredVec.magnitude;
+        // dMag is the distance between the two objects, by subtracting this, I make it so the object doesn't desire to move as far.
+        dMag -= minimumRange;
+
+        // one the distance is measured this vector can now be used to actually generate movement, 
+        // but that movement has to be constant or at least adaptable, which is what the next part does
+        desiredVec.Normalize();
         transform.LookAt(target);
 
         //Currently Walking towards the target
-
         if (dMag < maxSpeed)
         {
             desiredVec *= dMag;
@@ -248,29 +265,19 @@ public abstract class Ai : Poolable
         {
             desiredVec *= maxSpeed;
         }
-        Vector3 steer = desiredVec - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
+
+        // Subtract Velocity so we are not constantly adding to the velocity of the Entity
+        Vector3 steer = (desiredVec - rb.velocity) * desiredChase;
         ApplyForce(steer);
     }
 
     /// <summary>
     /// This method is used for when an AI has no target and will move around in a Boid fashion
     /// </summary>
-    public void Wander() //cause the character to wander
+    public void Wander(Vector3 wanderDirection) //cause the character to wander
     {
-
         Vector3 forward = rb.transform.forward; //The normalized vector of which direction the RB is facing
-        // TODO: Make this offset vector actually random
-        Vector3 offset = new Vector3(0, 0, 1); //This is the random change vector that is uses to create natural wandering movement
-        /* Quaternion ranRot = Quaternion.Euler(0, Random.Range(0, 359), 0);
-         forward *= 10;
-         offset = ranRot * offset;
-
-
-         Debug.DrawRay(rb.transform.position, forward, Color.blue);
-         Debug.DrawRay(rb.transform.position+forward, offset, Color.red);
-         Debug.DrawRay(rb.transform.position, forward + offset, Color.green);
-         */
-        forward += offset; //adds a small offset to the forward vector.
+        forward += wanderDirection; //adds a small offset to the forward vector.
 
         transform.LookAt(forward + transform.position); //TODO make this look way nicer
 
@@ -294,7 +301,8 @@ public abstract class Ai : Poolable
     /// <param name="pool">Pool is the grouping of all of the AI controlled entities in the boid that need to be separated from one another</param>
     public void Separate(ArrayList pool)
     {
-        float desiredSeparation = 110;
+        float separateForce = 1.1f;
+        float maxDistanceToSeparate = 100;
 
         //the vector that will be used to calculate flee behavior if a too close interaction happens
         Vector3 sum = new Vector3();
@@ -305,7 +313,7 @@ public abstract class Ai : Poolable
         {
             float distance = Vector3.Distance(ai.transform.position, transform.position);
 
-            if (ai.transform.position != transform.position && distance < desiredSeparation)
+            if (ai.transform.position != transform.position && distance < maxDistanceToSeparate)
             {
                 // creates vec between two objects
                 Vector3 diff = transform.position - ai.transform.position;
@@ -321,7 +329,7 @@ public abstract class Ai : Poolable
                 sum.Normalize();
                 sum *= maxSpeed;
 
-                Vector3 steer = sum - rb.velocity;
+                Vector3 steer = (sum - rb.velocity) * separateForce;
                 if (steer.magnitude > maxForce)
                 {
                     steer.Normalize();
@@ -329,7 +337,6 @@ public abstract class Ai : Poolable
                 }
 
                 ApplyForce(steer);
-
             }
 
         }
@@ -341,7 +348,8 @@ public abstract class Ai : Poolable
     /// <param name="pool"></param>
     public void Group(ArrayList pool)
     {
-        float desiredSeparation = 110;
+        float groupForce = 1.2f;
+        float maxDistanceToGroup = 100;
 
         //the vector that will be used to calculate flee behavior if a too far interaction happens
         Vector3 sum = new Vector3();
@@ -352,7 +360,7 @@ public abstract class Ai : Poolable
         {
             float distance = Vector3.Distance(ai.transform.position, transform.position);
 
-            if (ai.transform.position != transform.position && distance > desiredSeparation)
+            if (ai.transform.position != transform.position && distance > maxDistanceToGroup)
             {
                 // creates vec between two objects
                 Vector3 diff = ai.transform.position - transform.position;
@@ -368,7 +376,7 @@ public abstract class Ai : Poolable
                 sum.Normalize();
                 sum *= maxSpeed;
 
-                Vector3 steer = sum - rb.velocity;
+                Vector3 steer = (sum - rb.velocity) * groupForce;
                 if (steer.magnitude > maxForce)
                 {
                     steer.Normalize();
@@ -382,13 +390,8 @@ public abstract class Ai : Poolable
     #endregion
 
     #region Getters & Setters
-    public bool IsAlive()
-    {
-        return alive;
-    }
-
     /// <summary>
-    /// This method sets the target of the entity TODO: Will eventually equip a gun?
+    /// This method sets the target of the entity
     /// </summary>
     /// <param name="targ"></param>
     public virtual void SetTarget(GameObject targ)//sets the target of the entity and equips the gun
@@ -403,24 +406,19 @@ public abstract class Ai : Poolable
             stateController.HandleTrigger(AIState.StateTrigger.HasTarget);
         }
     }
-
-    /// <summary>
-    /// This method is called to reset the entity's health and alive status. Use every time they spawn.
-    /// </summary>
-    public virtual void NewLife()
-    {
-        alive = true;
-        hp.Init(StartingHP);
-        RespawnEvent?.Invoke();
-        rb.detectCollisions = true;
-
-        SetTarget(player);
-    }// this resets the enemies HP and sets them to alive;
     #endregion
 
     public override void Reset()
     {
-        // TODO: Reset all values that change during gameplay
-        // OnDespawn();
+        Debug.Log("RESETTING THIS AI GUY");
+
+        if (inWorld)
+        {
+            Debug.Log("DESPAWNING AI");
+            // OnDespawn();
+            gameObject.SetActive(false);
+            stateController.HandleTrigger(AIState.StateTrigger.Despawned);
+            inWorld = false;
+        }
     }
 }

@@ -447,6 +447,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 1588835168}
     m_Modifications:
     - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: prefab
+      value: 
+      objectReference: {fileID: 3874834857555224722, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
+    - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: testAi
+      value: 
+      objectReference: {fileID: 11400000, guid: c361d60c2f386f3439612f7933891331, type: 2}
+    - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: pools.Array.size
       value: 1
       objectReference: {fileID: 0}
