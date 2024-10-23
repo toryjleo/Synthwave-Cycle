@@ -199,6 +199,10 @@ namespace Gun
             nextTimeToFireBurst = 0.0f;
             overHeatPercent = 0.0f;
             stateController.Reset();
+
+            projectilePool.ResetGameObject();
+            explosionPool.ResetGameObject();
+            impactEffectPool.ResetGameObject();
         }
 
         /// <summary>
