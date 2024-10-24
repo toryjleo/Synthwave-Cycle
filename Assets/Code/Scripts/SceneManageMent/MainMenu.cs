@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using EditorObject;
+using TMPro;
 
 /// <summary>
 /// Handles the main menu scene functions
@@ -13,16 +14,35 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] private SettingsData settingsData;
     [SerializeField] public AudioMixer audioMixer;
+    [SerializeField] public GameSave gameSave;
+    [SerializeField] private TextMeshProUGUI startText;
+
+    private LevelSelector selector;
 
     void Start()
     {
         SetMixerNumbers();
+        SetStartButtonText();
+
+        // Find level selector
+        FindLevelSelector();
     }
 
-    /// <summary>Will load the game.</summary>
+    /// <summary>Will load the game via the start button.</summary>
     public void StartOnClick()
     {
+        FindLevelSelector();
+        selector.SetSelectedLevel(gameSave.levelSequence[gameSave.CurrentLevel]);
+        StartGame();
+    }
+
+    /// <summary>
+    /// Starts the game
+    /// </summary>
+    public void StartGame()
+    {
         SetMixerNumbers();
+        StartCoroutine(LoadYourAsyncScene("TrueScene"));
     }
 
     /// <summary>Will quit the application.</summary>
@@ -57,5 +77,45 @@ public class MainMenu : MonoBehaviour
         audioMixer.SetFloat("MainVolume", settingsData.MainVolume);
         audioMixer.SetFloat("MusicVolume", settingsData.MusicVolume);
         audioMixer.SetFloat("EffectsVolume", settingsData.EffectsVolume);
+    }
+
+    /// <summary>
+    /// Sets the text of the start button to 'continue' if the player has gotten past the
+    /// first level
+    /// </summary>
+    private void SetStartButtonText()
+    {
+        if (gameSave)
+        {
+            if (gameSave.MaxLevelProgess > 0)
+            {
+                startText.text = "Continue\nLevel " + (gameSave.CurrentLevel + 1);
+            }
+            else
+            {
+                startText.text = "Start Game";
+            }
+        }
+    }
+
+    /// <summary>
+    /// Finds the level selector in scene (or in persistent scene)
+    /// </summary>
+    private void FindLevelSelector()
+    {
+        selector = FindObjectOfType<LevelSelector>();
+        if (!selector)
+        {
+            Debug.LogError("No level selector in scene!");
+        }
+    }
+
+    /// <summary>
+    /// Calls the game save to reset save fields to defaults
+    /// </summary>
+    public void ResetGameProgess()
+    {
+        gameSave.ResetToDefaults();
+        SetStartButtonText();
     }
 }

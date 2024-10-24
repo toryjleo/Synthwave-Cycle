@@ -8,12 +8,7 @@ public class RangerAi : InfantryAI
 
     void Awake()
     {
-        Init();
-    }
 
-    public override void Update()
-    {
-        base.Update();
     }
 
     public override Enemy GetEnemyType()

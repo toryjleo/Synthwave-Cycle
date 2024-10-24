@@ -8,7 +8,7 @@ namespace Generic
     /// <summary>
     /// Used in initializing a Poolable object
     /// </summary>
-    public interface IPoolableInstantiateData {};
+    public interface IPoolableInstantiateData { };
 
     /// <summary>
     /// Component necessary for an object in the ObjectPool
@@ -26,7 +26,6 @@ namespace Generic
         /// </summary>
         public abstract void Reset();
     }
-
 
     /// <summary> Works as an object pool for Poolable objects.</summary>
     public class ObjectPool
@@ -52,6 +51,8 @@ namespace Generic
 
         protected IPoolableInstantiateData stats = null;
 
+        public ArrayList ObjectsInWorld { get => objectsInWorld; }
+
         /// <summary>
         /// The class contructor
         /// </summary>
@@ -74,21 +75,20 @@ namespace Generic
         }
 
         /// <summary>
-        /// Must be called after constructor. Fills obect pool with objects
+        /// Must be called after constructor. Fills object pool with objects
         /// </summary>
         /// <param name="instantiateCount">number of times to instantiate prefab</param>
         public void PoolObjects(int instantiateCount)
         {
-            if (objectsAwaitingSpawn != null && objectsAwaitingSpawn.Count == 0) 
+            if (objectsAwaitingSpawn != null && objectsAwaitingSpawn.Count == 0)
             {
-
                 while (objectsAwaitingSpawn.Count < instantiateCount)
                 {
-                    Poolable newObject = CreateNewPoolableObject();
-                    objectsAwaitingSpawn.Enqueue(newObject);
+                    Poolable newBullet = CreateNewPoolableObject();
+                    objectsAwaitingSpawn.Enqueue(newBullet);
                 }
             }
-            else 
+            else
             {
                 Debug.LogWarning("Trying to pool objects multiple times");
             }

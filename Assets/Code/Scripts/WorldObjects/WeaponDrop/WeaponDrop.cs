@@ -35,10 +35,10 @@ public class WeaponDrop : SelfWorldBoundsDespawn
 
     void Start()
     {
-        Init();
+        Initialize();
     }
 
-    public override void Init()
+    public override void Initialize()
     {
         // Initialize base value
         this.gunType = 0;
@@ -83,7 +83,7 @@ public class WeaponDrop : SelfWorldBoundsDespawn
     /// <returns>The selected PlayerGunType</returns>
     public PlayerWeaponType SetRandomGunType()
     {
-        PlayerWeaponType typeToAssign = (PlayerWeaponType) Random.Range((int)PlayerWeaponType.OctoLMG, (int)PlayerWeaponType.DefaultGun);
+        PlayerWeaponType typeToAssign = (PlayerWeaponType)Random.Range((int)PlayerWeaponType.OctoLMG, (int)PlayerWeaponType.DefaultGun);
         SetGunType(typeToAssign);
         return typeToAssign;
     }

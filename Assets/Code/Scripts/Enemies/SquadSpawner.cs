@@ -2,10 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>Class <c>SquadSpawner</c> Handles the object creation side of spawning in a squad</summary>
-/// Currently creates a squad of 5 LMG gunners with the player as a target, will spawn different kinds of squads in the future
-
-
 public enum SpawnLocation
 {
     Front,
@@ -15,98 +11,61 @@ public enum SpawnLocation
     Any
 };
 
-
+/// <summary>Class <c>SquadSpawner</c> Handles the object creation side of spawning in a squad</summary>
+/// Currently creates a squad of 5 LMG gunners with the player as a target, will spawn different kinds of squads in the future
 public class SquadSpawner : MonoBehaviour
 {
     public GameObject player;
-    public EnemyPool ops;
+    public EnemyPooler ops;
 
     //Spawning Variables
     [SerializeField] private int spawnDistance;
     [SerializeField] private int spawnBiasAngle;
 
-    internal SquadManager squadManager;
-
-
     // Start is called before the first frame update
     void Start()
     {
-        ops = EnemyPool.Instance;
+        ops = EnemyPooler.Instance;
         player = GameObject.FindGameObjectWithTag("Player");
-        squadManager = GameObject.FindObjectOfType<SquadManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    private Squad SpawnSquad(Waves.WaveEnemyInfo aiInfo)
+    internal void SpawnWave(List<Waves.WaveEnemyInfo> enemiesToSpawn)
     {
-        Ai enemyAi = SpawnNewEnemy(aiInfo.enemyType, aiInfo.spawnLocation, player.transform.position);
-        if(enemyAi is VehicleAi)
+        foreach (Waves.WaveEnemyInfo enemyInfo in enemiesToSpawn)
         {
-            VehicleSquad squad = new VehicleSquad(squadManager);
-            squad.SetTarget(player);
-            enemyAi.SetTarget(player);
-            squad.AddToSquad(enemyAi);
-            squadManager.currentEnemies.Add(enemyAi);
-            return squad;
-        }
-        else if (enemyAi is InfantryAI)
-        {
-            InfantrySquad s = new InfantrySquad(squadManager);
-            s.SetTarget(player);
-            s.AddToSquad(enemyAi);
-            for (int i = 0; i < 4; i++) //for now, a squad will always have 5 units
-            {
-                enemyAi = SpawnNewEnemy(aiInfo.enemyType, aiInfo.spawnLocation, player.transform.position) as InfantryAI;
-                s.AddToSquad(enemyAi);
-                squadManager.currentEnemies.Add(enemyAi);
-            }
-            return s;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    internal void SpawnWave(List<Waves.WaveEnemyInfo> ais)
-    {
-        foreach (Waves.WaveEnemyInfo aiInfo in ais)
-        {
-            squadManager.RegisterSquad(SpawnSquad(aiInfo));
+            SpawnNewEnemy(enemyInfo.enemyType, enemyInfo.spawnLocation, player.transform.position);
         }
     }
 
     /// <summary>
     /// This will spawn an enemy of a specific type and then returns that enemy
     /// </summary>
-    /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enenemy Type, AI type, and Gun loadout
+    /// <param name="type"></param> TODO: Will abstractions in factory and eventually specify Enemy Type, AI type, and Gun loadout
     public Ai SpawnNewEnemy(Enemy type, SpawnLocation loc, Vector3 targetLocation)
     {
-        Ai enemy;
+        Ai enemy = ops.RetrieveFromPool(type);
+        enemy.Spawn(biasSpawnVector(loc), targetLocation);
 
-        enemy = ops.SpawnFromPool(type, biasSpawnVector(loc), targetLocation);
-
-        //Init Enemy
-        enemy.NewLife();
         return enemy;
     }
 
 
     #region biasSpawnVector
     /// <summary>
-    /// This method returns a vector a set dinstance away from the player in an arc. With conditions specified in this class
+    /// This method returns a vector a set distance away from the player in an arc. With conditions specified in this class
     /// </summary>
     /// <returns></returns>
     public Vector3 biasSpawnVector(SpawnLocation loc)
     {
         Vector3 forwardVector = player.transform.forward;
         List<Vector3> vectors = new List<Vector3>();
-        switch(loc)
+        switch (loc)
         {
             case (SpawnLocation.Front):
                 vectors.Add(forwardVector);
@@ -139,7 +98,7 @@ public class SquadSpawner : MonoBehaviour
     /// </summary>
     /// <param name="bias"> this is the direction that the bike is already moving </param>
     /// <param name="angle"> the range of degrees that the vector can be rotated to ( 0 to 180 ) </param>
-    /// <param name="distance"> the desired lenght of the spawn vector </param>
+    /// <param name="distance"> the desired length of the spawn vector </param>
     /// <returns></returns>
     public Vector3 biasSpawnVector(Vector3 bias, int angle, int distance)
     {

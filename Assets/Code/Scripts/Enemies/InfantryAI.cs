@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EditorObject;
+using Generic;
 using UnityEngine;
 
 /// <summary>Class<c>InfantryAI</c> 
@@ -15,8 +18,7 @@ public abstract class InfantryAI : Ai
     public override void Attack()
     {
         // TODO: Fix
-        /*
-        if (myGun != null && myGun.CanShootAgain() && alive)
+        /*if (myGun != null && myGun.CanShootAgain())
         {
             this.myGun.PrimaryFire(target.transform.position);
             animationStateController.AimWhileWalking(true);
@@ -25,27 +27,29 @@ public abstract class InfantryAI : Ai
 
     }
 
-    public override void Update()
+    public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection)
     {
         SetAnimationSpeed(rb.velocity.magnitude);
-        base.Update();
+        base.ManualUpdate(enemies, wanderDirection);
     }
 
-    public override void Init()
+    public override void Init(IPoolableInstantiateData stats)
     {
-        alive = true;
+        TestAi aiStats = stats as TestAi;
+        if (!aiStats)
+        {
+            Debug.LogWarning("InfantryAi stats are not readable as TestAi!");
+        }
 
         hp = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
         animationStateController = GetComponent<CyborgAnimationStateController>();
-        this.Despawn += op_ProcessCompleted;
-        hp.Init(StartingHP);
+        hp.Init(aiStats.Health);
 
         // TODO: Fix
         //myGun.Init();
 
-        #region Error Checkers
-
+        // Error checking
         if (animationStateController == null)
         {
             Debug.LogError("This object needs a CyborgAnimationStateController component");
@@ -58,8 +62,8 @@ public abstract class InfantryAI : Ai
         {
             Debug.LogError("This object needs a health component");
         }
-        #endregion
-        base.Init();
+
+        base.Init(stats);
     }
 
     /// <summary>
@@ -78,23 +82,20 @@ public abstract class InfantryAI : Ai
     {
         rb.constraints = RigidbodyConstraints.FreezeAll;
 
-        if (alive)
-        {
-            animationStateController.TriggerDeathA();//TODO: add catch
+        animationStateController.TriggerDeathA();//TODO: add catch
 
-            animationStateController.TriggerDeathA();
+        animationStateController.TriggerDeathA();
 
-            rb.detectCollisions = false;
-            animationStateController.SetAlive(false);
+        rb.detectCollisions = false;
+        animationStateController.SetAlive(false);
 
-        }
         base.Die();
     }
 
-    public override void NewLife() 
+    public override void Reset()
     {
         rb.constraints = RigidbodyConstraints.FreezePositionY;
         animationStateController.SetAlive(true);
-        base.NewLife();
+        base.Reset();
     }
 }

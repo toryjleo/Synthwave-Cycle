@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c69891289777e44284604fee0bad3a0, type: 3}
+  m_Name: WastelandSoul Version 2
+  m_EditorClassIdentifier: 
+  waveSequence: {fileID: 11400000, guid: cc1039780e25ceb44a9bfd4e75df24ce, type: 2}
+  groundMat: {fileID: 2100000, guid: 037981576c74fa741885ba4338aa7b90, type: 2}
+  levelName: Other Wasteland
+  levelImage: {fileID: 0}
+  levelCosmetics: []
+  levelNumber: 1
