@@ -13,7 +13,7 @@ public class BulletPool : MonoBehaviour, IResettable
 
     /// <summary>Initialize this class's variables. A replacement for a constructor.</summary>
     /// <param name="bulletPrefab">The template object for this pool.</param>
-    public void Init(Bullet bulletPrefab, int bulletPoolSize = 100) 
+    public void Init(Bullet bulletPrefab, int bulletPoolSize = 100)
     {
         bulletStartAmnt = bulletPoolSize;
         this.bulletPrefab = bulletPrefab;
@@ -21,7 +21,7 @@ public class BulletPool : MonoBehaviour, IResettable
         {
             bulletQueue = new Queue<Bullet>();
         }
-        if (usedBullets == null) 
+        if (usedBullets == null)
         {
             usedBullets = new ArrayList();
         }
@@ -37,7 +37,7 @@ public class BulletPool : MonoBehaviour, IResettable
     private Bullet CreateNewBullet()
     {
         Bullet newObject = Instantiate(bulletPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        newObject.Init();
+        newObject.Initialize();
         newObject.gameObject.SetActive(false);
         newObject.Despawn += DespawnBullet;
         return newObject;
@@ -45,7 +45,7 @@ public class BulletPool : MonoBehaviour, IResettable
 
     /// <summary>Returns an instance of a bullet from the pool if there is an unused bullet.</summary>
     /// <returns>A currently unused bullet.</returns>
-    public Bullet SpawnFromPool() 
+    public Bullet SpawnFromPool()
     {
         if (bulletQueue.Count == 0)
         {
@@ -79,9 +79,9 @@ public class BulletPool : MonoBehaviour, IResettable
 
     public void ResetGameObject()
     {
-        for (int i = 0; i < usedBullets.Count; i++) 
+        for (int i = 0; i < usedBullets.Count; i++)
         {
-            Bullet b = (Bullet) usedBullets[i];
+            Bullet b = (Bullet)usedBullets[i];
             b.ResetBullet();
             usedBullets.Remove(b);
             bulletQueue.Enqueue(b);

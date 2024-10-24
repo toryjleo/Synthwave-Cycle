@@ -7,15 +7,15 @@ public class VulkanV64Trail : PlayerBullet
 {
     private const float SHOT_RANGE = 100f;
     public TrailRenderer BulletTrail;
-    public override void Init()
+    public override void Initialize()
     {
         muzzleVelocity = 180;
         mass = .1f; //The Mass controlls how slowed down the bike is by recoil
         damageDealt = 1000;
-}
+    }
 
 
-public override void Shoot(Vector3 curPosition, Vector3 direction, Vector3 initialVelocity)
+    public override void Shoot(Vector3 curPosition, Vector3 direction, Vector3 initialVelocity)
     {
         //Debug.Log("VULKAN FIRE!");
         transform.position = curPosition;

@@ -16,13 +16,18 @@ public class SBomberAi : VehicleAi
     [SerializeField]
     GameObject AttackTelegraph; // this object appears and disappears when the target is preparing to attack
 
+    public override void Initialize()
+    {
+
+    }
+
     public override void Attack()
     {
-        if (timeByTarget >= TIME_BY_TARGET_TO_ATTACK && IsAlive())
+        if (timeByTarget >= TIME_BY_TARGET_TO_ATTACK)
         {
             //Dive bomb the player
             vehicleController.enabled = false;
-            this.applyForce(Vector3.Normalize(target.transform.position - this.transform.position) * 1000f);
+            this.ApplyForce(Vector3.Normalize(target.transform.position - this.transform.position) * 1000f);
         }
     }
 
@@ -34,7 +39,7 @@ public class SBomberAi : VehicleAi
     //S-Bomber hovers near player building confidence before charging and exploding
     public override void UpdateMovementLocation()
     {
-        if(timeByTarget >= TIME_BY_TARGET_TO_ATTACK - 3) // Telegraph attack 3 seconds before charge
+        if (timeByTarget >= TIME_BY_TARGET_TO_ATTACK - 3) // Telegraph attack 3 seconds before charge
         {
             AttackTelegraph.SetActive(true);
         }
@@ -52,7 +57,7 @@ public class SBomberAi : VehicleAi
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision != null && collision.collider.gameObject == target) 
+        if (collision != null && collision.collider.gameObject == target)
         {
             target.GetComponent<PlayerHealth>().TakeDamage(ExplosionDamage);
             this.Die();
