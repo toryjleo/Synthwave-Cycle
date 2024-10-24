@@ -79,13 +79,13 @@ namespace Generic
         /// <param name="instantiateCount">number of times to instantiate prefab</param>
         public void PoolObjects(int instantiateCount)
         {
-            if (objectsAwaitingSpawn == null) 
+            if (objectsAwaitingSpawn != null && objectsAwaitingSpawn.Count == 0) 
             {
 
                 while (objectsAwaitingSpawn.Count < instantiateCount)
                 {
-                    Poolable newBullet = CreateNewPoolableObject();
-                    objectsAwaitingSpawn.Enqueue(newBullet);
+                    Poolable newObject = CreateNewPoolableObject();
+                    objectsAwaitingSpawn.Enqueue(newObject);
                 }
             }
             else 
@@ -146,6 +146,7 @@ namespace Generic
         /// </summary>
         public void ResetGameObject()
         {
+            // TODO: when an object gets reset, make sure to not trigger despawn event from SelfWorldDespawn. It will remove itself from objectsInWorld
             for (int i = 0; i < objectsInWorld.Count; i++)
             {
                 Poolable b = (Poolable)objectsInWorld[i];
