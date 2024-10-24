@@ -76,14 +76,13 @@ namespace Generic
         }
 
         /// <summary>
-        /// Must be called after constructor. Fills obect pool with objects
+        /// Must be called after constructor. Fills object pool with objects
         /// </summary>
         /// <param name="instantiateCount">number of times to instantiate prefab</param>
         public void PoolObjects(int instantiateCount)
         {
-            if (objectsAwaitingSpawn == null)
+            if (objectsAwaitingSpawn != null && objectsAwaitingSpawn.Count == 0)
             {
-
                 while (objectsAwaitingSpawn.Count < instantiateCount)
                 {
                     Poolable newBullet = CreateNewPoolableObject();

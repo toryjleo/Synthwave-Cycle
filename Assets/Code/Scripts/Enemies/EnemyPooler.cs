@@ -10,10 +10,6 @@ public enum Enemy
     Rifleman,
     Ranger,
     Shotgun,
-    Bike,
-    Sniper,
-    Dog,
-    Cactus,
     RamCar,
     SBomber
 }
@@ -25,15 +21,15 @@ public enum Enemy
 /// </summary>
 public class EnemyPooler : MonoBehaviour, IResettable
 {
+    // Infantry pool
     public Ai prefab;
     public TestAi testAi;
-    public int poolSize;
+    private ObjectPool infantryPool;
 
-    public Enemy GetTag()
-    {
-        return prefab.GetEnemyType();
-    }
-    private ObjectPool objectPool;
+    //Vehicle pool
+    public Ai vehiclePrefab;
+    public TestAi testVehicleAi;
+    private ObjectPool vehiclePool;
 
     private Vector3 wanderDirection = new Vector3(0, 0, 1);
 
@@ -44,25 +40,31 @@ public class EnemyPooler : MonoBehaviour, IResettable
         Instance = this;
     }
 
-
-    // public List<Pool> pools; //Pools
-    public Dictionary<Enemy, ObjectPool> poolDictionary; //These are the keys 
-
-
     //Creates Pools for each object type 
     void Start()
     {
-        objectPool = new ObjectPool(testAi, prefab);
-        objectPool.PoolObjects(5);
+        //TODO: PoolObjects needs an accurate estimate of pool size
+        infantryPool = new ObjectPool(testAi, prefab);
+        infantryPool.PoolObjects(5);
+
+        vehiclePool = new ObjectPool(testVehicleAi, vehiclePrefab);
+        vehiclePool.PoolObjects(5);
+
         wanderDirection = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
     }
 
     void Update()
     {
-        ArrayList enemiesInWorld = objectPool.ObjectsInWorld;
-        foreach (Ai ai in enemiesInWorld)
+        ArrayList infantryInWorld = infantryPool.ObjectsInWorld;
+        foreach (Ai ai in infantryInWorld)
         {
-            ai.ManualUpdate(enemiesInWorld, wanderDirection);
+            ai.ManualUpdate(infantryInWorld, wanderDirection);
+        }
+
+        ArrayList vehiclesInWorld = vehiclePool.ObjectsInWorld;
+        foreach (Ai ai in vehiclesInWorld)
+        {
+            ai.ManualUpdate(vehiclesInWorld, wanderDirection);
         }
 
         // TODO: Add another foreach to update their positions AFTER they decide where they're going
@@ -77,7 +79,21 @@ public class EnemyPooler : MonoBehaviour, IResettable
     /// <returns></returns>
     public Ai RetrieveFromPool(Enemy tag)
     {
-        Ai objectToSpawn = (Ai)objectPool.SpawnFromPool();
+        Ai objectToSpawn = null;
+        switch (tag)
+        {
+            case Enemy.Rifleman:
+                objectToSpawn = (Ai)infantryPool.SpawnFromPool();
+                break;
+
+            case Enemy.RamCar:
+                objectToSpawn = (Ai)vehiclePool.SpawnFromPool();
+                break;
+
+            default:
+                Debug.LogError("Enemy tag does not match existing enemy types!");
+                break;
+        }
 
         if (!objectToSpawn)
         {
@@ -89,6 +105,7 @@ public class EnemyPooler : MonoBehaviour, IResettable
 
     public void ResetGameObject()
     {
-        objectPool.ResetGameObject();
+        infantryPool.ResetGameObject();
+        vehiclePool.ResetGameObject();
     }
 }

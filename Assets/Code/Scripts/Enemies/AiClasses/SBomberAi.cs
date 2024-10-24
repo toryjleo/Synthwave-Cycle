@@ -16,6 +16,11 @@ public class SBomberAi : VehicleAi
     [SerializeField]
     GameObject AttackTelegraph; // this object appears and disappears when the target is preparing to attack
 
+    public override void Initialize()
+    {
+
+    }
+
     public override void Attack()
     {
         if (timeByTarget >= TIME_BY_TARGET_TO_ATTACK)

@@ -116,7 +116,7 @@ public abstract class Ai : Poolable
     /// <summary>
     /// Initializes the stateController for the Ai unit, and sets up event handlers
     /// </summary>
-    public void InitStateController()
+    public virtual void InitStateController()
     {
         stateController = new AIState.StateController(true);
         stateController.inRange.notifyListenersEnter += HandleInRangeEnter;
@@ -205,7 +205,7 @@ public abstract class Ai : Poolable
         stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
     }
 
-    public void HandleInPoolExit()
+    public virtual void HandleInPoolExit()
     {
         hp.Init(StartingHP);
         RespawnEvent?.Invoke();
