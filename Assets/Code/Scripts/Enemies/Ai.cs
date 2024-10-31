@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using EditorObject;
 using Generic;
 using UnityEngine;
 
@@ -8,39 +9,35 @@ public delegate void NotifyRespawn();
 
 public abstract class Ai : Poolable
 {
-    public abstract Enemy GetEnemyType();
-
     #region Variables for Setup.
-
     protected AIState.StateController stateController = null;
     public PlayerHealth playerHealth;
     public GameObject target;
     public Rigidbody rb;
     public Gun myGun;
-    public bool canAim = false;
     public Health hp;
-
-    public float StartingHP;
+    protected AiStats stats;
 
     internal float maxSpeed;
-    public float maxForce;
-    public float score;
-    public float dlScore;
-    protected float attackRange = 15;
-    public float minimumRange;
-    internal float TIME_BY_TARGET_TO_ATTACK;
     internal float timeByTarget = 0;
+
+    // public bool canAim = false;
+    // public float StartingHP;
+    // public float maxForce;
+    // public float dlScore;
+    // protected float attackRange = 15;
+    // public float minimumRange;
+    // internal float TIME_BY_TARGET_TO_ATTACK;
 
     public bool inWorld = false;
 
     //Each enemy's speed is relative to a player's gear
-    [SerializeField] public int movementGroup;
+    // [SerializeField] public int movementGroup;
     //Top speed is determined as a percentage of the gear's max speed
-    [SerializeField] public float gearModifier;
+    // [SerializeField] public float gearModifier;
 
     public event NotifyDeath DeadEvent;
     public event NotifyRespawn RespawnEvent;
-
     #endregion
 
     // Update is called once per frame
@@ -69,17 +66,17 @@ public abstract class Ai : Poolable
         else if (stateController.isInRange)
         {
             Move(target.transform.position, enemies);
-            CountDownTimeByTarget(Time.deltaTime);
+            CountDownTimeByTarget(Time.fixedDeltaTime);
         }
 
-        if (Vector3.Distance(transform.position, target.transform.position) <= attackRange)
+        if (Vector3.Distance(transform.position, target.transform.position) <= stats.AttackRange)
         {
             stateController.HandleTrigger(AIState.StateTrigger.InRange);
         }
 
         if (stateController.isInRange || stateController.isAttacking)
         {
-            if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
+            if (Vector3.Distance(transform.position, target.transform.position) > stats.AttackRange)
             {
                 stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
             }
@@ -93,21 +90,26 @@ public abstract class Ai : Poolable
 
     public override void Init(IPoolableInstantiateData stats)
     {
+        this.stats = (AiStats)stats;
+        if (!this.stats)
+        {
+            Debug.LogError("AI Stats are not initialized correctly!");
+        }
         InitStateController();
 
         PlayerMovement pm = FindObjectOfType<PlayerMovement>();
         if (pm != null)
         {
-            switch (movementGroup)
+            switch (this.stats.MovementGroup)
             {
                 case 1:
-                    maxSpeed = pm.TopSpeedMovementGroup1 * gearModifier;
+                    maxSpeed = pm.TopSpeedMovementGroup1 * this.stats.GearModifier;
                     break;
                 case 2:
-                    maxSpeed = pm.TopSpeedMovementGroup2 * gearModifier;
+                    maxSpeed = pm.TopSpeedMovementGroup2 * this.stats.GearModifier;
                     break;
                 case 3:
-                    maxSpeed = pm.TopSpeedMovementGroup3 * gearModifier;
+                    maxSpeed = pm.TopSpeedMovementGroup3 * this.stats.GearModifier;
                     break;
             }
         }
@@ -138,7 +140,7 @@ public abstract class Ai : Poolable
         transform.rotation = Quaternion.LookRotation(playerLocation - position);
         gameObject.SetActive(true);
 
-        TIME_BY_TARGET_TO_ATTACK = 2.0f;
+        // TIME_BY_TARGET_TO_ATTACK = 2.0f;
 
         stateController.HandleTrigger(AIState.StateTrigger.Spawning);
         inWorld = true;
@@ -154,7 +156,7 @@ public abstract class Ai : Poolable
         // TODO: Subtract deltaTime if out of range, rather than set it to 0
         // Handle attack timing
         timeByTarget += deltaTime;
-        if (timeByTarget > TIME_BY_TARGET_TO_ATTACK)
+        if (timeByTarget > stats.TimeToAttack)
         {
             stateController.HandleTrigger(AIState.StateTrigger.CountdownToAttackComplete);
         }
@@ -189,14 +191,14 @@ public abstract class Ai : Poolable
     public abstract void Attack();
 
     #region EventHandlers
-    public void HandleInRangeEnter()
+    public virtual void HandleInRangeEnter()
     {
         timeByTarget = 0;
     }
 
     public void HandleAttackingEnter()
     {
-        if (canAim)
+        if (stats.CanAim)
         {
             Aim(target.transform.position);
         }
@@ -207,7 +209,7 @@ public abstract class Ai : Poolable
 
     public virtual void HandleInPoolExit()
     {
-        hp.Init(StartingHP);
+        hp.Init(stats.Health);
         RespawnEvent?.Invoke();
         rb.detectCollisions = true;
 
@@ -249,7 +251,7 @@ public abstract class Ai : Poolable
         // this creates a magnitude of the desired vector. This is the distance between the points
         float dMag = desiredVec.magnitude;
         // dMag is the distance between the two objects, by subtracting this, I make it so the object doesn't desire to move as far.
-        dMag -= minimumRange;
+        dMag -= stats.FollowRange;
 
         // one the distance is measured this vector can now be used to actually generate movement, 
         // but that movement has to be constant or at least adaptable, which is what the next part does
@@ -330,10 +332,10 @@ public abstract class Ai : Poolable
                 sum *= maxSpeed;
 
                 Vector3 steer = (sum - rb.velocity) * separateForce;
-                if (steer.magnitude > maxForce)
+                if (steer.magnitude > stats.MaxForce)
                 {
                     steer.Normalize();
-                    steer *= maxForce;
+                    steer *= stats.MaxForce;
                 }
 
                 ApplyForce(steer);
@@ -377,10 +379,10 @@ public abstract class Ai : Poolable
                 sum *= maxSpeed;
 
                 Vector3 steer = (sum - rb.velocity) * groupForce;
-                if (steer.magnitude > maxForce)
+                if (steer.magnitude > stats.MaxForce)
                 {
                     steer.Normalize();
-                    steer *= maxForce;
+                    steer *= stats.MaxForce;
                 }
 
                 ApplyForce(steer);
@@ -390,6 +392,11 @@ public abstract class Ai : Poolable
     #endregion
 
     #region Getters & Setters
+    public Enemy GetEnemyType()
+    {
+        return stats.EnemyType;
+    }
+
     /// <summary>
     /// This method sets the target of the entity
     /// </summary>

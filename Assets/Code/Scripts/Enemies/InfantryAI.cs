@@ -11,7 +11,7 @@ using UnityEngine;
 /// <summary>Class<c>InfantryAI</c> 
 /// Infantry AI is the abstract base class for all enemy footsoldiers
 /// This handles their movement, combat, animation, and respawning
-public abstract class InfantryAI : Ai
+public class InfantryAI : Ai
 {
     public CyborgAnimationStateController animationStateController;
 
@@ -32,7 +32,7 @@ public abstract class InfantryAI : Ai
 
     public override void Init(IPoolableInstantiateData stats)
     {
-        TestAi aiStats = stats as TestAi;
+        AiStats aiStats = stats as AiStats;
         if (!aiStats)
         {
             Debug.LogWarning("InfantryAi stats are not readable as TestAi!");
@@ -93,5 +93,10 @@ public abstract class InfantryAI : Ai
         rb.constraints = RigidbodyConstraints.FreezePositionY;
         animationStateController.SetAlive(true);
         base.Reset();
+    }
+
+    public override void Initialize()
+    {
+
     }
 }

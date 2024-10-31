@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7170651920001017730}
   - component: {fileID: 7170651920001017758}
+  - component: {fileID: 1372781055139873487}
   m_Layer: 0
   m_Name: BasicRifle
   m_TagString: Untagged
@@ -43,4 +44,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa987e93736888479b5de2bde076380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PickupSound: {fileID: 0}
   bulletPrefab: {fileID: 1463605476535994620, guid: fe41a6c58344d5f4e9c070825c6717cc, type: 3}
+  infiniteAmmo: 0
+  bulletPoolSize: 100
+--- !u!114 &1372781055139873487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7170651920001017759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d22e5398f873aa048b94156dd1ab8ac0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

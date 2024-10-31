@@ -23,12 +23,12 @@ public class EnemyPooler : MonoBehaviour, IResettable
 {
     // Infantry pool
     public Ai prefab;
-    public TestAi testAi;
+    public AiStats testAi;
     private ObjectPool infantryPool;
 
     //Vehicle pool
     public Ai vehiclePrefab;
-    public TestAi testVehicleAi;
+    public AiStats testVehicleAi;
     private ObjectPool vehiclePool;
 
     private Vector3 wanderDirection = new Vector3(0, 0, 1);
@@ -53,7 +53,7 @@ public class EnemyPooler : MonoBehaviour, IResettable
         wanderDirection = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
     }
 
-    void Update()
+    void FixedUpdate()
     {
         ArrayList infantryInWorld = infantryPool.ObjectsInWorld;
         foreach (Ai ai in infantryInWorld)
