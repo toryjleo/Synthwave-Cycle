@@ -174,6 +174,11 @@ public abstract class Ai : Poolable
         {
             myGun.StopAllCoroutines();
         }
+
+        if (DangerLevel.Instance)
+        {
+            DangerLevel.Instance.IncreaseDangerLevel(stats.DlScore);
+        }
     }
 
     /// <summary>
@@ -303,7 +308,7 @@ public abstract class Ai : Poolable
     /// <param name="pool">Pool is the grouping of all of the AI controlled entities in the boid that need to be separated from one another</param>
     public void Separate(ArrayList pool)
     {
-        float separateForce = 1.1f;
+        float separateForce = 0.8f;
         float maxDistanceToSeparate = 100;
 
         //the vector that will be used to calculate flee behavior if a too close interaction happens

@@ -111,7 +111,7 @@ public abstract class VehicleAi : Ai
                                 Random.Range(-minMaxTorque, minMaxTorque)),
                                 ForceMode.Impulse);
         vehicleController.enabled = false;
-        Instantiate(itemDrop, this.transform.position, Quaternion.identity);
+        // Instantiate(itemDrop, this.transform.position, Quaternion.identity);
 
         base.Die();
     }

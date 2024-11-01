@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7860270618891034725}
   - component: {fileID: 8322042474871780460}
   - component: {fileID: 2221135820923440448}
+  - component: {fileID: 7800266508945019537}
   m_Layer: 0
   m_Name: ShotGun
   m_TagString: Untagged
@@ -52,4 +53,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f50cc909aa1be9442b635eeb4b851004, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PickupSound: {fileID: 0}
   bulletPrefab: {fileID: 6138541139758770455, guid: b64408ecfbd537844a9c43bda34a7862, type: 3}
+  infiniteAmmo: 0
+  bulletPoolSize: 100
+--- !u!114 &7800266508945019537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356847057105997949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d22e5398f873aa048b94156dd1ab8ac0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

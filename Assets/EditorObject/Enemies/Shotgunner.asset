@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28e193756adab594da5aa06ef7f53a37, type: 3}
-  m_Name: Ramcar
+  m_Name: Shotgunner
   m_EditorClassIdentifier: 
-  health: 50
+  health: 25
   movementGroup: 1
   gearModifier: 0.8
-  maxForce: 10
-  dlScore: 35
-  attackRange: 25
-  followRange: 20
+  maxForce: 1
+  dlScore: 15
+  attackRange: 10
+  followRange: 5
   timeToAttack: 4
-  canAim: 0
-  enemyType: 3
+  canAim: 1
+  enemyType: 2

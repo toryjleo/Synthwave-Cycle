@@ -33,7 +33,7 @@ namespace EditorObject
         /// <summary>
         /// The amount of danger level score an enemy gives upon death
         /// </summary>
-        [SerializeField] private float dlScore = 10;
+        [SerializeField] private int dlScore = 10;
 
         /// <summary>
         /// The distance from the target an enemy has to be to start counting down to attack
@@ -64,7 +64,7 @@ namespace EditorObject
         public float MovementGroup { get => movementGroup; }
         public float GearModifier { get => gearModifier; }
         public float MaxForce { get => maxForce; }
-        public float DlScore { get => dlScore; }
+        public int DlScore { get => dlScore; }
         public float AttackRange { get => attackRange; }
         public float FollowRange { get => followRange; }
         public float TimeToAttack { get => timeToAttack; }

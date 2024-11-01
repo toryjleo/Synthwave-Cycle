@@ -21,15 +21,35 @@ public enum Enemy
 /// </summary>
 public class EnemyPooler : MonoBehaviour, IResettable
 {
-    // Infantry pool
-    public Ai prefab;
-    public AiStats testAi;
-    private ObjectPool infantryPool;
+    #region Infantry Pools
+    // Rifleman pool
+    public Ai riflemanPrefab;
+    public AiStats riflemanAi;
+    private ObjectPool riflemanPool;
 
-    //Vehicle pool
-    public Ai vehiclePrefab;
-    public AiStats testVehicleAi;
-    private ObjectPool vehiclePool;
+    // Ranger pool
+    public Ai rangerPrefab;
+    public AiStats rangerAi;
+    private ObjectPool rangerPool;
+
+    // Shotgunner pool
+    public Ai shotgunnerPrefab;
+    public AiStats shotgunnerAi;
+    private ObjectPool shotgunnerPool;
+
+    #endregion
+
+    #region Vehicle Pools
+    // Ram Car pool
+    public Ai ramCarPrefab;
+    public AiStats ramCarAi;
+    private ObjectPool ramCarPool;
+
+    // S Bomber pool
+    public Ai sbomberPrefab;
+    public AiStats sbomberAi;
+    private ObjectPool sbomberPool;
+    #endregion
 
     private Vector3 wanderDirection = new Vector3(0, 0, 1);
 
@@ -44,27 +64,54 @@ public class EnemyPooler : MonoBehaviour, IResettable
     void Start()
     {
         //TODO: PoolObjects needs an accurate estimate of pool size
-        infantryPool = new ObjectPool(testAi, prefab);
-        infantryPool.PoolObjects(5);
+        riflemanPool = new ObjectPool(riflemanAi, riflemanPrefab);
+        riflemanPool.PoolObjects(10);
 
-        vehiclePool = new ObjectPool(testVehicleAi, vehiclePrefab);
-        vehiclePool.PoolObjects(5);
+        shotgunnerPool = new ObjectPool(shotgunnerAi, shotgunnerPrefab);
+        shotgunnerPool.PoolObjects(10);
+
+        rangerPool = new ObjectPool(rangerAi, rangerPrefab);
+        rangerPool.PoolObjects(10);
+
+        ramCarPool = new ObjectPool(ramCarAi, ramCarPrefab);
+        ramCarPool.PoolObjects(5);
+
+        sbomberPool = new ObjectPool(sbomberAi, sbomberPrefab);
+        sbomberPool.PoolObjects(5);
 
         wanderDirection = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
     }
 
     void FixedUpdate()
     {
-        ArrayList infantryInWorld = infantryPool.ObjectsInWorld;
-        foreach (Ai ai in infantryInWorld)
+        ArrayList riflemenInWorld = riflemanPool.ObjectsInWorld;
+        foreach (Ai ai in riflemenInWorld)
         {
-            ai.ManualUpdate(infantryInWorld, wanderDirection);
+            ai.ManualUpdate(riflemenInWorld, wanderDirection);
         }
 
-        ArrayList vehiclesInWorld = vehiclePool.ObjectsInWorld;
-        foreach (Ai ai in vehiclesInWorld)
+        ArrayList shotgunnersInWorld = shotgunnerPool.ObjectsInWorld;
+        foreach (Ai ai in shotgunnersInWorld)
         {
-            ai.ManualUpdate(vehiclesInWorld, wanderDirection);
+            ai.ManualUpdate(shotgunnersInWorld, wanderDirection);
+        }
+
+        ArrayList rangersInWorld = rangerPool.ObjectsInWorld;
+        foreach (Ai ai in rangersInWorld)
+        {
+            ai.ManualUpdate(rangersInWorld, wanderDirection);
+        }
+
+        ArrayList ramCarsInWorld = ramCarPool.ObjectsInWorld;
+        foreach (Ai ai in ramCarsInWorld)
+        {
+            ai.ManualUpdate(ramCarsInWorld, wanderDirection);
+        }
+
+        ArrayList sbombersInWorld = sbomberPool.ObjectsInWorld;
+        foreach (Ai ai in sbombersInWorld)
+        {
+            ai.ManualUpdate(sbombersInWorld, wanderDirection);
         }
 
         // TODO: Add another foreach to update their positions AFTER they decide where they're going
@@ -83,11 +130,23 @@ public class EnemyPooler : MonoBehaviour, IResettable
         switch (tag)
         {
             case Enemy.Rifleman:
-                objectToSpawn = (Ai)infantryPool.SpawnFromPool();
+                objectToSpawn = (Ai)riflemanPool.SpawnFromPool();
+                break;
+
+            case Enemy.Shotgun:
+                objectToSpawn = (Ai)shotgunnerPool.SpawnFromPool();
+                break;
+
+            case Enemy.Ranger:
+                objectToSpawn = (Ai)rangerPool.SpawnFromPool();
                 break;
 
             case Enemy.RamCar:
-                objectToSpawn = (Ai)vehiclePool.SpawnFromPool();
+                objectToSpawn = (Ai)ramCarPool.SpawnFromPool();
+                break;
+
+            case Enemy.SBomber:
+                objectToSpawn = (Ai)sbomberPool.SpawnFromPool();
                 break;
 
             default:
@@ -105,7 +164,10 @@ public class EnemyPooler : MonoBehaviour, IResettable
 
     public void ResetGameObject()
     {
-        infantryPool.ResetGameObject();
-        vehiclePool.ResetGameObject();
+        riflemanPool.ResetGameObject();
+        shotgunnerPool.ResetGameObject();
+        rangerPool.ResetGameObject();
+        ramCarPool.ResetGameObject();
+        sbomberPool.ResetGameObject();
     }
 }
