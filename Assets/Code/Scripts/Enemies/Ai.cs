@@ -337,10 +337,10 @@ public abstract class Ai : Poolable
                 sum *= maxSpeed;
 
                 Vector3 steer = (sum - rb.velocity) * separateForce;
-                if (steer.magnitude > stats.MaxForce)
+                if (steer.magnitude > stats.MaxMovementForce)
                 {
                     steer.Normalize();
-                    steer *= stats.MaxForce;
+                    steer *= stats.MaxMovementForce;
                 }
 
                 ApplyForce(steer);
@@ -384,10 +384,10 @@ public abstract class Ai : Poolable
                 sum *= maxSpeed;
 
                 Vector3 steer = (sum - rb.velocity) * groupForce;
-                if (steer.magnitude > stats.MaxForce)
+                if (steer.magnitude > stats.MaxMovementForce)
                 {
                     steer.Normalize();
-                    steer *= stats.MaxForce;
+                    steer *= stats.MaxMovementForce;
                 }
 
                 ApplyForce(steer);

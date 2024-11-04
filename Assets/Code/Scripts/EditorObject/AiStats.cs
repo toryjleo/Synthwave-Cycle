@@ -5,11 +5,9 @@ using UnityEngine;
 
 namespace EditorObject
 {
-    [CreateAssetMenu(menuName = "Enemy/AI Stats", fileName = "New AI Stats")]
+    [CreateAssetMenu(menuName = "AI Stats", fileName = "New AI Stats")]
     public class AiStats : ScriptableObject, IPoolableInstantiateData
     {
-        // TODO: Enemy type
-
         /// <summary>
         /// The health points the enemy starts with
         /// </summary>
@@ -28,10 +26,10 @@ namespace EditorObject
         /// <summary>
         /// The maximum force determines how quickly an enemy groups and separates
         /// </summary>
-        [SerializeField] private float maxForce = 1;
+        [SerializeField] private float maxMovementForce = 1;
 
         /// <summary>
-        /// The amount of danger level score an enemy gives upon death
+        /// The amount of danger level score an enemy gives upon death, measured in meters
         /// </summary>
         [SerializeField] private int dlScore = 10;
 
@@ -41,7 +39,7 @@ namespace EditorObject
         [SerializeField] private float attackRange = 15;
 
         /// <summary>
-        /// The distance away from the player that an enemy will follow when Chasing
+        /// The distance away from the player that an enemy will follow when Chasing, measured in meters
         /// </summary>
         [SerializeField] private float followRange = 10;
 
@@ -63,7 +61,7 @@ namespace EditorObject
         public float Health { get => health; }
         public float MovementGroup { get => movementGroup; }
         public float GearModifier { get => gearModifier; }
-        public float MaxForce { get => maxForce; }
+        public float MaxMovementForce { get => maxMovementForce; }
         public int DlScore { get => dlScore; }
         public float AttackRange { get => attackRange; }
         public float FollowRange { get => followRange; }
