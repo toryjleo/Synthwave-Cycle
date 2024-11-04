@@ -4,7 +4,7 @@ using EditorObject;
 using Generic;
 using UnityEngine;
 
-public delegate void NotifyDeath();  // delegate
+public delegate void NotifyDeath();
 public delegate void NotifyRespawn();
 
 public abstract class Ai : Poolable
@@ -21,20 +21,7 @@ public abstract class Ai : Poolable
     internal float maxSpeed;
     internal float timeByTarget = 0;
 
-    // public bool canAim = false;
-    // public float StartingHP;
-    // public float maxForce;
-    // public float dlScore;
-    // protected float attackRange = 15;
-    // public float minimumRange;
-    // internal float TIME_BY_TARGET_TO_ATTACK;
-
     public bool inWorld = false;
-
-    //Each enemy's speed is relative to a player's gear
-    // [SerializeField] public int movementGroup;
-    //Top speed is determined as a percentage of the gear's max speed
-    // [SerializeField] public float gearModifier;
 
     public event NotifyDeath DeadEvent;
     public event NotifyRespawn RespawnEvent;
@@ -139,8 +126,6 @@ public abstract class Ai : Poolable
         transform.position = position;
         transform.rotation = Quaternion.LookRotation(playerLocation - position);
         gameObject.SetActive(true);
-
-        // TIME_BY_TARGET_TO_ATTACK = 2.0f;
 
         stateController.HandleTrigger(AIState.StateTrigger.Spawning);
         inWorld = true;
@@ -281,14 +266,17 @@ public abstract class Ai : Poolable
     /// <summary>
     /// This method is used for when an AI has no target and will move around in a Boid fashion
     /// </summary>
-    public void Wander(Vector3 wanderDirection) //cause the character to wander
+    public void Wander(Vector3 wanderDirection)
     {
-        Vector3 forward = rb.transform.forward; //The normalized vector of which direction the RB is facing
-        forward += wanderDirection; //adds a small offset to the forward vector.
+        // The normalized vector of which direction the RB is facing
+        Vector3 forward = rb.transform.forward;
+        // Adds a small offset to the forward vector.
+        forward += wanderDirection;
 
         transform.LookAt(forward + transform.position); //TODO make this look way nicer
 
-        Vector3 steer = forward - rb.velocity; //Subtract Velocity so we are not constantly adding to the velocity of the Entity
+        // Subtract Velocity so we are not constantly adding to the velocity of the Entity
+        Vector3 steer = forward - rb.velocity;
         ApplyForce(steer);
 
     }
