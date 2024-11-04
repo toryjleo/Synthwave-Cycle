@@ -28,7 +28,7 @@ public class RamCarAi : VehicleAi
         if (target != null)
         {
             //have we hovered by the player long enough to attack?
-            movementTargetPosition.transform.position = stats.FollowRange * Vector3.Normalize(this.transform.position - target.transform.position) + target.transform.position;
+            movementTargetPosition.transform.position = stats.ChaseRange * Vector3.Normalize(this.transform.position - target.transform.position) + target.transform.position;
             vehicleController.target = movementTargetPosition.transform;
         }
     }

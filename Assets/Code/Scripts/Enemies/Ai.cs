@@ -234,14 +234,14 @@ public abstract class Ai : Poolable
 
     public void Chase(Vector3 target)
     {
-        float desiredChase = 1;
+        float desiredChase = stats.MaxChaseForce;
 
         // this logic creates the vector between where the entity is and where it wants to be
         Vector3 desiredVec = target - transform.position;
         // this creates a magnitude of the desired vector. This is the distance between the points
         float dMag = desiredVec.magnitude;
         // dMag is the distance between the two objects, by subtracting this, I make it so the object doesn't desire to move as far.
-        dMag -= stats.FollowRange;
+        dMag -= stats.ChaseRange;
 
         // one the distance is measured this vector can now be used to actually generate movement, 
         // but that movement has to be constant or at least adaptable, which is what the next part does
@@ -296,8 +296,8 @@ public abstract class Ai : Poolable
     /// <param name="pool">Pool is the grouping of all of the AI controlled entities in the boid that need to be separated from one another</param>
     public void Separate(ArrayList pool)
     {
-        float separateForce = 0.8f;
-        float maxDistanceToSeparate = 100;
+        float separateForce = stats.MaxSeparateForce;
+        float maxDistanceToSeparate = stats.SeparateRange;
 
         //the vector that will be used to calculate flee behavior if a too close interaction happens
         Vector3 sum = new Vector3();
@@ -343,8 +343,8 @@ public abstract class Ai : Poolable
     /// <param name="pool"></param>
     public void Group(ArrayList pool)
     {
-        float groupForce = 1.2f;
-        float maxDistanceToGroup = 100;
+        float groupForce = stats.MaxGroupingForce;
+        float maxDistanceToGroup = stats.GroupingRange;
 
         //the vector that will be used to calculate flee behavior if a too far interaction happens
         Vector3 sum = new Vector3();

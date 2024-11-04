@@ -29,19 +29,44 @@ namespace EditorObject
         [SerializeField] private float maxMovementForce = 1;
 
         /// <summary>
-        /// The amount of danger level score an enemy gives upon death, measured in meters
+        /// The maximum chase force determines how much priority chasing has
         /// </summary>
-        [SerializeField] private int dlScore = 10;
-
-        /// <summary>
-        /// The distance from the target an enemy has to be to start counting down to attack
-        /// </summary>
-        [SerializeField] private float attackRange = 15;
+        [SerializeField] private float maxChaseForce = 1;
 
         /// <summary>
         /// The distance away from the player that an enemy will follow when Chasing, measured in meters
         /// </summary>
-        [SerializeField] private float followRange = 10;
+        [SerializeField] private float chaseRange = 10;
+
+        /// <summary>
+        /// The maximum grouping force determines how much priority grouping has
+        /// </summary>
+        [SerializeField] private float maxGroupingForce = 1;
+
+        /// <summary>
+        /// The distance between other units of the same type to stay between, measured in meters
+        /// </summary>
+        [SerializeField] private float groupingRange = 10;
+
+        /// <summary>
+        /// The maximum separate force determines how much priority separating has
+        /// </summary>
+        [SerializeField] private float maxSeparateForce = 1;
+
+        /// <summary>
+        /// The distance away from other units of the same type to keep from, measured in meters
+        /// </summary>
+        [SerializeField] private float separateRange = 10;
+
+        /// <summary>
+        /// The amount of danger level score an enemy gives upon death
+        /// </summary>
+        [SerializeField] private int dlScore = 10;
+
+        /// <summary>
+        /// The distance from the target an enemy has to be to start counting down to attack, measured in meters
+        /// </summary>
+        [SerializeField] private float attackRange = 15;
 
         /// <summary>
         /// The amount of time (seconds) it takes while an enemy is in range to attack
@@ -62,9 +87,14 @@ namespace EditorObject
         public float MovementGroup { get => movementGroup; }
         public float GearModifier { get => gearModifier; }
         public float MaxMovementForce { get => maxMovementForce; }
+        public float MaxChaseForce { get => maxChaseForce; }
+        public float ChaseRange { get => chaseRange; }
+        public float MaxGroupingForce { get => maxGroupingForce; }
+        public float GroupingRange { get => groupingRange; }
+        public float MaxSeparateForce { get => maxSeparateForce; }
+        public float SeparateRange { get => separateRange; }
         public int DlScore { get => dlScore; }
         public float AttackRange { get => attackRange; }
-        public float FollowRange { get => followRange; }
         public float TimeToAttack { get => timeToAttack; }
         public bool CanAim { get => canAim; }
         public Enemy EnemyType { get => enemyType; }
