@@ -45,10 +45,9 @@ public abstract class VehicleAi : Ai
         UpdateMovementLocation();
     }
 
-    // TODO: rename to Init
     public override void Init(IPoolableInstantiateData stats)
     {
-        TestAi aiStats = stats as TestAi;
+        AiStats aiStats = stats as AiStats;
         if (!aiStats)
         {
             Debug.LogWarning("InfantryAi stats are not readable as TestAi!");
@@ -69,6 +68,8 @@ public abstract class VehicleAi : Ai
     // {
     //     base.InitStateController();
     // }
+
+    // TODO: Follow the player until inRange, THEN set their vehicle target to attack
 
     public override void HandleInPoolExit()
     {
@@ -110,7 +111,6 @@ public abstract class VehicleAi : Ai
                                 Random.Range(-minMaxTorque, minMaxTorque)),
                                 ForceMode.Impulse);
         vehicleController.enabled = false;
-        Instantiate(itemDrop, this.transform.position, Quaternion.identity);
 
         base.Die();
     }

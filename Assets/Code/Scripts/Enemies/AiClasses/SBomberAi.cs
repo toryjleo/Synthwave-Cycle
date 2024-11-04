@@ -23,7 +23,7 @@ public class SBomberAi : VehicleAi
 
     public override void Attack()
     {
-        if (timeByTarget >= TIME_BY_TARGET_TO_ATTACK)
+        if (timeByTarget >= stats.TimeToAttack)
         {
             //Dive bomb the player
             vehicleController.enabled = false;
@@ -31,15 +31,10 @@ public class SBomberAi : VehicleAi
         }
     }
 
-    public override Enemy GetEnemyType()
-    {
-        return Enemy.SBomber;
-    }
-
     //S-Bomber hovers near player building confidence before charging and exploding
     public override void UpdateMovementLocation()
     {
-        if (timeByTarget >= TIME_BY_TARGET_TO_ATTACK - 3) // Telegraph attack 3 seconds before charge
+        if (timeByTarget >= stats.TimeToAttack - 3) // Telegraph attack 3 seconds before charge
         {
             AttackTelegraph.SetActive(true);
         }

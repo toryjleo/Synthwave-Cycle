@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28e193756adab594da5aa06ef7f53a37, type: 3}
+  m_Name: S Bomber
+  m_EditorClassIdentifier: 
+  health: 20
+  movementGroup: 2
+  gearModifier: 0.8
+  maxForce: 1
+  dlScore: 20
+  attackRange: 20
+  followRange: 15
+  timeToAttack: 3
+  canAim: 0
+  enemyType: 4

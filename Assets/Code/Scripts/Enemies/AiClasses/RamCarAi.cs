@@ -23,13 +23,13 @@ public class RamCarAi : VehicleAi
         }
     }
 
-    public override Enemy GetEnemyType()
-    {
-        return Enemy.RamCar;
-    }
-
     public override void UpdateMovementLocation() // TODO: Use this function to follow player (?)
     {
-
+        if (target != null)
+        {
+            //have we hovered by the player long enough to attack?
+            movementTargetPosition.transform.position = stats.FollowRange * Vector3.Normalize(this.transform.position - target.transform.position) + target.transform.position;
+            vehicleController.target = movementTargetPosition.transform;
+        }
     }
 }

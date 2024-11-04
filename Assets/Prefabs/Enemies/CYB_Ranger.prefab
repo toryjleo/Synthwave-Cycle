@@ -1326,8 +1326,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3874834857555224723}
+  - component: {fileID: -2145616964191635160}
   - component: {fileID: 3874834857555224720}
-  - component: {fileID: 2850074470081858160}
   - component: {fileID: 412237147971708079}
   - component: {fileID: 3940266983991501729}
   - component: {fileID: 4778989695465176760}
@@ -1355,6 +1355,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -139.602, z: 0}
+--- !u!114 &-2145616964191635160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3874834857555224733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e9bfbb75f055540a4a10f6aa5a4a62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHealth: {fileID: 0}
+  target: {fileID: 0}
+  rb: {fileID: 3874834857555224720}
+  myGun: {fileID: -5146753335091157031, guid: 7088fbbd6fe8b7d45ac649ee3bd8aae2, type: 3}
+  hp: {fileID: 4778989695465176760}
+  inWorld: 0
+  animationStateController: {fileID: 3940266983991501729}
 --- !u!54 &3874834857555224720
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1371,33 +1390,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &2850074470081858160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3874834857555224733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 641d9f33bd220814f81f3ca112de2bff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  rb: {fileID: 3874834857555224720}
-  myGun: {fileID: 882235653858335254}
-  hp: {fileID: 0}
-  StartingHP: 15
-  maxForce: 10
-  score: 100
-  dlScore: 10
-  attackRange: 90
-  minimumRange: 10
-  alive: 0
-  movementGroup: 2
-  gearModifier: 0.75
-  animationStateController: {fileID: 0}
-  muzzleLocation: {fileID: 0}
 --- !u!136 &412237147971708079
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1876,14 +1868,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7860270618891034725, guid: 7088fbbd6fe8b7d45ac649ee3bd8aae2, type: 3}
   m_PrefabInstance: {fileID: 3795790921392242127}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &882235653858335254 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -5146753335091157031, guid: 7088fbbd6fe8b7d45ac649ee3bd8aae2, type: 3}
-  m_PrefabInstance: {fileID: 3795790921392242127}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13dd56a01b9c8c64594a5b40c354298d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

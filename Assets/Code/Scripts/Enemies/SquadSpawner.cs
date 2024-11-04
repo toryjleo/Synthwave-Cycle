@@ -39,7 +39,10 @@ public class SquadSpawner : MonoBehaviour
     {
         foreach (Waves.WaveEnemyInfo enemyInfo in enemiesToSpawn)
         {
-            SpawnNewEnemy(enemyInfo.enemyType, enemyInfo.spawnLocation, player.transform.position);
+            for (int i = 0; i < enemyInfo.enemyAmount; i++)
+            {
+                SpawnNewEnemy(enemyInfo.enemyType, enemyInfo.spawnLocation, player.transform.position);
+            }
         }
     }
 

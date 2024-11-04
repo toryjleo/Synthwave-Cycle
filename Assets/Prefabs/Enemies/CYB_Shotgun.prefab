@@ -1546,7 +1546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3892049325346874338}
-  - component: {fileID: 8118981365188568940}
+  - component: {fileID: 2727301570077465994}
   - component: {fileID: 2114404339180774918}
   - component: {fileID: 6293195935236756366}
   - component: {fileID: 6128039659088265392}
@@ -1575,7 +1575,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8118981365188568940
+--- !u!114 &2727301570077465994
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1584,24 +1584,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7978806473477363408}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab3a7d0d9bf612a4c86530f01f5718d9, type: 3}
+  m_Script: {fileID: 11500000, guid: 15e9bfbb75f055540a4a10f6aa5a4a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHealth: {fileID: 0}
   target: {fileID: 0}
   rb: {fileID: 2114404339180774918}
-  myGun: {fileID: 4935205766387807532}
-  hp: {fileID: 0}
-  StartingHP: 40
-  maxForce: 0
-  score: 300
-  dlScore: 5
-  attackRange: 7
-  minimumRange: 1
-  alive: 1
-  movementGroup: 1
-  gearModifier: 0.5
+  myGun: {fileID: 2221135820923440448, guid: b911d6d79ffd8bf45bbda8011a59c134, type: 3}
+  hp: {fileID: -5125058199241888200}
+  inWorld: 0
   animationStateController: {fileID: 6128039659088265392}
-  muzzleLocation: {fileID: 0}
 --- !u!54 &2114404339180774918
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2010,17 +2002,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7860270618891034725, guid: b911d6d79ffd8bf45bbda8011a59c134, type: 3}
   m_PrefabInstance: {fileID: 6534248336361830508}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4935205766387807532 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2221135820923440448, guid: b911d6d79ffd8bf45bbda8011a59c134, type: 3}
-  m_PrefabInstance: {fileID: 6534248336361830508}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f50cc909aa1be9442b635eeb4b851004, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &9113607405414759423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2035,7 +2016,7 @@ PrefabInstance:
     - target: {fileID: 6576306846341962809, guid: c8abc8ffee0571a49a4fca12d9b2fb01, type: 3}
       propertyPath: ai
       value: 
-      objectReference: {fileID: 8118981365188568940}
+      objectReference: {fileID: 0}
     - target: {fileID: 8661839680055520689, guid: c8abc8ffee0571a49a4fca12d9b2fb01, type: 3}
       propertyPath: m_RootOrder
       value: 2

@@ -60,7 +60,6 @@ namespace Generic
         /// <param name="prefab">The template object for this pool.</param>
         public ObjectPool(IPoolableInstantiateData stats, Poolable prefab)
         {
-
             this.stats = stats;
 
             this.prefab = prefab;
