@@ -15,6 +15,8 @@ namespace EditorObject
     {
         Persistant,
         OnePhase,
+        TwoPhase,
+        // TODO: Add Phase2
     }
 
     [System.Serializable]
@@ -158,6 +160,7 @@ namespace EditorObject
         // TODO: Add AOE Accessors
         [SerializeField] private AOEPhases numPhases = AOEPhases.Persistant;
         [SerializeField] private AOEPhase phase1;
+        [SerializeField] private AOEPhase phase2;
         #endregion
         #endregion
 
@@ -221,6 +224,7 @@ namespace EditorObject
         public bool IsAreaOfEffect { get { return BulletType == EditorObject.BulletType.AreaOfEffect; } }
         public AOEPhases NumPhases { get { return numPhases; } }
         public AOEPhase Phase1 { get { return phase1; } }
+        public AOEPhase Phase2 { get { return phase2; } }
         #endregion
 
         #endregion
