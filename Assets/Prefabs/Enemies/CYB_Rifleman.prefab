@@ -1370,11 +1370,10 @@ MonoBehaviour:
   playerHealth: {fileID: 0}
   target: {fileID: 0}
   rb: {fileID: 3874834857555224720}
-  myGun: {fileID: 7170651920001017758, guid: f34b39831693cc345b1644047b451e33, type: 3}
+  myGuns:
+  - {fileID: 250586739251281370}
   hp: {fileID: 6314909711948171325}
   inWorld: 0
-  movementGroup: 1
-  gearModifier: 1
   animationStateController: {fileID: 3940266983991501729}
 --- !u!54 &3874834857555224720
 Rigidbody:
@@ -1756,7 +1755,7 @@ PrefabInstance:
     - target: {fileID: 6576306846341962809, guid: c8abc8ffee0571a49a4fca12d9b2fb01, type: 3}
       propertyPath: ai
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7084069829360757914}
     - target: {fileID: 8661839680055520689, guid: c8abc8ffee0571a49a4fca12d9b2fb01, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1882,3 +1881,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7170651920001017730, guid: f34b39831693cc345b1644047b451e33, type: 3}
   m_PrefabInstance: {fileID: 6987623590667278916}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &250586739251281370 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7170651920001017758, guid: f34b39831693cc345b1644047b451e33, type: 3}
+  m_PrefabInstance: {fileID: 6987623590667278916}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfa987e93736888479b5de2bde076380, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

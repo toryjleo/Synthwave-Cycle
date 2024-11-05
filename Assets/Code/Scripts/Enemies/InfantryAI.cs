@@ -8,18 +8,18 @@ using EditorObject;
 using Generic;
 using UnityEngine;
 
-/// <summary>Class<c>InfantryAI</c> 
-/// Infantry AI is the abstract base class for all enemy footsoldiers
-/// This handles their movement, combat, animation, and respawning
+/// <summary>
+/// InfantryAI handles animations and gun-shooting for all humanoid enemy units
+/// </summary>
 public class InfantryAI : Ai
 {
     public CyborgAnimationStateController animationStateController;
 
     public override void Attack()
     {
-        if (myGun != null && myGun.CanShootAgain())
+        if (myGuns != null && myGuns[0].CanShootAgain())
         {
-            this.myGun.PrimaryFire(target.transform.position);
+            this.myGuns[0].PrimaryFire(target.transform.position);
             animationStateController.AimWhileWalking(true);
         }
     }
@@ -43,7 +43,7 @@ public class InfantryAI : Ai
         animationStateController = GetComponent<CyborgAnimationStateController>();
         hp.Init(aiStats.Health);
 
-        myGun.Init();
+        myGuns[0].Init();
 
         // Error checking
         if (animationStateController == null)

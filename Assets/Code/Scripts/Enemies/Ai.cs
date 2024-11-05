@@ -14,7 +14,7 @@ public abstract class Ai : Poolable
     public PlayerHealth playerHealth;
     public GameObject target;
     public Rigidbody rb;
-    public Gun myGun;
+    public Gun[] myGuns;
     public Health hp;
     protected AiStats stats;
 
@@ -54,6 +54,12 @@ public abstract class Ai : Poolable
         {
             Move(target.transform.position, enemies);
             CountDownTimeByTarget(Time.fixedDeltaTime);
+        }
+
+        // Out of range subtract time from attack
+        if (!stateController.isInRange && timeByTarget > 0)
+        {
+            CountDownTimeByTarget(-Time.fixedDeltaTime);
         }
 
         if (Vector3.Distance(transform.position, target.transform.position) <= stats.AttackRange)
@@ -138,7 +144,6 @@ public abstract class Ai : Poolable
     /// <param name="deltaTime"></param>
     public void CountDownTimeByTarget(float deltaTime)
     {
-        // TODO: Subtract deltaTime if out of range, rather than set it to 0
         // Handle attack timing
         timeByTarget += deltaTime;
         if (timeByTarget > stats.TimeToAttack)
@@ -155,9 +160,12 @@ public abstract class Ai : Poolable
         //Notify all listeners that this AI has died
         DeadEvent?.Invoke();
 
-        if (myGun != null)
+        if (myGuns != null && myGuns.Length > 0)
         {
-            myGun.StopAllCoroutines();
+            foreach (Gun gun in myGuns)
+            {
+                gun.StopAllCoroutines();
+            }
         }
 
         if (DangerLevel.Instance)
@@ -183,7 +191,7 @@ public abstract class Ai : Poolable
     #region EventHandlers
     public virtual void HandleInRangeEnter()
     {
-        timeByTarget = 0;
+        // timeByTarget = 0;
     }
 
     public void HandleAttackingEnter()
