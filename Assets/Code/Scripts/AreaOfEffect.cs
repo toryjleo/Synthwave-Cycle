@@ -1,3 +1,4 @@
+using EditorObject;
 using Generic;
 using Gun;
 using System.Collections;
@@ -14,7 +15,7 @@ namespace Gun
         public override void Init(IPoolableInstantiateData stats)
         {
             base.Init(stats);
-            currentPhase = gunStats.NumPhases;
+            Reset();
         }
 
         // Update is called once per frame
@@ -23,12 +24,12 @@ namespace Gun
             base.Update();
             switch (currentPhase) 
             {
-                case EditorObject.AOEPhases.TwoPhase:
+                case EditorObject.AOEPhases.Persistant:
+                    break;
                 case EditorObject.AOEPhases.OnePhase:
+                case EditorObject.AOEPhases.TwoPhase:
                     AdjustTimer(Time.deltaTime);
                     AdjustScale(Time.deltaTime);
-                    break;
-                case EditorObject.AOEPhases.Persistant:
                     break;
                 default:
                     break;
@@ -42,7 +43,12 @@ namespace Gun
             base.Reset();
 
             timer = 0.0f;
+
             currentPhase = gunStats.NumPhases;
+            if (currentPhase != EditorObject.AOEPhases.Persistant) 
+            {
+                currentPhase = AOEPhases.OnePhase;
+            }
         }
 
         private void AdjustTimer(float deltaTime) 
@@ -54,14 +60,14 @@ namespace Gun
                 case EditorObject.AOEPhases.TwoPhase:
                     if (timer >= gunStats.Phase2.Duration)
                     {
-                        timer = 0;
-                        currentPhase--;
+                        OnDespawn();
                     }
                     break;
                 case EditorObject.AOEPhases.OnePhase:
                     if (timer >= gunStats.Phase1.Duration)
                     {
-                        OnDespawn();
+                        timer = 0;
+                        currentPhase++;
                     }
                     break;
                 default:

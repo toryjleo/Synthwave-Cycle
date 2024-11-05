@@ -188,14 +188,15 @@ namespace CustomInspector
 
                 switch (gunStats.NumPhases) 
                 {
-                    case AOEPhases.TwoPhase:
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty("phase2"));
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
+                    case AOEPhases.Persistant:
                         break;
                     case AOEPhases.OnePhase:
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
                         break;
-                    case AOEPhases.Persistant:
+                    case AOEPhases.TwoPhase:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("phase2"));
+                        break;
                     default: 
                         break;
                 }

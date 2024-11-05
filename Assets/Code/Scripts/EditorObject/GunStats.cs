@@ -13,9 +13,9 @@ namespace EditorObject
 
     public enum AOEPhases
     {
-        Persistant,
         OnePhase,
         TwoPhase,
+        Persistant,
         // TODO: Add Phase2
     }
 
