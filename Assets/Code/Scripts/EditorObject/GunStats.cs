@@ -134,6 +134,11 @@ namespace EditorObject
         [SerializeField] private float explosionDamage = 25;
         [SerializeField] private float secondsBeforeExplode = 1.0f;
         #endregion
+
+        #region Area Of Effect
+        // TODO: Add AOE Accessors
+        [SerializeField] private float phase1Length = 0;
+        #endregion
         #endregion
 
         #region Properties
@@ -190,6 +195,10 @@ namespace EditorObject
         public float Force { get { return force; } }
         public float ExplosionDamage { get { return explosionDamage; } }
         public float SecondsBeforeExplode { get { return secondsBeforeExplode; } }
+        #endregion
+
+        #region Area of Effect
+        public float Phase1Length { get { return phase1Length; } }
         #endregion
 
         #endregion
