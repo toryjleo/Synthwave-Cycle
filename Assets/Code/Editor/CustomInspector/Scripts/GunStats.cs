@@ -111,7 +111,10 @@ namespace CustomInspector
             EditorGUILayout.Space(SECTION_SPACE);
 
             EditorGUILayout.LabelField("Ammo");
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
+            if (gunStats.BulletType != BulletType.AreaOfEffect) 
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
+            }
             EditorGUILayout.PropertyField(serializedObject.FindProperty("infiniteAmmo"));
             if (!gunStats.InfiniteAmmo)
             {

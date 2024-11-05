@@ -16,6 +16,7 @@ namespace Gun
 
         protected EditorObject.GunStats gunStats = null;
         protected int penetrationCount = 0;
+        protected bool countPenetration = true;
 
         internal List<GameObject> alreadyHit = new List<GameObject>();
 
@@ -75,7 +76,10 @@ namespace Gun
         {
             if (!alreadyHit.Contains(other))
             {
-                penetrationCount++;
+                if (countPenetration) 
+                {
+                    penetrationCount++;
+                }
                 alreadyHit.Add(other);
                 Health otherHealth = other.GetComponentInChildren<Health>();
                 if (otherHealth == null)

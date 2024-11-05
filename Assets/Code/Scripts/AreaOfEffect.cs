@@ -16,6 +16,7 @@ namespace Gun
         {
             base.Init(stats);
             Reset();
+            countPenetration = false;
         }
 
         // Update is called once per frame
@@ -35,7 +36,6 @@ namespace Gun
                     break;
             }
 
-            // TODO: Adjust scale
         }
 
         public override void Reset() 
