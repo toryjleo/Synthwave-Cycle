@@ -78,9 +78,6 @@ public class InfantryAI : Ai
     {
         rb.constraints = RigidbodyConstraints.FreezeAll;
 
-        //TODO: add catch
-        animationStateController.TriggerDeathA();
-
         animationStateController.TriggerDeathA();
 
         rb.detectCollisions = false;
