@@ -21,6 +21,7 @@ namespace CustomInspector
         private string[] overheatProps = { "coolDownBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
         private string[] multipleProjectileProps = { "distanceBetweenProjectiles" };
         private string[] explosionProps = { "radius", "force", "explosionDamage", "isCountDownExplosion" };
+        private string[] areaOfEffectProps = { "numPhases" };
         private string[] countdownExplosionProps = { "secondsBeforeExplode" };
         #endregion
 
@@ -45,6 +46,7 @@ namespace CustomInspector
                 Overheat(gunStats);
                 BulletOptions(gunStats);
                 Explosions(gunStats);
+                AreaOfEffect(gunStats);
 
                 GeneratedStats(gunStats);
             }
@@ -168,6 +170,34 @@ namespace CustomInspector
                     FindAndShowProperties(countdownExplosionProps);
                 }
             }
+        }
+
+        /// <summary>
+        /// Display AOE options
+        /// </summary>
+        /// <param name="gunStats">ScriptableObject to modify</param>
+        private void AreaOfEffect(EditorObject.GunStats gunStats)
+        {
+            if (gunStats.IsAreaOfEffect)
+            {
+                EditorGUILayout.Space(SECTION_SPACE);
+
+                EditorGUILayout.LabelField("Area Of Effect");
+
+                FindAndShowProperties(areaOfEffectProps);
+
+                switch (gunStats.NumPhases) 
+                {
+                    case AOEPhases.OnePhase:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
+                        break;
+                    case AOEPhases.Persistant:
+                    default: 
+                        break;
+                }
+
+            }
+            
         }
 
         /// <summary>

@@ -11,6 +11,25 @@ namespace EditorObject
         AreaOfEffect,
     }
 
+    public enum AOEPhases
+    {
+        Persistant,
+        OnePhase,
+    }
+
+    [System.Serializable]
+    public struct AOEPhase 
+    {
+        /// <summary>
+        /// In seconds
+        /// </summary>
+        public float Duration;
+        /// <summary>
+        /// In meters/second
+        /// </summary>
+        public float RateOfScaleGrowth;
+    }
+
     /// <summary>
     /// Stores the data for a Gun component
     /// </summary>
@@ -137,7 +156,8 @@ namespace EditorObject
 
         #region Area Of Effect
         // TODO: Add AOE Accessors
-        [SerializeField] private float phase1Length = 0;
+        [SerializeField] private AOEPhases numPhases = AOEPhases.Persistant;
+        [SerializeField] private AOEPhase phase1;
         #endregion
         #endregion
 
@@ -198,7 +218,9 @@ namespace EditorObject
         #endregion
 
         #region Area of Effect
-        public float Phase1Length { get { return phase1Length; } }
+        public bool IsAreaOfEffect { get { return BulletType == EditorObject.BulletType.AreaOfEffect; } }
+        public AOEPhases NumPhases { get { return numPhases; } }
+        public AOEPhase Phase1 { get { return phase1; } }
         #endregion
 
         #endregion

@@ -13,9 +13,18 @@ namespace Gun
         public override void Update()
         {
             base.Update();
+            switch (gunStats.NumPhases) 
+            {
+                case EditorObject.AOEPhases.Persistant:
+                    break;
+                case EditorObject.AOEPhases.OnePhase:
+                    AdjustTimer(Time.deltaTime);
+                    AdjustScale(Time.deltaTime);
+                    break;
+                default:
+                    break;
+            }
 
-
-            AdjustTimer(Time.deltaTime);
             // TODO: Adjust scale
         }
 
@@ -31,11 +40,19 @@ namespace Gun
         {
             timer += deltaTime;
 
-            if (timer >= gunStats.Phase1Length)
+            if (timer >= gunStats.Phase1.Duration)
             {
                 Debug.Log("End Phase 1");
-                // TODO: End Phase1
+                OnDespawn();
             }
+        }
+
+        private void AdjustScale(float deltaTime) 
+        {
+            Vector3 curScale = transform.localScale;
+            curScale.x += gunStats.Phase1.RateOfScaleGrowth * deltaTime;
+            curScale.z += gunStats.Phase1.RateOfScaleGrowth * deltaTime;
+            transform.localScale = curScale;
         }
     }
 }
