@@ -38,9 +38,9 @@ public abstract class VehicleAi : Ai
     //All vehicles have a target, but some vehicles interact with their targets in different ways
     public abstract void UpdateMovementLocation();
 
-    public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection)
+    public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
-        base.ManualUpdate(enemies, wanderDirection);
+        base.ManualUpdate(enemies, wanderDirection, fixedDeltaTime);
         //Figure out where to moved based on the child class movement pattern
         UpdateMovementLocation();
     }

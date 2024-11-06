@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,7 @@ public class SBomberAi : VehicleAi
         {
             //Dive bomb the player
             vehicleController.enabled = false;
-            this.ApplyForce(Vector3.Normalize(target.transform.position - this.transform.position) * 1000f);
+            rb.AddForce(Vector3.Normalize(target.transform.position - this.transform.position) * 1000f * Time.fixedDeltaTime);
         }
     }
 
@@ -57,5 +58,25 @@ public class SBomberAi : VehicleAi
             target.GetComponent<PlayerHealth>().TakeDamage(ExplosionDamage);
             this.Die();
         }
+    }
+
+    public override void Chase(Vector3 target, float fixedDeltaTime)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Wander(Vector3 wanderDirection, float fixedDeltaTime)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Separate(ArrayList pool, float fixedDeltaTime)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Group(ArrayList pool, float fixedDeltaTime)
+    {
+        throw new NotImplementedException();
     }
 }
