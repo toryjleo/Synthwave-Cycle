@@ -32,14 +32,10 @@ public abstract class Ai : Poolable
     {
         playerHealth = FindObjectOfType<PlayerHealth>();
 
+        //TODO: Set the target from the future enemy manager
         if (playerHealth != null && playerHealth.HitPoints > 0)
         {
             SetTarget(playerHealth.gameObject);
-        }
-
-        if (hp.HitPoints <= 0)
-        {
-            stateController.HandleTrigger(AIState.StateTrigger.AiKilled);
         }
 
         if (stateController.isWandering)
@@ -49,30 +45,28 @@ public abstract class Ai : Poolable
         else if (stateController.isFollowing)
         {
             Move(target.transform.position, enemies, fixedDeltaTime);
+
+            if (Vector3.Distance(transform.position, target.transform.position) <= stats.AttackRange)
+            {
+                stateController.HandleTrigger(AIState.StateTrigger.InRange);
+            }
         }
         else if (stateController.isInRange)
         {
             Move(target.transform.position, enemies, fixedDeltaTime);
             CountDownTimeByTarget(fixedDeltaTime);
+
+            IsOutOfRange();
+        }
+        else if (stateController.isAttacking)
+        {
+            IsOutOfRange();
         }
 
         // Out of range subtract time from attack
         if (!stateController.isInRange && timeByTarget > 0)
         {
             CountDownTimeByTarget(-fixedDeltaTime);
-        }
-
-        if (Vector3.Distance(transform.position, target.transform.position) <= stats.AttackRange)
-        {
-            stateController.HandleTrigger(AIState.StateTrigger.InRange);
-        }
-
-        if (stateController.isInRange || stateController.isAttacking)
-        {
-            if (Vector3.Distance(transform.position, target.transform.position) > stats.AttackRange)
-            {
-                stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
-            }
         }
     }
 
@@ -114,12 +108,12 @@ public abstract class Ai : Poolable
     public virtual void InitStateController()
     {
         stateController = new AIState.StateController(true);
-        stateController.inRange.notifyListenersEnter += HandleInRangeEnter;
         stateController.attacking.notifyListenersEnter += HandleAttackingEnter;
         stateController.inPool.notifyListenersExit += HandleInPoolExit;
         stateController.dead.notifyListenersEnter += Die;
         GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
         Despawn += HandleDespawned;
+        hp.deadEvent += HandleDeath;
     }
 
     /// <summary>
@@ -188,12 +182,18 @@ public abstract class Ai : Poolable
     /// </summary>
     public abstract void Attack();
 
-    #region EventHandlers
-    public virtual void HandleInRangeEnter()
+    /// <summary>
+    /// Checks to see if enemy falls out of range
+    /// </summary>
+    public void IsOutOfRange()
     {
-        // timeByTarget = 0;
+        if (Vector3.Distance(transform.position, target.transform.position) > stats.AttackRange)
+        {
+            stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
+        }
     }
 
+    #region EventHandlers
     public void HandleAttackingEnter()
     {
         if (stats.CanAim)
@@ -224,6 +224,11 @@ public abstract class Ai : Poolable
         gameObject.SetActive(false);
         stateController.HandleTrigger(AIState.StateTrigger.Despawned);
         inWorld = false;
+    }
+
+    public void HandleDeath()
+    {
+        stateController.HandleTrigger(AIState.StateTrigger.AiKilled);
     }
     #endregion
 
