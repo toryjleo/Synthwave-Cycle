@@ -84,34 +84,36 @@ public class EnemyPooler : MonoBehaviour, IResettable
 
     void FixedUpdate()
     {
+        float fixedDeltaTime = Time.fixedDeltaTime;
+
         ArrayList riflemenInWorld = riflemanPool.ObjectsInWorld;
         foreach (Ai ai in riflemenInWorld)
         {
-            ai.ManualUpdate(riflemenInWorld, wanderDirection);
+            ai.ManualUpdate(riflemenInWorld, wanderDirection, fixedDeltaTime);
         }
 
         ArrayList shotgunnersInWorld = shotgunnerPool.ObjectsInWorld;
         foreach (Ai ai in shotgunnersInWorld)
         {
-            ai.ManualUpdate(shotgunnersInWorld, wanderDirection);
+            ai.ManualUpdate(shotgunnersInWorld, wanderDirection, fixedDeltaTime);
         }
 
         ArrayList rangersInWorld = rangerPool.ObjectsInWorld;
         foreach (Ai ai in rangersInWorld)
         {
-            ai.ManualUpdate(rangersInWorld, wanderDirection);
+            ai.ManualUpdate(rangersInWorld, wanderDirection, fixedDeltaTime);
         }
 
         ArrayList ramCarsInWorld = ramCarPool.ObjectsInWorld;
         foreach (Ai ai in ramCarsInWorld)
         {
-            ai.ManualUpdate(ramCarsInWorld, wanderDirection);
+            ai.ManualUpdate(ramCarsInWorld, wanderDirection, fixedDeltaTime);
         }
 
         ArrayList sbombersInWorld = sbomberPool.ObjectsInWorld;
         foreach (Ai ai in sbombersInWorld)
         {
-            ai.ManualUpdate(sbombersInWorld, wanderDirection);
+            ai.ManualUpdate(sbombersInWorld, wanderDirection, fixedDeltaTime);
         }
 
         // TODO: Add another foreach to update their positions AFTER they decide where they're going

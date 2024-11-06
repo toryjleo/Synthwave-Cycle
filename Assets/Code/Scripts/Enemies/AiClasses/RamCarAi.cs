@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,5 +32,25 @@ public class RamCarAi : VehicleAi
             movementTargetPosition.transform.position = stats.ChaseRange * Vector3.Normalize(this.transform.position - target.transform.position) + target.transform.position;
             vehicleController.target = movementTargetPosition.transform;
         }
+    }
+
+    public override void Chase(Vector3 target, float fixedDeltaTime)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Wander(Vector3 wanderDirection, float fixedDeltaTime)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Separate(ArrayList pool, float fixedDeltaTime)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Group(ArrayList pool, float fixedDeltaTime)
+    {
+        throw new NotImplementedException();
     }
 }

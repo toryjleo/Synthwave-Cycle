@@ -28,7 +28,7 @@ public abstract class Ai : Poolable
     #endregion
 
     // Update is called once per frame
-    public virtual void ManualUpdate(ArrayList enemies, Vector3 wanderDirection)
+    public virtual void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
         playerHealth = FindObjectOfType<PlayerHealth>();
 
@@ -44,22 +44,22 @@ public abstract class Ai : Poolable
 
         if (stateController.isWandering)
         {
-            Wander(wanderDirection);
+            Wander(wanderDirection, fixedDeltaTime);
         }
         else if (stateController.isFollowing)
         {
-            Move(target.transform.position, enemies);
+            Move(target.transform.position, enemies, fixedDeltaTime);
         }
         else if (stateController.isInRange)
         {
-            Move(target.transform.position, enemies);
-            CountDownTimeByTarget(Time.fixedDeltaTime);
+            Move(target.transform.position, enemies, fixedDeltaTime);
+            CountDownTimeByTarget(fixedDeltaTime);
         }
 
         // Out of range subtract time from attack
         if (!stateController.isInRange && timeByTarget > 0)
         {
-            CountDownTimeByTarget(-Time.fixedDeltaTime);
+            CountDownTimeByTarget(-fixedDeltaTime);
         }
 
         if (Vector3.Distance(transform.position, target.transform.position) <= stats.AttackRange)
@@ -227,169 +227,25 @@ public abstract class Ai : Poolable
     }
     #endregion
 
-    // TODO: Make a new class (NOT Monobehavior) that holds all the movement functions
     #region MOVEMENT
     /// <summary>
     /// This method works for ranged Enemies that do not get into direct melee range with the target
     /// </summary>
     /// <param name="target"> Vector to target </param>
-    public virtual void Move(Vector3 target, ArrayList enemyList) //This can be used for Enemies that stay at range and don't run into melee.
+    public virtual void Move(Vector3 target, ArrayList enemyList, float fixedDeltaTime) //This can be used for Enemies that stay at range and don't run into melee.
     {
-        Chase(target);
-        Separate(enemyList);
-        Group(enemyList);
+        Chase(target, fixedDeltaTime);
+        Separate(enemyList, fixedDeltaTime);
+        Group(enemyList, fixedDeltaTime);
     }
 
-    public void Chase(Vector3 target)
-    {
-        float desiredChase = stats.MaxChaseForce;
+    public abstract void Chase(Vector3 target, float fixedDeltaTime);
 
-        // this logic creates the vector between where the entity is and where it wants to be
-        Vector3 desiredVec = target - transform.position;
-        // this creates a magnitude of the desired vector. This is the distance between the points
-        float dMag = desiredVec.magnitude;
-        // dMag is the distance between the two objects, by subtracting this, I make it so the object doesn't desire to move as far.
-        dMag -= stats.ChaseRange;
+    public abstract void Wander(Vector3 wanderDirection, float fixedDeltaTime);
 
-        // one the distance is measured this vector can now be used to actually generate movement, 
-        // but that movement has to be constant or at least adaptable, which is what the next part does
-        desiredVec.Normalize();
-        transform.LookAt(target);
+    public abstract void Separate(ArrayList pool, float fixedDeltaTime);
 
-        //Currently Walking towards the target
-        if (dMag < maxSpeed)
-        {
-            desiredVec *= dMag;
-        }
-        else
-        {
-            desiredVec *= maxSpeed;
-        }
-
-        // Subtract Velocity so we are not constantly adding to the velocity of the Entity
-        Vector3 steer = (desiredVec - rb.velocity) * desiredChase;
-        ApplyForce(steer);
-    }
-
-    /// <summary>
-    /// This method is used for when an AI has no target and will move around in a Boid fashion
-    /// </summary>
-    public void Wander(Vector3 wanderDirection)
-    {
-        // The normalized vector of which direction the RB is facing
-        Vector3 forward = rb.transform.forward;
-        // Adds a small offset to the forward vector.
-        forward += wanderDirection;
-
-        transform.LookAt(forward + transform.position); //TODO make this look way nicer
-
-        // Subtract Velocity so we are not constantly adding to the velocity of the Entity
-        Vector3 steer = forward - rb.velocity;
-        ApplyForce(steer);
-
-    }
-
-    /// <summary>
-    /// Applies the desired force to the rigidbody
-    /// </summary>
-    /// <param name="force"></param>
-    public void ApplyForce(Vector3 force)
-    {
-        rb.AddForce(force);
-    }
-
-    /// <summary>
-    /// This function will edit the steer of an AI so it moves away from nearby other AI
-    /// </summary>
-    /// <param name="pool">Pool is the grouping of all of the AI controlled entities in the boid that need to be separated from one another</param>
-    public void Separate(ArrayList pool)
-    {
-        float separateForce = stats.MaxSeparateForce;
-        float maxDistanceToSeparate = stats.SeparateRange;
-
-        //the vector that will be used to calculate flee behavior if a too close interaction happens
-        Vector3 sum = new Vector3();
-        //this counts how many TOO CLOSE interactions an entity has, if it has more than one
-        int count = 0;
-
-        foreach (Ai ai in pool)
-        {
-            float distance = Vector3.Distance(ai.transform.position, transform.position);
-
-            if (ai.transform.position != transform.position && distance < maxDistanceToSeparate)
-            {
-                // creates vec between two objects
-                Vector3 diff = transform.position - ai.transform.position;
-                diff.Normalize();
-                // sum is the flee direction added together
-                sum += diff;
-                count++;
-            }
-
-            if (count > 0)
-            {
-                sum /= count;
-                sum.Normalize();
-                sum *= maxSpeed;
-
-                Vector3 steer = (sum - rb.velocity) * separateForce;
-                if (steer.magnitude > stats.MaxMovementForce)
-                {
-                    steer.Normalize();
-                    steer *= stats.MaxMovementForce;
-                }
-
-                ApplyForce(steer);
-            }
-
-        }
-    }
-
-    /// <summary>
-    /// Used to group enemies together if they get too separated
-    /// </summary>
-    /// <param name="pool"></param>
-    public void Group(ArrayList pool)
-    {
-        float groupForce = stats.MaxGroupingForce;
-        float maxDistanceToGroup = stats.GroupingRange;
-
-        //the vector that will be used to calculate flee behavior if a too far interaction happens
-        Vector3 sum = new Vector3();
-        //this counts how many TOO FAR interactions an entity has, if it has more than one
-        int count = 0;
-
-        foreach (Ai ai in pool)
-        {
-            float distance = Vector3.Distance(ai.transform.position, transform.position);
-
-            if (ai.transform.position != transform.position && distance > maxDistanceToGroup)
-            {
-                // creates vec between two objects
-                Vector3 diff = ai.transform.position - transform.position;
-                diff.Normalize();
-                // sum is the group direction added together
-                sum += diff;
-                count++;
-            }
-
-            if (count > 0)
-            {
-                sum /= count;
-                sum.Normalize();
-                sum *= maxSpeed;
-
-                Vector3 steer = (sum - rb.velocity) * groupForce;
-                if (steer.magnitude > stats.MaxMovementForce)
-                {
-                    steer.Normalize();
-                    steer *= stats.MaxMovementForce;
-                }
-
-                ApplyForce(steer);
-            }
-        }
-    }
+    public abstract void Group(ArrayList pool, float fixedDeltaTime);
     #endregion
 
     #region Getters & Setters
