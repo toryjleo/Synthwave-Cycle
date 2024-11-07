@@ -6,7 +6,7 @@ namespace EditorObject
 {
     public enum BulletType
     {
-        Projectile,
+        BulletProjectile,
         HitScan,
         AreaOfEffect,
     }

@@ -103,7 +103,7 @@ namespace CustomInspector
                     break;
                 case EditorObject.BulletType.AreaOfEffect:
                     // TODO: Add FireAreaOfEffect specific fields
-                case EditorObject.BulletType.Projectile:
+                case EditorObject.BulletType.BulletProjectile:
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("muzzleVelocity"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileScale"));
                     break;

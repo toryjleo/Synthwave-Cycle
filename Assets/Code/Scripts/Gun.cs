@@ -477,7 +477,7 @@ namespace Gun
         {
             switch (gunStats.BulletType)
             {
-                case EditorObject.BulletType.Projectile:
+                case EditorObject.BulletType.BulletProjectile:
                     FireProjectile(direction);
                     break;
                 case EditorObject.BulletType.HitScan:
