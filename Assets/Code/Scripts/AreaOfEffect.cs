@@ -54,7 +54,6 @@ namespace Gun
         void OnTriggerStay(Collider other)
         {
             float deltaTime = Time.deltaTime;
-            float dps = 40;
 
             if (CanHitObject(other)) 
             {
@@ -67,7 +66,7 @@ namespace Gun
                 }
                 else
                 {
-                    otherHealth.TakeDamage(dps * deltaTime);
+                    otherHealth.TakeDamage(gunStats.DamagePerSecond * deltaTime);
                 }
             }
         }

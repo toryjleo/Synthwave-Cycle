@@ -16,7 +16,7 @@ namespace CustomInspector
         #region Members
         private const int SECTION_SPACE = 8;
 
-        private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", "projectileSpread", "damageDealt" };
+        private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", "projectileSpread", };
         private string[] burstFireProps = { "timeBetweenBurstShots" };
         private string[] overheatProps = { "coolDownBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
         private string[] multipleProjectileProps = { "distanceBetweenProjectiles" };
@@ -40,6 +40,15 @@ namespace CustomInspector
 
             if (gunStats != null)
             {
+                if (gunStats.IsAreaOfEffect)
+                {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("damagePerSecond"));
+                }
+                else 
+                {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
+                }
+
                 Ammunition(gunStats);
                 BurstFire(gunStats);
                 MultipleProjectiles(gunStats);

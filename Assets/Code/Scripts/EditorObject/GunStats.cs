@@ -158,6 +158,7 @@ namespace EditorObject
 
         #region Area Of Effect
         // TODO: Add AOE Accessors
+        [Range(0, 1000)][SerializeField] private float damagePerSecond = 10;
         [SerializeField] private AOEPhases numPhases = AOEPhases.Persistant;
         [SerializeField] private AOEPhase phase1;
         [SerializeField] private AOEPhase phase2;
@@ -222,6 +223,7 @@ namespace EditorObject
 
         #region Area of Effect
         public bool IsAreaOfEffect { get { return BulletType == EditorObject.BulletType.AreaOfEffect; } }
+        public float DamagePerSecond { get { return damagePerSecond; } }
         public AOEPhases NumPhases { get { return numPhases; } }
         public AOEPhase Phase1 { get { return phase1; } }
         public AOEPhase Phase2 { get { return phase2; } }
