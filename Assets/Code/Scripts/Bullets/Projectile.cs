@@ -7,7 +7,7 @@ namespace Gun
 {
 
     /// <summary>Class <c>Bullet</c> A Unity Component which moves a gameobject foreward.</summary>
-    public class Projectile : Generic.Poolable
+    public abstract class Projectile : Generic.Poolable
     {
         public event BulletHitHandler notifyListenersHit;
 
@@ -15,8 +15,6 @@ namespace Gun
         protected Vector3 initialVelocity;
 
         protected EditorObject.GunStats gunStats = null;
-        protected int penetrationCount = 0;
-        protected bool countPenetration = true;
 
         internal List<GameObject> alreadyHit = new List<GameObject>();
 
@@ -67,49 +65,14 @@ namespace Gun
         /// </summary>
         public override void Reset()
         {
-            penetrationCount = 0;
             initialVelocity = Vector3.zero;
             gameObject.SetActive(false);
-        }
-
-        private void DealDamageAndDespawn(GameObject other)
-        {
-            if (!alreadyHit.Contains(other))
-            {
-                
-                penetrationCount++;
-                
-                alreadyHit.Add(other);
-                Health otherHealth = other.GetComponentInChildren<Health>();
-                if (otherHealth == null)
-                {
-                    Debug.LogError("Object does not have Health component: " + gameObject.name);
-                }
-                else
-                {
-                    otherHealth.TakeDamage(gunStats.DamageDealt);
-                }
-                if (penetrationCount > gunStats.BulletPenetration)
-                {
-                    OnDespawn();
-                }
-            }
         }
 
         protected bool CanHitObject(Collider other) 
         {
             return (other.gameObject.tag == "Enemy" && gunStats.IsPlayerGun) ||
                    (other.gameObject.tag == "Player" && !gunStats.IsPlayerGun);
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-
-            if (CanHitObject(other) && countPenetration)
-            {
-                NotifyListenersHit();
-                DealDamageAndDespawn(other.gameObject);
-            }
         }
 
         protected void NotifyListenersHit() 
