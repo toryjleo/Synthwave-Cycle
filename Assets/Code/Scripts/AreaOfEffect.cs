@@ -51,6 +51,27 @@ namespace Gun
             }
         }
 
+        void OnTriggerStay(Collider other)
+        {
+            float deltaTime = Time.deltaTime;
+            float dps = 40;
+
+            if (CanHitObject(other)) 
+            {
+                NotifyListenersHit();
+
+                Health otherHealth = other.GetComponentInChildren<Health>();
+                if (otherHealth == null)
+                {
+                    Debug.LogError("Object does not have Health component: " + gameObject.name);
+                }
+                else
+                {
+                    otherHealth.TakeDamage(dps * deltaTime);
+                }
+            }
+        }
+
         private void AdjustTimer(float deltaTime) 
         {
             timer += deltaTime;

@@ -76,10 +76,9 @@ namespace Gun
         {
             if (!alreadyHit.Contains(other))
             {
-                if (countPenetration) 
-                {
-                    penetrationCount++;
-                }
+                
+                penetrationCount++;
+                
                 alreadyHit.Add(other);
                 Health otherHealth = other.GetComponentInChildren<Health>();
                 if (otherHealth == null)
@@ -97,15 +96,25 @@ namespace Gun
             }
         }
 
+        protected bool CanHitObject(Collider other) 
+        {
+            return (other.gameObject.tag == "Enemy" && gunStats.IsPlayerGun) ||
+                   (other.gameObject.tag == "Player" && !gunStats.IsPlayerGun);
+        }
+
         private void OnTriggerEnter(Collider other)
         {
 
-            if ((other.gameObject.tag == "Enemy" && gunStats.IsPlayerGun) ||
-                (other.gameObject.tag == "Player" && !gunStats.IsPlayerGun))
+            if (CanHitObject(other) && countPenetration)
             {
-                notifyListenersHit?.Invoke(transform.position);
+                NotifyListenersHit();
                 DealDamageAndDespawn(other.gameObject);
             }
+        }
+
+        protected void NotifyListenersHit() 
+        {
+            notifyListenersHit?.Invoke(transform.position);
         }
     }
 }
