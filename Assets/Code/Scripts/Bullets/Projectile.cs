@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Gun
 {
 
-    /// <summary>Class <c>Bullet</c> A Unity Component which moves a gameobject foreward.</summary>
+    /// <summary>Class <c>Projectile</c> A Unity Component which moves a gameobject foreward.</summary>
     public abstract class Projectile : Generic.Poolable
     {
         public event BulletHitHandler notifyListenersHit;
@@ -69,12 +69,20 @@ namespace Gun
             gameObject.SetActive(false);
         }
 
+        /// <summary>
+        /// True if can hit the object, "other"
+        /// </summary>
+        /// <param name="other">Object in question</param>
+        /// <returns>True if can hit other</returns>
         protected bool CanHitObject(Collider other) 
         {
             return (other.gameObject.tag == "Enemy" && gunStats.IsPlayerGun) ||
                    (other.gameObject.tag == "Player" && !gunStats.IsPlayerGun);
         }
 
+        /// <summary>
+        /// Triggers notifyListenersHit event.
+        /// </summary>
         protected void NotifyListenersHit() 
         {
             notifyListenersHit?.Invoke(transform.position);

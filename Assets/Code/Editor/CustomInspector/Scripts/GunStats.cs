@@ -40,15 +40,7 @@ namespace CustomInspector
 
             if (gunStats != null)
             {
-                if (gunStats.IsAreaOfEffect)
-                {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("damagePerSecond"));
-                }
-                else 
-                {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
-                }
-
+                Damage(gunStats);
                 Ammunition(gunStats);
                 BurstFire(gunStats);
                 MultipleProjectiles(gunStats);
@@ -108,6 +100,23 @@ namespace CustomInspector
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileScale"));
                     break;
 
+            }
+        }
+
+        /// <summary>
+        /// Display Damage options
+        /// </summary>
+        /// <param name="gunStats">ScriptableObject to modify</param>
+        private void Damage(EditorObject.GunStats gunStats) 
+        {
+
+            if (gunStats.IsAreaOfEffect)
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("damagePerSecond"));
+            }
+            else
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
             }
         }
 
@@ -200,12 +209,12 @@ namespace CustomInspector
 
                 switch (gunStats.NumPhases) 
                 {
-                    case AOEPhases.Persistant:
+                    case Gun.AOEPhases.Persistant:
                         break;
-                    case AOEPhases.OnePhase:
+                    case Gun.AOEPhases.OnePhase:
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
                         break;
-                    case AOEPhases.TwoPhase:
+                    case Gun.AOEPhases.TwoPhase:
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("phase2"));
                         break;

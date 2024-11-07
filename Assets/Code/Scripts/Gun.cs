@@ -52,7 +52,7 @@ namespace Gun
 
         // Projectile
         protected ProjectileObjectPool projectilePool = null;
-        [SerializeField] private Projectile bulletPrefab = null;
+        [SerializeField] private BulletProjectile bulletPrefab = null;
 
         // Area of Effect
         protected ProjectileObjectPool areaOfEffectPool = null;
@@ -379,6 +379,7 @@ namespace Gun
         /// <summary>
         /// Fires a single projectile from the bulletPool
         /// </summary>
+        /// <param name="direction">Direction to move in</param>
         private void FireProjectile(Vector3 direction)
         {
             Projectile bullet = projectilePool.SpawnFromPool() as Projectile;
@@ -389,11 +390,16 @@ namespace Gun
         /// <summary>
         /// Fires a single ray
         /// </summary>
+        /// <param name="direction">Direction to move in</param>
         private void FireHitScan(Vector3 direction)
         {
             hitScan.Shoot(BulletSpawn.transform.position, direction, impactEffectPool);
         }
 
+        /// <summary>
+        /// Fires a single area of effect
+        /// </summary>
+        /// <param name="direction">Direction to move in</param>
         private void FireAreaOfEffect(Vector3 direction)
         {
             AreaOfEffect bullet = areaOfEffectPool.SpawnFromPool() as AreaOfEffect;

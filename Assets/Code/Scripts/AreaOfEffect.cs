@@ -7,10 +7,23 @@ using UnityEngine;
 
 namespace Gun
 {
+    /// <summary>
+    /// Phases an AOE can go through
+    /// </summary>
+    public enum AOEPhases
+    {
+        OnePhase,
+        TwoPhase,
+        Persistant,
+    }
+
+    /// <summary>
+    /// Implementation of Projectile that deals damage and can grow/shrink over time.
+    /// </summary>
     public class AreaOfEffect : Projectile
     {   
         private float timer = 0.0f;
-        private EditorObject.AOEPhases currentPhase = 0;
+        private AOEPhases currentPhase = 0;
 
         public override void Init(IPoolableInstantiateData stats)
         {
@@ -24,10 +37,10 @@ namespace Gun
             base.Update();
             switch (currentPhase) 
             {
-                case EditorObject.AOEPhases.Persistant:
+                case AOEPhases.Persistant:
                     break;
-                case EditorObject.AOEPhases.OnePhase:
-                case EditorObject.AOEPhases.TwoPhase:
+                case AOEPhases.OnePhase:
+                case AOEPhases.TwoPhase:
                     AdjustTimer(Time.deltaTime);
                     AdjustScale(Time.deltaTime);
                     break;
@@ -44,7 +57,7 @@ namespace Gun
             timer = 0.0f;
 
             currentPhase = gunStats.NumPhases;
-            if (currentPhase != EditorObject.AOEPhases.Persistant) 
+            if (currentPhase != AOEPhases.Persistant) 
             {
                 currentPhase = AOEPhases.OnePhase;
             }
@@ -70,19 +83,23 @@ namespace Gun
             }
         }
 
+        /// <summary>
+        /// Adjusts the timer's time and can transition to sequential phases
+        /// </summary>
+        /// <param name="deltaTime">Amount of time passed since last frame</param>
         private void AdjustTimer(float deltaTime) 
         {
             timer += deltaTime;
 
             switch (currentPhase) 
             {
-                case EditorObject.AOEPhases.TwoPhase:
+                case AOEPhases.TwoPhase:
                     if (timer >= gunStats.Phase2.Duration)
                     {
                         OnDespawn();
                     }
                     break;
-                case EditorObject.AOEPhases.OnePhase:
+                case AOEPhases.OnePhase:
                     if (timer >= gunStats.Phase1.Duration)
                     {
                         timer = 0;
@@ -95,15 +112,19 @@ namespace Gun
             }
         }
 
+        /// <summary>
+        /// Adjusts scale as specified in the phase
+        /// </summary>
+        /// <param name="deltaTime">Amount of time passed since last frame</param>
         private void AdjustScale(float deltaTime) 
         {
             float growth = 0;
             switch (currentPhase)
             {
-                case EditorObject.AOEPhases.TwoPhase:
+                case AOEPhases.TwoPhase:
                     growth = gunStats.Phase2.RateOfScaleGrowth;
                     break;
-                case EditorObject.AOEPhases.OnePhase:
+                case AOEPhases.OnePhase:
                     growth = gunStats.Phase1.RateOfScaleGrowth;
                     break;
                 default:

@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Gun
 {
+    /// <summary>Class <c>BulletProjectile</c> An implementation of the projectile class that deals damage and despawns.</summary>
     public class BulletProjectile : Projectile
     {
 
@@ -26,6 +27,10 @@ namespace Gun
             }
         }
 
+        /// <summary>
+        /// Deals damage to the enemy and will despawn bullet if exceeding penetration count.
+        /// </summary>
+        /// <param name="other">Object hit</param>
         private void DealDamageAndDespawn(GameObject other)
         {
             if (!alreadyHit.Contains(other))
