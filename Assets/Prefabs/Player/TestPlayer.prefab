@@ -456,6 +456,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arsenal
       objectReference: {fileID: 0}
+    - target: {fileID: 8901379805892809832, guid: 2c7fed361d0c1034a91177161a893cf4, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 8930960238914550717, guid: 084e10c8016e91741a5756a57400916f, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c7fed361d0c1034a91177161a893cf4, type: 3}
 --- !u!4 &8675247492444940330 stripped

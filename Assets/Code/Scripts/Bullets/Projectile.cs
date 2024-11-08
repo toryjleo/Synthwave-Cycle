@@ -6,8 +6,8 @@ using UnityEngine;
 namespace Gun
 {
 
-    /// <summary>Class <c>Bullet</c> A Unity Component which moves a gameobject foreward.</summary>
-    public class Projectile : Generic.Poolable
+    /// <summary>Class <c>Projectile</c> A Unity Component which moves a gameobject foreward.</summary>
+    public abstract class Projectile : Generic.Poolable
     {
         public event BulletHitHandler notifyListenersHit;
 
@@ -15,7 +15,6 @@ namespace Gun
         protected Vector3 initialVelocity;
 
         protected EditorObject.GunStats gunStats = null;
-        protected int penetrationCount = 0;
 
         internal List<GameObject> alreadyHit = new List<GameObject>();
 
@@ -66,42 +65,27 @@ namespace Gun
         /// </summary>
         public override void Reset()
         {
-            penetrationCount = 0;
             initialVelocity = Vector3.zero;
             gameObject.SetActive(false);
         }
 
-        private void DealDamageAndDespawn(GameObject other)
+        /// <summary>
+        /// True if can hit the object, "other"
+        /// </summary>
+        /// <param name="other">Object in question</param>
+        /// <returns>True if can hit other</returns>
+        protected bool CanHitObject(Collider other) 
         {
-            if (!alreadyHit.Contains(other))
-            {
-                penetrationCount++;
-                alreadyHit.Add(other);
-                Health otherHealth = other.GetComponentInChildren<Health>();
-                if (otherHealth == null)
-                {
-                    Debug.LogError("Object does not have Health component: " + gameObject.name);
-                }
-                else
-                {
-                    otherHealth.TakeDamage(gunStats.DamageDealt);
-                }
-                if (penetrationCount > gunStats.BulletPenetration)
-                {
-                    OnDespawn();
-                }
-            }
+            return (other.gameObject.tag == "Enemy" && gunStats.IsPlayerGun) ||
+                   (other.gameObject.tag == "Player" && !gunStats.IsPlayerGun);
         }
 
-        private void OnTriggerEnter(Collider other)
+        /// <summary>
+        /// Triggers notifyListenersHit event.
+        /// </summary>
+        protected void NotifyListenersHit() 
         {
-
-            if ((other.gameObject.tag == "Enemy" && gunStats.IsPlayerGun) ||
-                (other.gameObject.tag == "Player" && !gunStats.IsPlayerGun))
-            {
-                notifyListenersHit?.Invoke(transform.position);
-                DealDamageAndDespawn(other.gameObject);
-            }
+            notifyListenersHit?.Invoke(transform.position);
         }
     }
 }

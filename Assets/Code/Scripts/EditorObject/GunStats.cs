@@ -6,8 +6,22 @@ namespace EditorObject
 {
     public enum BulletType
     {
-        Projectile,
+        BulletProjectile,
         HitScan,
+        AreaOfEffect,
+    }
+
+    [System.Serializable]
+    public struct AOEPhase 
+    {
+        /// <summary>
+        /// In seconds
+        /// </summary>
+        public float Duration;
+        /// <summary>
+        /// In meters/second
+        /// </summary>
+        public float RateOfScaleGrowth;
     }
 
     /// <summary>
@@ -133,6 +147,13 @@ namespace EditorObject
         [SerializeField] private float explosionDamage = 25;
         [SerializeField] private float secondsBeforeExplode = 1.0f;
         #endregion
+
+        #region Area Of Effect
+        [Range(0, 1000)][SerializeField] private float damagePerSecond = 10;
+        [SerializeField] private Gun.AOEPhases numPhases = Gun.AOEPhases.Persistant;
+        [SerializeField] private AOEPhase phase1;
+        [SerializeField] private AOEPhase phase2;
+        #endregion
         #endregion
 
         #region Properties
@@ -189,6 +210,14 @@ namespace EditorObject
         public float Force { get { return force; } }
         public float ExplosionDamage { get { return explosionDamage; } }
         public float SecondsBeforeExplode { get { return secondsBeforeExplode; } }
+        #endregion
+
+        #region Area of Effect
+        public bool IsAreaOfEffect { get { return BulletType == EditorObject.BulletType.AreaOfEffect; } }
+        public float DamagePerSecond { get { return damagePerSecond; } }
+        public Gun.AOEPhases NumPhases { get { return numPhases; } }
+        public AOEPhase Phase1 { get { return phase1; } }
+        public AOEPhase Phase2 { get { return phase2; } }
         #endregion
 
         #endregion

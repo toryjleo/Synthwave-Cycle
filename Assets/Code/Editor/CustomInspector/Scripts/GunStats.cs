@@ -16,11 +16,12 @@ namespace CustomInspector
         #region Members
         private const int SECTION_SPACE = 8;
 
-        private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", "projectileSpread", "damageDealt" };
+        private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", "projectileSpread", };
         private string[] burstFireProps = { "timeBetweenBurstShots" };
         private string[] overheatProps = { "coolDownBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
         private string[] multipleProjectileProps = { "distanceBetweenProjectiles" };
         private string[] explosionProps = { "radius", "force", "explosionDamage", "isCountDownExplosion" };
+        private string[] areaOfEffectProps = { "numPhases" };
         private string[] countdownExplosionProps = { "secondsBeforeExplode" };
         #endregion
 
@@ -39,12 +40,14 @@ namespace CustomInspector
 
             if (gunStats != null)
             {
+                Damage(gunStats);
                 Ammunition(gunStats);
                 BurstFire(gunStats);
                 MultipleProjectiles(gunStats);
                 Overheat(gunStats);
                 BulletOptions(gunStats);
                 Explosions(gunStats);
+                AreaOfEffect(gunStats);
 
                 GeneratedStats(gunStats);
             }
@@ -83,16 +86,36 @@ namespace CustomInspector
 
             EditorGUILayout.LabelField("Bullet Options");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletType"));
-            //Bullet Type is ray cast
-            if (gunStats.BulletType == EditorObject.BulletType.HitScan)
+
+
+            switch (gunStats.BulletType) 
             {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("range"));
+                case EditorObject.BulletType.HitScan:
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("range"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
+                    break;
+                case EditorObject.BulletType.AreaOfEffect:
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("damagePerSecond"));
+                    break;
+                case EditorObject.BulletType.BulletProjectile:
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("muzzleVelocity"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileScale"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
+                    break;
+
             }
-            else
-            {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("muzzleVelocity"));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileScale"));
-            }
+        }
+
+        /// <summary>
+        /// Display Damage options
+        /// </summary>
+        /// <param name="gunStats">ScriptableObject to modify</param>
+        private void Damage(EditorObject.GunStats gunStats) 
+        {
+
+
         }
 
         /// <summary>
@@ -104,7 +127,6 @@ namespace CustomInspector
             EditorGUILayout.Space(SECTION_SPACE);
 
             EditorGUILayout.LabelField("Ammo");
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("infiniteAmmo"));
             if (!gunStats.InfiniteAmmo)
             {
@@ -163,6 +185,39 @@ namespace CustomInspector
                     FindAndShowProperties(countdownExplosionProps);
                 }
             }
+        }
+
+        /// <summary>
+        /// Display AOE options
+        /// </summary>
+        /// <param name="gunStats">ScriptableObject to modify</param>
+        private void AreaOfEffect(EditorObject.GunStats gunStats)
+        {
+            if (gunStats.IsAreaOfEffect)
+            {
+                EditorGUILayout.Space(SECTION_SPACE);
+
+                EditorGUILayout.LabelField("Area Of Effect");
+
+                FindAndShowProperties(areaOfEffectProps);
+
+                switch (gunStats.NumPhases) 
+                {
+                    case Gun.AOEPhases.Persistant:
+                        break;
+                    case Gun.AOEPhases.OnePhase:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
+                        break;
+                    case Gun.AOEPhases.TwoPhase:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("phase2"));
+                        break;
+                    default: 
+                        break;
+                }
+
+            }
+            
         }
 
         /// <summary>

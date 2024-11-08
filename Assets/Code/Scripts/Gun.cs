@@ -48,10 +48,17 @@ namespace Gun
 
         #region Object Instancing
 
-        // Bullets
         private const int INFINITE_AMMO_COUNT = 200;
+
+        // Projectile
         protected ProjectileObjectPool projectilePool = null;
-        [SerializeField] private Projectile bulletPrefab = null;
+        [SerializeField] private BulletProjectile bulletPrefab = null;
+
+        // Area of Effect
+        protected ProjectileObjectPool areaOfEffectPool = null;
+        [SerializeField] private AreaOfEffect areaOfEffectPrefab = null;
+
+        // HitScan
         protected HitScan hitScan = null;
 
         // Explosions
@@ -222,6 +229,13 @@ namespace Gun
                 projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, HandleBulletHit);
                 projectilePool.PoolObjects(instantiateCount);
             }
+            if (areaOfEffectPool == null) 
+            {
+                int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
+                                                   gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                areaOfEffectPool = new ProjectileObjectPool(gunStats, areaOfEffectPrefab, HandleBulletHit);
+                areaOfEffectPool.PoolObjects(instantiateCount);
+            }
             if (hitScan == null) 
             {
                 hitScan = new HitScan(gunStats);
@@ -369,6 +383,7 @@ namespace Gun
         /// <summary>
         /// Fires a single projectile from the bulletPool
         /// </summary>
+        /// <param name="direction">Direction to move in</param>
         private void FireProjectile(Vector3 direction)
         {
             Projectile bullet = projectilePool.SpawnFromPool() as Projectile;
@@ -379,9 +394,21 @@ namespace Gun
         /// <summary>
         /// Fires a single ray
         /// </summary>
+        /// <param name="direction">Direction to move in</param>
         private void FireHitScan(Vector3 direction)
         {
             hitScan.Shoot(BulletSpawn.transform.position, direction, impactEffectPool);
+        }
+
+        /// <summary>
+        /// Fires a single area of effect
+        /// </summary>
+        /// <param name="direction">Direction to move in</param>
+        private void FireAreaOfEffect(Vector3 direction)
+        {
+            AreaOfEffect bullet = areaOfEffectPool.SpawnFromPool() as AreaOfEffect;
+
+            bullet.Shoot(BulletSpawn.transform.position, direction, player ? player.Velocity : Vector3.zero);
         }
 
         /// <summary>
@@ -460,11 +487,14 @@ namespace Gun
         {
             switch (gunStats.BulletType)
             {
-                case EditorObject.BulletType.Projectile:
+                case EditorObject.BulletType.BulletProjectile:
                     FireProjectile(direction);
                     break;
                 case EditorObject.BulletType.HitScan:
                     FireHitScan(direction);
+                    break;
+                case EditorObject.BulletType.AreaOfEffect:
+                    FireAreaOfEffect(direction);
                     break;
             }
         }
