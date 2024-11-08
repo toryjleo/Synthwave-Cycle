@@ -92,12 +92,17 @@ namespace CustomInspector
             {
                 case EditorObject.BulletType.HitScan:
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("range"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
                     break;
                 case EditorObject.BulletType.AreaOfEffect:
-                    // TODO: Add FireAreaOfEffect specific fields
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("damagePerSecond"));
+                    break;
                 case EditorObject.BulletType.BulletProjectile:
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("muzzleVelocity"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileScale"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
                     break;
 
             }
@@ -110,14 +115,7 @@ namespace CustomInspector
         private void Damage(EditorObject.GunStats gunStats) 
         {
 
-            if (gunStats.IsAreaOfEffect)
-            {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("damagePerSecond"));
-            }
-            else
-            {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
-            }
+
         }
 
         /// <summary>
@@ -129,10 +127,6 @@ namespace CustomInspector
             EditorGUILayout.Space(SECTION_SPACE);
 
             EditorGUILayout.LabelField("Ammo");
-            if (gunStats.BulletType != BulletType.AreaOfEffect) 
-            {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
-            }
             EditorGUILayout.PropertyField(serializedObject.FindProperty("infiniteAmmo"));
             if (!gunStats.InfiniteAmmo)
             {
