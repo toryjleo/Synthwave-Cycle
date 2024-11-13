@@ -65,6 +65,7 @@ namespace Gun
             hasMovedToEnd = false;
             endLocation = Vector3.zero;
             trailRenderer.Clear();
+            trailRenderer.time = gunStats.TimeTillBulletTrailDespawn * .66f;
             timer = 0.0f;
         }
     }
