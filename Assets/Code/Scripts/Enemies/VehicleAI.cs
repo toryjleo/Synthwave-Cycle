@@ -69,11 +69,6 @@ public abstract class VehicleAi : Ai
 
     public override void HandleInPoolExit()
     {
-        playerHealth = FindObjectOfType<PlayerHealth>();
-        if (playerHealth != null && playerHealth.HitPoints > 0)
-        {
-            SetTarget(playerHealth.gameObject);
-        }
         vehicleController.enabled = true;
         base.HandleInPoolExit();
     }
@@ -84,7 +79,7 @@ public abstract class VehicleAi : Ai
         base.SetTarget(targ);
     }
 
-    void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
         {

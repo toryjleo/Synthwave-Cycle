@@ -30,10 +30,6 @@ public abstract class Ai : Poolable
     // Update is called once per frame
     public virtual void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
-        playerHealth = FindObjectOfType<PlayerHealth>();
-
-        //TODO: Set the target from the future enemy manager
-
         if (stateController.isWandering)
         {
             Wander(wanderDirection, fixedDeltaTime);
@@ -106,6 +102,7 @@ public abstract class Ai : Poolable
         stateController = new AIState.StateController(true);
         stateController.attacking.notifyListenersEnter += HandleAttackingEnter;
         stateController.inPool.notifyListenersExit += HandleInPoolExit;
+        stateController.wandering.notifyListenersEnter += HandleWanderingEnter;
         stateController.dead.notifyListenersEnter += Die;
         GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
         Despawn += HandleDespawned;
@@ -208,6 +205,15 @@ public abstract class Ai : Poolable
         rb.detectCollisions = true;
 
         inWorld = true;
+    }
+
+    public void HandleWanderingEnter()
+    {
+        playerHealth = FindObjectOfType<PlayerHealth>();
+        if (playerHealth != null && playerHealth.HitPoints > 0)
+        {
+            SetTarget(playerHealth.gameObject);
+        }
     }
 
     public void HandlePlayerDeadEnter()

@@ -16,9 +16,6 @@ public class RamCarAi : VehicleAi
     public override void HandleAttackingEnter()
     {
         Attack();
-
-        //TODO: Move followAgain to where we need to follow again
-        stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
     }
 
     public override void Attack()
@@ -26,14 +23,7 @@ public class RamCarAi : VehicleAi
         // TODO: Set up state for attacking
         Debug.Log("Ramcar attacking!!!");
         //RamCar just drives directly into the player (if targeted)
-        if (target != null)
-        {
-            //movementTargetPosition.transform.position = target.transform.position;
-            movementTargetPosition.transform.position = (Vector3.Normalize(this.transform.position - target.transform.position) + target.transform.position) * 2;
-            //vehicleController.target = movementTargetPosition.transform;
-            SetTarget(movementTargetPosition);
-            //rb.AddForce(Vector3.Normalize(target.transform.position - this.transform.position) * 1000f * Time.fixedDeltaTime);
-        }
+        SetTarget(playerHealth.gameObject);
     }
 
     public override void UpdateMovementLocation() // TODO: Use this function to follow player (?)
@@ -44,6 +34,16 @@ public class RamCarAi : VehicleAi
             movementTargetPosition.transform.position = stats.ChaseRange * Vector3.Normalize(this.transform.position - target.transform.position) + target.transform.position;
             vehicleController.target = movementTargetPosition.transform;
         }
+    }
+
+    protected override void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            //TODO: Move followAgain to where we need to follow again
+            stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
+        }
+        base.OnCollisionEnter(collision);
     }
 
     public override void Chase(Vector3 target, float fixedDeltaTime)
