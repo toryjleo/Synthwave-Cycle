@@ -5,27 +5,6 @@ using UnityEngine;
 
 namespace Generic
 {
-    /// <summary>
-    /// Used in initializing a Poolable object
-    /// </summary>
-    public interface IPoolableInstantiateData { };
-
-    /// <summary>
-    /// Component necessary for an object in the ObjectPool
-    /// </summary>
-    public abstract class Poolable : SelfWorldBoundsDespawn
-    {
-        /// <summary>
-        /// Set the poolable object to its initial state before spawning
-        /// </summary>
-        /// <param name="stats">The stats to apply to this poolable object</param>
-        public abstract void Init(IPoolableInstantiateData stats);
-
-        /// <summary>
-        /// Initialize all data that changes throughout a level
-        /// </summary>
-        public abstract void Reset();
-    }
 
     /// <summary> Works as an object pool for Poolable objects.</summary>
     public class ObjectPool
@@ -113,6 +92,8 @@ namespace Generic
         /// <returns>A currently unused Poolable object.</returns>
         public Poolable SpawnFromPool()
         {
+            // TODO: Throw warning if we have not called PoolObjects() yet
+
             if (objectsAwaitingSpawn.Count == 0)
             {
                 Poolable newObject = CreateNewPoolableObject();

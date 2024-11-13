@@ -60,6 +60,7 @@ namespace Gun
 
         // HitScan
         protected HitScan hitScan = null;
+        [SerializeField] protected PooledHitScanBulletTrail hitScanBulletTrailPrefab = null;
 
         // Explosions
         protected Generic.ObjectPool explosionPool = null;
@@ -205,11 +206,14 @@ namespace Gun
             ammoCount = gunStats.AmmoCount;
             nextTimeToFireBurst = 0.0f;
             overHeatPercent = 0.0f;
+            
             stateController.Reset();
+            hitScan.Reset();
 
             projectilePool.ResetGameObject();
             explosionPool.ResetGameObject();
             impactEffectPool.ResetGameObject();
+            areaOfEffectPool.ResetGameObject();
         }
 
         /// <summary>
@@ -224,6 +228,9 @@ namespace Gun
 
             if (projectilePool == null)
             {
+
+                // TODO: Make this prediction number a single method
+
                 int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
                                                                gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
                 projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, HandleBulletHit);
@@ -238,7 +245,9 @@ namespace Gun
             }
             if (hitScan == null) 
             {
-                hitScan = new HitScan(gunStats);
+                int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
+                                                              gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                hitScan = new HitScan(gunStats, hitScanBulletTrailPrefab, instantiateCount);
             }
             if (explosionPool == null) 
             {
