@@ -33,10 +33,6 @@ public abstract class Ai : Poolable
         playerHealth = FindObjectOfType<PlayerHealth>();
 
         //TODO: Set the target from the future enemy manager
-        if (playerHealth != null && playerHealth.HitPoints > 0)
-        {
-            SetTarget(playerHealth.gameObject);
-        }
 
         if (stateController.isWandering)
         {
@@ -194,7 +190,7 @@ public abstract class Ai : Poolable
     }
 
     #region EventHandlers
-    public void HandleAttackingEnter()
+    public virtual void HandleAttackingEnter()
     {
         if (stats.CanAim)
         {

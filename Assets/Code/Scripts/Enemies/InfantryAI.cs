@@ -26,6 +26,11 @@ public class InfantryAI : Ai
 
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
+        //TODO: Set the target from the future enemy manager
+        if (playerHealth != null && playerHealth.HitPoints > 0)
+        {
+            SetTarget(playerHealth.gameObject);
+        }
         SetAnimationSpeed(rb.velocity.magnitude);
         base.ManualUpdate(enemies, wanderDirection, fixedDeltaTime);
     }

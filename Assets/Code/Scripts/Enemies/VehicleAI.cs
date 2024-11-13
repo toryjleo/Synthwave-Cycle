@@ -12,18 +12,14 @@ public abstract class VehicleAi : Ai
     public ArcadeAiVehicleController vehicleController;
 
     //How much damage ramming deals
-    [SerializeField]
-    public float DamageMultiplier = 1.0f;
+    [SerializeField] public float DamageMultiplier = 1.0f;
 
     //How much additional force does a ram apply
-    [SerializeField]
-    public float RamModifier = 0.2f;
+    [SerializeField] public float RamModifier = 0.2f;
 
-    [SerializeField]
-    public GameObject itemDrop;
+    [SerializeField] public GameObject itemDrop;
 
-    [SerializeField]
-    public GameObject movementTargetPosition;
+    [SerializeField] public GameObject movementTargetPosition;
 
     //How much directional/rotational force effects the player on a ram
     private const float MAX_RANDOM_TORQUE = 4500f;
@@ -42,7 +38,7 @@ public abstract class VehicleAi : Ai
     {
         base.ManualUpdate(enemies, wanderDirection, fixedDeltaTime);
         //Figure out where to moved based on the child class movement pattern
-        UpdateMovementLocation();
+        // UpdateMovementLocation();
     }
 
     public override void Init(IPoolableInstantiateData stats)
@@ -50,7 +46,7 @@ public abstract class VehicleAi : Ai
         AiStats aiStats = stats as AiStats;
         if (!aiStats)
         {
-            Debug.LogWarning("InfantryAi stats are not readable as TestAi!");
+            Debug.LogWarning("VehicleAi stats are not readable as TestAi!");
         }
 
         hp = GetComponentInChildren<Health>();
@@ -73,6 +69,11 @@ public abstract class VehicleAi : Ai
 
     public override void HandleInPoolExit()
     {
+        playerHealth = FindObjectOfType<PlayerHealth>();
+        if (playerHealth != null && playerHealth.HitPoints > 0)
+        {
+            SetTarget(playerHealth.gameObject);
+        }
         vehicleController.enabled = true;
         base.HandleInPoolExit();
     }

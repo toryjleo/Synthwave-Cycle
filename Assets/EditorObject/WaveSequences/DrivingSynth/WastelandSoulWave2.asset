@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DLThreshold: 160
   waveEnemies:
-  - enemyType: 0
+  - enemyType: 4
     spawnLocation: 3
-    enemyAmount: 3
+    enemyAmount: 2
   - enemyType: 0
     spawnLocation: 1
     enemyAmount: 2
