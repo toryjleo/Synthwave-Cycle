@@ -21,8 +21,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HitScanBulletTrailSmoke
-  m_Shader: {fileID: 4800000, guid: ccd8149c126d6234dae2a8cdfc6cd022, type: 3}
-  m_ShaderKeywords: _ADDITIONAL_LIGHTS _RECEIVE_SHADOWS_OFF
+  m_Shader: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -35,7 +35,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 0603145bc87a9fa458ee30872a6e4259, type: 3}
+        m_Texture: {fileID: 2800000, guid: b4d202a154d85894dac022c57a4ccd08, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -71,7 +71,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 0603145bc87a9fa458ee30872a6e4259, type: 3}
+        m_Texture: {fileID: 2800000, guid: b4d202a154d85894dac022c57a4ccd08, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -131,7 +131,7 @@ Material:
     - _DestBlend: 10
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _EnableMultipleLights: 1
     - _EnvironmentReflections: 1
     - _FaceRenderingMode: 0
@@ -147,15 +147,16 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 0
     - _RoughnessMapToggle: 0
-    - _Smoothness: 0
+    - _SampleGI: 0
+    - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
     - _SourceBlend: 5
     - _SpecularHighlights: 1
     - _SpecularSetupToggle: 0
-    - _SrcBlend: 1
-    - _Surface: 0
+    - _SrcBlend: 5
+    - _Surface: 1
     - _SurfaceType: 1
-    - _WorkflowMode: 1
+    - _WorkflowMode: 0
     - _ZWrite: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
