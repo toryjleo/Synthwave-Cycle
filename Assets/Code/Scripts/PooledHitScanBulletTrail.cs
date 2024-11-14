@@ -50,13 +50,17 @@ namespace Gun
             {
                 hasMovedToEnd = true;
                 transform.position = endLocation;
+                Debug.Log("Drawing to " + endLocation);
             }
         }
 
         public void SetStartAndEndLocation(Vector3 startLocation, Vector3 endLocation)
         {
             transform.position = startLocation;
+
             this.endLocation = endLocation;
+
+            trailRenderer.Clear();
         }
 
         public override void Reset()
@@ -65,7 +69,7 @@ namespace Gun
             hasMovedToEnd = false;
             endLocation = Vector3.zero;
             trailRenderer.Clear();
-            trailRenderer.time = gunStats.TimeTillBulletTrailDespawn * .66f;
+            trailRenderer.time = gunStats.TimeTillBulletTrailDespawn;
             timer = 0.0f;
         }
     }

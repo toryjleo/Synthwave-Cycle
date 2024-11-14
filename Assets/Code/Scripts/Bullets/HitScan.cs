@@ -49,6 +49,8 @@ namespace Gun
             hits = Physics.RaycastAll(curPosition, direction, gunStats.Range);
             System.Array.Sort(hits, (a, b) => (a.distance.CompareTo(b.distance)));
 
+            //Debug.Log("Direction " + direction);
+
             int n = Mathf.Min(gunStats.BulletPenetration + 1, hits.Length);
 
             for (int i = 0; i < n; i++)
@@ -76,7 +78,7 @@ namespace Gun
             if (n == 0)
             {
                 // Hit nothing case. Bullet Trail goes to gun max range
-                finalHitLocation = direction * gunStats.Range;
+                finalHitLocation = (direction * gunStats.Range) + curPosition;
             }
             else
             {
@@ -84,6 +86,9 @@ namespace Gun
                 RaycastHit finalHit = hits[n - 1];
                 finalHitLocation = finalHit.point;
             }
+
+
+            Debug.Log("Drawing to: " + finalHitLocation);
 
             DrawBulletTrail(curPosition, finalHitLocation);
         }
