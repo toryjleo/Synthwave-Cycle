@@ -60,13 +60,6 @@ public abstract class VehicleAi : Ai
         vehicleController.MaxSpeed = maxSpeed;
     }
 
-    // public override void InitStateController()
-    // {
-    //     base.InitStateController();
-    // }
-
-    // TODO: Follow the player until inRange, THEN set their vehicle target to attack
-
     public override void HandleInPoolExit()
     {
         vehicleController.enabled = true;
@@ -77,6 +70,11 @@ public abstract class VehicleAi : Ai
     {
         vehicleController.target = targ.transform;
         base.SetTarget(targ);
+    }
+
+    public void ApplyForce(Vector3 force, float fixedDeltaTime)
+    {
+        rb.AddForce(force * fixedDeltaTime);
     }
 
     protected virtual void OnCollisionEnter(Collision collision)

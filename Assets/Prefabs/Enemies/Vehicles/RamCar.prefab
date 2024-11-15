@@ -6163,21 +6163,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22d6bb83efa152e40966022e91663b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHealth: {fileID: 0}
   target: {fileID: 0}
   rb: {fileID: 2279930514937360765}
-  myGun: {fileID: 0}
+  myGuns: []
   hp: {fileID: 3840444340308158616}
-  StartingHP: 200
-  maxForce: 5
-  score: 100
-  dlScore: 100
-  attackRange: 15
-  minimumRange: 15
-  alive: 1
-  movementGroup: 3
-  gearModifier: 0.8
+  inWorld: 0
   vehicleController: {fileID: 2279930514937360766}
-  DamageMultiplyer: 1
+  DamageMultiplier: 1
   RamModifier: 0.2
   itemDrop: {fileID: 0}
   movementTargetPosition: {fileID: 8202032198735747249}

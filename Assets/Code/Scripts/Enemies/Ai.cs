@@ -239,7 +239,7 @@ public abstract class Ai : Poolable
     /// This method works for ranged Enemies that do not get into direct melee range with the target
     /// </summary>
     /// <param name="target"> Vector to target </param>
-    public virtual void Move(Vector3 target, ArrayList enemyList, float fixedDeltaTime) //This can be used for Enemies that stay at range and don't run into melee.
+    public virtual void Move(Vector3 target, ArrayList enemyList, float fixedDeltaTime)
     {
         Chase(target, fixedDeltaTime);
         Separate(enemyList, fixedDeltaTime);

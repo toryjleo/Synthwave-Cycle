@@ -20,8 +20,8 @@ MonoBehaviour:
   chaseRange: 25
   maxGroupingForce: 1
   groupingRange: 20
-  maxSeparateForce: 1
-  separateRange: 15
+  maxSeparateForce: 3
+  separateRange: 10
   dlScore: 35
   attackRange: 55
   timeToAttack: 4
