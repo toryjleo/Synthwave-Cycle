@@ -199,6 +199,9 @@ namespace EditorObject
         public Vector3 ProjectileScale { get { return projectileScale; } }
         #endregion
         #region HitScan
+        /// <summary>
+        /// Maximum range the projectile travels
+        /// </summary>
         public float Range { get { return range; } }
         #endregion
         public bool IsExplosive { get { return isExplosive; } }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Generic;
 
 namespace Gun
 {
@@ -12,20 +13,34 @@ namespace Gun
 
         public event BulletHitHandler notifyListenersHit;
 
+
+        protected ObjectPool hitScanBulletTrailPool = null;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="gunStats">Stats to use</param>
-        public HitScan(EditorObject.GunStats gunStats)
+        public HitScan(EditorObject.GunStats gunStats, PooledHitScanBulletTrail bulletTrailPrefab, int bulletTrailCount)
         {
             this.gunStats = gunStats;
+
+            if (hitScanBulletTrailPool == null)
+            {
+                hitScanBulletTrailPool = new ObjectPool(gunStats, bulletTrailPrefab);
+                hitScanBulletTrailPool.PoolObjects(bulletTrailCount);
+            }
+        }
+
+        public void Reset() 
+        {
+            hitScanBulletTrailPool.ResetGameObject();
         }
 
         /// <summary>
         /// Shoots in a specified direction
         /// </summary>
         /// <param name="curPosition">Place to spawn ray</param>
-        /// <param name="direction">Direction vector for ray</param>
+        /// <param name="direction">Normalized direction vector for ray</param>
         /// <param name="impactEffectPool">Effect to play on impact</param>
         public void Shoot(Vector3 curPosition, Vector3 direction, Generic.ObjectPool impactEffectPool)
         {
@@ -34,12 +49,11 @@ namespace Gun
             hits = Physics.RaycastAll(curPosition, direction, gunStats.Range);
             System.Array.Sort(hits, (a, b) => (a.distance.CompareTo(b.distance)));
 
-            int n = Mathf.Min(gunStats.BulletPenetration + 1, hits.Length);
+            int numberOfHitObjects = Mathf.Min(gunStats.BulletPenetration + 1, hits.Length);
 
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < numberOfHitObjects; i++)
             {
                 RaycastHit hit = hits[i];
-                Debug.Log(hit.transform.name);
 
                 notifyListenersHit?.Invoke(hit.point);
 
@@ -56,6 +70,22 @@ namespace Gun
                 particle.transform.rotation = Quaternion.LookRotation(hit.normal);
                 particle.Play();
             }
+
+            // Logic for visuals
+            Vector3 finalHitLocation = Vector3.zero;
+            if (numberOfHitObjects == 0)
+            {
+                // Hit nothing case. Bullet Trail goes to gun max range
+                finalHitLocation = (direction * gunStats.Range) + curPosition;
+            }
+            else
+            {
+                // Bullet trail goes to last target
+                RaycastHit finalHit = hits[numberOfHitObjects - 1];
+                finalHitLocation = finalHit.point;
+            }
+
+            DrawBulletTrail(curPosition, finalHitLocation);
         }
 
         /// <summary>
@@ -75,6 +105,25 @@ namespace Gun
                 otherHealth.TakeDamage(gunStats.DamageDealt);
             }
 
+        }
+
+        /// <summary>
+        /// Draws a bullet trail from the start to end location
+        /// </summary>
+        /// <param name="startLocation">The location to start drawing the trail in world coordinates</param>
+        /// <param name="endLocation">The location to end drawing the trail in world coordinates</param>
+        private void DrawBulletTrail(Vector3 startLocation, Vector3 endLocation)
+        {
+
+            PooledHitScanBulletTrail hitScanTrail = hitScanBulletTrailPool.SpawnFromPool() as PooledHitScanBulletTrail;
+            if (hitScanTrail == null)
+            {
+                Debug.LogError("Pooled object needs component of type PooledHitScanBulletTrail");
+            }
+            else 
+            {
+                hitScanTrail.SetStartAndEndLocation(startLocation, endLocation);
+            }
         }
     }
 }
