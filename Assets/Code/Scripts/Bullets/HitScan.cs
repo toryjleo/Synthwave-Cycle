@@ -49,14 +49,11 @@ namespace Gun
             hits = Physics.RaycastAll(curPosition, direction, gunStats.Range);
             System.Array.Sort(hits, (a, b) => (a.distance.CompareTo(b.distance)));
 
-            //Debug.Log("Direction " + direction);
+            int numberOfHitObjects = Mathf.Min(gunStats.BulletPenetration + 1, hits.Length);
 
-            int n = Mathf.Min(gunStats.BulletPenetration + 1, hits.Length);
-
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < numberOfHitObjects; i++)
             {
                 RaycastHit hit = hits[i];
-                Debug.Log(hit.transform.name);
 
                 notifyListenersHit?.Invoke(hit.point);
 
@@ -74,8 +71,9 @@ namespace Gun
                 particle.Play();
             }
 
+            // Logic for visuals
             Vector3 finalHitLocation = Vector3.zero;
-            if (n == 0)
+            if (numberOfHitObjects == 0)
             {
                 // Hit nothing case. Bullet Trail goes to gun max range
                 finalHitLocation = (direction * gunStats.Range) + curPosition;
@@ -83,12 +81,9 @@ namespace Gun
             else
             {
                 // Bullet trail goes to last target
-                RaycastHit finalHit = hits[n - 1];
+                RaycastHit finalHit = hits[numberOfHitObjects - 1];
                 finalHitLocation = finalHit.point;
             }
-
-
-            Debug.Log("Drawing to: " + finalHitLocation);
 
             DrawBulletTrail(curPosition, finalHitLocation);
         }
@@ -112,8 +107,14 @@ namespace Gun
 
         }
 
-        private void DrawBulletTrail(Vector3 startLocation, Vector3 endLocation) 
+        /// <summary>
+        /// Draws a bullet trail from the start to end location
+        /// </summary>
+        /// <param name="startLocation">The location to start drawing the trail in world coordinates</param>
+        /// <param name="endLocation">The location to end drawing the trail in world coordinates</param>
+        private void DrawBulletTrail(Vector3 startLocation, Vector3 endLocation)
         {
+
             PooledHitScanBulletTrail hitScanTrail = hitScanBulletTrailPool.SpawnFromPool() as PooledHitScanBulletTrail;
             if (hitScanTrail == null)
             {

@@ -137,7 +137,6 @@ namespace EditorObject
         /// Maximum range the projectile travels
         /// </summary>
         [Range(0f, 200f)][SerializeField] private float range = 100f;
-        [Range(.1f, 2f)] [SerializeField] private float timeTillBulletTrailDespawn = .25f;
         #endregion
 
         #region Explosion
@@ -204,7 +203,6 @@ namespace EditorObject
         /// Maximum range the projectile travels
         /// </summary>
         public float Range { get { return range; } }
-        public float TimeTillBulletTrailDespawn { get { return timeTillBulletTrailDespawn; } }
         #endregion
         public bool IsExplosive { get { return isExplosive; } }
         public bool IsCountDownExplosion { get { return isCountDownExplosion; } }
