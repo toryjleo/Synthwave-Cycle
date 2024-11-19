@@ -30,6 +30,8 @@ namespace Gun
         /// </summary>
         GunState.StateController stateController = null;
 
+        private ImpactManager impactManager = null;
+
         /// <summary>
         /// Location for the gun to spawn bullets
         /// </summary>
@@ -225,6 +227,11 @@ namespace Gun
             player = FindObjectOfType<PlayerMovement>();
 
             stateController = new GunState.StateController(gunStats.NumBurstShots, gunStats.PrintDebugState);
+            impactManager = FindObjectOfType<ImpactManager>();
+            if (impactManager == null) 
+            {
+                Debug.LogError("There is no impactManager in the scene!");
+            }
 
             if (projectilePool == null)
             {
@@ -306,7 +313,6 @@ namespace Gun
                     }
                 }
             }
-            
         }
 
         /// <summary>
@@ -406,7 +412,7 @@ namespace Gun
         /// <param name="direction">Direction to move in</param>
         private void FireHitScan(Vector3 direction)
         {
-            hitScan.Shoot(BulletSpawn.transform.position, direction, impactEffectPool);
+            hitScan.Shoot(BulletSpawn.transform.position, direction);
         }
 
         /// <summary>

@@ -42,7 +42,7 @@ namespace Gun
         /// <param name="curPosition">Place to spawn ray</param>
         /// <param name="direction">Normalized direction vector for ray</param>
         /// <param name="impactEffectPool">Effect to play on impact</param>
-        public void Shoot(Vector3 curPosition, Vector3 direction, Generic.ObjectPool impactEffectPool)
+        public void Shoot(Vector3 curPosition, Vector3 direction)
         {
             // Get hits
             RaycastHit[] hits;
@@ -64,11 +64,14 @@ namespace Gun
                     DealDamage(hit.transform.gameObject);
                 }
 
+
                 // TODO: Move the particle spawning logic to Gun.HandleBulletHit
-                PooledParticle particle = impactEffectPool.SpawnFromPool() as PooledParticle;
+                Material hitMaterial = GetHitMaterial(hit);
+                ImpactManager.Instance.SpawnBulletImpact(hit.point, hit.normal, hitMaterial);
+                /*PooledParticle particle = impactEffectPool.SpawnFromPool() as PooledParticle;
                 particle.transform.position = hit.transform.position;
                 particle.transform.rotation = Quaternion.LookRotation(hit.normal);
-                particle.Play();
+                particle.Play();*/
             }
 
             // Logic for visuals
@@ -124,6 +127,13 @@ namespace Gun
             {
                 hitScanTrail.SetStartAndEndLocation(startLocation, endLocation);
             }
+        }
+
+        Material GetHitMaterial(RaycastHit hit) 
+        {
+            Renderer hitRenderer = hit.transform.gameObject.GetComponent<Renderer>();
+            Material hitMaterial = hitRenderer == null ? null : hitRenderer.sharedMaterial;
+            return hitMaterial;
         }
     }
 }
