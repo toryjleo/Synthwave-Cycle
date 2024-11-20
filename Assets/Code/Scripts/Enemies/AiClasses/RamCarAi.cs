@@ -15,7 +15,7 @@ public class RamCarAi : VehicleAi
 
     public override void HandleAttackingEnter()
     {
-        stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
+        //stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
         Attack();
     }
 
@@ -23,13 +23,10 @@ public class RamCarAi : VehicleAi
     {
         Debug.Log("Ramcar attacking!!!");
         //RamCar just drives directly into the player (if targeted)
-        // TODO: avoid steering too far off the path
-        // TODO: verify separate works when not attacking
-        // movementTargetPosition.transform.position = playerHealth.gameObject.transform.position;
         SetTarget(playerHealth.gameObject);
     }
 
-    public override void UpdateMovementLocation() // TODO: Use this function to follow player (?)
+    public override void UpdateMovementLocation()
     {
         if (target != null)
         {
@@ -42,7 +39,6 @@ public class RamCarAi : VehicleAi
     {
         if (collision.gameObject.tag == "Player")
         {
-            //TODO: Move followAgain to where we need to follow again
             stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
         }
         else if (collision.gameObject.tag == "Enemy")
