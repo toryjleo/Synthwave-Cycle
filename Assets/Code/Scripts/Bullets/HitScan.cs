@@ -44,9 +44,24 @@ namespace Gun
         /// <param name="impactEffectPool">Effect to play on impact</param>
         public void Shoot(Vector3 curPosition, Vector3 direction)
         {
+            // TODO: Create a mask to ignore raycasts
+            
+            int mask = 0;
+            int layerEnemy = 7;
+            int layerPlayer = 9;
+            if (gunStats.IsPlayerGun) 
+            {
+                mask = 1 << layerEnemy;
+            }
+            else 
+            {
+                mask = 1 << layerPlayer;
+            }
+            mask = ~mask;
+
             // Get hits
             RaycastHit[] hits;
-            hits = Physics.RaycastAll(curPosition, direction, gunStats.Range);
+            hits = Physics.RaycastAll(curPosition, direction, gunStats.Range, mask);
             System.Array.Sort(hits, (a, b) => (a.distance.CompareTo(b.distance)));
 
             int numberOfHitObjects = Mathf.Min(gunStats.BulletPenetration + 1, hits.Length);

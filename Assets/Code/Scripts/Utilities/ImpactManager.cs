@@ -55,11 +55,14 @@ public class ImpactManager : MonoBehaviour
         }
     }
 
-    // TODO: Reset all pools
     public void Reset() 
     {
-        // errorPool.ResetGameObject();
-        // Entire Dictionary
+        errorPool.ResetGameObject();
+
+        foreach (Material key in impactDictionary.Keys) 
+        {
+            impactDictionary[key].ResetGameObject();
+        }
     }
 
     public void SpawnBulletImpact(Vector3 position, Vector3 forward, Material material) 
