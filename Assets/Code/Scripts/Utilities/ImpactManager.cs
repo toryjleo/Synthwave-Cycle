@@ -17,6 +17,7 @@ public class ImpactManager : MonoBehaviour
     [SerializeField] private List<ImpactMapping> mappings = new List<ImpactMapping>();
     [SerializeField] PooledParticle errorParticle = null;
     private Dictionary<Material, ObjectPool> impactDictionary = new Dictionary<Material, ObjectPool>();
+    private ObjectPool errorPool = null;
     private int defaultBuffer = 5;
 
     void Awake()
@@ -49,15 +50,16 @@ public class ImpactManager : MonoBehaviour
         }
         else 
         {
-            impactDictionary[null] = new ObjectPool(null, errorParticle);
-            impactDictionary[null].PoolObjects(defaultBuffer);
+            errorPool = new ObjectPool(null, errorParticle);
+            errorPool.PoolObjects(defaultBuffer);
         }
     }
 
     // TODO: Reset all pools
     public void Reset() 
     {
-        // impactEffectPool.ResetGameObject();
+        // errorPool.ResetGameObject();
+        // Entire Dictionary
     }
 
     public void SpawnBulletImpact(Vector3 position, Vector3 forward, Material material) 
@@ -70,7 +72,7 @@ public class ImpactManager : MonoBehaviour
         }
         else 
         {
-            PooledParticle particle = impactDictionary[null].SpawnFromPool() as PooledParticle;
+            PooledParticle particle = errorPool.SpawnFromPool() as PooledParticle;
             particle.Play(position, forward);
             Debug.Log("Not a material");
         }

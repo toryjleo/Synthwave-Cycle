@@ -898,7 +898,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mappings:
   - {fileID: 11400000, guid: e34a6e6ff8ce28e418f59749479575d4, type: 2}
-  errorParticle: {fileID: 0}
+  errorParticle: {fileID: 2801733825334559026, guid: 3fb3a287afb3d1b4d8f322833fb27d2c, type: 3}
 --- !u!4 &1980340526
 Transform:
   m_ObjectHideFlags: 0
