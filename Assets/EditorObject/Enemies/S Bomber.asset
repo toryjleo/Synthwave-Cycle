@@ -15,10 +15,15 @@ MonoBehaviour:
   health: 20
   movementGroup: 2
   gearModifier: 0.8
-  maxForce: 1
+  maxMovementForce: 1
+  maxChaseForce: 1
+  chaseRange: 10
+  maxGroupingForce: 1
+  groupingRange: 10
+  maxSeparateForce: 1.5
+  separateRange: 10
   dlScore: 20
-  attackRange: 20
-  followRange: 15
+  attackRange: 35
   timeToAttack: 3
   canAim: 0
   enemyType: 4

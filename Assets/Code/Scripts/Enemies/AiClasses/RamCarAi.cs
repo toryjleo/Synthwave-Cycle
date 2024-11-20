@@ -43,7 +43,6 @@ public class RamCarAi : VehicleAi
         }
         else if (collision.gameObject.tag == "Enemy")
         {
-            //TODO: Do something when two cars get stuck together
             // movementTargetPosition.transform.position = GetChaseLocation();
             stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
         }

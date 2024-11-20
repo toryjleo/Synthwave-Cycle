@@ -104,6 +104,8 @@ public abstract class Ai : Poolable
         stateController.inPool.notifyListenersExit += HandleInPoolExit;
         stateController.wandering.notifyListenersEnter += HandleWanderingEnter;
         stateController.dead.notifyListenersEnter += Die;
+        stateController.inRange.notifyListenersEnter += HandleInRangeEnter;
+        stateController.inRange.notifyListenersEnter += HandleInRangeExit;
         GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
         Despawn += HandleDespawned;
         hp.deadEvent += HandleDeath;
@@ -187,6 +189,17 @@ public abstract class Ai : Poolable
     }
 
     #region EventHandlers
+
+    public virtual void HandleInRangeEnter()
+    {
+
+    }
+
+    public virtual void HandleInRangeExit()
+    {
+
+    }
+
     public virtual void HandleAttackingEnter()
     {
         if (stats.CanAim)
