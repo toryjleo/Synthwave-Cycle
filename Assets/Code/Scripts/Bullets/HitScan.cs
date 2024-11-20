@@ -44,8 +44,7 @@ namespace Gun
         /// <param name="impactEffectPool">Effect to play on impact</param>
         public void Shoot(Vector3 curPosition, Vector3 direction)
         {
-            // TODO: Create a mask to ignore raycasts
-            
+            // Make sure to hit the correct things get hit with a layer mask
             int mask = 0;
             int layerEnemy = 7;
             int layerPlayer = 9;
@@ -80,14 +79,9 @@ namespace Gun
                 }
 
 
-                // TODO: Move the particle spawning logic to Gun.HandleBulletHit
                 Material hitMaterial = GetHitMaterial(hit);
                 // TODO: use opposite of travelling vector for forward instead of normal
                 ImpactManager.Instance.SpawnBulletImpact(hit.point, hit.normal, hitMaterial);
-                /*PooledParticle particle = impactEffectPool.SpawnFromPool() as PooledParticle;
-                particle.transform.position = hit.transform.position;
-                particle.transform.rotation = Quaternion.LookRotation(hit.normal);
-                particle.Play();*/
             }
 
             // Logic for visuals
