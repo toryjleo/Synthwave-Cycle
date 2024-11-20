@@ -38,8 +38,11 @@ namespace Gun
         /// <summary>
         /// Play the attached particle system
         /// </summary>
-        public void Play()
+        public void Play(Vector3 position, Vector3 forward)
         {
+            transform.position = position;
+            transform.forward = forward;
+
             particleSystem.Play();
         }
     }

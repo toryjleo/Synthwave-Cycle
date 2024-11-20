@@ -67,6 +67,7 @@ namespace Gun
 
                 // TODO: Move the particle spawning logic to Gun.HandleBulletHit
                 Material hitMaterial = GetHitMaterial(hit);
+                // TODO: use opposite of travelling vector for forward instead of normal
                 ImpactManager.Instance.SpawnBulletImpact(hit.point, hit.normal, hitMaterial);
                 /*PooledParticle particle = impactEffectPool.SpawnFromPool() as PooledParticle;
                 particle.transform.position = hit.transform.position;

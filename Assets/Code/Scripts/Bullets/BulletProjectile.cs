@@ -25,6 +25,11 @@ namespace Gun
                 NotifyListenersHit();
                 DealDamageAndDespawn(other.gameObject);
             }
+            Vector3 positon = other.ClosestPoint(transform.position);
+            Vector3 normal = transform.position - positon;
+            Material material = GetGameObjectMaterial(other.gameObject);
+            // TODO: use opposite of travelling vector for forward instead of normal
+            ImpactManager.Instance.SpawnBulletImpact(positon, normal, material);
         }
 
         /// <summary>
@@ -53,6 +58,12 @@ namespace Gun
                     OnDespawn();
                 }
             }
+        }
+        Material GetGameObjectMaterial(GameObject hitObject)
+        {
+            Renderer hitRenderer = hitObject.GetComponent<Renderer>();
+            Material hitMaterial = hitRenderer == null ? null : hitRenderer.sharedMaterial;
+            return hitMaterial;
         }
     }
 }

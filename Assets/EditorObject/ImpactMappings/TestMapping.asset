@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6504ca445b6357847990707759f867e8, type: 3}
   m_Name: TestMapping
   m_EditorClassIdentifier: 
-  material: {fileID: 0}
-  particleSystem: {fileID: 0}
+  material: {fileID: 2100000, guid: 66f0e60c51d4de8428587a74775f3b8b, type: 2}
+  particleSystem: {fileID: 2481258670572446118, guid: ac706fddc359e2949835b202db59647a, type: 3}
