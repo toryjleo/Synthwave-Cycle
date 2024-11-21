@@ -15,10 +15,11 @@ public class ImpactManager : MonoBehaviour
 
 
     [SerializeField] private List<ImpactMapping> mappings = new List<ImpactMapping>();
-    [SerializeField] PooledParticle errorParticle = null;
     private Dictionary<Material, ObjectPool> impactDictionary = new Dictionary<Material, ObjectPool>();
+
+    [SerializeField] PooledParticle errorParticle = null;
     private ObjectPool errorPool = null;
-    private int defaultBuffer = 5;
+    private int defaultPinkErrorNumber = 12;
 
     void Awake()
     {
@@ -39,7 +40,8 @@ public class ImpactManager : MonoBehaviour
             else
             {
                 impactDictionary.Add(mapping.Material, new ObjectPool(null, mapping.ParticleSystem));
-                impactDictionary[mapping.Material].PoolObjects(defaultBuffer);
+                // TODO: Have prediction of how many times to spawn particle in
+                impactDictionary[mapping.Material].PoolObjects(mapping.PooledNumber);
             }
         }
 
@@ -51,7 +53,7 @@ public class ImpactManager : MonoBehaviour
         else 
         {
             errorPool = new ObjectPool(null, errorParticle);
-            errorPool.PoolObjects(defaultBuffer);
+            errorPool.PoolObjects(defaultPinkErrorNumber);
         }
     }
 

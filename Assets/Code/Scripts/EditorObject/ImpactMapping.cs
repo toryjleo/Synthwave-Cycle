@@ -14,8 +14,10 @@ namespace EditorObject
     {
         [SerializeField] private Material material;
         [SerializeField] private PooledParticle particleSystem;
+        [SerializeField] private int pooledNumber = 10;
 
         public Material Material { get { return material; } }
         public PooledParticle ParticleSystem { get {  return particleSystem; } }
+        public int PooledNumber { get {  return pooledNumber; } }
     }
 }
