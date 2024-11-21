@@ -46,8 +46,8 @@ namespace Gun
         {
             // Make sure to hit the correct things get hit with a layer mask
             int mask = 0;
-            int layerEnemy = 7;
-            int layerPlayer = 9;
+            int layerEnemy = 9;
+            int layerPlayer = 7;
             if (gunStats.IsPlayerGun) 
             {
                 mask = 1 << layerEnemy;
@@ -56,7 +56,6 @@ namespace Gun
             {
                 mask = 1 << layerPlayer;
             }
-            mask = ~mask;
 
             // Get hits
             RaycastHit[] hits;
@@ -80,8 +79,8 @@ namespace Gun
 
 
                 Material hitMaterial = GetHitMaterial(hit);
-                // TODO: use opposite of travelling vector for forward instead of normal
-                ImpactManager.Instance.SpawnBulletImpact(hit.point, hit.normal, hitMaterial);
+                Vector3 particleSprayDir = (curPosition - hit.point).normalized;
+                ImpactManager.Instance.SpawnBulletImpact(hit.point, particleSprayDir, hitMaterial);
             }
 
             // Logic for visuals

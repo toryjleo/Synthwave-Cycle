@@ -28,8 +28,8 @@ namespace Gun
             Vector3 positon = other.ClosestPoint(transform.position);
             Vector3 normal = transform.position - positon;
             Material material = GetGameObjectMaterial(other.gameObject);
-            // TODO: use opposite of travelling vector for forward instead of normal
-            ImpactManager.Instance.SpawnBulletImpact(positon, normal, material);
+            Vector3 particleSprayDir = -shootDir.normalized;
+            ImpactManager.Instance.SpawnBulletImpact(positon, particleSprayDir, material);
         }
 
         /// <summary>
