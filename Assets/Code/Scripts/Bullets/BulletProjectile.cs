@@ -59,6 +59,12 @@ namespace Gun
                 }
             }
         }
+
+        /// <summary>
+        /// Returns the shared material of a given hit object
+        /// </summary>
+        /// <param name="hitObject">Object to return material from</param>
+        /// <returns>The shared material</returns>
         Material GetGameObjectMaterial(GameObject hitObject)
         {
             Renderer hitRenderer = hitObject.GetComponent<Renderer>();

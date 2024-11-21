@@ -41,7 +41,6 @@ namespace Gun
         /// </summary>
         /// <param name="curPosition">Place to spawn ray</param>
         /// <param name="direction">Normalized direction vector for ray</param>
-        /// <param name="impactEffectPool">Effect to play on impact</param>
         public void Shoot(Vector3 curPosition, Vector3 direction)
         {
             // Make sure to hit the correct things get hit with a layer mask
@@ -138,6 +137,11 @@ namespace Gun
             }
         }
 
+        /// <summary>
+        /// Gets the shared material of a raycast hit
+        /// </summary>
+        /// <param name="hit">Hit object from a raycast</param>
+        /// <returns>The shared material</returns>
         Material GetHitMaterial(RaycastHit hit) 
         {
             Renderer hitRenderer = hit.transform.gameObject.GetComponent<Renderer>();

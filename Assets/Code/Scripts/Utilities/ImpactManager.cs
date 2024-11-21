@@ -5,6 +5,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A singleton that manages all particles played in the game.
+/// It maps every material to a particle to play when it is hit
+/// </summary>
 public class ImpactManager : MonoBehaviour
 {
 
@@ -30,31 +34,7 @@ public class ImpactManager : MonoBehaviour
         }
         Instance = this;
 
-        foreach(ImpactMapping mapping in mappings) 
-        {
-            if (impactDictionary.ContainsKey(mapping.Material))
-            {
-                // Error case
-                Debug.LogWarning("Initializing multiple mappings for material: " +  mapping.Material);
-            }
-            else
-            {
-                impactDictionary.Add(mapping.Material, new ObjectPool(null, mapping.ParticleSystem));
-                // TODO: Have prediction of how many times to spawn particle in
-                impactDictionary[mapping.Material].PoolObjects(mapping.PooledNumber);
-            }
-        }
-
-        // Initialize the error particle
-        if (errorParticle == null) 
-        {
-            Debug.Log("ImpactManager requires an error particle to be set");
-        }
-        else 
-        {
-            errorPool = new ObjectPool(null, errorParticle);
-            errorPool.PoolObjects(defaultPinkErrorNumber);
-        }
+        PoolParticles();
     }
 
     public void Reset() 
@@ -67,6 +47,45 @@ public class ImpactManager : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Pools the particles to be used
+    /// </summary>
+    private void PoolParticles()
+    {
+        foreach (ImpactMapping mapping in mappings)
+        {
+            if (impactDictionary.ContainsKey(mapping.Material))
+            {
+                // Error case
+                Debug.LogWarning("Initializing multiple mappings for material: " + mapping.Material);
+            }
+            else
+            {
+                impactDictionary.Add(mapping.Material, new ObjectPool(null, mapping.ParticleSystem));
+                impactDictionary[mapping.Material].PoolObjects(mapping.PooledNumber);
+            }
+        }
+
+        // Initialize the error particle
+        if (errorParticle == null)
+        {
+            Debug.Log("ImpactManager requires an error particle to be set");
+        }
+        else
+        {
+            errorPool = new ObjectPool(null, errorParticle);
+            errorPool.PoolObjects(defaultPinkErrorNumber);
+        }
+    }
+
+    /// <summary>
+    /// Spawns a particle at the specified orientation.
+    /// Will play a pink error particle for any material without a mapping.
+    /// </summary>
+    /// <param name="position">Location for particle to spawn</param>
+    /// <param name="forward">Forward direction for the particle</param>
+    /// <param name="material">Material that the particle is mapped to</param>
     public void SpawnBulletImpact(Vector3 position, Vector3 forward, Material material) 
     {
         if (impactDictionary.ContainsKey(material)) 
