@@ -22,6 +22,7 @@ public abstract class Ai : Poolable
     internal float timeByTarget = 0;
 
     public bool inWorld = false;
+    protected bool addDlScore = true;
 
     public event NotifyDeath DeadEvent;
     public event NotifyRespawn RespawnEvent;
@@ -105,7 +106,7 @@ public abstract class Ai : Poolable
         stateController.wandering.notifyListenersEnter += HandleWanderingEnter;
         stateController.dead.notifyListenersEnter += Die;
         stateController.inRange.notifyListenersEnter += HandleInRangeEnter;
-        stateController.inRange.notifyListenersEnter += HandleInRangeExit;
+        stateController.inRange.notifyListenersExit += HandleInRangeExit;
         GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
         Despawn += HandleDespawned;
         hp.deadEvent += HandleDeath;
@@ -157,7 +158,7 @@ public abstract class Ai : Poolable
             }
         }
 
-        if (DangerLevel.Instance)
+        if (DangerLevel.Instance && addDlScore)
         {
             DangerLevel.Instance.IncreaseDangerLevel(stats.DlScore);
         }
@@ -303,6 +304,7 @@ public abstract class Ai : Poolable
             gameObject.SetActive(false);
             stateController.HandleTrigger(AIState.StateTrigger.Despawned);
             inWorld = false;
+            addDlScore = true;
         }
     }
 }

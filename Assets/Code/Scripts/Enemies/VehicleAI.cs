@@ -14,25 +14,9 @@ public abstract class VehicleAi : Ai
     //How much damage ramming deals
     [SerializeField] public float DamageMultiplier = 1.0f;
 
-    //How much additional force does a ram apply
-    [SerializeField] public float RamModifier = 0.2f;
-
     [SerializeField] public GameObject itemDrop;
 
     [SerializeField] public GameObject movementTargetPosition;
-
-    //How much directional/rotational force effects the player on a ram
-    private const float MAX_RANDOM_TORQUE = 4500f;
-    private const float MAX_RAM_MAGNITUDE = 200f;
-
-    //This is the time the Vehicle has spent within CONFIDENCE_BUILD_DISTANCE to it's target
-    //When it exceeds TIME_BY_TARGET_TO_ATTACK the car is ready to attack
-    // internal float timeByTarget = 0;
-    // internal float TIME_BY_TARGET_TO_ATTACK;
-    internal const float CONFIDENCE_BUILD_DISTANCE = 45f;
-
-    //All vehicles have a target, but some vehicles interact with their targets in different ways
-    public abstract void UpdateMovementLocation();
 
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
@@ -56,7 +40,7 @@ public abstract class VehicleAi : Ai
 
         base.Init(stats);
 
-        //Must ba called after base.Init()
+        //Must be called after base.Init()
         vehicleController.MaxSpeed = maxSpeed;
     }
 
@@ -66,15 +50,23 @@ public abstract class VehicleAi : Ai
         base.HandleInPoolExit();
     }
 
+    public override void HandleAttackingEnter()
+    {
+        //stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
+        Attack();
+    }
+
+    public override void Attack()
+    {
+        Debug.Log("Vehicle attacking!!!");
+        //RamCar just drives directly into the player (if targeted)
+        SetTarget(playerHealth.gameObject);
+    }
+
     public override void SetTarget(GameObject targ)
     {
         vehicleController.target = targ.transform;
         base.SetTarget(targ);
-    }
-
-    public void ApplyForce(Vector3 force, float fixedDeltaTime)
-    {
-        rb.AddForce(force * fixedDeltaTime);
     }
 
     protected virtual void OnCollisionEnter(Collision collision)
@@ -109,4 +101,71 @@ public abstract class VehicleAi : Ai
         base.Die();
     }
 
+    #region MOVEMENT
+    //All vehicles have a target, but some vehicles interact with their targets in different ways
+    protected void UpdateMovementLocation()
+    {
+        if (target != null)
+        {
+            movementTargetPosition.transform.position = GetChaseLocation();
+            vehicleController.target = movementTargetPosition.transform;
+        }
+    }
+
+    protected Vector3 GetChaseLocation()
+    {
+        return stats.ChaseRange * Vector3.Normalize(this.transform.position - target.transform.position) + target.transform.position;
+    }
+
+    public override void Chase(Vector3 target, float fixedDeltaTime)
+    {
+        UpdateMovementLocation();
+    }
+
+    public override void Wander(Vector3 wanderDirection, float fixedDeltaTime)
+    {
+        // throw new NotImplementedException();
+    }
+
+    public override void Separate(ArrayList pool, float fixedDeltaTime)
+    {
+        float separateForce = stats.MaxSeparateForce;
+        float maxDistanceToSeparate = stats.SeparateRange;
+
+        //the vector that will be used to calculate flee behavior if a too close interaction happens
+        Vector3 sum = new Vector3();
+        //this counts how many TOO CLOSE interactions an entity has, if it has more than one
+        int count = 0;
+
+        foreach (Ai ai in pool)
+        {
+            float distance = Vector3.Distance(ai.transform.position, transform.position);
+
+            if (ai.transform.position != transform.position && distance < maxDistanceToSeparate)
+            {
+                // creates vec between two objects
+                Vector3 diff = transform.position - ai.transform.position;
+                diff.Normalize();
+                // sum is the flee direction added together
+                sum += diff;
+                count++;
+            }
+        }
+
+        if (count > 0)
+        {
+            float targetDistanceSquared = Vector3.SqrMagnitude(movementTargetPosition.transform.position - transform.position);
+            sum.Normalize();
+
+            Vector3 steer = sum * (targetDistanceSquared / (separateForce * separateForce));
+
+            movementTargetPosition.transform.position = steer;
+        }
+    }
+
+    public override void Group(ArrayList pool, float fixedDeltaTime)
+    {
+        // throw new NotImplementedException();
+    }
+    #endregion
 }
