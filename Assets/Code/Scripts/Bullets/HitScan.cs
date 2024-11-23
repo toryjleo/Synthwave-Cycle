@@ -88,6 +88,7 @@ namespace Gun
             {
                 // Hit nothing case. Bullet Trail goes to gun max range
                 finalHitLocation = (direction * gunStats.Range) + curPosition;
+                ImpactManager.Instance.SpawnHitScanBulletMiss(finalHitLocation);
             }
             else
             {

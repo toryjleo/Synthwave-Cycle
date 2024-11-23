@@ -47,6 +47,8 @@ public class LevelManager : MonoBehaviour
     {
         jukebox.Init(currentLevel.WaveSequence);
         worldGenerator.CreateGround(currentLevel.GroundMat);
+        ImpactManager.Instance.Init();
+        ImpactManager.Instance.AddGroundMapping(currentLevel.GroundImpactMapping);
         resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
 
         GameStateController.resetting.notifyListenersEnter += GameReset;

@@ -33,7 +33,7 @@ MonoBehaviour:
   bulletPenetration: 0
   muzzleVelocity: 9.7
   projectileScale: {x: 3, y: 1, z: 3}
-  range: 100
+  range: 9.9
   isExplosive: 0
   isCountDownExplosion: 1
   radius: 5

@@ -16,7 +16,7 @@ namespace EditorObject
         /// <summary>
         /// Material to use for the ground texture
         /// </summary>
-        [SerializeField] private Material groundMat;
+        [SerializeField] private ImpactMapping groundMatAndParticle;
         /// <summary>
         /// Name of the level
         /// </summary>
@@ -37,7 +37,8 @@ namespace EditorObject
 
         #region Properties
         public WaveSequence WaveSequence { get { return waveSequence; } }
-        public Material GroundMat { get { return groundMat; } }
+        public Material GroundMat { get { return groundMatAndParticle.Material; } }
+        public ImpactMapping GroundImpactMapping { get { return groundMatAndParticle; } }
         public string LevelName { get { return levelName; } }
         public Sprite LevelImage { get { return levelImage; } }
         public GameObject[] LevelCosmetics { get { return levelCosmetics; } }

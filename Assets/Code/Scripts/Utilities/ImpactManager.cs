@@ -25,7 +25,17 @@ public class ImpactManager : MonoBehaviour
     private ObjectPool errorPool = null;
     private int defaultPinkErrorNumber = 12;
 
-    void Awake()
+    Material groundMaterial = null;
+
+    private void Awake()
+    {
+        if (instance == null && GameStateController.CanRunGameplay) 
+        {
+            Init();
+        }
+    }
+
+    public void Init()
     {
         if (Instance != null) 
         {
@@ -55,16 +65,7 @@ public class ImpactManager : MonoBehaviour
     {
         foreach (ImpactMapping mapping in mappings)
         {
-            if (impactDictionary.ContainsKey(mapping.Material))
-            {
-                // Error case
-                Debug.LogWarning("Initializing multiple mappings for material: " + mapping.Material);
-            }
-            else
-            {
-                impactDictionary.Add(mapping.Material, new ObjectPool(null, mapping.ParticleSystem));
-                impactDictionary[mapping.Material].PoolObjects(mapping.PooledNumber);
-            }
+            AddMapping(mapping);
         }
 
         // Initialize the error particle
@@ -79,6 +80,31 @@ public class ImpactManager : MonoBehaviour
         }
     }
 
+    public void AddMapping(ImpactMapping mapping) 
+    {
+        if (impactDictionary.ContainsKey(mapping.Material))
+        {
+            // Error case
+            Debug.LogWarning("Initializing multiple mappings for material: " + mapping.Material);
+        }
+        else
+        {
+            impactDictionary.Add(mapping.Material, new ObjectPool(null, mapping.ParticleSystem));
+            impactDictionary[mapping.Material].PoolObjects(mapping.PooledNumber);
+        }
+    }
+
+    public void AddGroundMapping(ImpactMapping mapping)
+    {
+        AddMapping(mapping);
+        groundMaterial = mapping.Material;
+    }
+
+    public void SpawnHitScanBulletMiss(Vector3 position) 
+    {
+        SpawnBulletImpact(position, Vector3.up, groundMaterial);
+    }
+
     /// <summary>
     /// Spawns a particle at the specified orientation.
     /// Will play a pink error particle for any material without a mapping.
@@ -88,7 +114,7 @@ public class ImpactManager : MonoBehaviour
     /// <param name="material">Material that the particle is mapped to</param>
     public void SpawnBulletImpact(Vector3 position, Vector3 forward, Material material) 
     {
-        if (impactDictionary.ContainsKey(material)) 
+        if (material != null && impactDictionary.ContainsKey(material)) 
         {
             Debug.Log("Hit thing");
             PooledParticle particle = impactDictionary[material].SpawnFromPool() as PooledParticle;
