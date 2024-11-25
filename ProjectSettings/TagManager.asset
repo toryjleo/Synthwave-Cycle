@@ -13,9 +13,9 @@ TagManager:
   - Water
   - UI
   - HealthPool
-  - PlayerH
-  - 
-  - 
+  - Player
+  - Ground
+  - Enemy
   - 
   - 
   - 

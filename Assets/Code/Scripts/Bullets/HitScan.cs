@@ -41,12 +41,24 @@ namespace Gun
         /// </summary>
         /// <param name="curPosition">Place to spawn ray</param>
         /// <param name="direction">Normalized direction vector for ray</param>
-        /// <param name="impactEffectPool">Effect to play on impact</param>
-        public void Shoot(Vector3 curPosition, Vector3 direction, Generic.ObjectPool impactEffectPool)
+        public void Shoot(Vector3 curPosition, Vector3 direction)
         {
+            // Make sure to hit the correct things get hit with a layer mask
+            int mask = 0;
+            int layerEnemy = 9;
+            int layerPlayer = 7;
+            if (gunStats.IsPlayerGun) 
+            {
+                mask = 1 << layerEnemy;
+            }
+            else 
+            {
+                mask = 1 << layerPlayer;
+            }
+
             // Get hits
             RaycastHit[] hits;
-            hits = Physics.RaycastAll(curPosition, direction, gunStats.Range);
+            hits = Physics.RaycastAll(curPosition, direction, gunStats.Range, mask);
             System.Array.Sort(hits, (a, b) => (a.distance.CompareTo(b.distance)));
 
             int numberOfHitObjects = Mathf.Min(gunStats.BulletPenetration + 1, hits.Length);
@@ -64,11 +76,10 @@ namespace Gun
                     DealDamage(hit.transform.gameObject);
                 }
 
-                // TODO: Move the particle spawning logic to Gun.HandleBulletHit
-                PooledParticle particle = impactEffectPool.SpawnFromPool() as PooledParticle;
-                particle.transform.position = hit.transform.position;
-                particle.transform.rotation = Quaternion.LookRotation(hit.normal);
-                particle.Play();
+
+                Material hitMaterial = GetHitMaterial(hit);
+                Vector3 particleSprayDir = (curPosition - hit.point).normalized;
+                ImpactManager.Instance.SpawnBulletImpact(hit.point, particleSprayDir, hitMaterial);
             }
 
             // Logic for visuals
@@ -77,6 +88,7 @@ namespace Gun
             {
                 // Hit nothing case. Bullet Trail goes to gun max range
                 finalHitLocation = (direction * gunStats.Range) + curPosition;
+                ImpactManager.Instance.SpawnHitScanBulletMiss(finalHitLocation);
             }
             else
             {
@@ -124,6 +136,18 @@ namespace Gun
             {
                 hitScanTrail.SetStartAndEndLocation(startLocation, endLocation);
             }
+        }
+
+        /// <summary>
+        /// Gets the shared material of a raycast hit
+        /// </summary>
+        /// <param name="hit">Hit object from a raycast</param>
+        /// <returns>The shared material</returns>
+        Material GetHitMaterial(RaycastHit hit) 
+        {
+            Renderer hitRenderer = hit.transform.gameObject.GetComponent<Renderer>();
+            Material hitMaterial = hitRenderer == null ? null : hitRenderer.sharedMaterial;
+            return hitMaterial;
         }
     }
 }

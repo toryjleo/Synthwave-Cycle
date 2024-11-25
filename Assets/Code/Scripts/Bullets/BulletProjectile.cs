@@ -25,6 +25,11 @@ namespace Gun
                 NotifyListenersHit();
                 DealDamageAndDespawn(other.gameObject);
             }
+            Vector3 positon = other.ClosestPoint(transform.position);
+            Vector3 normal = transform.position - positon;
+            Material material = GetGameObjectMaterial(other.gameObject);
+            Vector3 particleSprayDir = -shootDir.normalized;
+            ImpactManager.Instance.SpawnBulletImpact(positon, particleSprayDir, material);
         }
 
         /// <summary>
@@ -53,6 +58,18 @@ namespace Gun
                     OnDespawn();
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns the shared material of a given hit object
+        /// </summary>
+        /// <param name="hitObject">Object to return material from</param>
+        /// <returns>The shared material</returns>
+        Material GetGameObjectMaterial(GameObject hitObject)
+        {
+            Renderer hitRenderer = hitObject.GetComponent<Renderer>();
+            Material hitMaterial = hitRenderer == null ? null : hitRenderer.sharedMaterial;
+            return hitMaterial;
         }
     }
 }

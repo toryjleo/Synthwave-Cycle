@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 52743392}
   - component: {fileID: 52743393}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OOBArrows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1398421842}
   - component: {fileID: 1398421843}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HealthPointerSprite [SpriteRenderer]
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8214072870653128394}
   - component: {fileID: 1204109434}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Health Pointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: 4324949829967858819}
   - component: {fileID: 4324949829967858816}
   - component: {fileID: 4324949829967858818}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TestPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -368,7 +368,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1300298257875738845}
   - component: {fileID: 2655832379201108593}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoundsChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,6 +408,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4324949829967858817}
     m_Modifications:
+    - target: {fileID: 1377886637741698701, guid: 2c7fed361d0c1034a91177161a893cf4, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3815124747377825120, guid: 2c7fed361d0c1034a91177161a893cf4, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4512301379169762963, guid: 2c7fed361d0c1034a91177161a893cf4, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659365483483944064, guid: 2c7fed361d0c1034a91177161a893cf4, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8675247494172139524, guid: 2c7fed361d0c1034a91177161a893cf4, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -456,10 +472,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arsenal
       objectReference: {fileID: 0}
+    - target: {fileID: 8675247494172139525, guid: 2c7fed361d0c1034a91177161a893cf4, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8901379805892809832, guid: 2c7fed361d0c1034a91177161a893cf4, type: 3}
       propertyPath: bulletPrefab
       value: 
       objectReference: {fileID: 8930960238914550717, guid: 084e10c8016e91741a5756a57400916f, type: 3}
+    - target: {fileID: 9127033267246254745, guid: 2c7fed361d0c1034a91177161a893cf4, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c7fed361d0c1034a91177161a893cf4, type: 3}
 --- !u!4 &8675247492444940330 stripped

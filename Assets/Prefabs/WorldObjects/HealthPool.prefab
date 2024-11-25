@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1249744622}
   - component: {fileID: 1249744621}
   - component: {fileID: 1249744620}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: '[LineRenderer] Circle'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 5132576067273351122}
   - component: {fileID: 292464312306350225}
   - component: {fileID: 6311500061181353777}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: HealthPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}

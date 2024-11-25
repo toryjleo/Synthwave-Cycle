@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: In Their Final Moments
+  m_Name: (OLD)In Their Final Moments
   m_Shader: {fileID: 4800000, guid: d6dcada0948c5da4793f0a9a4cd19961, type: 3}
   m_ShaderKeywords: _ADDITIONAL_LIGHTS _ROUGHNESS_SETUP1 _ROUGHNESS_SETUP2
   m_LightmapFlags: 4
