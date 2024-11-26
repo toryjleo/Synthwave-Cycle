@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 401f65c6e22c3214ba4591335c82ef86, type: 3}
-  m_Name: TestGun
+  m_Name: TestGun3
   m_EditorClassIdentifier: 
   isPlayerGun: 1
   isTurret: 1
