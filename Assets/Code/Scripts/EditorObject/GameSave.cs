@@ -16,6 +16,8 @@ namespace EditorObject
         [SerializeField] private float gunTrackProgressPercent = 0f;
         [SerializeField] public GameLevel[] levelSequence;
 
+        // TODO: Mimic Arsenal's guns with ammo
+
         public int CurrentLevel { get => currentLevel; set => currentLevel = value; }
 
         public int MaxLevelProgess { get => maxLevelProgress; set => maxLevelProgress = value; }
@@ -30,6 +32,8 @@ namespace EditorObject
             maxLevelProgress = 0;
             gunTrackProgressLevel = 0;
             gunTrackProgressPercent = 0f;
+
+            // TODO: Have a way to clear all guns for game restart
         }
     }
 }

@@ -23,7 +23,7 @@ public class GunTester : MonoBehaviour
         secondsSinceLastTriggerPull += deltaTime;
         if (secondsSinceLastTriggerPull > secondsBetweenTriggerPull) 
         {
-            gun.externalFire = true;
+            gun.ExternalFire = true;
             secondsSinceLastTriggerPull = 0;
         }
     }

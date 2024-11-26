@@ -51,6 +51,9 @@ public class LevelManager : MonoBehaviour
         ImpactManager.Instance.AddGroundMapping(currentLevel.GroundImpactMapping);
         resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
 
+        Arsenal arsenal = FindObjectOfType<Arsenal>();
+        arsenal.Init(gameSave);
+
         GameStateController.resetting.notifyListenersEnter += GameReset;
         GameStateController.levelComplete.notifyListenersEnter += GameComplete;
 

@@ -108,7 +108,12 @@ namespace Gun
         /// <summary>
         /// Used by GunTester to automatically fire this gun
         /// </summary>
-        public bool externalFire = false;
+        private bool externalFire = false;
+
+        public bool ExternalFire 
+        {
+            get { return externalFire; } set {  externalFire = value; }
+        }
 
 
         /// <summary>
@@ -121,20 +126,18 @@ namespace Gun
             {
                 if (GameStateController.CanRunGameplay)
                 {
-                    if (gunStats.IsAutomatic)
-                    {
-                        return (Input.GetButton("Fire1") || externalFire) && stateController.CanShoot;
-                    }
-                    else
-                    {
-                        return (Input.GetButtonDown("Fire1") || externalFire) && stateController.CanShoot;
-                    }
+                    return externalFire && stateController.CanShoot;
                 }
                 else 
                 {
                     return false;
                 }
             }
+        }
+
+        public bool IsAutomatic
+        {
+            get => gunStats.IsAutomatic;
         }
 
         #region Ammo Props for UI
