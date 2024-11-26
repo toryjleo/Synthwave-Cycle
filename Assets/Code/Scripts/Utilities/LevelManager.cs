@@ -56,6 +56,7 @@ public class LevelManager : MonoBehaviour
 
         GameStateController.resetting.notifyListenersEnter += GameReset;
         GameStateController.levelComplete.notifyListenersEnter += GameComplete;
+        // TODO: Update Arsenal's saved data at GameStateController.levelComplete.notifyListenersEnter
 
         Initialize();
     }

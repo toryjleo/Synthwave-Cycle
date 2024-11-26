@@ -10,8 +10,7 @@ using UnityEngine;
 /// </summary>
 public class Arsenal : MonoBehaviour, IResettable
 {
-    GameSave gameSave;
-    // TODO: Do not require reference to GameSave
+    EditorObject.Arsenal savedData;
 
     [SerializeField] private Gun.Gun selected;
 
@@ -26,7 +25,9 @@ public class Arsenal : MonoBehaviour, IResettable
 
     public void Init(GameSave gameSave) 
     {
-        this.gameSave = gameSave;
+        this.savedData = gameSave.arsenal;
+        // TODO: instantiate all gun prefabs
+        // TODO: Assign selected
     }
 
     public void ResetGameObject()

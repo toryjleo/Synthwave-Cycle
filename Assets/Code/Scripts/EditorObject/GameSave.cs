@@ -15,6 +15,7 @@ namespace EditorObject
         [SerializeField] private int gunTrackProgressLevel = 0;
         [SerializeField] private float gunTrackProgressPercent = 0f;
         [SerializeField] public GameLevel[] levelSequence;
+        [SerializeField] public EditorObject.Arsenal arsenal;
 
         // TODO: Mimic Arsenal's guns with ammo
 
