@@ -56,7 +56,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3958296069600219860}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1525793, y: 0.85, z: -0.12046981}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3019377646819263275}
@@ -85,7 +85,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 9119689495678711475, guid: cc24d4655da824149a5f30afcfbfef85, type: 3}
   impactEffectPrefab: {fileID: 2481258670572446118, guid: ac706fddc359e2949835b202db59647a, type: 3}
   crossHair: {fileID: 5114472430233548999}
-  externalFire: 0
 --- !u!1 &5114472430233548999
 GameObject:
   m_ObjectHideFlags: 0

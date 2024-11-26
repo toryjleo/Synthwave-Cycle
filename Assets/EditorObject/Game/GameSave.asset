@@ -19,3 +19,4 @@ MonoBehaviour:
   levelSequence:
   - {fileID: 11400000, guid: b95916e96c129754dbd7c706986cae41, type: 2}
   - {fileID: 11400000, guid: 38be2f417604d784ba0a1d6bc7865a43, type: 2}
+  arsenal: {fileID: 11400000, guid: ccc2313d017186e4bbb934e94ece848d, type: 2}

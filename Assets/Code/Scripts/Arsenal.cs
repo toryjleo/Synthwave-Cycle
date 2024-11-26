@@ -12,7 +12,11 @@ public class Arsenal : MonoBehaviour, IResettable
 {
     EditorObject.Arsenal savedData;
 
+    private Gun.Gun[] gunList = null;
+
     [SerializeField] private Gun.Gun selected;
+
+    private int[] equippedGuns = null;
 
 
     private void Update()
@@ -26,13 +30,34 @@ public class Arsenal : MonoBehaviour, IResettable
     public void Init(GameSave gameSave) 
     {
         this.savedData = gameSave.arsenal;
-        // TODO: instantiate all gun prefabs
-        // TODO: Assign selected
+
+        InstantiateAllGuns();
+        SetStateToSaveData();
     }
 
     public void ResetGameObject()
     {
-        // TODO: Reset to scriptableobject's state
+        SetStateToSaveData();
+    }
+
+    private void InstantiateAllGuns() 
+    {
+        gunList = new Gun.Gun[savedData.AllUnlockableGunPrefabs.Length];
+        for (int i = 0; i < savedData.AllUnlockableGunPrefabs.Length; i++)
+        {
+            Gun.Gun gun = Instantiate<Gun.Gun>(savedData.AllUnlockableGunPrefabs[i]);
+            gun.transform.parent = gameObject.transform;
+            gunList[i] = gun;
+        }
+    }
+
+    private void SetStateToSaveData() 
+    {
+        equippedGuns = new int[savedData.NumberOfGunSlots];
+
+        // TODO: Set selected gun to selected gun
+        // TODO: Set guns to savedData.equippedGuns
+        // TODO: Set gun ammo to savedData.equippedGuns
     }
 
     private bool CheckCanShootGun() 
@@ -51,5 +76,10 @@ public class Arsenal : MonoBehaviour, IResettable
         { 
             return false;
         }
+    }
+
+    public void GameComplete() 
+    {
+        // TODO: Update the savedData
     }
 }
