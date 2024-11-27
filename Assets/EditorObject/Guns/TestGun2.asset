@@ -29,7 +29,7 @@ MonoBehaviour:
   overHeatPercentPerShot: 5
   coolDownPerSecond: 10
   printDebugState: 0
-  bulletType: 1
+  bulletType: 0
   bulletPenetration: 0
   muzzleVelocity: 9.7
   projectileScale: {x: 3, y: 1, z: 3}

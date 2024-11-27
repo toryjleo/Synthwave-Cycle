@@ -15,15 +15,15 @@ MonoBehaviour:
   isPlayerGun: 1
   isTurret: 1
   isAutomatic: 1
-  timeBetweenShots: 0.18
+  timeBetweenShots: 1
   damageDealt: 70
   infiniteAmmo: 1
   ammoCount: 200
   numBurstShots: 1
   timeBetweenBurstShots: 0.86
-  projectileCountPerShot: 3
+  projectileCountPerShot: 6
   distanceBetweenProjectiles: 0
-  projectileSpread: 0
+  projectileSpread: 9
   canOverheat: 0
   coolDownBarrier: 50
   overHeatPercentPerShot: 5

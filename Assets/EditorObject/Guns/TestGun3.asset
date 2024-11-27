@@ -19,9 +19,9 @@ MonoBehaviour:
   damageDealt: 70
   infiniteAmmo: 1
   ammoCount: 200
-  numBurstShots: 1
-  timeBetweenBurstShots: 0.86
-  projectileCountPerShot: 3
+  numBurstShots: 3
+  timeBetweenBurstShots: 0.21
+  projectileCountPerShot: 1
   distanceBetweenProjectiles: 0
   projectileSpread: 0
   canOverheat: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
   bulletPenetration: 0
   muzzleVelocity: 9.7
   projectileScale: {x: 3, y: 1, z: 3}
-  range: 9.9
+  range: 28.5
   isExplosive: 0
   isCountDownExplosion: 1
   radius: 5
