@@ -121,6 +121,8 @@ public class ImpactManager : MonoBehaviour
         }
         else 
         {
+
+            // Debug.Log("Hitting: " + material.ToString());
             PooledParticle particle = errorPool.SpawnFromPool() as PooledParticle;
             particle.Play(position, forward);
         }
