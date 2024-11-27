@@ -40,8 +40,10 @@ namespace Gun
             Reset();
         }
 
-        private void Update()
+        public override void Update()
         {
+            base.Update();
+            
             if (hasMovedToEnd)
             {
                 TimerUpdate(Time.deltaTime);

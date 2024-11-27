@@ -178,6 +178,19 @@ namespace Gun
         // Start is called before the first frame update
         void Start()
         {
+            TestSceneInit();
+        }
+
+        private void TestSceneInit() 
+        {
+            if (stateController == null)
+            {
+                Init();
+            }
+        }
+
+        public void Init() 
+        {
             GatherMemberReferences();
 
             HookUpListeners();

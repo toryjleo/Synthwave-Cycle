@@ -19,3 +19,8 @@ MonoBehaviour:
   equippedGuns:
   - listIdx: 0
     ammoCount: 0
+  - listIdx: 1
+    ammoCount: 0
+  - listIdx: -1
+    ammoCount: 0
+  lastEquippedSlotIdx: 0

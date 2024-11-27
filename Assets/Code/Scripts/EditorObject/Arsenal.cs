@@ -21,7 +21,7 @@ namespace EditorObject
         private const int NUMBER_OF_GUN_SLOTS = 3;
         [SerializeField] private Gun.Gun[] allUnlockableGunPrefabs;
         [SerializeField] private StoredGun[] equippedGuns = new StoredGun[NUMBER_OF_GUN_SLOTS];
-        [SerializeField] private int lastEquippedSlot = 0;
+        [SerializeField] private int lastEquippedSlotIdx = 0;
 
 
         public int NumberOfGunSlots
@@ -36,6 +36,6 @@ namespace EditorObject
 
         public StoredGun[] EquippedGuns { get => equippedGuns; }
 
-        public int LastEquippedSlot { get => lastEquippedSlot; }
+        public int LastEquippedSlot { get => lastEquippedSlotIdx; }
     }
 }

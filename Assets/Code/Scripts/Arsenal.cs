@@ -86,8 +86,10 @@ public class Arsenal : MonoBehaviour, IResettable
         gunList = new Gun.Gun[savedData.AllUnlockableGunPrefabs.Length];
         for (int i = 0; i < savedData.AllUnlockableGunPrefabs.Length; i++)
         {
-            Gun.Gun gun = Instantiate<Gun.Gun>(savedData.AllUnlockableGunPrefabs[i]);
-            gun.transform.parent = gameObject.transform;
+            Gun.Gun gun = Instantiate<Gun.Gun>(savedData.AllUnlockableGunPrefabs[i], gameObject.transform);
+
+            gun.Init();
+            
             gunList[i] = gun;
         }
     }
@@ -145,6 +147,7 @@ public class Arsenal : MonoBehaviour, IResettable
         if (CurrentGun != null) 
         {
             CurrentGun.gameObject.SetActive(true);
+            selected = CurrentGun;
         }
     }
 

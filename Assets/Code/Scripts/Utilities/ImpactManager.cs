@@ -116,7 +116,6 @@ public class ImpactManager : MonoBehaviour
     {
         if (material != null && impactDictionary.ContainsKey(material)) 
         {
-            Debug.Log("Hit thing");
             PooledParticle particle = impactDictionary[material].SpawnFromPool() as PooledParticle;
             particle.Play(position, forward);
         }
@@ -124,7 +123,6 @@ public class ImpactManager : MonoBehaviour
         {
             PooledParticle particle = errorPool.SpawnFromPool() as PooledParticle;
             particle.Play(position, forward);
-            Debug.Log("Not a material");
         }
     }
 
