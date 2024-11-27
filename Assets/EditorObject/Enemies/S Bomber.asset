@@ -23,7 +23,7 @@ MonoBehaviour:
   maxSeparateForce: 0.8
   separateRange: 10
   dlScore: 20
-  attackRange: 55
+  attackRange: 30
   timeToAttack: 3
   canAim: 0
   enemyType: 4

@@ -465,7 +465,7 @@ PrefabInstance:
     - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: sbomberAi
       value: 
-      objectReference: {fileID: 11400000, guid: d7aef233ef62ef643aa91117a27c1878, type: 2}
+      objectReference: {fileID: 11400000, guid: 88b26c88d8b7f8041bc27723113fcb08, type: 2}
     - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: riflemanAi
       value: 

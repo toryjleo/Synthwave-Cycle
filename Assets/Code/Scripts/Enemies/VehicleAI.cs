@@ -18,11 +18,18 @@ public abstract class VehicleAi : Ai
 
     [SerializeField] public GameObject movementTargetPosition;
 
+    //This object appears and disappears when the target is preparing to attack
+    [SerializeField] GameObject AttackTelegraph;
+
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
         base.ManualUpdate(enemies, wanderDirection, fixedDeltaTime);
         //Figure out where to moved based on the child class movement pattern
         // UpdateMovementLocation();
+        if (stateController.isAttacking)
+        {
+            Attack();
+        }
     }
 
     public override void Init(IPoolableInstantiateData stats)
@@ -44,6 +51,16 @@ public abstract class VehicleAi : Ai
         vehicleController.MaxSpeed = maxSpeed;
     }
 
+    public override void HandleInRangeEnter()
+    {
+        AttackTelegraph.SetActive(true);
+    }
+
+    public override void HandleInRangeExit()
+    {
+        AttackTelegraph.SetActive(false);
+    }
+
     public override void HandleInPoolExit()
     {
         vehicleController.enabled = true;
@@ -60,7 +77,8 @@ public abstract class VehicleAi : Ai
     {
         Debug.Log("Vehicle attacking!!!");
         //RamCar just drives directly into the player (if targeted)
-        SetTarget(playerHealth.gameObject);
+        // SetTarget(playerHealth.gameObject);
+        CalculateAttackMovement();
     }
 
     public override void SetTarget(GameObject targ)
@@ -110,6 +128,12 @@ public abstract class VehicleAi : Ai
             movementTargetPosition.transform.position = GetChaseLocation();
             vehicleController.target = movementTargetPosition.transform;
         }
+    }
+
+    private void CalculateAttackMovement()
+    {
+        Vector3 direction = (target.transform.position - transform.position).normalized;
+        movementTargetPosition.transform.position = (20 * direction) + target.transform.position;
     }
 
     protected Vector3 GetChaseLocation()

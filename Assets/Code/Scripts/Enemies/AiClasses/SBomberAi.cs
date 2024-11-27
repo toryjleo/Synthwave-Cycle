@@ -14,32 +14,9 @@ public class SBomberAi : VehicleAi
     [SerializeField]
     float ExplosionDamage = 50f;
 
-    [SerializeField]
-    GameObject AttackTelegraph; // this object appears and disappears when the target is preparing to attack
-
     public override void Initialize()
     {
 
-    }
-
-    public override void HandleInRangeEnter()
-    {
-        Debug.Log("S Bomber in range!!!");
-        // if (timeByTarget >= stats.TimeToAttack - 3) // Telegraph attack 3 seconds before charge
-        // {
-        //     AttackTelegraph.SetActive(true);
-        // }
-        // else
-        // {
-        //     AttackTelegraph.SetActive(false);
-        // }
-        AttackTelegraph.SetActive(true);
-    }
-
-    public override void HandleInRangeExit()
-    {
-        Debug.Log("S Bomber NOT in range!!!");
-        AttackTelegraph.SetActive(false);
     }
 
     public override void Attack()
