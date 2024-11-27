@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allUnlockableGunPrefabs:
   - {fileID: 282783825117958716, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
-  equippedGuns: []
+  - {fileID: 282783825117958716, guid: 581cd8c3160b9aa4da53b26d0b2c1fe5, type: 3}
+  - {fileID: 282783825117958716, guid: 98dc18c338a3a23439d014dc27dedbb1, type: 3}
+  equippedGuns:
+  - listIdx: 0
+    ammoCount: 0

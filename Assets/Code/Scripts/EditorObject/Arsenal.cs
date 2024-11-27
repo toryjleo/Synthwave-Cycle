@@ -9,10 +9,10 @@ namespace EditorObject
     /// Data for an equipped gun
     /// </summary>
     [Serializable]
-    class StoredGun 
+    public class StoredGun 
     {
-        int listIdx;
-        int ammoCount;
+        [SerializeField] public int listIdx;
+        [SerializeField] public int ammoCount;
     }
 
     [CreateAssetMenu(menuName = "Game/Arsenal", fileName = "New Arsenal")]
@@ -21,16 +21,21 @@ namespace EditorObject
         private const int NUMBER_OF_GUN_SLOTS = 3;
         [SerializeField] private Gun.Gun[] allUnlockableGunPrefabs;
         [SerializeField] private StoredGun[] equippedGuns = new StoredGun[NUMBER_OF_GUN_SLOTS];
+        [SerializeField] private int lastEquippedSlot = 0;
 
+
+        public int NumberOfGunSlots
+        {
+            get { return NUMBER_OF_GUN_SLOTS; }
+        }
 
         public Gun.Gun[] AllUnlockableGunPrefabs 
         {
             get => allUnlockableGunPrefabs;
         }
 
-        public int NumberOfGunSlots 
-        {
-            get { return NUMBER_OF_GUN_SLOTS; }
-        }
+        public StoredGun[] EquippedGuns { get => equippedGuns; }
+
+        public int LastEquippedSlot { get => lastEquippedSlot; }
     }
 }

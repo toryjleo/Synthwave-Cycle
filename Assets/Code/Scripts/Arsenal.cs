@@ -10,13 +10,41 @@ using UnityEngine;
 /// </summary>
 public class Arsenal : MonoBehaviour, IResettable
 {
-    EditorObject.Arsenal savedData;
+    /// <summary>
+    /// Saved data for the Arsenal object
+    /// NOTE: Set this value in the prefab to set the default savedData for test scenes
+    /// </summary>
+    // TODO: Make UI component that gives info
+    [SerializeField] private EditorObject.Arsenal savedData;
 
     private Gun.Gun[] gunList = null;
 
     [SerializeField] private Gun.Gun selected;
 
+    /// <summary>
+    /// Represents visible guns player has. Functions as a lookup table that routes to the gun index in gunList.
+    /// </summary>
     private int[] equippedGuns = null;
+    private int currentEquippedSlot = -1;
+
+    private Gun.Gun CurrentGun {
+        get {
+
+            if (equippedGuns[currentEquippedSlot] != -1)
+            { 
+                return gunList[equippedGuns[currentEquippedSlot]];
+            }
+            else 
+            {
+                return null; 
+            }
+        } 
+    }
+
+    private void Start()
+    {
+        TestSceneInit();
+    }
 
 
     private void Update()
@@ -27,12 +55,25 @@ public class Arsenal : MonoBehaviour, IResettable
         }
     }
 
+
     public void Init(GameSave gameSave) 
     {
         this.savedData = gameSave.arsenal;
 
         InstantiateAllGuns();
         SetStateToSaveData();
+    }
+
+    /// <summary>
+    /// Initialize object in standalone test scene
+    /// </summary>
+    private void TestSceneInit()
+    {
+        if (!GameStateController.StateExists)
+        {
+            InstantiateAllGuns();
+            SetStateToSaveData();
+        }
     }
 
     public void ResetGameObject()
@@ -53,11 +94,19 @@ public class Arsenal : MonoBehaviour, IResettable
 
     private void SetStateToSaveData() 
     {
+        // A value of -1 is a "null" slot
         equippedGuns = new int[savedData.NumberOfGunSlots];
 
-        // TODO: Set selected gun to selected gun
-        // TODO: Set guns to savedData.equippedGuns
-        // TODO: Set gun ammo to savedData.equippedGuns
+        for (int i = 0; i < savedData.NumberOfGunSlots; i++) 
+        {
+            equippedGuns[i] = savedData.EquippedGuns[i].listIdx;
+        }
+
+        currentEquippedSlot = savedData.LastEquippedSlot;
+        HideAllGuns();
+        EquipGunInSlot();
+        SetGunAmmoToSaveData();
+
     }
 
     private bool CheckCanShootGun() 
@@ -81,5 +130,26 @@ public class Arsenal : MonoBehaviour, IResettable
     public void GameComplete() 
     {
         // TODO: Update the savedData
+    }
+
+    private void HideAllGuns() 
+    {
+        for (int i = 0;i < gunList.Length; i++) 
+        {
+            gunList[i].gameObject.SetActive(false);
+        }
+    }
+
+    private void EquipGunInSlot()
+    {
+        if (CurrentGun != null) 
+        {
+            CurrentGun.gameObject.SetActive(true);
+        }
+    }
+
+    private void SetGunAmmoToSaveData() 
+    {
+        // TODO: All equipped guns have their ammo updated to the savedData.EquippedGuns[i].ammoCount value
     }
 }
