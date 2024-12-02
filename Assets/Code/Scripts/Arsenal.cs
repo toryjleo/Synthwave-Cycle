@@ -56,17 +56,14 @@ public class Arsenal : MonoBehaviour, IResettable
         {
             selected.ExternalFire = CheckCanShootGun();
         }
-
-        if (Input.GetKeyDown(KeyCode.Insert)) 
-        {
-            GameComplete();
-        }
     }
 
 
     public void Init(GameSave gameSave) 
     {
         this.savedData = gameSave.arsenal;
+
+        GameStateController.levelComplete.notifyListenersEnter += GameComplete;
 
         InstantiateAllGuns();
         SetStateToSaveData();
