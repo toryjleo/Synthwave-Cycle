@@ -21,6 +21,8 @@ public class Arsenal : MonoBehaviour, IResettable
 
     [SerializeField] private Gun.Gun selected;
 
+    [SerializeField] private Gun.Gun gunPrefab = null;
+
     /// <summary>
     /// Represents visible guns player has. Functions as a lookup table that routes to the gun index in gunList.
     /// </summary>
@@ -53,6 +55,7 @@ public class Arsenal : MonoBehaviour, IResettable
         {
             selected.ExternalFire = CheckCanShootGun();
         }
+        // TODO: Check for input to update weapon slot
     }
 
 
@@ -83,13 +86,16 @@ public class Arsenal : MonoBehaviour, IResettable
 
     private void InstantiateAllGuns() 
     {
-        gunList = new Gun.Gun[savedData.AllUnlockableGunPrefabs.Length];
-        for (int i = 0; i < savedData.AllUnlockableGunPrefabs.Length; i++)
+        gunList = new Gun.Gun[savedData.AllUnlockableGuns.Length];
+        for (int i = 0; i < savedData.AllUnlockableGuns.Length; i++)
         {
-            Gun.Gun gun = Instantiate<Gun.Gun>(savedData.AllUnlockableGunPrefabs[i], gameObject.transform);
+            // Create new instance of prefab
+            Gun.Gun gun = Instantiate<Gun.Gun>(gunPrefab, gameObject.transform);
 
-            gun.Init();
-            
+            // TODO: Call an external Init(). Takes in GunStats
+            gun.Init(savedData.AllUnlockableGuns[i].stats);
+            gun.UpdateBarrelColor(savedData.AllUnlockableGuns[i].barrelColor);
+                
             gunList[i] = gun;
         }
     }

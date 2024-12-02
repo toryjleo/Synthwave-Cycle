@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 3958296069600219862}
   - component: {fileID: 282783825117958716}
   m_Layer: 7
-  m_Name: TestGun1
+  m_Name: EmptyGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,8 +76,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3e128714994517489e9ffcccf0cf9ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunStats: {fileID: 11400000, guid: daa7f538aa123c04baf8df49e9dd3632, type: 2}
+  gunStats: {fileID: 0}
   BulletSpawn: {fileID: 490074081577700557}
+  barrel: {fileID: 2535034526627441837}
   muzzleFlash: {fileID: 5518774448732476214}
   bulletPrefab: {fileID: 8930960238914550717, guid: 084e10c8016e91741a5756a57400916f, type: 3}
   areaOfEffectPrefab: {fileID: 9133579604904673347, guid: 4987f8f125f52be40ab2f2e69810d334, type: 3}

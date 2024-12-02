@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   savedData: {fileID: 11400000, guid: ccc2313d017186e4bbb934e94ece848d, type: 2}
   selected: {fileID: 0}
+  gunPrefab: {fileID: 282783825117958716, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
 --- !u!82 &4170937296336823507
 AudioSource:
   m_ObjectHideFlags: 0

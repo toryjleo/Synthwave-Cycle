@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dbbc217f98d13948af228769177f0f9, type: 3}
   m_Name: ArsenalGear
   m_EditorClassIdentifier: 
-  allUnlockableGunPrefabs:
-  - {fileID: 282783825117958716, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
-  - {fileID: 282783825117958716, guid: 581cd8c3160b9aa4da53b26d0b2c1fe5, type: 3}
-  - {fileID: 282783825117958716, guid: 98dc18c338a3a23439d014dc27dedbb1, type: 3}
+  allUnlockableGuns:
+  - stats: {fileID: 11400000, guid: daa7f538aa123c04baf8df49e9dd3632, type: 2}
+    barrelColor: {r: 1, g: 0.07075471, b: 0.07075471, a: 0}
+  - stats: {fileID: 11400000, guid: ddeb8cb357d00fa4ca4bfd23b97bb828, type: 2}
+    barrelColor: {r: 0.3932223, g: 1, b: 0.07058823, a: 0}
+  - stats: {fileID: 11400000, guid: 9df82afbd55ad86429841337039def25, type: 2}
+    barrelColor: {r: 0.07058823, g: 0.18872023, b: 1, a: 0}
   equippedGuns:
   - listIdx: 0
     ammoCount: 0

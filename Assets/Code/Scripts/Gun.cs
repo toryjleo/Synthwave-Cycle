@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Mathematics;
 using Generic;
+using EditorObject;
 
 namespace Gun
 {
@@ -36,6 +37,8 @@ namespace Gun
         /// Location for the gun to spawn bullets
         /// </summary>
         [SerializeField] private GameObject BulletSpawn = null;
+
+        [SerializeField] private Renderer barrel;
 
         /// <summary>
         /// Reference to player
@@ -189,7 +192,13 @@ namespace Gun
             }
         }
 
-        public void Init() 
+        public void Init(GunStats stats) 
+        {
+            this.gunStats = stats;
+            Init();
+        }
+
+        private void Init() 
         {
             GatherMemberReferences();
 
@@ -364,6 +373,13 @@ namespace Gun
             UpdateNextTimeToBurstFire(deltaTime);
 
             UpdateOverHeat(deltaTime);
+        }
+
+        public void UpdateBarrelColor(Color color) 
+        {
+            Material newMaterial = new Material(barrel.material);
+            newMaterial.color = color;
+            barrel.material = newMaterial;
         }
 
         /// <summary>
