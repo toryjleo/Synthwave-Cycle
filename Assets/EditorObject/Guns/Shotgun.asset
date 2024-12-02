@@ -17,7 +17,7 @@ MonoBehaviour:
   isAutomatic: 1
   timeBetweenShots: 1
   damageDealt: 70
-  infiniteAmmo: 1
+  infiniteAmmo: 0
   ammoCount: 200
   numBurstShots: 1
   timeBetweenBurstShots: 0.86

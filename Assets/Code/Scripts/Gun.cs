@@ -8,7 +8,7 @@ namespace Gun
     /// <summary>
     /// Event to be called when ammo changes
     /// </summary>
-    public delegate void NotifyAmmo();
+    public delegate void NotifyAmmo(Gun gun);
 
     /// <summary>
     /// Event to be called when a bullet hits
@@ -112,6 +112,8 @@ namespace Gun
         /// Used by GunTester to automatically fire this gun
         /// </summary>
         private bool externalFire = false;
+
+        public NotifyAmmo onOutOfAmmo;
 
         public bool ExternalFire 
         {
@@ -307,6 +309,7 @@ namespace Gun
             stateController.fireSingleShot.notifyListenersEnter += HandleFireSingleShotEnter;
             stateController.fireBurstShot.notifyListenersEnter += HandleFireBurstShotEnter;
             stateController.betweenShots.notifyListenersEnter += HandleBetweenShotsEnter;
+            stateController.outOfAmmo.notifyListenersEnter += HandleOutOfAmmoEnter;
 
             hitScan.notifyListenersHit += HandleBulletHit;
 
@@ -348,7 +351,7 @@ namespace Gun
         {
             ammoCount = Mathf.Clamp(ammoCount + amount, 0, gunStats.AmmoCount);
             stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
-            onAmmoChange?.Invoke();
+            onAmmoChange?.Invoke(this);
         }
 
         public void SetAmmo(int amount) 
@@ -357,7 +360,7 @@ namespace Gun
             if (ammoCount > 0) 
             {
                 stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
-                onAmmoChange?.Invoke();
+                onAmmoChange?.Invoke(this);
             }
         }
 
@@ -479,7 +482,7 @@ namespace Gun
                 // This must be called before OverHeated trigger
                 stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
             }
-            onAmmoChange?.Invoke();
+            onAmmoChange?.Invoke(this);
         }
 
 
@@ -583,6 +586,11 @@ namespace Gun
         public void HandleBetweenShotsEnter()
         {
             nextTimeToFire = gunStats.TimeBetweenShots;
+        }
+
+        public void HandleOutOfAmmoEnter() 
+        {
+            onOutOfAmmo?.Invoke(this);
         }
         #endregion
 

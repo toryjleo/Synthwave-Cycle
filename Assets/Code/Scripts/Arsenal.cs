@@ -97,7 +97,9 @@ public class Arsenal : MonoBehaviour, IResettable
             // TODO: Call an external Init(). Takes in GunStats
             gun.Init(savedData.AllUnlockableGuns[i].stats);
             gun.UpdateBarrelColor(savedData.AllUnlockableGuns[i].barrelColor);
-                
+            gun.onOutOfAmmo += RemoveEquippedGun;
+
+
             gunList[i] = gun;
         }
     }
@@ -176,5 +178,20 @@ public class Arsenal : MonoBehaviour, IResettable
     private void AssertEquippedGunLengthSaveData() 
     {
         Assert.IsTrue(equippedGuns.Length == savedData.EquippedGuns.Length);
+    }
+
+    private void RemoveEquippedGun(Gun.Gun gun) 
+    {
+        for(int i = 0; i < equippedGuns.Length; i++) 
+        {
+            int equippedGunIdx = equippedGuns[i];
+            
+            if (gunList[equippedGunIdx] == gun) 
+            {
+                // Remove the gun
+                equippedGuns[i] = -1;
+                gunList[equippedGunIdx].gameObject.SetActive(false);
+            }
+        }
     }
 }
