@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 
 /// <summary>
@@ -55,7 +56,11 @@ public class Arsenal : MonoBehaviour, IResettable
         {
             selected.ExternalFire = CheckCanShootGun();
         }
-        // TODO: Check for input to update weapon slot
+
+        if (Input.GetKeyDown(KeyCode.Insert)) 
+        {
+            GameComplete();
+        }
     }
 
 
@@ -137,7 +142,7 @@ public class Arsenal : MonoBehaviour, IResettable
 
     public void GameComplete() 
     {
-        // TODO: Update the savedData
+        savedData.UpdateSaveData(gunList, equippedGuns, currentEquippedSlot);
     }
 
     private void HideAllGuns() 
@@ -160,5 +165,19 @@ public class Arsenal : MonoBehaviour, IResettable
     private void SetGunAmmoToSaveData() 
     {
         // TODO: All equipped guns have their ammo updated to the savedData.EquippedGuns[i].ammoCount value
+        AssertEquippedGunLengthSaveData();
+
+        for (int i = 0; i < equippedGuns.Length; i++) 
+        {
+            int gunIdx = equippedGuns[i];
+            int ammoCount = savedData.EquippedGuns[i].ammoCount;
+
+            gunList[gunIdx].SetAmmo(ammoCount);
+        }
+    }
+
+    private void AssertEquippedGunLengthSaveData() 
+    {
+        Assert.IsTrue(equippedGuns.Length == savedData.EquippedGuns.Length);
     }
 }

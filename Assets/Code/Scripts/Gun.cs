@@ -95,7 +95,7 @@ namespace Gun
         /// <summary>
         /// Number of times this gun can fire
         /// </summary>
-        private int ammoCount = 0;
+        [SerializeField] private int ammoCount = 0;
         /// <summary>
         /// Amount of time until the next burst shot triggers
         /// </summary>
@@ -348,7 +348,17 @@ namespace Gun
         {
             ammoCount = Mathf.Clamp(ammoCount + amount, 0, gunStats.AmmoCount);
             stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
-            onAmmoChange.Invoke();
+            onAmmoChange?.Invoke();
+        }
+
+        public void SetAmmo(int amount) 
+        {
+            ammoCount = Mathf.Clamp(amount, 0, gunStats.AmmoCount);
+            if (ammoCount > 0) 
+            {
+                stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
+                onAmmoChange?.Invoke();
+            }
         }
 
         #region Frame Update
