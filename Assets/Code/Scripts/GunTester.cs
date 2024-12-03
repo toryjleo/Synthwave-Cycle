@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GunTester : MonoBehaviour
 {
-    Gun.Gun gun = null;
+    [SerializeField] private Gun.Gun gunToTest = null;
 
     [Range(0.01f, 20f)][SerializeField] private float secondsBetweenTriggerPull = .1f;
 
@@ -13,18 +13,20 @@ public class GunTester : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gun = FindObjectOfType<Gun.Gun>();
-
         UpdateTriggerPull(Time.deltaTime);
     }
 
     private void UpdateTriggerPull(float deltaTime) 
     {
-        secondsSinceLastTriggerPull += deltaTime;
-        if (secondsSinceLastTriggerPull > secondsBetweenTriggerPull) 
+        if (gunToTest != null) 
         {
-            gun.ExternalFire = true;
-            secondsSinceLastTriggerPull = 0;
+            gunToTest.gameObject.SetActive(true);
+            secondsSinceLastTriggerPull += deltaTime;
+            if (secondsSinceLastTriggerPull > secondsBetweenTriggerPull)
+            {
+                gunToTest.ExternalFire = true;
+                secondsSinceLastTriggerPull = 0;
+            }
         }
     }
 

@@ -29,7 +29,7 @@ namespace Gun
             Vector3 normal = transform.position - positon;
             Material material = GetGameObjectMaterial(other.gameObject);
             Vector3 particleSprayDir = -shootDir.normalized;
-            ImpactManager.Instance.SpawnBulletImpact(positon, particleSprayDir, material);
+            ImpactManager.Instance?.SpawnBulletImpact(positon, particleSprayDir, material);
         }
 
         /// <summary>

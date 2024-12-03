@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-
 /// <summary>
 /// The Arsenal keeps track of guns that the player bike can equip, as well as handling the equip/dequip code
 /// </summary>

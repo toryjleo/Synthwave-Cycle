@@ -34,13 +34,23 @@ namespace EditorObject
         private const int NUMBER_OF_GUN_SLOTS = 3;
         [SerializeField] private DefinedGun[] allUnlockableGuns;
         [SerializeField] private EquippedGun[] equippedGuns = new EquippedGun[NUMBER_OF_GUN_SLOTS];
-        [SerializeField] private int lastEquippedSlotIdx = 0;
+        [SerializeField] private int lastEquippedSlotIdx = -1;
 
-        public void UpdateSaveData(Gun.Gun[] gunList, int[] equippedGuns, int currentEquippedSlot) 
+
+        public int NumberOfGunSlots { get { return NUMBER_OF_GUN_SLOTS; } }
+
+        public DefinedGun[] AllUnlockableGuns { get => allUnlockableGuns; }
+
+        public EquippedGun[] EquippedGuns { get => equippedGuns; }
+
+        public int LastEquippedSlot { get => lastEquippedSlotIdx; }
+
+        #region Methods
+        public void UpdateSaveData(Gun.Gun[] gunList, int[] equippedGuns, int currentEquippedSlot)
         {
             // Update Equipped Guns
             this.equippedGuns = new EquippedGun[NUMBER_OF_GUN_SLOTS];
-            for (int i = 0; i < equippedGuns.Length; i++) 
+            for (int i = 0; i < equippedGuns.Length; i++)
             {
                 int gunListIdx = equippedGuns[i];
                 int ammoCount = (gunListIdx == -1) ? -1 : gunList[gunListIdx].AmmoCount;
@@ -48,11 +58,11 @@ namespace EditorObject
             }
 
             // Ensure lastEquippedSlotIdx is a slot that contains a usable gun
-            if (currentEquippedSlot == -1 || this.equippedGuns[currentEquippedSlot].listIdx == -1) 
+            if (currentEquippedSlot == -1 || this.equippedGuns[currentEquippedSlot].listIdx == -1)
             {
-                for (int i = 0; i < NUMBER_OF_GUN_SLOTS; i++) 
+                for (int i = 0; i < NUMBER_OF_GUN_SLOTS; i++)
                 {
-                    if (this.equippedGuns[i].listIdx != -1) 
+                    if (this.equippedGuns[i].listIdx != -1)
                     {
                         currentEquippedSlot = i;
                         break;
@@ -64,16 +74,17 @@ namespace EditorObject
             lastEquippedSlotIdx = currentEquippedSlot;
         }
 
-
-        public int NumberOfGunSlots
+        public void ResetToDefaults() 
         {
-            get { return NUMBER_OF_GUN_SLOTS; }
+            equippedGuns = new EquippedGun[NUMBER_OF_GUN_SLOTS];
+            for (int i = 0; i < NUMBER_OF_GUN_SLOTS; i++) 
+            {
+                equippedGuns[i] = new EquippedGun(-1, -1);
+            }
+
+            lastEquippedSlotIdx = -1;
         }
 
-        public DefinedGun[] AllUnlockableGuns { get => allUnlockableGuns; }
-
-        public EquippedGun[] EquippedGuns { get => equippedGuns; }
-
-        public int LastEquippedSlot { get => lastEquippedSlotIdx; }
+        #endregion
     }
 }

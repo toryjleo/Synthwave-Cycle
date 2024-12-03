@@ -79,7 +79,7 @@ namespace Gun
 
                 Material hitMaterial = GetHitMaterial(hit);
                 Vector3 particleSprayDir = (curPosition - hit.point).normalized;
-                ImpactManager.Instance.SpawnBulletImpact(hit.point, particleSprayDir, hitMaterial);
+                ImpactManager.Instance?.SpawnBulletImpact(hit.point, particleSprayDir, hitMaterial);
             }
 
             // Logic for visuals
@@ -88,7 +88,7 @@ namespace Gun
             {
                 // Hit nothing case. Bullet Trail goes to gun max range
                 finalHitLocation = (direction * gunStats.Range) + curPosition;
-                ImpactManager.Instance.SpawnHitScanBulletMiss(finalHitLocation);
+                ImpactManager.Instance?.SpawnHitScanBulletMiss(finalHitLocation);
             }
             else
             {

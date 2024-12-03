@@ -17,8 +17,6 @@ namespace EditorObject
         [SerializeField] public GameLevel[] levelSequence;
         [SerializeField] public EditorObject.Arsenal arsenal;
 
-        // TODO: Mimic Arsenal's guns with ammo
-
         public int CurrentLevel { get => currentLevel; set => currentLevel = value; }
 
         public int MaxLevelProgess { get => maxLevelProgress; set => maxLevelProgress = value; }
@@ -34,7 +32,19 @@ namespace EditorObject
             gunTrackProgressLevel = 0;
             gunTrackProgressPercent = 0f;
 
-            // TODO: Have a way to clear all guns for game restart
+            ResetArsenalToDefaults(this.arsenal);
+        }
+
+        private void ResetArsenalToDefaults(Arsenal arsenal) 
+        {
+            if (arsenal == null)
+            {
+                Debug.LogError("GameSave EditorObject does not have reference to Arsenal");
+            }
+            else
+            {
+                arsenal.ResetToDefaults();
+            }
         }
     }
 }
