@@ -20,10 +20,10 @@ MonoBehaviour:
   - stats: {fileID: 11400000, guid: 9df82afbd55ad86429841337039def25, type: 2}
     barrelColor: {r: 0.07058823, g: 0.18872023, b: 1, a: 0}
   equippedGuns:
-  - listIdx: 0
-    ammoCount: 2
-  - listIdx: 1
-    ammoCount: 200
-  - listIdx: 2
-    ammoCount: 200
-  lastEquippedSlotIdx: 0
+  - listIdx: -1
+    ammoCount: -1
+  - listIdx: -1
+    ammoCount: -1
+  - listIdx: -1
+    ammoCount: -1
+  lastEquippedSlotIdx: -1

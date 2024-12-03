@@ -45,4 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mappings:
   - {fileID: 11400000, guid: e34a6e6ff8ce28e418f59749479575d4, type: 2}
+  - {fileID: 11400000, guid: b899ce3c701330b4487a7adaa0dcf969, type: 2}
   errorParticle: {fileID: 2801733825334559026, guid: 3fb3a287afb3d1b4d8f322833fb27d2c, type: 3}
