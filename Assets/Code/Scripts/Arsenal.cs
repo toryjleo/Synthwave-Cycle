@@ -15,7 +15,6 @@ public class Arsenal : MonoBehaviour, IResettable
     /// Saved data for the Arsenal object
     /// NOTE: Set this value in the prefab to set the default savedData for test scenes
     /// </summary>
-    // TODO: Make UI component that gives info
     [SerializeField] private EditorObject.Arsenal savedData;
 
     private Gun.Gun[] gunList = null;
@@ -33,7 +32,7 @@ public class Arsenal : MonoBehaviour, IResettable
     private Gun.Gun CurrentGun {
         get {
 
-            if (equippedGuns[currentEquippedSlot] != -1)
+            if (currentEquippedSlot != -1 && equippedGuns[currentEquippedSlot] != -1)
             { 
                 return gunList[equippedGuns[currentEquippedSlot]];
             }
@@ -52,10 +51,7 @@ public class Arsenal : MonoBehaviour, IResettable
 
     private void Update()
     {
-        if (selected != null) 
-        {
-            selected.ExternalFire = CheckCanShootGun();
-        }
+        GatherPlayerInput();
     }
 
 
@@ -94,7 +90,6 @@ public class Arsenal : MonoBehaviour, IResettable
             // Create new instance of prefab
             Gun.Gun gun = Instantiate<Gun.Gun>(gunPrefab, gameObject.transform);
 
-            // TODO: Call an external Init(). Takes in GunStats
             gun.Init(savedData.AllUnlockableGuns[i].stats);
             gun.UpdateBarrelColor(savedData.AllUnlockableGuns[i].barrelColor);
             gun.onOutOfAmmo += RemoveEquippedGun;
@@ -121,6 +116,46 @@ public class Arsenal : MonoBehaviour, IResettable
 
     }
 
+    private void GatherPlayerInput() 
+    {
+        if (selected != null)
+        {
+            selected.ExternalFire = CheckCanShootGun();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) 
+        {
+            EquipGunInSlot(0);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) 
+        {
+            EquipGunInSlot(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) 
+        {
+            EquipGunInSlot(2);
+        }
+    }
+
+    private void EquipGunInSlot(int slot) 
+    {
+        if (CurrentGun != null) 
+        {
+            CurrentGun.gameObject.SetActive(false);
+        }
+        currentEquippedSlot = slot;
+        EquipGunInSlot();
+    }
+
+    private void EquipGunInSlot()
+    {
+        if (CurrentGun != null)
+        {
+            CurrentGun.gameObject.SetActive(true);
+            selected = CurrentGun;
+        }
+    }
+
     private bool CheckCanShootGun() 
     {
         if (selected.IsAutomatic && Input.GetButton("Fire1"))
@@ -144,26 +179,16 @@ public class Arsenal : MonoBehaviour, IResettable
         savedData.UpdateSaveData(gunList, equippedGuns, currentEquippedSlot);
     }
 
-    private void HideAllGuns() 
+    private void HideAllGuns()
     {
-        for (int i = 0;i < gunList.Length; i++) 
+        for (int i = 0; i < gunList.Length; i++)
         {
             gunList[i].gameObject.SetActive(false);
         }
     }
 
-    private void EquipGunInSlot()
-    {
-        if (CurrentGun != null) 
-        {
-            CurrentGun.gameObject.SetActive(true);
-            selected = CurrentGun;
-        }
-    }
-
     private void SetGunAmmoToSaveData() 
     {
-        // TODO: All equipped guns have their ammo updated to the savedData.EquippedGuns[i].ammoCount value
         AssertEquippedGunLengthSaveData();
 
         for (int i = 0; i < equippedGuns.Length; i++) 
@@ -171,7 +196,10 @@ public class Arsenal : MonoBehaviour, IResettable
             int gunIdx = equippedGuns[i];
             int ammoCount = savedData.EquippedGuns[i].ammoCount;
 
-            gunList[gunIdx].SetAmmo(ammoCount);
+            if (gunIdx != -1 && ammoCount != -1) 
+            {
+                gunList[gunIdx].SetAmmo(ammoCount);
+            }
         }
     }
 
@@ -191,7 +219,9 @@ public class Arsenal : MonoBehaviour, IResettable
                 // Remove the gun
                 equippedGuns[i] = -1;
                 gunList[equippedGunIdx].gameObject.SetActive(false);
+                break;
             }
         }
+        GameComplete();
     }
 }

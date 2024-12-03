@@ -43,7 +43,21 @@ namespace EditorObject
             for (int i = 0; i < equippedGuns.Length; i++) 
             {
                 int gunListIdx = equippedGuns[i];
-                this.equippedGuns[i] = new EquippedGun(gunListIdx, gunList[gunListIdx].AmmoCount);
+                int ammoCount = (gunListIdx == -1) ? -1 : gunList[gunListIdx].AmmoCount;
+                this.equippedGuns[i] = new EquippedGun(gunListIdx, ammoCount);
+            }
+
+            // Ensure lastEquippedSlotIdx is a slot that contains a usable gun
+            if (currentEquippedSlot == -1 || this.equippedGuns[currentEquippedSlot].listIdx == -1) 
+            {
+                for (int i = 0; i < NUMBER_OF_GUN_SLOTS; i++) 
+                {
+                    if (this.equippedGuns[i].listIdx != -1) 
+                    {
+                        currentEquippedSlot = i;
+                        break;
+                    }
+                }
             }
 
             // Update equipped slot
