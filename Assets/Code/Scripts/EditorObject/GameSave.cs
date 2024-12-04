@@ -25,6 +25,9 @@ namespace EditorObject
 
         public float GunTrackProgressPercent { get => gunTrackProgressPercent; }
 
+        /// <summary>
+        /// Set this editorobject to its initial state, the first time the game is launched.
+        /// </summary>
         public void ResetToDefaults()
         {
             currentLevel = 0;
@@ -35,6 +38,10 @@ namespace EditorObject
             ResetArsenalToDefaults(this.arsenal);
         }
 
+        /// <summary>
+        /// Set the arsenal editorobject that stores the player gun data to its initial state, the first time the game is launched.
+        /// </summary>
+        /// <param name="arsenal">Arsenal to reset</param>
         private void ResetArsenalToDefaults(Arsenal arsenal) 
         {
             if (arsenal == null)

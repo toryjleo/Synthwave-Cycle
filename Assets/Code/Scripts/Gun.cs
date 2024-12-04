@@ -5,9 +5,11 @@ using EditorObject;
 
 namespace Gun
 {
+
     /// <summary>
     /// Event to be called when ammo changes
     /// </summary>
+    /// <param name="gun">Reference to the gun calling this event</param>
     public delegate void NotifyAmmo(Gun gun);
 
     /// <summary>
@@ -113,6 +115,9 @@ namespace Gun
         /// </summary>
         private bool externalFire = false;
 
+        /// <summary>
+        /// Triggered when this gun runs out of ammo
+        /// </summary>
         public NotifyAmmo onOutOfAmmo;
 
         public bool ExternalFire 
@@ -354,6 +359,10 @@ namespace Gun
             onAmmoChange?.Invoke(this);
         }
 
+        /// <summary>
+        /// Sets the ammo to this gun
+        /// </summary>
+        /// <param name="amount">Value to set the ammo to</param>
         public void SetAmmo(int amount) 
         {
             ammoCount = Mathf.Clamp(amount, 0, gunStats.AmmoCount);
@@ -388,6 +397,10 @@ namespace Gun
             UpdateOverHeat(deltaTime);
         }
 
+        /// <summary>
+        /// Sets a unique visual for the gun
+        /// </summary>
+        /// <param name="color">Color to set the barrel to</param>
         public void UpdateBarrelColor(Color color) 
         {
             Material newMaterial = new Material(barrel.material);
@@ -588,6 +601,9 @@ namespace Gun
             nextTimeToFire = gunStats.TimeBetweenShots;
         }
 
+        /// <summary>
+        /// Listens to stateController.outOfAmmo.notifyListenersEnter
+        /// </summary>
         public void HandleOutOfAmmoEnter() 
         {
             onOutOfAmmo?.Invoke(this);
