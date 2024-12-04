@@ -56,7 +56,7 @@ public class LevelManager : MonoBehaviour
 
         GameStateController.resetting.notifyListenersEnter += GameReset;
         GameStateController.levelComplete.notifyListenersEnter += GameComplete;
-        GameStateController.levelComplete.notifyListenersEnter += arsenal.GameComplete;
+        GameStateController.levelComplete.notifyListenersEnter += arsenal.LevelComplete;
 
         Initialize();
     }
