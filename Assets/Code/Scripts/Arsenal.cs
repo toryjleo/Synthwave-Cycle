@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Gun;
 
 /// <summary>
 /// The Arsenal keeps track of guns that the player bike can equip, as well as handling the equip/dequip code
@@ -242,7 +243,7 @@ public class Arsenal : MonoBehaviour, IResettable
     /// </summary>
     private void SetGunAmmoToSaveData() 
     {
-        Assert.IsTrue(equippedGunSlots.Length == savedData.EquippedGuns.Length);
+        Assert.IsTrue(equippedGunSlots.Length == savedData.EquippedGuns.Length, "Number of gun slots in save data and in arsenal are different");
 
         for (int i = 0; i < equippedGunSlots.Length; i++) 
         {

@@ -1,7 +1,6 @@
 using UnityEngine;
 using Unity.Mathematics;
 using Generic;
-using EditorObject;
 
 namespace Gun
 {
@@ -199,7 +198,7 @@ namespace Gun
             }
         }
 
-        public void Init(GunStats stats) 
+        public void Init(EditorObject.GunStats stats) 
         {
             this.gunStats = stats;
             Init();
