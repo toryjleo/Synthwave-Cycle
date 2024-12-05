@@ -4,10 +4,12 @@ using Generic;
 
 namespace Gun
 {
+
     /// <summary>
     /// Event to be called when ammo changes
     /// </summary>
-    public delegate void NotifyAmmo();
+    /// <param name="gun">Reference to the gun calling this event</param>
+    public delegate void NotifyAmmo(Gun gun);
 
     /// <summary>
     /// Event to be called when a bullet hits
@@ -36,6 +38,8 @@ namespace Gun
         /// Location for the gun to spawn bullets
         /// </summary>
         [SerializeField] private GameObject BulletSpawn = null;
+
+        [SerializeField] private Renderer barrel;
 
         /// <summary>
         /// Reference to player
@@ -92,7 +96,7 @@ namespace Gun
         /// <summary>
         /// Number of times this gun can fire
         /// </summary>
-        private int ammoCount = 0;
+        [SerializeField] private int ammoCount = 0;
         /// <summary>
         /// Amount of time until the next burst shot triggers
         /// </summary>
@@ -108,7 +112,17 @@ namespace Gun
         /// <summary>
         /// Used by GunTester to automatically fire this gun
         /// </summary>
-        public bool externalFire = false;
+        private bool externalFire = false;
+
+        /// <summary>
+        /// Triggered when this gun runs out of ammo
+        /// </summary>
+        public NotifyAmmo onOutOfAmmo;
+
+        public bool ExternalFire 
+        {
+            get { return externalFire; } set {  externalFire = value; }
+        }
 
 
         /// <summary>
@@ -121,20 +135,18 @@ namespace Gun
             {
                 if (GameStateController.CanRunGameplay)
                 {
-                    if (gunStats.IsAutomatic)
-                    {
-                        return (Input.GetButton("Fire1") || externalFire) && stateController.CanShoot;
-                    }
-                    else
-                    {
-                        return (Input.GetButtonDown("Fire1") || externalFire) && stateController.CanShoot;
-                    }
+                    return externalFire && stateController.CanShoot;
                 }
                 else 
                 {
                     return false;
                 }
             }
+        }
+
+        public bool IsAutomatic
+        {
+            get => gunStats.IsAutomatic;
         }
 
         #region Ammo Props for UI
@@ -174,6 +186,25 @@ namespace Gun
 
         // Start is called before the first frame update
         void Start()
+        {
+            TestSceneInit();
+        }
+
+        private void TestSceneInit() 
+        {
+            if (stateController == null)
+            {
+                Init();
+            }
+        }
+
+        public void Init(EditorObject.GunStats stats) 
+        {
+            this.gunStats = stats;
+            Init();
+        }
+
+        private void Init() 
         {
             GatherMemberReferences();
 
@@ -282,6 +313,7 @@ namespace Gun
             stateController.fireSingleShot.notifyListenersEnter += HandleFireSingleShotEnter;
             stateController.fireBurstShot.notifyListenersEnter += HandleFireBurstShotEnter;
             stateController.betweenShots.notifyListenersEnter += HandleBetweenShotsEnter;
+            stateController.outOfAmmo.notifyListenersEnter += HandleOutOfAmmoEnter;
 
             hitScan.notifyListenersHit += HandleBulletHit;
 
@@ -323,7 +355,21 @@ namespace Gun
         {
             ammoCount = Mathf.Clamp(ammoCount + amount, 0, gunStats.AmmoCount);
             stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
-            onAmmoChange.Invoke();
+            onAmmoChange?.Invoke(this);
+        }
+
+        /// <summary>
+        /// Sets the ammo to this gun
+        /// </summary>
+        /// <param name="amount">Value to set the ammo to</param>
+        public void SetAmmo(int amount) 
+        {
+            ammoCount = Mathf.Clamp(amount, 0, gunStats.AmmoCount);
+            if (ammoCount > 0) 
+            {
+                stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
+                onAmmoChange?.Invoke(this);
+            }
         }
 
         #region Frame Update
@@ -348,6 +394,17 @@ namespace Gun
             UpdateNextTimeToBurstFire(deltaTime);
 
             UpdateOverHeat(deltaTime);
+        }
+
+        /// <summary>
+        /// Sets a unique visual for the gun
+        /// </summary>
+        /// <param name="color">Color to set the barrel to</param>
+        public void UpdateBarrelColor(Color color) 
+        {
+            Material newMaterial = new Material(barrel.material);
+            newMaterial.color = color;
+            barrel.material = newMaterial;
         }
 
         /// <summary>
@@ -437,7 +494,7 @@ namespace Gun
                 // This must be called before OverHeated trigger
                 stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
             }
-            onAmmoChange?.Invoke();
+            onAmmoChange?.Invoke(this);
         }
 
 
@@ -541,6 +598,14 @@ namespace Gun
         public void HandleBetweenShotsEnter()
         {
             nextTimeToFire = gunStats.TimeBetweenShots;
+        }
+
+        /// <summary>
+        /// Listens to stateController.outOfAmmo.notifyListenersEnter
+        /// </summary>
+        public void HandleOutOfAmmoEnter() 
+        {
+            onOutOfAmmo?.Invoke(this);
         }
         #endregion
 

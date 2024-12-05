@@ -13,11 +13,12 @@ namespace Gun
     public class PooledParticle : Poolable
     {
         private ParticleSystem particleSystem;
+        private bool isSpawnedAndPlaying = false;
 
         public override void Init(IPoolableInstantiateData data)
         {
             particleSystem = GetComponent<ParticleSystem>();
-            hasFiniteLifetime = true;
+            isSpawnedAndPlaying = false;
 
             if (particleSystem == null)
             {
@@ -30,9 +31,20 @@ namespace Gun
             Reset();
         }
 
+        public override void Update()
+        {
+            base.Update();
+
+            if (isSpawnedAndPlaying && particleSystem != null && !particleSystem.isPlaying) 
+            {
+                isSpawnedAndPlaying = false;
+                OnDespawn();
+            }
+        }
+
         public override void Reset()
         {
-            timeInWorld = 0;
+            isSpawnedAndPlaying = false;
         }
 
         /// <summary>
@@ -46,6 +58,7 @@ namespace Gun
             transform.forward = forward;
 
             particleSystem.Play();
+            isSpawnedAndPlaying = true;
         }
     }
 }

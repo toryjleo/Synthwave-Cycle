@@ -47,12 +47,16 @@ public class LevelManager : MonoBehaviour
     {
         jukebox.Init(currentLevel.WaveSequence);
         worldGenerator.CreateGround(currentLevel.GroundMat);
-        ImpactManager.Instance.Init();
-        ImpactManager.Instance.AddGroundMapping(currentLevel.GroundImpactMapping);
+        ImpactManager.Instance?.Init();
+        ImpactManager.Instance?.AddGroundMapping(currentLevel.GroundImpactMapping);
         resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
+
+        Arsenal arsenal = FindObjectOfType<Arsenal>();
+        arsenal.Init(gameSave);
 
         GameStateController.resetting.notifyListenersEnter += GameReset;
         GameStateController.levelComplete.notifyListenersEnter += GameComplete;
+        GameStateController.levelComplete.notifyListenersEnter += arsenal.LevelComplete;
 
         Initialize();
     }
@@ -71,7 +75,7 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Resetting!");
         resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
         DangerLevel.Instance.dangerLevel = 0;//make sure we don't start at the same level
-        ImpactManager.Instance.Reset();
+        ImpactManager.Instance?.Reset();
         foreach (IResettable r in resetObjects)
         {
             r.ResetGameObject();

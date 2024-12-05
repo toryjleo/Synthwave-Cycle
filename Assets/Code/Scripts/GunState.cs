@@ -122,7 +122,6 @@ namespace GunState
         /// </summary>
         public virtual void Enter()
         {
-            PrintStateEnter();
             notifyListenersEnter?.Invoke();
         }
 

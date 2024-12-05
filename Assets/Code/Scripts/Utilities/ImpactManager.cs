@@ -4,6 +4,7 @@ using Gun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 /// <summary>
 /// A singleton that manages all particles played in the game.
@@ -114,18 +115,20 @@ public class ImpactManager : MonoBehaviour
     /// <param name="material">Material that the particle is mapped to</param>
     public void SpawnBulletImpact(Vector3 position, Vector3 forward, Material material) 
     {
+        PooledParticle particle = null;
+
         if (material != null && impactDictionary.ContainsKey(material)) 
         {
-            Debug.Log("Hit thing");
-            PooledParticle particle = impactDictionary[material].SpawnFromPool() as PooledParticle;
-            particle.Play(position, forward);
+            particle = impactDictionary[material].SpawnFromPool() as PooledParticle;
         }
         else 
         {
-            PooledParticle particle = errorPool.SpawnFromPool() as PooledParticle;
-            particle.Play(position, forward);
-            Debug.Log("Not a material");
+            // Debug.Log("Hitting: " + material.ToString());
+            particle = errorPool.SpawnFromPool() as PooledParticle;
+            
         }
+
+        particle.Play(position, forward);
     }
 
 }
