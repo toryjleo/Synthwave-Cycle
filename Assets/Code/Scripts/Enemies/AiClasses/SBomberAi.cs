@@ -8,43 +8,69 @@ using UnityEngine;
 
 public class SBomberAi : VehicleAi
 {
-    //How far the S-bomber will stay before deciding to dash into the player
-    static float TRAIL_DISTANCE = 2f;
+    [SerializeField] float ExplosionDamage = 50f;
 
-    [SerializeField]
-    float ExplosionDamage = 50f;
+    private float timer = 0f;
+    private bool timerCountdown = false;
+    private float maxTime = 3f;
 
     public override void Initialize()
     {
 
     }
 
+    //TODO: Spawn explosion when they are killed (heath.Kill())
+
+    public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
+    {
+        if (timerCountdown && !stateController.isDead)
+        {
+            timer += fixedDeltaTime;
+            if (timer >= maxTime)
+            {
+                addDlScore = false;
+                health.Kill();
+                timerCountdown = false;
+            }
+        }
+
+        base.ManualUpdate(enemies, wanderDirection, fixedDeltaTime);
+    }
+
     public override void Attack()
     {
         PlayerMovement pm = FindObjectOfType<PlayerMovement>();
         Debug.Log("S Bomber attacking!!!");
-        // SetTarget(playerHealth.gameObject);
+
         vehicleController.enabled = false;
-        rb.AddForce((pm.Velocity - transform.position).normalized * 250f, ForceMode.Impulse);
+
+        Vector3 direction = ((pm.Velocity + target.transform.position) - transform.position).normalized;
+        rb.AddForce(direction * 200f, ForceMode.Impulse);
+
+        timerCountdown = true;
     }
 
     protected override void OnCollisionEnter(Collision collision)
     {
-        // if (collision != null && collision.collider.gameObject == target)
-        // {
-        //     target.GetComponent<PlayerHealth>().TakeDamage(ExplosionDamage);
-        //     this.Die();
-        // }
+        if (!stateController.isDead)
+        {
+            if (collision.gameObject.tag == "Player")
+            {
+                addDlScore = false;
+                target.GetComponent<PlayerHealth>().TakeDamage(ExplosionDamage);
+                health.Kill();
+            }
+            else if (collision.gameObject.tag == "Enemy")
+            {
+                stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
+            }
+        }
+    }
 
-        if (collision.gameObject.tag == "Player")
-        {
-            addDlScore = false;
-            target.GetComponent<PlayerHealth>().TakeDamage(ExplosionDamage);
-            this.Die();
-        }
-        else if (collision.gameObject.tag == "Enemy")
-        {
-            stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
-        }
+    public override void Reset()
+    {
+        timer = 0f;
+        timerCountdown = false;
+        base.Reset();
     }
 }

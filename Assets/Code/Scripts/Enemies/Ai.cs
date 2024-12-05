@@ -15,7 +15,7 @@ public abstract class Ai : Poolable
     public GameObject target;
     public Rigidbody rb;
     public Gun[] myGuns;
-    public Health hp;
+    public Health health;
     protected AiStats stats;
 
     internal float maxSpeed;
@@ -24,7 +24,7 @@ public abstract class Ai : Poolable
     public bool inWorld = false;
     protected bool addDlScore = true;
 
-    public event NotifyDeath DeadEvent;
+    public event NotifyDeath DeadVisualsEvent;
     public event NotifyRespawn RespawnEvent;
     #endregion
 
@@ -102,14 +102,15 @@ public abstract class Ai : Poolable
     {
         stateController = new AIState.StateController(true);
         stateController.attacking.notifyListenersEnter += HandleAttackingEnter;
+        stateController.attacking.notifyListenersExit += HandleAttackingExit;
         stateController.inPool.notifyListenersExit += HandleInPoolExit;
         stateController.wandering.notifyListenersEnter += HandleWanderingEnter;
-        stateController.dead.notifyListenersEnter += Die;
+        stateController.dead.notifyListenersEnter += HandleDeathEnter;
         stateController.inRange.notifyListenersEnter += HandleInRangeEnter;
         stateController.inRange.notifyListenersExit += HandleInRangeExit;
         GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
         Despawn += HandleDespawned;
-        hp.deadEvent += HandleDeath;
+        health.deadEvent += HpAtZero;
     }
 
     /// <summary>
@@ -145,10 +146,10 @@ public abstract class Ai : Poolable
     /// <summary>
     /// This method plays a death animation and the deactivates the enemy
     /// </summary>
-    public virtual void Die()
+    public virtual void HandleDeathEnter()
     {
         //Notify all listeners that this AI has died
-        DeadEvent?.Invoke();
+        DeadVisualsEvent?.Invoke();
 
         if (myGuns != null && myGuns.Length > 0)
         {
@@ -212,9 +213,14 @@ public abstract class Ai : Poolable
         stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
     }
 
+    public virtual void HandleAttackingExit()
+    {
+
+    }
+
     public virtual void HandleInPoolExit()
     {
-        hp.Init(stats.Health);
+        health.Init(stats.Health);
         RespawnEvent?.Invoke();
         rb.detectCollisions = true;
 
@@ -242,8 +248,9 @@ public abstract class Ai : Poolable
         inWorld = false;
     }
 
-    public void HandleDeath()
+    public void HpAtZero()
     {
+        Debug.Log("AI is DEAD!!");
         stateController.HandleTrigger(AIState.StateTrigger.AiKilled);
     }
     #endregion

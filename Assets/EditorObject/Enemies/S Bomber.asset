@@ -17,13 +17,13 @@ MonoBehaviour:
   gearModifier: 0.8
   maxMovementForce: 2
   maxChaseForce: 1.8
-  chaseRange: 15
+  chaseRange: 5
   maxGroupingForce: 1
   groupingRange: 10
   maxSeparateForce: 0.8
   separateRange: 10
   dlScore: 20
-  attackRange: 30
+  attackRange: 20
   timeToAttack: 3
   canAim: 0
   enemyType: 4

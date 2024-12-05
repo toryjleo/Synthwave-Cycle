@@ -8,15 +8,15 @@ public delegate void NotifyHealth();
 /// <summary>Class <c>Health</c> A Unity Component which tracks health.</summary>
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float _hitPoints;
-    private float _maxHitPoints;
+    [SerializeField] private float hitPoints;
+    private float maxHitPoints;
     public NotifyHealth healEvent;
     public NotifyHealth deadEvent;
 
 
     public float HitPoints
     {
-        get => _hitPoints;
+        get => hitPoints;
     }
 
 
@@ -24,10 +24,10 @@ public class Health : MonoBehaviour
     /// <summary>An itialization method.</summary>
     /// <param name="initialHealth">The number of hit points to start with.</param>
     /// <param name="maxHealth">The maximum amount of hitpoints which this entity will not surpass.</param>
-    public void Init(float initialHealth, float maxHealth = float.MaxValue) 
+    public void Init(float initialHealth, float maxHealth = float.MaxValue)
     {
-        _hitPoints    = initialHealth;
-        _maxHitPoints = maxHealth;
+        hitPoints = initialHealth;
+        maxHitPoints = maxHealth;
     }
 
 
@@ -37,9 +37,9 @@ public class Health : MonoBehaviour
     {
         if (GameStateController.CanRunGameplay)
         {
-            _hitPoints -= hp;
+            hitPoints -= hp;
 
-            if (_hitPoints <= 0)
+            if (hitPoints <= 0)
             {
                 deadEvent?.Invoke();
             }
@@ -48,20 +48,25 @@ public class Health : MonoBehaviour
 
     /// <summary>Adds points to _hitPoints.</summary>
     /// <param name="hp">The number of points to add to _hitPoints.</param>
-    public virtual void Heal(float hp) 
+    public virtual void Heal(float hp)
     {
         // Notify effects that this is healing
         healEvent?.Invoke();
 
         // Ensure we do not overflow
-        if (_hitPoints + hp < _hitPoints) 
+        if (hitPoints + hp < hitPoints)
         {
-            _hitPoints = float.MaxValue;
+            hitPoints = float.MaxValue;
         }
-        else 
+        else
         {
             // Ensure that _hitPoints does not go over the stated maximum
-            _hitPoints = Mathf.Min(_hitPoints + hp, _maxHitPoints);
+            hitPoints = Mathf.Min(hitPoints + hp, maxHitPoints);
         }
+    }
+
+    public void Kill()
+    {
+        TakeDamage(HitPoints);
     }
 }

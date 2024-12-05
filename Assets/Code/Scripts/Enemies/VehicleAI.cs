@@ -24,12 +24,6 @@ public abstract class VehicleAi : Ai
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
         base.ManualUpdate(enemies, wanderDirection, fixedDeltaTime);
-        //Figure out where to moved based on the child class movement pattern
-        // UpdateMovementLocation();
-        if (stateController.isAttacking)
-        {
-            Attack();
-        }
     }
 
     public override void Init(IPoolableInstantiateData stats)
@@ -40,10 +34,10 @@ public abstract class VehicleAi : Ai
             Debug.LogWarning("VehicleAi stats are not readable as TestAi!");
         }
 
-        hp = GetComponentInChildren<Health>();
+        health = GetComponentInChildren<Health>();
         vehicleController = GetComponent<ArcadeAiVehicleController>();
         vehicleController.enabled = false;
-        hp.Init(aiStats.Health);
+        health.Init(aiStats.Health);
 
         base.Init(stats);
 
@@ -104,7 +98,7 @@ public abstract class VehicleAi : Ai
         }
     }
 
-    public override void Die()
+    public override void HandleDeathEnter()
     {
         float minMaxTorque = 1800f;
         rb.angularDrag = 1;
@@ -116,7 +110,7 @@ public abstract class VehicleAi : Ai
                                 ForceMode.Impulse);
         vehicleController.enabled = false;
 
-        base.Die();
+        base.HandleDeathEnter();
     }
 
     #region MOVEMENT
@@ -130,7 +124,7 @@ public abstract class VehicleAi : Ai
         }
     }
 
-    private void CalculateAttackMovement()
+    protected void CalculateAttackMovement()
     {
         Vector3 direction = (target.transform.position - transform.position).normalized;
         movementTargetPosition.transform.position = (20 * direction) + target.transform.position;
@@ -138,7 +132,7 @@ public abstract class VehicleAi : Ai
 
     protected Vector3 GetChaseLocation()
     {
-        return stats.ChaseRange * Vector3.Normalize(this.transform.position - target.transform.position) + target.transform.position;
+        return stats.ChaseRange * Vector3.Normalize(transform.position - target.transform.position) + target.transform.position;
     }
 
     public override void Chase(Vector3 target, float fixedDeltaTime)

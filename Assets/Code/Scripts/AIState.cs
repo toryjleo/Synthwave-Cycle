@@ -40,6 +40,7 @@ namespace AIState
         public bool isFollowing { get => state == following; }
         public bool isInRange { get => state == inRange; }
         public bool isAttacking { get => state == attacking; }
+        public bool isDead { get => state == dead; }
 
         public StateController(bool printState = false)
         {

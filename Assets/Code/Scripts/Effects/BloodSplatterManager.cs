@@ -16,14 +16,14 @@ public class BloodSplatterManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (ai != null) 
-        { 
+        if (ai != null)
+        {
             // Hook up events
-            ai.DeadEvent += ShowBlood;
+            ai.DeadVisualsEvent += ShowBlood;
             // Make sure that the blood splatters get turned off when the enemy despawns
             ai.RespawnEvent += Init;
         }
-        
+
         Init();
     }
 
@@ -40,12 +40,12 @@ public class BloodSplatterManager : MonoBehaviour
     /// Initialization function to be used by Despawn calls.
     /// </summary>
     /// <param name="entity">Entity getting despawned.</param>
-    public void Init(SelfDespawn entity) 
+    public void Init(SelfDespawn entity)
     {
         Init();
     }
 
-    public virtual void Init() 
+    public virtual void Init()
     {
         bloodSplatter.HideBlood();
     }
@@ -54,7 +54,7 @@ public class BloodSplatterManager : MonoBehaviour
     /// Returns a random texture.
     /// </summary>
     /// <returns>A random texture.</returns>
-    private Texture GetRandomTexture() 
+    private Texture GetRandomTexture()
     {
         return splatterTextures[Random.Range(0, splatterTextures.Length - 1)];
     }
@@ -62,7 +62,7 @@ public class BloodSplatterManager : MonoBehaviour
     /// <summary>
     /// Displays blood upon enemy death.
     /// </summary>
-    private void ShowBlood() 
+    private void ShowBlood()
     {
         Texture alphaTex = GetRandomTexture();
         Texture albedoTex = GetRandomTexture();

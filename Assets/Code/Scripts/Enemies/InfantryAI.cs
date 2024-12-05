@@ -43,10 +43,10 @@ public class InfantryAI : Ai
             Debug.LogWarning("InfantryAi stats are not readable as TestAi!");
         }
 
-        hp = GetComponentInChildren<Health>();
+        health = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
         animationStateController = GetComponent<CyborgAnimationStateController>();
-        hp.Init(aiStats.Health);
+        health.Init(aiStats.Health);
 
         myGuns[0].Init();
 
@@ -59,7 +59,7 @@ public class InfantryAI : Ai
         {
             Debug.LogError("This object needs a rigidBody component");
         }
-        if (hp == null)
+        if (health == null)
         {
             Debug.LogError("This object needs a health component");
         }
@@ -79,7 +79,7 @@ public class InfantryAI : Ai
         }
     }
 
-    public override void Die()
+    public override void HandleDeathEnter()
     {
         rb.constraints = RigidbodyConstraints.FreezeAll;
 
@@ -88,7 +88,7 @@ public class InfantryAI : Ai
         rb.detectCollisions = false;
         animationStateController.SetAlive(false);
 
-        base.Die();
+        base.HandleDeathEnter();
     }
 
     public override void Reset()
