@@ -14,7 +14,7 @@ public class PinkMistCollisionVolume : MonoBehaviour
         if (other.GetComponent<Ai>() != null)
         {
             Ai ai = other.GetComponent<Ai>();
-            ai.Die();
+            ai.health.Kill();
         }
         if (other.GetComponent<EnemyBullet>() != null)
         {

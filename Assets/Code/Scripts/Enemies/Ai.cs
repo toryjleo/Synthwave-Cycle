@@ -15,29 +15,22 @@ public abstract class Ai : Poolable
     public GameObject target;
     public Rigidbody rb;
     public Gun[] myGuns;
-    public Health hp;
+    public Health health;
     protected AiStats stats;
 
     internal float maxSpeed;
     internal float timeByTarget = 0;
 
     public bool inWorld = false;
+    protected bool addDlScore = true;
 
-    public event NotifyDeath DeadEvent;
+    public event NotifyDeath DeadVisualsEvent;
     public event NotifyRespawn RespawnEvent;
     #endregion
 
     // Update is called once per frame
     public virtual void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
-        playerHealth = FindObjectOfType<PlayerHealth>();
-
-        //TODO: Set the target from the future enemy manager
-        if (playerHealth != null && playerHealth.HitPoints > 0)
-        {
-            SetTarget(playerHealth.gameObject);
-        }
-
         if (stateController.isWandering)
         {
             Wander(wanderDirection, fixedDeltaTime);
@@ -110,10 +103,13 @@ public abstract class Ai : Poolable
         stateController = new AIState.StateController(true);
         stateController.attacking.notifyListenersEnter += HandleAttackingEnter;
         stateController.inPool.notifyListenersExit += HandleInPoolExit;
-        stateController.dead.notifyListenersEnter += Die;
+        stateController.wandering.notifyListenersEnter += HandleWanderingEnter;
+        stateController.dead.notifyListenersEnter += HandleDeathEnter;
+        stateController.inRange.notifyListenersEnter += HandleInRangeEnter;
+        stateController.inRange.notifyListenersExit += HandleInRangeExit;
         GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
         Despawn += HandleDespawned;
-        hp.deadEvent += HandleDeath;
+        health.hpHitZero += HandleHpHitZero;
     }
 
     /// <summary>
@@ -149,10 +145,10 @@ public abstract class Ai : Poolable
     /// <summary>
     /// This method plays a death animation and the deactivates the enemy
     /// </summary>
-    public virtual void Die()
+    public virtual void HandleDeathEnter()
     {
         //Notify all listeners that this AI has died
-        DeadEvent?.Invoke();
+        DeadVisualsEvent?.Invoke();
 
         if (myGuns != null && myGuns.Length > 0)
         {
@@ -162,7 +158,7 @@ public abstract class Ai : Poolable
             }
         }
 
-        if (DangerLevel.Instance)
+        if (DangerLevel.Instance && addDlScore)
         {
             DangerLevel.Instance.IncreaseDangerLevel(stats.DlScore);
         }
@@ -194,7 +190,12 @@ public abstract class Ai : Poolable
     }
 
     #region EventHandlers
-    public void HandleAttackingEnter()
+
+    public abstract void HandleInRangeEnter();
+
+    public abstract void HandleInRangeExit();
+
+    public virtual void HandleAttackingEnter()
     {
         if (stats.CanAim)
         {
@@ -207,11 +208,20 @@ public abstract class Ai : Poolable
 
     public virtual void HandleInPoolExit()
     {
-        hp.Init(stats.Health);
+        health.Init(stats.Health);
         RespawnEvent?.Invoke();
         rb.detectCollisions = true;
 
         inWorld = true;
+    }
+
+    public void HandleWanderingEnter()
+    {
+        playerHealth = FindObjectOfType<PlayerHealth>();
+        if (playerHealth != null && playerHealth.HitPoints > 0)
+        {
+            SetTarget(playerHealth.gameObject);
+        }
     }
 
     public void HandlePlayerDeadEnter()
@@ -226,7 +236,7 @@ public abstract class Ai : Poolable
         inWorld = false;
     }
 
-    public void HandleDeath()
+    public void HandleHpHitZero()
     {
         stateController.HandleTrigger(AIState.StateTrigger.AiKilled);
     }
@@ -237,7 +247,7 @@ public abstract class Ai : Poolable
     /// This method works for ranged Enemies that do not get into direct melee range with the target
     /// </summary>
     /// <param name="target"> Vector to target </param>
-    public virtual void Move(Vector3 target, ArrayList enemyList, float fixedDeltaTime) //This can be used for Enemies that stay at range and don't run into melee.
+    public virtual void Move(Vector3 target, ArrayList enemyList, float fixedDeltaTime)
     {
         Chase(target, fixedDeltaTime);
         Separate(enemyList, fixedDeltaTime);
@@ -288,6 +298,7 @@ public abstract class Ai : Poolable
             gameObject.SetActive(false);
             stateController.HandleTrigger(AIState.StateTrigger.Despawned);
             inWorld = false;
+            addDlScore = true;
         }
     }
 }

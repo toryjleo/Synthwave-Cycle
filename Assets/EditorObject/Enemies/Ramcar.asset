@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: Ramcar
   m_EditorClassIdentifier: 
   health: 50
-  movementGroup: 1
-  gearModifier: 0.8
-  maxForce: 10
+  movementGroup: 3
+  gearModifier: 0.9
+  maxMovementForce: 1
+  maxChaseForce: 1
+  chaseRange: 25
+  maxGroupingForce: 1
+  groupingRange: 20
+  maxSeparateForce: 2
+  separateRange: 5
   dlScore: 35
-  attackRange: 25
-  followRange: 20
+  attackRange: 55
   timeToAttack: 4
   canAim: 0
   enemyType: 3

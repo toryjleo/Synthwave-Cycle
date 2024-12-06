@@ -26,6 +26,11 @@ public class InfantryAI : Ai
 
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
+        //TODO: Set the target from the future enemy manager
+        if (playerHealth != null && playerHealth.HitPoints > 0)
+        {
+            SetTarget(playerHealth.gameObject);
+        }
         SetAnimationSpeed(rb.velocity.magnitude);
         base.ManualUpdate(enemies, wanderDirection, fixedDeltaTime);
     }
@@ -38,10 +43,10 @@ public class InfantryAI : Ai
             Debug.LogWarning("InfantryAi stats are not readable as TestAi!");
         }
 
-        hp = GetComponentInChildren<Health>();
+        health = GetComponentInChildren<Health>();
         rb = GetComponent<Rigidbody>();
         animationStateController = GetComponent<CyborgAnimationStateController>();
-        hp.Init(aiStats.Health);
+        health.Init(aiStats.Health);
 
         myGuns[0].Init();
 
@@ -54,7 +59,7 @@ public class InfantryAI : Ai
         {
             Debug.LogError("This object needs a rigidBody component");
         }
-        if (hp == null)
+        if (health == null)
         {
             Debug.LogError("This object needs a health component");
         }
@@ -74,7 +79,7 @@ public class InfantryAI : Ai
         }
     }
 
-    public override void Die()
+    public override void HandleDeathEnter()
     {
         rb.constraints = RigidbodyConstraints.FreezeAll;
 
@@ -83,7 +88,18 @@ public class InfantryAI : Ai
         rb.detectCollisions = false;
         animationStateController.SetAlive(false);
 
-        base.Die();
+        base.HandleDeathEnter();
+    }
+
+    //TODO: In range entering and exiting enables and disables attack telegraph
+    public override void HandleInRangeEnter()
+    {
+
+    }
+
+    public override void HandleInRangeExit()
+    {
+
     }
 
     public override void Reset()
