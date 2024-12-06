@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Used in conjunction with the Vehicle_Test scene, this is used on a vehicle to test different movement functions
+/// </summary>
 public class TestVehicleAttack : MonoBehaviour
 {
     [SerializeField] public GameObject attackTarget;

@@ -71,7 +71,7 @@ public class PlayerHealth : Health
 
         currentBar = BarMax.Bar1;
 
-        deadEvent += HandleDeath;
+        hpHitZero += HandleDeath;
 
     }
 

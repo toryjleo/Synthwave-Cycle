@@ -11,7 +11,7 @@ public class Health : MonoBehaviour
     [SerializeField] private float hitPoints;
     private float maxHitPoints;
     public NotifyHealth healEvent;
-    public NotifyHealth deadEvent;
+    public NotifyHealth hpHitZero;
 
 
     public float HitPoints
@@ -41,7 +41,7 @@ public class Health : MonoBehaviour
 
             if (hitPoints <= 0)
             {
-                deadEvent?.Invoke();
+                hpHitZero?.Invoke();
             }
         }
     }

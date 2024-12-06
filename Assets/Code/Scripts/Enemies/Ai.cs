@@ -102,7 +102,6 @@ public abstract class Ai : Poolable
     {
         stateController = new AIState.StateController(true);
         stateController.attacking.notifyListenersEnter += HandleAttackingEnter;
-        stateController.attacking.notifyListenersExit += HandleAttackingExit;
         stateController.inPool.notifyListenersExit += HandleInPoolExit;
         stateController.wandering.notifyListenersEnter += HandleWanderingEnter;
         stateController.dead.notifyListenersEnter += HandleDeathEnter;
@@ -110,7 +109,7 @@ public abstract class Ai : Poolable
         stateController.inRange.notifyListenersExit += HandleInRangeExit;
         GameStateController.playerDead.notifyListenersEnter += HandlePlayerDeadEnter;
         Despawn += HandleDespawned;
-        health.deadEvent += HpAtZero;
+        health.hpHitZero += HandleHpHitZero;
     }
 
     /// <summary>
@@ -192,15 +191,9 @@ public abstract class Ai : Poolable
 
     #region EventHandlers
 
-    public virtual void HandleInRangeEnter()
-    {
+    public abstract void HandleInRangeEnter();
 
-    }
-
-    public virtual void HandleInRangeExit()
-    {
-
-    }
+    public abstract void HandleInRangeExit();
 
     public virtual void HandleAttackingEnter()
     {
@@ -211,11 +204,6 @@ public abstract class Ai : Poolable
         Attack();
 
         stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
-    }
-
-    public virtual void HandleAttackingExit()
-    {
-
     }
 
     public virtual void HandleInPoolExit()
@@ -248,7 +236,7 @@ public abstract class Ai : Poolable
         inWorld = false;
     }
 
-    public void HpAtZero()
+    public void HandleHpHitZero()
     {
         stateController.HandleTrigger(AIState.StateTrigger.AiKilled);
     }

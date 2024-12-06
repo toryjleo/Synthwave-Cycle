@@ -73,6 +73,8 @@ namespace EditorObject
         /// </summary>
         [SerializeField] private float timeToAttack = 2.0f;
 
+        [SerializeField] private float timeToDie = 3.0f;
+
         /// <summary>
         /// Determines whether the enemy can rotate and aim separately from moving
         /// </summary>
@@ -96,6 +98,7 @@ namespace EditorObject
         public int DlScore { get => dlScore; }
         public float AttackRange { get => attackRange; }
         public float TimeToAttack { get => timeToAttack; }
+        public float TimeToDie { get => timeToDie; }
         public bool CanAim { get => canAim; }
         public Enemy EnemyType { get => enemyType; }
     }

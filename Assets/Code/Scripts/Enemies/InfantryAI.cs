@@ -91,6 +91,17 @@ public class InfantryAI : Ai
         base.HandleDeathEnter();
     }
 
+    //TODO: In range entering and exiting enables and disables attack telegraph
+    public override void HandleInRangeEnter()
+    {
+
+    }
+
+    public override void HandleInRangeExit()
+    {
+
+    }
+
     public override void Reset()
     {
         rb.constraints = RigidbodyConstraints.FreezePositionY;

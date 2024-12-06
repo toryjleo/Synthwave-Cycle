@@ -14,7 +14,7 @@ public abstract class VehicleAi : Ai
     /// <summary>
     /// How much damage ramming deals
     /// </summary>
-    [SerializeField] public float DamageMultiplier = 1.0f;
+    [SerializeField] public float damageMultiplier = 1.0f;
 
     [SerializeField] public GameObject itemDrop;
 
@@ -23,7 +23,7 @@ public abstract class VehicleAi : Ai
     /// <summary>
     /// This object appears and disappears when the target is preparing to attack
     /// </summary>
-    [SerializeField] GameObject AttackTelegraph;
+    [SerializeField] GameObject attackTelegraph;
 
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
@@ -51,12 +51,12 @@ public abstract class VehicleAi : Ai
 
     public override void HandleInRangeEnter()
     {
-        AttackTelegraph.SetActive(true);
+        attackTelegraph.SetActive(true);
     }
 
     public override void HandleInRangeExit()
     {
-        AttackTelegraph.SetActive(false);
+        attackTelegraph.SetActive(false);
     }
 
     public override void HandleInPoolExit()
@@ -92,7 +92,7 @@ public abstract class VehicleAi : Ai
 
             Debug.DrawLine(transform.position, transform.position + vehicleController.carVelocity);
             //Damage player bike based on difference in velocity * multiplier
-            playerHealth.TakeDamage(DamageMultiplier *
+            playerHealth.TakeDamage(damageMultiplier *
                 (vehicleController.carVelocity - playerMovement.Velocity).magnitude);
 
             //bikeRB.AddTorque(Vector3.up * Random.Range(-MAX_RANDOM_TORQUE, MAX_RANDOM_TORQUE), ForceMode.Impulse);
@@ -154,7 +154,7 @@ public abstract class VehicleAi : Ai
 
     public override void Wander(Vector3 wanderDirection, float fixedDeltaTime)
     {
-        // throw new NotImplementedException();
+
     }
 
     public override void Separate(ArrayList pool, float fixedDeltaTime)
@@ -195,7 +195,7 @@ public abstract class VehicleAi : Ai
 
     public override void Group(ArrayList pool, float fixedDeltaTime)
     {
-        // throw new NotImplementedException();
+
     }
     #endregion
 }

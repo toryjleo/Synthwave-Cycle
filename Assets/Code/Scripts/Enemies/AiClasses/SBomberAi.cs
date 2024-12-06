@@ -12,7 +12,6 @@ public class SBomberAi : VehicleAi
 
     private float timer = 0f;
     private bool timerCountdown = false;
-    private float maxTime = 3f;
 
     public override void Initialize()
     {
@@ -26,7 +25,7 @@ public class SBomberAi : VehicleAi
         if (timerCountdown && !stateController.isDead)
         {
             timer += fixedDeltaTime;
-            if (timer >= maxTime)
+            if (timer >= stats.TimeToDie)
             {
                 addDlScore = false;
                 health.Kill();
