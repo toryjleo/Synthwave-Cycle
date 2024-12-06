@@ -6164,7 +6164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2f6e5298bf0dc439dcf1954e702cf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitPoints: 0
+  hitPoints: 0
 --- !u!114 &613234458188402560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6181,15 +6181,14 @@ MonoBehaviour:
   target: {fileID: 0}
   rb: {fileID: 2279930514937360765}
   myGuns: []
-  hp: {fileID: 3840444340308158616}
+  health: {fileID: 0}
   inWorld: 0
   vehicleController: {fileID: 2279930514937360766}
-  DamageMultiplier: 1
-  RamModifier: 0.2
+  damageMultiplier: 1
   itemDrop: {fileID: 2157447271029124370, guid: f07931c8c60cd724e8844ab074e56069, type: 3}
   movementTargetPosition: {fileID: 6796091550952333636}
+  attackTelegraph: {fileID: 6633049976547049146}
   ExplosionDamage: 50
-  AttackTelegraph: {fileID: 6633049976547049146}
 --- !u!1 &2279930514973692283
 GameObject:
   m_ObjectHideFlags: 0
