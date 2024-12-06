@@ -40,7 +40,6 @@ public class SBomberAi : VehicleAi
     public override void Attack()
     {
         PlayerMovement pm = FindObjectOfType<PlayerMovement>();
-        Debug.Log("S Bomber attacking!!!");
 
         vehicleController.enabled = false;
 

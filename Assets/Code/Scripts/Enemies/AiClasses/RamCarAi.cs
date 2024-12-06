@@ -16,8 +16,6 @@ public class RamCarAi : VehicleAi
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
         base.ManualUpdate(enemies, wanderDirection, fixedDeltaTime);
-        //Figure out where to moved based on the child class movement pattern
-        // UpdateMovementLocation();
         if (stateController.isAttacking)
         {
             Attack();
@@ -32,7 +30,6 @@ public class RamCarAi : VehicleAi
         }
         else if (collision.gameObject.tag == "Enemy")
         {
-            // movementTargetPosition.transform.position = GetChaseLocation();
             stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
         }
         base.OnCollisionEnter(collision);

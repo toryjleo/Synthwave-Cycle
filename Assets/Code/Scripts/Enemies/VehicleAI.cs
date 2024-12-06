@@ -11,14 +11,18 @@ public abstract class VehicleAi : Ai
 {
     public ArcadeAiVehicleController vehicleController;
 
-    //How much damage ramming deals
+    /// <summary>
+    /// How much damage ramming deals
+    /// </summary>
     [SerializeField] public float DamageMultiplier = 1.0f;
 
     [SerializeField] public GameObject itemDrop;
 
     [SerializeField] public GameObject movementTargetPosition;
 
-    //This object appears and disappears when the target is preparing to attack
+    /// <summary>
+    /// This object appears and disappears when the target is preparing to attack
+    /// </summary>
     [SerializeField] GameObject AttackTelegraph;
 
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
@@ -63,15 +67,12 @@ public abstract class VehicleAi : Ai
 
     public override void HandleAttackingEnter()
     {
-        //stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
         Attack();
     }
 
     public override void Attack()
     {
-        Debug.Log("Vehicle attacking!!!");
-        //RamCar just drives directly into the player (if targeted)
-        // SetTarget(playerHealth.gameObject);
+        //Vehicle just drives directly into the player
         CalculateAttackMovement();
     }
 
@@ -115,6 +116,10 @@ public abstract class VehicleAi : Ai
 
     #region MOVEMENT
     //All vehicles have a target, but some vehicles interact with their targets in different ways
+
+    /// <summary>
+    /// Tells the vehicle to follow at a distance from the target
+    /// </summary>
     protected void UpdateMovementLocation()
     {
         if (target != null)
@@ -124,12 +129,19 @@ public abstract class VehicleAi : Ai
         }
     }
 
+    /// <summary>
+    /// Calculates a position through the target so the vehicle will drive straight through it to ram
+    /// </summary>
     protected void CalculateAttackMovement()
     {
         Vector3 direction = (target.transform.position - transform.position).normalized;
         movementTargetPosition.transform.position = (20 * direction) + target.transform.position;
     }
 
+    /// <summary>
+    /// Calculates the position at a ChaseRange distance between the vehicle and the target
+    /// </summary>
+    /// <returns>Position to chase for a vehicle</returns>
     protected Vector3 GetChaseLocation()
     {
         return stats.ChaseRange * Vector3.Normalize(transform.position - target.transform.position) + target.transform.position;

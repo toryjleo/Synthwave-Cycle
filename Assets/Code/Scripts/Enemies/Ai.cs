@@ -250,7 +250,6 @@ public abstract class Ai : Poolable
 
     public void HpAtZero()
     {
-        Debug.Log("AI is DEAD!!");
         stateController.HandleTrigger(AIState.StateTrigger.AiKilled);
     }
     #endregion
