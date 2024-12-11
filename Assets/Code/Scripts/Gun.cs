@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Mathematics;
 using Generic;
+using EditorObject;
 
 namespace Gun
 {
@@ -147,6 +148,11 @@ namespace Gun
         public bool IsAutomatic
         {
             get => gunStats.IsAutomatic;
+        }
+        
+        public bool AtMaxAmmo 
+        {
+            get => ((ammoCount == MaxAmmo) || IsInfiniteAmmo);
         }
 
         #region Ammo Props for UI
@@ -370,6 +376,17 @@ namespace Gun
                 stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
                 onAmmoChange?.Invoke(this);
             }
+        }
+
+        /// <summary>
+        /// Sets the ammo to this gun
+        /// </summary>
+        /// <param name="amount">Value to set the ammo to</param>
+        public void SetMaxAmmo()
+        {
+            ammoCount = MaxAmmo;
+            stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
+            onAmmoChange?.Invoke(this);
         }
 
         #region Frame Update
@@ -609,5 +626,10 @@ namespace Gun
         }
         #endregion
 
+
+        public bool IsGun(GunStats other) 
+        {
+            return other == gunStats;
+        }
     }
 }
