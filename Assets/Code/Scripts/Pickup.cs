@@ -104,7 +104,7 @@ public class Pickup : Poolable
     private Color AssignRandomGun() 
     {
         DefinedGun[] allGuns = arsenal.AllUnlockableGuns;
-        int idx = 1; //TODO: uncomment Random.Range(0, allGuns.Length);
+        int idx = Random.Range(0, allGuns.Length);
         DefinedGun gunToAssign = allGuns[idx];
         gun = gunToAssign.stats;
         return gunToAssign.barrelColor;

@@ -364,7 +364,6 @@ public class Arsenal : MonoBehaviour, IResettable
                 // Gun is not equipped and we found its index
                 if (HasOpenSlot) 
                 {
-                    // TODO: set currentEquippedSlot at game start, after data loaded in
                     if (currentEquippedSlot != -1 && equippedGunSlots[currentEquippedSlot] == -1) 
                     {
                         // Equip gun in currentEquippedSlot
@@ -394,6 +393,7 @@ public class Arsenal : MonoBehaviour, IResettable
                     else if (Input.GetKey(KeyCode.Space))
                     {
                         // Equip gun in currentEquippedSlot
+                        CurrentGun.gameObject.SetActive(false);
                         EquipAtIndex(currentEquippedSlot, idxInGunList);
                         return true;
                     }
