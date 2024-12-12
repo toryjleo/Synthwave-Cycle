@@ -57,9 +57,19 @@ namespace Gun
         /// Adds ammo to the ammo count
         /// </summary>
         /// <param name="amount">Amount of ammo to add</param>
-        public void AddAmmo(int amount)
+        public int AddAmmo(int amount)
         {
-            ammoCount = Mathf.Clamp(ammoCount + amount, 0, MaxAmmo);
+            int newCount = ammoCount + amount;
+            if (newCount > MaxAmmo) 
+            {
+                ammoCount = MaxAmmo;
+                return newCount - MaxAmmo;
+            }
+            else 
+            {
+                ammoCount = newCount;
+                return 0;
+            }
         }
 
         /// <summary>
@@ -428,11 +438,12 @@ namespace Gun
         /// Adds ammo to the ammo count
         /// </summary>
         /// <param name="amount">Amount of ammo to add</param>
-        public void AddAmmo(int amount)
+        public int AddAmmo(int amount)
         {
-            ammoCount.AddAmmo(amount);
+            int overflow = ammoCount.AddAmmo(amount);
             stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
             onAmmoChange?.Invoke(this);
+            return overflow;
         }
 
         /// <summary>

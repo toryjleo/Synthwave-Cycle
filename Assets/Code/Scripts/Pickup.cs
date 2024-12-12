@@ -1,5 +1,6 @@
 using EditorObject;
 using Generic;
+using Gun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +29,7 @@ public class Pickup : Poolable
     Renderer renderer = null;
     GunStats gun = null;
 
-    private int ammoCount = 0;
+    [SerializeField] private AmmoCount ammoCount = null;
 
     private void Start()
     {
@@ -96,9 +97,14 @@ public class Pickup : Poolable
         Arsenal arsenal = other.gameObject.GetComponentInChildren<Arsenal>();
         if (arsenal && other.tag == "Player") 
         {
-            if (arsenal.EquipGun(gun)) 
+            int bulletsLeft = arsenal.EquipGun(gun, ammoCount.Count);
+            if (bulletsLeft <= 0) 
             {
                 DespawnPickup();
+            }
+            else 
+            {
+                ammoCount.SetAmmo(bulletsLeft);
             }
         }
     }
@@ -106,9 +112,10 @@ public class Pickup : Poolable
     private Color AssignRandomGun() 
     {
         DefinedGun[] allGuns = arsenal.AllUnlockableGuns;
-        int idx = Random.Range(0, allGuns.Length);
+        int idx = 0; // Random.Range(0, allGuns.Length);
         DefinedGun gunToAssign = allGuns[idx];
         gun = gunToAssign.stats;
+        ammoCount = new AmmoCount(gun);
         return gunToAssign.barrelColor;
     }
 

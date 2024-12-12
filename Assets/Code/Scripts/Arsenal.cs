@@ -312,7 +312,8 @@ public class Arsenal : MonoBehaviour, IResettable
         }
     }
 
-    public bool EquipGun(GunStats stats) 
+    // return: the overflow of the ammo
+    public int EquipGun(GunStats stats, int ammoToUse) 
     {
         int idxInGunList = -1;
 
@@ -334,12 +335,11 @@ public class Arsenal : MonoBehaviour, IResettable
 
             if (gunToAddAmmo.AtMaxAmmo) 
             {
-                return false;
+                return ammoToUse;
             }
             else 
             {
-                gunToAddAmmo.SetMaxAmmo();
-                return true;
+                return gunToAddAmmo.AddAmmo(ammoToUse);
             }
         }
         else 
@@ -357,7 +357,7 @@ public class Arsenal : MonoBehaviour, IResettable
             if (idxInGunList >= gunList.Length)
             {
                 Debug.LogError("Trying to find a gun not in the list");
-                return false;
+                return ammoToUse;
             }
             else 
             {
@@ -381,25 +381,25 @@ public class Arsenal : MonoBehaviour, IResettable
                             }
                         }
                     }
-                    return true;
+                    return 0;
                 }
                 else 
                 {
                     if (currentEquippedSlot == -1) 
                     {
                         Debug.LogError("Player is using an unusable gun slot and trying to equip");
-                        return false;
+                        return ammoToUse;
                     }
                     else if (Input.GetKey(KeyCode.Space))
                     {
                         // Equip gun in currentEquippedSlot
                         CurrentGun.gameObject.SetActive(false);
                         EquipAtIndex(currentEquippedSlot, idxInGunList);
-                        return true;
+                        return 0;
                     }
                     else 
                     {
-                        return false;
+                        return ammoToUse;
                     }
                 }
 
