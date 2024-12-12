@@ -3,6 +3,7 @@ using Generic;
 using Gun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 
@@ -81,7 +82,7 @@ public class Pickup : Poolable
     /// </summary>
     public override void Reset()
     {
-        Color color = AssignRandomGun();
+        UnityEngine.Color color = AssignRandomGun();
 
         if (renderer)
         {
@@ -109,10 +110,10 @@ public class Pickup : Poolable
         }
     }
 
-    private Color AssignRandomGun() 
+    private UnityEngine.Color AssignRandomGun() 
     {
         DefinedGun[] allGuns = arsenal.AllUnlockableGuns;
-        int idx = 0; // Random.Range(0, allGuns.Length);
+        int idx = Random.Range(0, allGuns.Length);
         DefinedGun gunToAssign = allGuns[idx];
         gun = gunToAssign.stats;
         ammoCount = new AmmoCount(gun);
@@ -122,7 +123,12 @@ public class Pickup : Poolable
     private void DespawnPickup() 
     {
         gameObject.SetActive(false);
-        //TODO: Set gun barrel to white
-        //TODO: Set gun to null
+        gun = null;
+        if (renderer)
+        {
+            Material material = new Material(renderer.material);
+            material.color = UnityEngine.Color.grey;
+            renderer.material = material;
+        }
     }
 }
