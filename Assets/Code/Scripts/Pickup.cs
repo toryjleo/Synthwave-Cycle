@@ -112,7 +112,7 @@ public class Pickup : Poolable
     private UnityEngine.Color AssignRandomGun() 
     {
         DefinedGun[] allGuns = arsenal.AllUnlockableGuns;
-        int idx = 0;//Random.Range(0, allGuns.Length);
+        int idx = Random.Range(0, allGuns.Length);
         DefinedGun gunToAssign = allGuns[idx];
         gun = gunToAssign.stats;
         ammoCount = new AmmoCount(gun);
