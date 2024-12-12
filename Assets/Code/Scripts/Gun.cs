@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.Mathematics;
 using Generic;
 using EditorObject;
+using System;
 
 namespace Gun
 {
@@ -17,6 +18,76 @@ namespace Gun
     /// </summary>
     /// <param name="position"></param>
     public delegate void BulletHitHandler(Vector3 position);
+
+    [Serializable]
+    public class AmmoCount 
+    {
+        [SerializeField] private bool infiniteAmmo = false;
+        [SerializeField] private int maxAmmo = 0;
+        [SerializeField] private int ammoCount = 0;
+
+        public int MaxAmmo
+        {
+            get { return maxAmmo; }
+        }
+
+        public bool AtMaxAmmo
+        {
+            get => ((ammoCount == MaxAmmo) || IsInfiniteAmmo);
+        }
+
+        public bool IsInfiniteAmmo
+        {
+            get { return infiniteAmmo; }
+        }
+
+        public int Count 
+        {
+            get => ammoCount;
+        }
+
+        public AmmoCount(EditorObject.GunStats gunStats) 
+        {
+            infiniteAmmo = gunStats.InfiniteAmmo;
+            maxAmmo = gunStats.AmmoCount;
+            ammoCount = gunStats.AmmoCount;
+        }
+
+        /// <summary>
+        /// Adds ammo to the ammo count
+        /// </summary>
+        /// <param name="amount">Amount of ammo to add</param>
+        public void AddAmmo(int amount)
+        {
+            ammoCount = Mathf.Clamp(ammoCount + amount, 0, MaxAmmo);
+        }
+
+        /// <summary>
+        /// Reduces ammo by 1. Will trigger OutOfAmmo when ammoCount hits zero
+        /// </summary>
+        public void ReduceAmmo()
+        {
+            ammoCount = infiniteAmmo ? ammoCount : ammoCount - 1;
+        }
+
+        /// <summary>
+        /// Sets the ammo to this gun
+        /// </summary>
+        /// <param name="amount">Value to set the ammo to</param>
+        public void SetAmmo(int amount)
+        {
+            ammoCount = Mathf.Clamp(amount, 0, MaxAmmo);
+        }
+
+        /// <summary>
+        /// Sets the ammo to this gun
+        /// </summary>
+        /// <param name="amount">Value to set the ammo to</param>
+        public void SetMaxAmmo()
+        {
+            ammoCount = MaxAmmo;
+        }
+    }
 
     /// <summary>
     /// Class that implements all gun behavior
@@ -95,10 +166,6 @@ namespace Gun
         /// </summary>
         private float nextTimeToFire = 0.0f;
         /// <summary>
-        /// Number of times this gun can fire
-        /// </summary>
-        [SerializeField] private int ammoCount = 0;
-        /// <summary>
         /// Amount of time until the next burst shot triggers
         /// </summary>
         private float nextTimeToFireBurst = 0.0f;
@@ -114,6 +181,8 @@ namespace Gun
         /// Used by GunTester to automatically fire this gun
         /// </summary>
         private bool externalFire = false;
+
+        [SerializeField] private AmmoCount ammoCount = null;
 
         /// <summary>
         /// Triggered when this gun runs out of ammo
@@ -149,10 +218,10 @@ namespace Gun
         {
             get => gunStats.IsAutomatic;
         }
-        
+
         public bool AtMaxAmmo 
         {
-            get => ((ammoCount == MaxAmmo) || IsInfiniteAmmo);
+            get => ammoCount.AtMaxAmmo;
         }
 
         #region Ammo Props for UI
@@ -162,20 +231,22 @@ namespace Gun
         {
             get { return stateController; }
         }
-        public bool IsInfiniteAmmo
-        {
-            get { return gunStats.InfiniteAmmo; }
-        }
-
-        public int MaxAmmo
-        {
-            get { return gunStats.AmmoCount; }
-        }
 
         public int AmmoCount
         {
-            get { return ammoCount; }
+            get { return ammoCount == null ? 0 : ammoCount.Count; }
         }
+
+        public bool IsInfiniteAmmo 
+        {
+            get => ammoCount.IsInfiniteAmmo;
+        }
+
+        public int MaxAmmo 
+        {
+            get => ammoCount.MaxAmmo;
+        }
+
         #endregion
 
         #region Overheat Props for UI
@@ -242,7 +313,7 @@ namespace Gun
         /// </summary>
         public void Reset()
         {
-            ammoCount = gunStats.AmmoCount;
+            ammoCount = new AmmoCount(gunStats);
             nextTimeToFireBurst = 0.0f;
             overHeatPercent = 0.0f;
             
@@ -359,8 +430,22 @@ namespace Gun
         /// <param name="amount">Amount of ammo to add</param>
         public void AddAmmo(int amount)
         {
-            ammoCount = Mathf.Clamp(ammoCount + amount, 0, gunStats.AmmoCount);
+            ammoCount.AddAmmo(amount);
             stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
+            onAmmoChange?.Invoke(this);
+        }
+
+        /// <summary>
+        /// Reduces ammo by 1. Will trigger OutOfAmmo when ammoCount hits zero
+        /// </summary>
+        private void ReduceAmmo()
+        {
+            ammoCount.ReduceAmmo();
+            if (ammoCount.Count <= 0)
+            {
+                // This must be called before OverHeated trigger
+                stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
+            }
             onAmmoChange?.Invoke(this);
         }
 
@@ -370,8 +455,8 @@ namespace Gun
         /// <param name="amount">Value to set the ammo to</param>
         public void SetAmmo(int amount) 
         {
-            ammoCount = Mathf.Clamp(amount, 0, gunStats.AmmoCount);
-            if (ammoCount > 0) 
+            ammoCount.SetAmmo(amount);
+            if (ammoCount.Count > 0) 
             {
                 stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
                 onAmmoChange?.Invoke(this);
@@ -384,7 +469,7 @@ namespace Gun
         /// <param name="amount">Value to set the ammo to</param>
         public void SetMaxAmmo()
         {
-            ammoCount = MaxAmmo;
+            ammoCount.SetMaxAmmo();
             stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
             onAmmoChange?.Invoke(this);
         }
@@ -498,20 +583,6 @@ namespace Gun
             AreaOfEffect bullet = areaOfEffectPool.SpawnFromPool() as AreaOfEffect;
 
             bullet.Shoot(BulletSpawn.transform.position, direction, player ? player.Velocity : Vector3.zero);
-        }
-
-        /// <summary>
-        /// Reduces ammo by 1. Will trigger OutOfAmmo when ammoCount hits zero
-        /// </summary>
-        private void ReduceAmmo()
-        {
-            ammoCount = gunStats.InfiniteAmmo ? ammoCount : ammoCount - 1;
-            if (ammoCount == 0)
-            {
-                // This must be called before OverHeated trigger
-                stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
-            }
-            onAmmoChange?.Invoke(this);
         }
 
 

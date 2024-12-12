@@ -338,7 +338,7 @@ public class Arsenal : MonoBehaviour, IResettable
             }
             else 
             {
-                gunToAddAmmo.SetAmmo(gunToAddAmmo.MaxAmmo);
+                gunToAddAmmo.SetMaxAmmo();
                 return true;
             }
         }

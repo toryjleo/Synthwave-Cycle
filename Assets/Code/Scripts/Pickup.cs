@@ -28,6 +28,8 @@ public class Pickup : Poolable
     Renderer renderer = null;
     GunStats gun = null;
 
+    private int ammoCount = 0;
+
     private void Start()
     {
         TestSceneInit();
