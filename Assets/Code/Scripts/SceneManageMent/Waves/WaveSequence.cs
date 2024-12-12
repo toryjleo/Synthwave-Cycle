@@ -18,7 +18,7 @@ namespace EditorObject
         private int previousWave = -1;
         private int currentWave = 0;
         [SerializeField] private List<Wave> sequence;
-        internal SquadSpawner spawner;
+        internal EnemyManager spawner;
         [SerializeField] private string songName;
         [SerializeField] private Sprite radioFace;
         [SerializeField] private bool debugWaveInfo = false;
@@ -117,10 +117,10 @@ namespace EditorObject
             if (debugWaveInfo) Debug.Log("CURRENT WAVE after update:" + currentWave);
         }
 
-        internal void Init(SquadSpawner squadSpawner)
+        internal void Init(EnemyManager enemyManager)
         {
             hasAlreadyPlayedRadioClip = false;
-            spawner = squadSpawner;
+            spawner = enemyManager;
             currentWave = 0;
             previousWave = -1;
 
