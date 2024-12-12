@@ -98,7 +98,7 @@ public class Pickup : Poolable
         Arsenal arsenal = other.gameObject.GetComponentInChildren<Arsenal>();
         if (arsenal && other.tag == "Player") 
         {
-            int bulletsLeft = arsenal.EquipGun(gun, ammoCount.Count);
+            int bulletsLeft = arsenal.ConsumePickup(gun, ammoCount.Count);
             if (bulletsLeft <= 0) 
             {
                 DespawnPickup();

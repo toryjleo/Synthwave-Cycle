@@ -38,6 +38,8 @@ public class Arsenal : MonoBehaviour, IResettable
     private int currentEquippedSlot = -1;
     #endregion
 
+    #region Properties
+
     /// <summary>
     /// Returns a reference to the Gun component of the player's currently held gun or null
     /// </summary>
@@ -55,6 +57,9 @@ public class Arsenal : MonoBehaviour, IResettable
         } 
     }
 
+    /// <summary>
+    /// True if the arsenal has an open slot
+    /// </summary>
     private bool HasOpenSlot 
     {
         get 
@@ -77,6 +82,8 @@ public class Arsenal : MonoBehaviour, IResettable
         }
     }
 
+    #endregion
+
     private void Start()
     {
         TestSceneInit();
@@ -88,6 +95,7 @@ public class Arsenal : MonoBehaviour, IResettable
         GatherPlayerInput();
     }
 
+    #region Initialization
 
     /// <summary>
     /// Initialize this Arsenal
@@ -160,6 +168,27 @@ public class Arsenal : MonoBehaviour, IResettable
 
     }
 
+    /// <summary>
+    /// Sets each equipped gun's ammo to the amount specified in SaveData
+    /// </summary>
+    private void SetGunAmmoToSaveData()
+    {
+        Assert.IsTrue(equippedGunSlots.Length == savedData.EquippedGuns.Length, "Number of gun slots in save data and in arsenal are different");
+
+        for (int i = 0; i < equippedGunSlots.Length; i++)
+        {
+            int gunIdx = equippedGunSlots[i];
+            int ammoCount = savedData.EquippedGuns[i].ammoCount;
+
+            if (gunIdx != -1 && ammoCount != -1)
+            {
+                gunList[gunIdx].SetAmmo(ammoCount);
+            }
+        }
+    }
+
+    #endregion
+
     #region Input
 
     /// <summary>
@@ -210,6 +239,8 @@ public class Arsenal : MonoBehaviour, IResettable
 
     #endregion
 
+    #region Slot Management
+
     /// <summary>
     /// Equips gun at the desired slot
     /// </summary>
@@ -239,11 +270,120 @@ public class Arsenal : MonoBehaviour, IResettable
     }
 
     /// <summary>
-    /// Triggers logic that should happen on level complete
+    /// Equips a specified gun at a specific gun slot
     /// </summary>
-    public void LevelComplete() 
+    /// <param name="slotIndex">Gun slot to equip to</param>
+    /// <param name="gunListIndex">Index in the gunList of the gun to equip</param>
+    private void EquipGunInSlot(int slotIndex, int gunListIndex)
     {
-        savedData.UpdateSaveData(gunList, equippedGunSlots, currentEquippedSlot);
+        bool needToSwap = (slotIndex == currentEquippedSlot);
+        equippedGunSlots[slotIndex] = gunListIndex;
+        gunList[gunListIndex].SetMaxAmmo();
+
+        if (needToSwap)
+        {
+            SwapToSlot(slotIndex);
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="stats">The gun type of the pickup</param>
+    /// <param name="ammoToUse">The amount of ammo the pickup contains</param>
+    /// <returns>The number of remaining bullets after using the pickup</returns>
+    public int ConsumePickup(GunStats stats, int ammoToUse)
+    {
+        int idxInGunList = -1;
+
+        // Find if gun is equipped
+        for (int i = 0; i < equippedGunSlots.Length; i++)
+        {
+            if (equippedGunSlots[i] != -1 && gunList[equippedGunSlots[i]].IsGun(stats))
+            {
+                // Found gun and it is equipped
+                idxInGunList = equippedGunSlots[i];
+                break;
+            }
+        }
+
+        if (idxInGunList != -1)
+        {
+            // Gun is equipped and we found its index
+            Gun.Gun gunToAddAmmo = gunList[idxInGunList];
+
+            if (gunToAddAmmo.AtMaxAmmo)
+            {
+                return ammoToUse;
+            }
+            else
+            {
+                return gunToAddAmmo.AddAmmo(ammoToUse);
+            }
+        }
+        else
+        {
+            // Find the index in gunList
+
+            for (idxInGunList = 0; idxInGunList < gunList.Length; idxInGunList++)
+            {
+                if (gunList[idxInGunList].IsGun(stats))
+                {
+                    break;
+                }
+            }
+
+            if (idxInGunList >= gunList.Length)
+            {
+                Debug.LogError("Trying to find a gun not in the list");
+                return ammoToUse;
+            }
+            else
+            {
+                // Gun is not equipped and we found its index
+                if (HasOpenSlot)
+                {
+                    if (currentEquippedSlot != -1 && equippedGunSlots[currentEquippedSlot] == -1)
+                    {
+                        // Equip gun in currentEquippedSlot
+                        EquipGunInSlot(currentEquippedSlot, idxInGunList);
+                    }
+                    else
+                    {
+                        // Equip in first open slot
+                        for (int i = 0; i < equippedGunSlots.Length; i++)
+                        {
+                            if (equippedGunSlots[i] == -1)
+                            {
+                                EquipGunInSlot(i, idxInGunList);
+                                break;
+                            }
+                        }
+                    }
+                    return 0;
+                }
+                else
+                {
+                    if (currentEquippedSlot == -1)
+                    {
+                        Debug.LogError("Player is using an unusable gun slot and trying to equip");
+                        return ammoToUse;
+                    }
+                    else if (Input.GetKey(KeyCode.Space))
+                    {
+                        // Equip gun in currentEquippedSlot
+                        CurrentGun?.gameObject.SetActive(false);
+                        EquipGunInSlot(currentEquippedSlot, idxInGunList);
+                        return 0;
+                    }
+                    else
+                    {
+                        return ammoToUse;
+                    }
+                }
+
+            }
+        }
     }
 
     /// <summary>
@@ -257,23 +397,14 @@ public class Arsenal : MonoBehaviour, IResettable
         }
     }
 
+    #endregion
+
     /// <summary>
-    /// Sets each equipped gun's ammo to the amount specified in SaveData
+    /// Triggers logic that should happen on level complete
     /// </summary>
-    private void SetGunAmmoToSaveData() 
+    public void LevelComplete() 
     {
-        Assert.IsTrue(equippedGunSlots.Length == savedData.EquippedGuns.Length, "Number of gun slots in save data and in arsenal are different");
-
-        for (int i = 0; i < equippedGunSlots.Length; i++) 
-        {
-            int gunIdx = equippedGunSlots[i];
-            int ammoCount = savedData.EquippedGuns[i].ammoCount;
-
-            if (gunIdx != -1 && ammoCount != -1) 
-            {
-                gunList[gunIdx].SetAmmo(ammoCount);
-            }
-        }
+        savedData.UpdateSaveData(gunList, equippedGunSlots, currentEquippedSlot);
     }
 
     /// <summary>
@@ -292,113 +423,6 @@ public class Arsenal : MonoBehaviour, IResettable
                 equippedGunSlots[i] = -1;
                 gunList[equippedGunIdx].gameObject.SetActive(false);
                 break;
-            }
-        }
-    }
-
-    private void EquipAtIndex(int slotIndex, int gunListIndex) 
-    {
-        bool needToSwap = (slotIndex == currentEquippedSlot);
-        equippedGunSlots[slotIndex] = gunListIndex;
-        gunList[gunListIndex].SetMaxAmmo();
-
-        if (needToSwap) 
-        {
-            SwapToSlot(slotIndex);
-        }
-    }
-
-    // return: the overflow of the ammo
-    public int EquipGun(GunStats stats, int ammoToUse) 
-    {
-        int idxInGunList = -1;
-
-        // Find if gun is equipped
-        for (int i = 0; i < equippedGunSlots.Length; i++) 
-        {
-            if (equippedGunSlots[i] != -1 && gunList[equippedGunSlots[i]].IsGun(stats))
-            {
-                // Found gun and it is equipped
-                idxInGunList = equippedGunSlots[i];
-                break;
-            }
-        }
-
-        if (idxInGunList != -1) 
-        {
-            // Gun is equipped and we found its index
-            Gun.Gun gunToAddAmmo = gunList[idxInGunList];
-
-            if (gunToAddAmmo.AtMaxAmmo) 
-            {
-                return ammoToUse;
-            }
-            else 
-            {
-                return gunToAddAmmo.AddAmmo(ammoToUse);
-            }
-        }
-        else 
-        {
-            // Find the index in gunList
-
-            for (idxInGunList = 0; idxInGunList < gunList.Length; idxInGunList++)
-            {
-                if (gunList[idxInGunList].IsGun(stats))
-                {
-                    break;
-                }
-            }
-
-            if (idxInGunList >= gunList.Length)
-            {
-                Debug.LogError("Trying to find a gun not in the list");
-                return ammoToUse;
-            }
-            else 
-            {
-                // Gun is not equipped and we found its index
-                if (HasOpenSlot) 
-                {
-                    if (currentEquippedSlot != -1 && equippedGunSlots[currentEquippedSlot] == -1) 
-                    {
-                        // Equip gun in currentEquippedSlot
-                        EquipAtIndex(currentEquippedSlot, idxInGunList);
-                    }
-                    else 
-                    {
-                        // Equip in first open slot
-                        for (int i = 0; i < equippedGunSlots.Length; i++) 
-                        {
-                            if (equippedGunSlots[i] == -1) 
-                            {
-                                EquipAtIndex(i, idxInGunList);
-                                break;
-                            }
-                        }
-                    }
-                    return 0;
-                }
-                else 
-                {
-                    if (currentEquippedSlot == -1) 
-                    {
-                        Debug.LogError("Player is using an unusable gun slot and trying to equip");
-                        return ammoToUse;
-                    }
-                    else if (Input.GetKey(KeyCode.Space))
-                    {
-                        // Equip gun in currentEquippedSlot
-                        CurrentGun?.gameObject.SetActive(false);
-                        EquipAtIndex(currentEquippedSlot, idxInGunList);
-                        return 0;
-                    }
-                    else 
-                    {
-                        return ammoToUse;
-                    }
-                }
-
             }
         }
     }
