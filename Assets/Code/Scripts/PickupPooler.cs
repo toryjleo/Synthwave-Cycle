@@ -19,7 +19,7 @@ public class PickupPooler : MonoBehaviour, IResettable
     /// <summary>
     /// Pool this object is wrapping
     /// </summary>
-    Generic.ObjectPool pool = null;
+    static Generic.ObjectPool pool = null;
 
     /// <summary>
     /// Prefab to pool
@@ -34,7 +34,7 @@ public class PickupPooler : MonoBehaviour, IResettable
 
     private void Awake()
     {
-        if (instance == null && GameStateController.CanRunGameplay)
+        if (instance == null)
         {
             Init(this.testArsenal);
         }
@@ -42,12 +42,14 @@ public class PickupPooler : MonoBehaviour, IResettable
 
     public void Init(EditorObject.Arsenal arsenal)
     {
-        if (Instance != null)
+        if (instance != null && instance != this)
         {
-            Debug.LogError("Multiple instances of PickupPooler. Destroying this one: " + this.name);
             Destroy(this.gameObject);
         }
-        Instance = this;
+        else 
+        {
+            instance = this;
+        }
 
         if (arsenal == null) 
         {
@@ -74,9 +76,16 @@ public class PickupPooler : MonoBehaviour, IResettable
         }
     }
 
-    public void SpawnAtLocation(Vector3 location) 
+    public static void SpawnAtLocation(Vector3 location) 
     {
-        Pickup pickup = pool.SpawnFromPool() as Pickup;
-        pickup.transform.position = location;
+        if (pool == null)
+        {
+            Debug.LogWarning("Attempting to spawn a pickup with uninitialized pool");
+        }
+        else 
+        {
+            Pickup pickup = pool.SpawnFromPool() as Pickup;
+            pickup.transform.position = location;
+        }
     }
 }

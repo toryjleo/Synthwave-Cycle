@@ -91,12 +91,11 @@ public class HealthPool : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Hit " + other.name);
         if (other.tag == "Player")
         {
             PlayerHealth playerHealthRef = other.GetComponentInChildren<PlayerHealth>();
             playerHealthRef.HealFromHealthPool();
-            PickupPooler.Instance.SpawnAtLocation(transform.position);
+            PickupPooler.SpawnAtLocation(transform.position);
             onDespawnConditionMet?.Invoke();
         }
     }

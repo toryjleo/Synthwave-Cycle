@@ -12,7 +12,7 @@ using static UnityEngine.ParticleSystem;
 /// </summary>
 public class ImpactManager : MonoBehaviour
 {
-
+    //TODO: Get following PickupPooler Singleton model
     #region Instancing
     private static ImpactManager instance;
     public static ImpactManager Instance { get { return instance; } private set { instance = value; } }
