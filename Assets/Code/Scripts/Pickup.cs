@@ -92,18 +92,17 @@ public class Pickup : Poolable
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-
         Arsenal arsenal = other.gameObject.GetComponentInChildren<Arsenal>();
-        if (arsenal && other.tag == "Player") 
+        if (arsenal && other.tag == "Player")
         {
             int bulletsLeft = arsenal.ConsumePickup(gun, ammoCount.Count);
-            if (bulletsLeft <= 0) 
+            if (bulletsLeft <= 0)
             {
                 DespawnPickup();
             }
-            else 
+            else
             {
                 ammoCount.SetAmmo(bulletsLeft);
             }
@@ -113,7 +112,7 @@ public class Pickup : Poolable
     private UnityEngine.Color AssignRandomGun() 
     {
         DefinedGun[] allGuns = arsenal.AllUnlockableGuns;
-        int idx = Random.Range(0, allGuns.Length);
+        int idx = 0;//Random.Range(0, allGuns.Length);
         DefinedGun gunToAssign = allGuns[idx];
         gun = gunToAssign.stats;
         ammoCount = new AmmoCount(gun);
