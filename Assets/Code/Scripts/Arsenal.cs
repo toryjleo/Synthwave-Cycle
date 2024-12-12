@@ -23,11 +23,6 @@ public class Arsenal : MonoBehaviour, IResettable
     private Gun.Gun[] gunList = null;
 
     /// <summary>
-    /// Current gun the arsenal is shooting
-    /// </summary>
-    [SerializeField] private Gun.Gun selected;
-
-    /// <summary>
     /// Prefab used to generate the gunList
     /// </summary>
     [SerializeField] private Gun.Gun gunPrefab = null;
@@ -172,9 +167,9 @@ public class Arsenal : MonoBehaviour, IResettable
     /// </summary>
     private void GatherPlayerInput() 
     {
-        if (selected != null)
+        if (CurrentGun != null)
         {
-            selected.ExternalFire = CheckCanShootGun();
+            CurrentGun.ExternalFire = CheckCanShootGun();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1)) 
@@ -197,7 +192,7 @@ public class Arsenal : MonoBehaviour, IResettable
     /// <returns>True if the player can fire this frame</returns>
     private bool CheckCanShootGun()
     {
-        if (selected.IsAutomatic && Input.GetButton("Fire1"))
+        if (CurrentGun != null && CurrentGun.IsAutomatic && Input.GetButton("Fire1"))
         {
             // Automatic fire case
             return true;
@@ -221,11 +216,13 @@ public class Arsenal : MonoBehaviour, IResettable
     /// <param name="slot">Index of the equippedGunSlots to set the quipped gun</param>
     private void SwapToSlot(int slot) 
     {
-        // TODO: redo how this works
+        // Disable the gun that is out
         if (CurrentGun != null) 
         {
             CurrentGun.gameObject.SetActive(false);
         }
+
+        // Enable the new slot
         currentEquippedSlot = slot;
         SwapToSlot();
     }
@@ -238,7 +235,6 @@ public class Arsenal : MonoBehaviour, IResettable
         if (CurrentGun != null)
         {
             CurrentGun.gameObject.SetActive(true);
-            selected = CurrentGun;
         }
     }
 
@@ -393,7 +389,7 @@ public class Arsenal : MonoBehaviour, IResettable
                     else if (Input.GetKey(KeyCode.Space))
                     {
                         // Equip gun in currentEquippedSlot
-                        CurrentGun.gameObject.SetActive(false);
+                        CurrentGun?.gameObject.SetActive(false);
                         EquipAtIndex(currentEquippedSlot, idxInGunList);
                         return 0;
                     }
