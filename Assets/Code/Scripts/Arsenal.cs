@@ -299,7 +299,7 @@ public class Arsenal : MonoBehaviour, IResettable
         // Find if gun is equipped
         for (int i = 0; i < equippedGunSlots.Length; i++)
         {
-            if (equippedGunSlots[i] != -1 && gunList[equippedGunSlots[i]].IsGun(stats))
+            if (equippedGunSlots[i] != -1 && gunList[equippedGunSlots[i]].IsThisGun(stats))
             {
                 // Found gun and it is equipped
                 idxInGunList = equippedGunSlots[i];
@@ -327,7 +327,7 @@ public class Arsenal : MonoBehaviour, IResettable
 
             for (idxInGunList = 0; idxInGunList < gunList.Length; idxInGunList++)
             {
-                if (gunList[idxInGunList].IsGun(stats))
+                if (gunList[idxInGunList].IsThisGun(stats))
                 {
                     break;
                 }
