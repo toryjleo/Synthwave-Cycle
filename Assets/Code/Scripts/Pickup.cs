@@ -5,8 +5,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
+using UnityEngineInternal;
 
-
+/// <summary>
+/// Contains data needed to initialize a pickup
+/// </summary>
 public class PickupInstantiateData : IPoolableInstantiateData 
 {
     public PickupInstantiateData(EditorObject.Arsenal arsenal) 
@@ -19,7 +22,9 @@ public class PickupInstantiateData : IPoolableInstantiateData
     public EditorObject.Arsenal Arsenal { get { return arsenal; } }
 }
 
-
+/// <summary>
+/// A persistant world object that will represents a gun in-world
+/// </summary>
 public class Pickup : Poolable
 {
     /// <summary>
@@ -37,11 +42,23 @@ public class Pickup : Poolable
         TestSceneInit();
     }
 
+    #region Monobehavior
+
     // Update is called once per frame
     public override void Update()
     {
         base.Update();
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        Arsenal arsenal = other.gameObject.GetComponentInChildren<Arsenal>();
+        if (arsenal && other.tag == "Player")
+        {
+            this.AttemptToConsume(arsenal);
+        }
+    }
+    #endregion
 
     public override void Init(IPoolableInstantiateData stats)
     {
@@ -55,6 +72,9 @@ public class Pickup : Poolable
         }
     }
 
+    /// <summary>
+    /// Used to initialize a Pickup object that does not come from a pool
+    /// </summary>
     private void TestSceneInit()
     {
         // Can assume Init() not called if gun is null
@@ -92,23 +112,28 @@ public class Pickup : Poolable
         }
     }
 
-    private void OnTriggerStay(Collider other)
+
+    /// <summary>
+    /// Attempts to consume this pickup
+    /// </summary>
+    /// <param name="arsenal">The arsenal attempting to consume this pickup</param>
+    private void AttemptToConsume(Arsenal arsenal) 
     {
-        Arsenal arsenal = other.gameObject.GetComponentInChildren<Arsenal>();
-        if (arsenal && other.tag == "Player")
+        int bulletsLeft = arsenal.ConsumePickup(gun, ammoCount.Count);
+        if (bulletsLeft <= 0)
         {
-            int bulletsLeft = arsenal.ConsumePickup(gun, ammoCount.Count);
-            if (bulletsLeft <= 0)
-            {
-                DespawnPickup();
-            }
-            else
-            {
-                ammoCount.SetAmmo(bulletsLeft);
-            }
+            DespawnPickup();
+        }
+        else
+        {
+            ammoCount.SetAmmo(bulletsLeft);
         }
     }
 
+    /// <summary>
+    /// Assigns this pickup a random gun and returns that gun's color
+    /// </summary>
+    /// <returns>A color which represents a gun</returns>
     private UnityEngine.Color AssignRandomGun() 
     {
         DefinedGun[] allGuns = arsenal.AllUnlockableGuns;
@@ -119,6 +144,9 @@ public class Pickup : Poolable
         return gunToAssign.barrelColor;
     }
 
+    /// <summary>
+    /// Clears data used by this object
+    /// </summary>
     private void DespawnPickup() 
     {
         gameObject.SetActive(false);

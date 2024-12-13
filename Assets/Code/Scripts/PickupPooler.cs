@@ -40,6 +40,10 @@ public class PickupPooler : MonoBehaviour, IResettable
         }
     }
 
+    /// <summary>
+    /// Initializes this object
+    /// </summary>
+    /// <param name="arsenal">Used to hand pickups the data for all guns</param>
     public void Init(EditorObject.Arsenal arsenal)
     {
         if (instance != null && instance != this)
@@ -76,6 +80,10 @@ public class PickupPooler : MonoBehaviour, IResettable
         }
     }
 
+    /// <summary>
+    /// Spawns a pickup at a location in world space
+    /// </summary>
+    /// <param name="location">Place to spawn pickup</param>
     public static void SpawnAtLocation(Vector3 location) 
     {
         if (pool == null)

@@ -12,7 +12,6 @@ using static UnityEngine.ParticleSystem;
 /// </summary>
 public class ImpactManager : MonoBehaviour
 {
-    //TODO: Get following PickupPooler Singleton model
     #region Instancing
     private static ImpactManager instance;
     public static ImpactManager Instance { get { return instance; } private set { instance = value; } }
@@ -30,7 +29,7 @@ public class ImpactManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null && GameStateController.CanRunGameplay) 
+        if (instance == null) 
         {
             Init();
         }
@@ -38,12 +37,14 @@ public class ImpactManager : MonoBehaviour
 
     public void Init()
     {
-        if (Instance != null) 
+        if (instance != null && instance != this)
         {
-            Debug.LogError("Multiple instances of ImpactManager. Destroying this one: " + this.name);
             Destroy(this.gameObject);
         }
-        Instance = this;
+        else
+        {
+            instance = this;
+        }
 
         PoolParticles();
     }
