@@ -25,7 +25,7 @@ public enum SpawnLocation
 }
 
 /// <summary>
-/// 
+/// Handles enemy pooling and spawning logic, controls the enemies' manualUpdate call as well
 /// </summary>
 public class EnemyManager : MonoBehaviour, IResettable
 {
