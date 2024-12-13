@@ -24,6 +24,9 @@ public enum SpawnLocation
     Any
 }
 
+/// <summary>
+/// This class calculates a vector position via a 'bias' that allows us to spawn an enemy at a certain position relative to this bias
+/// </summary>
 public class BiasSpawnVector
 {
     //Spawning Variables
