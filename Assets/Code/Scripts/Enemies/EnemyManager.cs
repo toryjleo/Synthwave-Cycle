@@ -24,6 +24,75 @@ public enum SpawnLocation
     Any
 }
 
+public class BiasSpawnVector
+{
+    //Spawning Variables
+    [SerializeField] private int spawnDistance = 150;
+    [SerializeField] private int spawnBiasAngle = 33;
+
+    #region BiasSpawnVector
+    /// <summary>
+    /// This method returns a vector a set distance away from the player in an arc. With conditions specified in this class
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 BiasSpawnVectorLocation(SpawnLocation loc, GameObject player)
+    {
+        Vector3 forwardVector = player.transform.forward;
+        List<Vector3> vectors = new List<Vector3>();
+        switch (loc)
+        {
+            case SpawnLocation.Front:
+                vectors.Add(forwardVector);
+                break;
+            case SpawnLocation.Sides:
+                vectors.Add(Quaternion.AngleAxis(90, Vector3.up) * forwardVector);
+                vectors.Add(Quaternion.AngleAxis(-90, Vector3.up) * forwardVector);
+                break;
+            case SpawnLocation.Behind:
+                vectors.Add(Quaternion.AngleAxis(180, Vector3.up) * forwardVector);
+                break;
+            case SpawnLocation.NotFront:
+                vectors.Add(Quaternion.AngleAxis(90, Vector3.up) * forwardVector);
+                vectors.Add(Quaternion.AngleAxis(-90, Vector3.up) * forwardVector);
+                vectors.Add(Quaternion.AngleAxis(180, Vector3.up) * forwardVector);
+                break;
+            case SpawnLocation.Any:
+                vectors.Add(forwardVector);
+                vectors.Add(Quaternion.AngleAxis(90, Vector3.up) * forwardVector);
+                vectors.Add(Quaternion.AngleAxis(-90, Vector3.up) * forwardVector);
+                vectors.Add(Quaternion.AngleAxis(180, Vector3.up) * forwardVector);
+                break;
+        }
+        return BiasSpawnVectorCalculation(vectors[Random.Range(0, vectors.Count)], spawnBiasAngle, spawnDistance, player);
+    }
+
+    /// <summary>
+    /// This method returns a vector
+    /// </summary>
+    /// <param name="bias"> this is the direction that the bike is already moving </param>
+    /// <param name="angle"> the range of degrees that the vector can be rotated to ( 0 to 180 ) </param>
+    /// <param name="distance"> the desired length of the spawn vector </param>
+    /// <returns></returns>
+    public Vector3 BiasSpawnVectorCalculation(Vector3 bias, int angle, int distance, GameObject player)
+    {
+        if (bias == new Vector3(0, 0, 0))// defaut case if bike isn't moving
+        {
+            bias = new Vector3(0, 0, 1);
+        }
+
+        Vector3 spawnVector = bias;
+        Quaternion q = Quaternion.Euler(0, Random.Range(-angle, angle), 0);
+
+        spawnVector = q * spawnVector;
+
+        spawnVector.Normalize();
+        spawnVector *= distance;
+        spawnVector += player.transform.position;
+        return spawnVector;
+    }
+    #endregion
+}
+
 /// <summary>
 /// Handles enemy pooling and spawning logic, controls the enemies' manualUpdate call as well
 /// </summary>
@@ -128,9 +197,7 @@ public class EnemyManager : MonoBehaviour, IResettable
     /// </summary>
     public GameObject player;
 
-    //Spawning Variables
-    [SerializeField] private int spawnDistance;
-    [SerializeField] private int spawnBiasAngle;
+    private BiasSpawnVector spawnVector;
 
     internal void SpawnWave(List<Waves.WaveEnemyInfo> enemiesToSpawn)
     {
@@ -150,73 +217,11 @@ public class EnemyManager : MonoBehaviour, IResettable
     public Ai SpawnNewEnemy(Enemy type, SpawnLocation loc, Vector3 targetLocation)
     {
         Ai enemy = RetrieveFromPool(type);
-        enemy.Spawn(BiasSpawnVector(loc), targetLocation);
+        enemy.Spawn(spawnVector.BiasSpawnVectorLocation(loc, player), targetLocation);
 
         return enemy;
     }
 
-
-    #region BiasSpawnVector
-    /// <summary>
-    /// This method returns a vector a set distance away from the player in an arc. With conditions specified in this class
-    /// </summary>
-    /// <returns></returns>
-    public Vector3 BiasSpawnVector(SpawnLocation loc)
-    {
-        Vector3 forwardVector = player.transform.forward;
-        List<Vector3> vectors = new List<Vector3>();
-        switch (loc)
-        {
-            case SpawnLocation.Front:
-                vectors.Add(forwardVector);
-                break;
-            case SpawnLocation.Sides:
-                vectors.Add(Quaternion.AngleAxis(90, Vector3.up) * forwardVector);
-                vectors.Add(Quaternion.AngleAxis(-90, Vector3.up) * forwardVector);
-                break;
-            case SpawnLocation.Behind:
-                vectors.Add(Quaternion.AngleAxis(180, Vector3.up) * forwardVector);
-                break;
-            case SpawnLocation.NotFront:
-                vectors.Add(Quaternion.AngleAxis(90, Vector3.up) * forwardVector);
-                vectors.Add(Quaternion.AngleAxis(-90, Vector3.up) * forwardVector);
-                vectors.Add(Quaternion.AngleAxis(180, Vector3.up) * forwardVector);
-                break;
-            case SpawnLocation.Any:
-                vectors.Add(forwardVector);
-                vectors.Add(Quaternion.AngleAxis(90, Vector3.up) * forwardVector);
-                vectors.Add(Quaternion.AngleAxis(-90, Vector3.up) * forwardVector);
-                vectors.Add(Quaternion.AngleAxis(180, Vector3.up) * forwardVector);
-                break;
-        }
-        return BiasSpawnVector(vectors[Random.Range(0, vectors.Count)], spawnBiasAngle, spawnDistance);
-    }
-
-    /// <summary>
-    /// This method returns a vector
-    /// </summary>
-    /// <param name="bias"> this is the direction that the bike is already moving </param>
-    /// <param name="angle"> the range of degrees that the vector can be rotated to ( 0 to 180 ) </param>
-    /// <param name="distance"> the desired length of the spawn vector </param>
-    /// <returns></returns>
-    public Vector3 BiasSpawnVector(Vector3 bias, int angle, int distance)
-    {
-        if (bias == new Vector3(0, 0, 0))// defaut case if bike isn't moving
-        {
-            bias = new Vector3(0, 0, 1);
-        }
-
-        Vector3 spawnVector = bias;
-        Quaternion q = Quaternion.Euler(0, Random.Range(-angle, angle), 0);
-
-        spawnVector = q * spawnVector;
-
-        spawnVector.Normalize();
-        spawnVector *= distance;
-        spawnVector += player.transform.position;
-        return spawnVector;
-    }
-    #endregion
     #endregion
 
     #region EnemyManager
@@ -230,6 +235,7 @@ public class EnemyManager : MonoBehaviour, IResettable
     // Start is called before the first frame update
     void Start()
     {
+        spawnVector = new BiasSpawnVector();
         player = GameObject.FindGameObjectWithTag("Player");
 
         //TODO: PoolObjects needs an accurate estimate of pool size
