@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8610469206652896614}
   - component: {fileID: 876733522086653541}
   - component: {fileID: 8930960238914550717}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: LMGBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
