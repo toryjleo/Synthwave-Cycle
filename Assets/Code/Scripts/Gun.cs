@@ -1,6 +1,5 @@
 using UnityEngine;
-using Unity.Mathematics;
-using Generic;
+using EditorObject;
 
 namespace Gun
 {
@@ -94,10 +93,6 @@ namespace Gun
         /// </summary>
         private float nextTimeToFire = 0.0f;
         /// <summary>
-        /// Number of times this gun can fire
-        /// </summary>
-        [SerializeField] private int ammoCount = 0;
-        /// <summary>
         /// Amount of time until the next burst shot triggers
         /// </summary>
         private float nextTimeToFireBurst = 0.0f;
@@ -114,10 +109,14 @@ namespace Gun
         /// </summary>
         private bool externalFire = false;
 
+        [SerializeField] private AmmoCount ammoCount = null;
+
         /// <summary>
         /// Triggered when this gun runs out of ammo
         /// </summary>
         public NotifyAmmo onOutOfAmmo;
+
+        #region Properties
 
         public bool ExternalFire 
         {
@@ -149,6 +148,13 @@ namespace Gun
             get => gunStats.IsAutomatic;
         }
 
+        public bool AtMaxAmmo 
+        {
+            get => ammoCount.AtMaxAmmo;
+        }
+
+        #endregion
+
         #region Ammo Props for UI
         //Event for the UI to update ammo counter
         public NotifyAmmo onAmmoChange;
@@ -156,20 +162,22 @@ namespace Gun
         {
             get { return stateController; }
         }
-        public bool IsInfiniteAmmo
-        {
-            get { return gunStats.InfiniteAmmo; }
-        }
-
-        public int MaxAmmo
-        {
-            get { return gunStats.AmmoCount; }
-        }
 
         public int AmmoCount
         {
-            get { return ammoCount; }
+            get { return ammoCount == null ? 0 : ammoCount.Count; }
         }
+
+        public bool IsInfiniteAmmo 
+        {
+            get => ammoCount.IsInfiniteAmmo;
+        }
+
+        public int MaxAmmo 
+        {
+            get => ammoCount.MaxAmmo;
+        }
+
         #endregion
 
         #region Overheat Props for UI
@@ -184,11 +192,7 @@ namespace Gun
         }
         #endregion
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            TestSceneInit();
-        }
+        #region Initialization
 
         private void TestSceneInit() 
         {
@@ -214,32 +218,15 @@ namespace Gun
             rand.InitState();
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-            turretInputManager.UpdateInputMethod();
-
-            UpdateGun(Time.deltaTime);
-        }
-
-        // Update is called once per frame
-        void FixedUpdate()
-        {
-            if (gunStats.IsTurret && GameStateController.CanRunGameplay)
-            {
-                turretInputManager.FixedUpdate();
-            }
-        }
-
         /// <summary>
         /// Sets the state to the initial state at the beginning of a level
         /// </summary>
         public void Reset()
         {
-            ammoCount = gunStats.AmmoCount;
+            ammoCount = new AmmoCount(gunStats);
             nextTimeToFireBurst = 0.0f;
             overHeatPercent = 0.0f;
-            
+
             stateController.Reset();
             hitScan.Reset();
 
@@ -248,6 +235,8 @@ namespace Gun
             impactEffectPool.ResetGameObject();
             areaOfEffectPool.ResetGameObject();
         }
+
+
 
         /// <summary>
         /// Finds all references this object needs
@@ -259,7 +248,7 @@ namespace Gun
 
             stateController = new GunState.StateController(gunStats.NumBurstShots, gunStats.PrintDebugState);
             impactManager = FindObjectOfType<ImpactManager>();
-            if (impactManager == null) 
+            if (impactManager == null)
             {
                 Debug.LogError("There is no impactManager in the scene!");
             }
@@ -274,23 +263,23 @@ namespace Gun
                 projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, HandleBulletHit);
                 projectilePool.PoolObjects(instantiateCount);
             }
-            if (areaOfEffectPool == null) 
+            if (areaOfEffectPool == null)
             {
                 int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
                                                    gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
                 areaOfEffectPool = new ProjectileObjectPool(gunStats, areaOfEffectPrefab, HandleBulletHit);
                 areaOfEffectPool.PoolObjects(instantiateCount);
             }
-            if (hitScan == null) 
+            if (hitScan == null)
             {
                 int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
                                                               gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
                 hitScan = new HitScan(gunStats, hitScanBulletTrailPrefab, instantiateCount);
             }
-            if (explosionPool == null) 
+            if (explosionPool == null)
             {
                 int numberOfHits = gunStats.BulletPenetration + 1; // Needs to be 1 more than penetration to get bullet hit number
-                int instantiateCount = gunStats.InfiniteAmmo ? 
+                int instantiateCount = gunStats.InfiniteAmmo ?
                                        INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot * numberOfHits :
                                        gunStats.AmmoCount * gunStats.ProjectileCountPerShot * numberOfHits;
                 explosionPool = new Generic.ObjectPool(gunStats, explosionPrefab);
@@ -318,6 +307,72 @@ namespace Gun
             hitScan.notifyListenersHit += HandleBulletHit;
 
         }
+
+        #endregion
+
+        #region Event Handlers
+        /// <summary>
+        /// Listens to fireSingleShot.notifyListenersEnter
+        /// </summary>
+        public void HandleFireSingleShotEnter()
+        {
+            FireOnce();
+            stateController.HandleTrigger(GunState.StateTrigger.EnterTimeBetween);
+        }
+
+        /// <summary>
+        /// Listens to fireBurstShot.notifyListenersEnter
+        /// </summary>
+        public void HandleFireBurstShotEnter()
+        {
+            FireOnce();
+            nextTimeToFireBurst = gunStats.TimeBetweenBurstShots;
+        }
+
+        /// <summary>
+        /// Listens to betweenShots.notifyListenersEnter
+        /// </summary>
+        public void HandleBetweenShotsEnter()
+        {
+            nextTimeToFire = gunStats.TimeBetweenShots;
+        }
+
+        /// <summary>
+        /// Listens to stateController.outOfAmmo.notifyListenersEnter
+        /// </summary>
+        public void HandleOutOfAmmoEnter()
+        {
+            onOutOfAmmo?.Invoke(this);
+        }
+        #endregion
+
+        #region Monobehavior
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            TestSceneInit();
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            turretInputManager.UpdateInputMethod();
+
+            UpdateGun(Time.deltaTime);
+        }
+
+        // Update is called once per frame
+        void FixedUpdate()
+        {
+            if (gunStats.IsTurret && GameStateController.CanRunGameplay)
+            {
+                turretInputManager.FixedUpdate();
+            }
+        }
+        #endregion
+
+        #region Utility
 
         /// <summary>
         /// Applies effects when a bullet hits something
@@ -348,13 +403,38 @@ namespace Gun
         }
 
         /// <summary>
+        /// Verifies if this gun uses the specified GunStats
+        /// </summary>
+        /// <param name="other">GunStats to check</param>
+        /// <returns>True if this gun is using the specified GunStats</returns>
+        public bool IsThisGun(GunStats other)
+        {
+            return other == gunStats;
+        }
+
+        /// <summary>
         /// Adds ammo to the ammo count
         /// </summary>
         /// <param name="amount">Amount of ammo to add</param>
-        public void AddAmmo(int amount)
+        public int AddAmmo(int amount)
         {
-            ammoCount = Mathf.Clamp(ammoCount + amount, 0, gunStats.AmmoCount);
+            int overflow = ammoCount.AddAmmo(amount);
             stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
+            onAmmoChange?.Invoke(this);
+            return overflow;
+        }
+
+        /// <summary>
+        /// Reduces ammo by 1. Will trigger OutOfAmmo when ammoCount hits zero
+        /// </summary>
+        private void ReduceAmmo()
+        {
+            ammoCount.ReduceAmmo();
+            if (ammoCount.Count <= 0)
+            {
+                // This must be called before OverHeated trigger
+                stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
+            }
             onAmmoChange?.Invoke(this);
         }
 
@@ -364,13 +444,25 @@ namespace Gun
         /// <param name="amount">Value to set the ammo to</param>
         public void SetAmmo(int amount) 
         {
-            ammoCount = Mathf.Clamp(amount, 0, gunStats.AmmoCount);
-            if (ammoCount > 0) 
+            ammoCount.SetAmmo(amount);
+            if (ammoCount.Count > 0) 
             {
                 stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
                 onAmmoChange?.Invoke(this);
             }
         }
+
+        /// <summary>
+        /// Sets the ammo to this gun
+        /// </summary>
+        public void SetMaxAmmo()
+        {
+            ammoCount.SetMaxAmmo();
+            stateController.HandleTrigger(GunState.StateTrigger.AddAmmo);
+            onAmmoChange?.Invoke(this);
+        }
+
+        #endregion
 
         #region Frame Update
         /// <summary>
@@ -483,20 +575,6 @@ namespace Gun
             bullet.Shoot(BulletSpawn.transform.position, direction, player ? player.Velocity : Vector3.zero);
         }
 
-        /// <summary>
-        /// Reduces ammo by 1. Will trigger OutOfAmmo when ammoCount hits zero
-        /// </summary>
-        private void ReduceAmmo()
-        {
-            ammoCount = gunStats.InfiniteAmmo ? ammoCount : ammoCount - 1;
-            if (ammoCount == 0)
-            {
-                // This must be called before OverHeated trigger
-                stateController.HandleTrigger(GunState.StateTrigger.OutOfAmmo);
-            }
-            onAmmoChange?.Invoke(this);
-        }
-
 
         /// <summary>
         /// Fires single or multiple projectiles or hitscans and reduces ammo
@@ -573,41 +651,6 @@ namespace Gun
 
         #endregion
 
-        #region Event Handlers
-        /// <summary>
-        /// Listens to fireSingleShot.notifyListenersEnter
-        /// </summary>
-        public void HandleFireSingleShotEnter()
-        {
-            FireOnce();
-            stateController.HandleTrigger(GunState.StateTrigger.EnterTimeBetween);
-        }
-
-        /// <summary>
-        /// Listens to fireBurstShot.notifyListenersEnter
-        /// </summary>
-        public void HandleFireBurstShotEnter()
-        {
-            FireOnce();
-            nextTimeToFireBurst = gunStats.TimeBetweenBurstShots;
-        }
-
-        /// <summary>
-        /// Listens to betweenShots.notifyListenersEnter
-        /// </summary>
-        public void HandleBetweenShotsEnter()
-        {
-            nextTimeToFire = gunStats.TimeBetweenShots;
-        }
-
-        /// <summary>
-        /// Listens to stateController.outOfAmmo.notifyListenersEnter
-        /// </summary>
-        public void HandleOutOfAmmoEnter() 
-        {
-            onOutOfAmmo?.Invoke(this);
-        }
-        #endregion
 
     }
 }

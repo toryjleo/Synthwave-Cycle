@@ -49,6 +49,7 @@ public class LevelManager : MonoBehaviour
         worldGenerator.CreateGround(currentLevel.GroundMat);
         ImpactManager.Instance?.Init();
         ImpactManager.Instance?.AddGroundMapping(currentLevel.GroundImpactMapping);
+        PickupPooler.Instance?.Init(gameSave.arsenal);
         resetObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IResettable>().ToList();
 
         Arsenal arsenal = FindObjectOfType<Arsenal>();
