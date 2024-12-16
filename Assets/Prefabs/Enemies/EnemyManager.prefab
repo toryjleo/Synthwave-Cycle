@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4120592820872180829}
   - component: {fileID: 1166159769048400175}
   m_Layer: 0
-  m_Name: Spawner
+  m_Name: EnemyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,6 +44,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d266f72ad1e6a741918dac71a45c87a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  riflemanPrefab: {fileID: 0}
+  riflemanAi: {fileID: 0}
+  rangerPrefab: {fileID: 0}
+  rangerAi: {fileID: 0}
+  shotgunnerPrefab: {fileID: 0}
+  shotgunnerAi: {fileID: 0}
+  ramCarPrefab: {fileID: 0}
+  ramCarAi: {fileID: 0}
+  sbomberPrefab: {fileID: 0}
+  sbomberAi: {fileID: 0}
+  player: {fileID: 0}
 --- !u!114 &1166159769048400175
 MonoBehaviour:
   m_ObjectHideFlags: 0

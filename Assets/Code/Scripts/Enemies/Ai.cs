@@ -15,6 +15,10 @@ public abstract class Ai : Poolable
     public GameObject target;
     public Rigidbody rb;
     public Gun[] myGuns;
+    /// <summary>
+    /// This object appears and disappears when the target is preparing to attack
+    /// </summary>
+    [SerializeField] GameObject attackTelegraph;
     public Health health;
     protected AiStats stats;
 
@@ -191,9 +195,15 @@ public abstract class Ai : Poolable
 
     #region EventHandlers
 
-    public abstract void HandleInRangeEnter();
+    public void HandleInRangeEnter()
+    {
+        attackTelegraph.SetActive(true);
+    }
 
-    public abstract void HandleInRangeExit();
+    public void HandleInRangeExit()
+    {
+        attackTelegraph.SetActive(false);
+    }
 
     public virtual void HandleAttackingEnter()
     {

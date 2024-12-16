@@ -20,11 +20,6 @@ public abstract class VehicleAi : Ai
 
     [SerializeField] public GameObject movementTargetPosition;
 
-    /// <summary>
-    /// This object appears and disappears when the target is preparing to attack
-    /// </summary>
-    [SerializeField] GameObject attackTelegraph;
-
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
         base.ManualUpdate(enemies, wanderDirection, fixedDeltaTime);
@@ -47,16 +42,6 @@ public abstract class VehicleAi : Ai
 
         //Must be called after base.Init()
         vehicleController.MaxSpeed = maxSpeed;
-    }
-
-    public override void HandleInRangeEnter()
-    {
-        attackTelegraph.SetActive(true);
-    }
-
-    public override void HandleInRangeExit()
-    {
-        attackTelegraph.SetActive(false);
     }
 
     public override void HandleInPoolExit()
