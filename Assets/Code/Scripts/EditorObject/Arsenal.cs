@@ -1,7 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
+using System.Linq;
+using UnityEngine;
+using UnityEditor;
+using System.Reflection;
 
 namespace EditorObject
 {
@@ -19,6 +25,28 @@ namespace EditorObject
         /// Color of gun barrel
         /// </summary>
         [SerializeField] public Color barrelColor = Color.white;
+
+        [SerializeField] [Range(0.0f, 1.0f)]  private float chanceToDrop = 0.01f;
+
+        [HideInInspector] private float hidden_chanceToDrop = 0.01f;
+
+        public bool IsDirty 
+        {
+            get => hidden_chanceToDrop != chanceToDrop;
+        }
+
+        public float Clean() 
+        {
+            hidden_chanceToDrop = chanceToDrop;
+            return ChanceToDrop;
+        }
+
+        public float ChanceToDrop 
+        {
+            get { return hidden_chanceToDrop; }
+            set { hidden_chanceToDrop = value; chanceToDrop = value; }
+        }
+
     }
 
     /// <summary>
@@ -67,6 +95,8 @@ namespace EditorObject
         [SerializeField] private int lastEquippedSlotIdx = -1;
 
 
+
+
         public int NumberOfGunSlots { get { return NUMBER_OF_GUN_SLOTS; } }
 
         public DefinedGun[] AllUnlockableGuns { get => allUnlockableGuns; }
@@ -76,6 +106,8 @@ namespace EditorObject
         public int LastEquippedSlot { get => lastEquippedSlotIdx; }
 
         #region Methods
+
+
         /// <summary>
         /// Updates the data held by this object
         /// </summary>
@@ -122,6 +154,79 @@ namespace EditorObject
             }
 
             lastEquippedSlotIdx = -1;
+        }
+
+        // TODO: keep a list of defined guns and their chanceToDrop.
+        // Can tell what changed by comparing to entries in allUnlockableGuns
+        // Update list when allUnlockableGuns updates
+        // If only a chanceToDrop has changed, we know that is the culprit, can keep index. Can update all other indices uniformly. Then validate they add to 1. Throw error if any are negative.
+        // If index of a DefinedGun changed, update data structure with new values
+        // TODO: Print errors and messages in custom inspector
+        public void OnValidate()
+        {
+
+            Debug.Log("Validating");
+            int dirtyIdx = -1;
+            int dirtyCount = 0;
+
+            for (int i = 0; i < allUnlockableGuns.Length; i++)
+            {
+                DefinedGun df = allUnlockableGuns[i];
+
+                if (df.IsDirty)
+                {
+                    dirtyCount++;
+                    dirtyIdx = i;
+                }
+            }
+
+            if (dirtyCount > 1)
+            {
+
+                // TODO: Throw error message up in ui
+                Debug.LogError("Too many dirty");
+                NormalizeAllOtherValsToScaleTo(-1, 1);
+            }
+            else if (dirtyCount == 1)
+            {
+                Debug.Log("Dirty boy");
+                // Need to update stats
+                float newVal = allUnlockableGuns[dirtyIdx].Clean();
+
+                float scaleTo = 1 - newVal;
+                NormalizeAllOtherValsToScaleTo(dirtyIdx, scaleTo);
+            }
+
+        }
+
+        private void NormalizeAllOtherValsToScaleTo(int idxToSkip, float valueToScaleTo)
+        {
+            float currentScale = 0;
+            for (int i = 0; i < allUnlockableGuns.Length; i++)
+            {
+                if (i == idxToSkip)
+                {
+                    continue;
+                }
+                else
+                {
+                    currentScale += allUnlockableGuns[i].ChanceToDrop;
+                }
+            }
+
+            float ratio = valueToScaleTo / currentScale;
+            for (int i = 0; i < allUnlockableGuns.Length; i++)
+            {
+                if (i == idxToSkip)
+                {
+                    continue;
+                }
+                else
+                {
+                    allUnlockableGuns[i].ChanceToDrop = allUnlockableGuns[i].ChanceToDrop * ratio;
+                }
+            }
+
         }
 
         #endregion
