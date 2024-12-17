@@ -173,7 +173,6 @@ public class ProbablilityMachine
     /// <param name="newExclusion">New gun to exclude from spawn</param>
     private void CreateNewExclusion(ProbabilityGun newExclusion) 
     {
-        // TODO: make sure exclusions reset when we have 
         if (IsOverMaxExclusionCount || HasOneProbabilityOrLess)
         {
             ResetExclusions();
@@ -202,8 +201,25 @@ public class ProbablilityMachine
         exclusions = new List<ProbabilityGun>();
     }
 
-    public void Reset() 
+    /// <summary>
+    /// Resets the drop count of members of probabilities and exclusions
+    /// </summary>
+    private void ResetDropCount() 
     {
-        // TODO: Reset code
+        for (int i = 0; i < probabilities.Count; i++) 
+        {
+            probabilities[i].ResetDropCount();
+        }
+        for (int i = 0;i < exclusions.Count; i++) 
+        {
+            exclusions[i].ResetDropCount();
+        }
+    }
+
+    public void Reset() 
+    { 
+        ResetExclusions();
+        DropChance.ResetChance();
+        ResetDropCount();
     }
 }
