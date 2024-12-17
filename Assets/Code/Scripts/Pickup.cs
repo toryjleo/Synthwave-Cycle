@@ -32,8 +32,7 @@ public class Pickup : Poolable
     /// Used to reference alll gun objects. This data comes from the pool.
     /// Can set this in the Unity editor if manually dropping in pickups to world without pool.
     /// </summary>
-    /// 
-    // TODO: Switch to ProbablilityMachine
+    ///
     private ProbablilityMachine machine = null;
     Renderer renderer = null;
     GunStats gun = null;
