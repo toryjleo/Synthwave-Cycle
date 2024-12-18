@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Gun;
+using static PlayerHealth;
 
 /// <summary>
 /// The Arsenal keeps track of guns that the player bike can equip, as well as handling the equip/dequip code
@@ -102,11 +103,16 @@ public class Arsenal : MonoBehaviour, IResettable
         if (Input.GetKeyDown(KeyCode.Space)) 
         {
 
-            pinkMist.Reset();
-            pinkMist.gameObject.SetActive(true);
-            pinkMist.Shoot(transform.position, Vector3.zero, Vector3.zero);
+            TriggerPinkMist();
 
         }
+    }
+
+    private void TriggerPinkMist() 
+    {
+        pinkMist.Reset();
+        pinkMist.gameObject.SetActive(true);
+        pinkMist.Shoot(transform.position, Vector3.zero, Vector3.zero);
     }
 
     #region Initialization
@@ -123,6 +129,7 @@ public class Arsenal : MonoBehaviour, IResettable
 
         InstantiateAllGuns();
         SetStateToSaveData();
+        SetupEventHandlers();
     }
 
     /// <summary>
@@ -134,6 +141,7 @@ public class Arsenal : MonoBehaviour, IResettable
         {
             InstantiateAllGuns();
             SetStateToSaveData();
+            SetupEventHandlers();
         }
     }
 
@@ -168,7 +176,6 @@ public class Arsenal : MonoBehaviour, IResettable
     {
         pinkMist = Instantiate<AreaOfEffect>(pinkMistPrefab, this.transform);
         pinkMist.Init(pinkMistStats);
-        pinkMist.Despawn += HandlePinkMistDespawn;
         pinkMist.gameObject.SetActive(false);
     }
 
@@ -214,6 +221,30 @@ public class Arsenal : MonoBehaviour, IResettable
             {
                 gunList[gunIdx].SetAmmo(ammoCount);
             }
+        }
+    }
+
+    private void SetupEventHandlers() 
+    {
+
+        pinkMist.Despawn += HandlePinkMistDespawn;
+
+        PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
+        if (playerHealth == null) 
+        {
+            Debug.LogError("Arsenal cannot find reference to PlayerHealth");
+        }
+        else 
+        {
+            playerHealth.onBarUpdate += HandleBarMaxUpdate;
+        }
+    }
+
+    private void HandleBarMaxUpdate(BarMax oldMax, BarMax newMax, bool hpIsOverBarMax3) 
+    {
+        if (newMax > oldMax || hpIsOverBarMax3)
+        {
+            TriggerPinkMist();
         }
     }
 
