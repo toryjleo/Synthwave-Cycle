@@ -12,6 +12,100 @@ using static PlayerHealth;
 /// </summary>
 public class Arsenal : MonoBehaviour, IResettable
 {
+    #region Pink Mist
+    /// <summary>
+    /// Contains code for handling Pink Mist
+    /// </summary>
+    [Serializable] private class PinkMist 
+    {
+        private AreaOfEffect pinkMist = null;
+        private Transform parentTransform = null;
+        [SerializeField] private AreaOfEffect pinkMistPrefab = null;
+        [SerializeField] private GunStats pinkMistStats = null;
+
+        
+        /// <summary>
+        /// Fill-in for a constructor
+        /// </summary>
+        /// <param name="parentTransform">Transform of PinkMist's parent</param>
+        public void Instantiate(Transform parentTransform) 
+        {
+            this.parentTransform = parentTransform;
+
+            if (pinkMistPrefab == null) 
+            {
+                Debug.LogError("Need reference to PinkMist prefab");
+            }
+            else 
+            {
+                pinkMist = Instantiate<AreaOfEffect>(pinkMistPrefab, parentTransform);
+                pinkMist.Init(pinkMistStats);
+                pinkMist.gameObject.SetActive(false);
+                SetUpEventHandlers();
+            }
+        }
+
+        /// <summary>
+        /// Hooks up all event handlers
+        /// </summary>
+        private void SetUpEventHandlers() 
+        {
+            pinkMist.Despawn += HandlePinkMistDespawn;
+
+            PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
+            if (playerHealth == null)
+            {
+                Debug.LogError("Arsenal cannot find reference to PlayerHealth");
+            }
+            else
+            {
+                playerHealth.onBarUpdate += HandleBarMaxUpdate;
+            }
+        }
+
+
+        /// <summary>
+        /// Pink Mist will start growing from its initial state
+        /// </summary>
+        public void TriggerPinkMist(Vector3 position)
+        {
+            pinkMist.Reset();
+            pinkMist.gameObject.SetActive(true);
+            pinkMist.Shoot(position, Vector3.zero, Vector3.zero);
+        }
+
+        /// <summary>
+        /// Set Pink Mist to its disabled behavior
+        /// </summary>
+        /// <param name="entity">Reference to Pink Mist entity</param>
+        private void HandlePinkMistDespawn(SelfDespawn entity)
+        {
+            pinkMist.Reset();
+            pinkMist.gameObject.SetActive(false);
+        }
+
+
+        /// <summary>
+        /// Triggers Pink Mist if conditions are right
+        /// </summary>
+        /// <param name="oldMax">Previous bar max</param>
+        /// <param name="newMax">Current bar max</param>
+        /// <param name="hpIsOverBarMax3">True if hitPoints > BarMax3</param>
+        private void HandleBarMaxUpdate(BarMax oldMax, BarMax newMax, bool hpIsOverBarMax3)
+        {
+            if (newMax > oldMax || hpIsOverBarMax3)
+            {
+                TriggerPinkMist(parentTransform.position);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Devious Weapon used for screen wipes
+    /// </summary>
+    [SerializeField] PinkMist pinkMist = null;
+    #endregion
+
     /// <summary>
     /// Saved data for the Arsenal object
     /// NOTE: Set this value in the prefab to set the default savedData for test scenes
@@ -27,10 +121,6 @@ public class Arsenal : MonoBehaviour, IResettable
     /// Prefab used to generate the gunList
     /// </summary>
     [SerializeField] private Gun.Gun gunPrefab = null;
-
-    private AreaOfEffect pinkMist = null;
-    [SerializeField] private AreaOfEffect pinkMistPrefab = null;
-    [SerializeField] private GunStats pinkMistStats = null;
 
 
     #region Equipped Guns
@@ -101,15 +191,6 @@ public class Arsenal : MonoBehaviour, IResettable
         GatherPlayerInput();
     }
 
-    /// <summary>
-    /// Pink Mist will start growing from its initial state
-    /// </summary>
-    private void TriggerPinkMist() 
-    {
-        pinkMist.Reset();
-        pinkMist.gameObject.SetActive(true);
-        pinkMist.Shoot(transform.position, Vector3.zero, Vector3.zero);
-    }
 
     #region Initialization
 
@@ -125,7 +206,6 @@ public class Arsenal : MonoBehaviour, IResettable
 
         InstantiateAllGuns();
         SetStateToSaveData();
-        SetupEventHandlers();
     }
 
     /// <summary>
@@ -137,7 +217,6 @@ public class Arsenal : MonoBehaviour, IResettable
         {
             InstantiateAllGuns();
             SetStateToSaveData();
-            SetupEventHandlers();
         }
     }
 
@@ -165,27 +244,7 @@ public class Arsenal : MonoBehaviour, IResettable
             gunList[i] = gun;
         }
 
-        InstantiatePinkMist();
-    }
-
-    /// <summary>
-    /// Create the Pink Mist for this object
-    /// </summary>
-    private void InstantiatePinkMist() 
-    {
-        pinkMist = Instantiate<AreaOfEffect>(pinkMistPrefab, this.transform);
-        pinkMist.Init(pinkMistStats);
-        pinkMist.gameObject.SetActive(false);
-    }
-
-    /// <summary>
-    /// Set Pink Mist to its disabled behavior
-    /// </summary>
-    /// <param name="entity">Reference to Pink Mist entity</param>
-    private void HandlePinkMistDespawn(SelfDespawn entity) 
-    {
-        pinkMist.Reset();
-        pinkMist.gameObject.SetActive(false);
+        pinkMist.Instantiate(gameObject.transform);
     }
 
     /// <summary>
@@ -224,36 +283,6 @@ public class Arsenal : MonoBehaviour, IResettable
             {
                 gunList[gunIdx].SetAmmo(ammoCount);
             }
-        }
-    }
-
-    private void SetupEventHandlers() 
-    {
-
-        pinkMist.Despawn += HandlePinkMistDespawn;
-
-        PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
-        if (playerHealth == null) 
-        {
-            Debug.LogError("Arsenal cannot find reference to PlayerHealth");
-        }
-        else 
-        {
-            playerHealth.onBarUpdate += HandleBarMaxUpdate;
-        }
-    }
-
-    /// <summary>
-    /// Triggers Pink Mist if conditions are right
-    /// </summary>
-    /// <param name="oldMax">Previous bar max</param>
-    /// <param name="newMax">Current bar max</param>
-    /// <param name="hpIsOverBarMax3">True if hitPoints > BarMax3</param>
-    private void HandleBarMaxUpdate(BarMax oldMax, BarMax newMax, bool hpIsOverBarMax3) 
-    {
-        if (newMax > oldMax || hpIsOverBarMax3)
-        {
-            TriggerPinkMist();
         }
     }
 
