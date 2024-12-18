@@ -99,15 +99,11 @@ public class Arsenal : MonoBehaviour, IResettable
     private void Update()
     {
         GatherPlayerInput();
-
-        if (Input.GetKeyDown(KeyCode.Space)) 
-        {
-
-            TriggerPinkMist();
-
-        }
     }
 
+    /// <summary>
+    /// Pink Mist will start growing from its initial state
+    /// </summary>
     private void TriggerPinkMist() 
     {
         pinkMist.Reset();
@@ -172,6 +168,9 @@ public class Arsenal : MonoBehaviour, IResettable
         InstantiatePinkMist();
     }
 
+    /// <summary>
+    /// Create the Pink Mist for this object
+    /// </summary>
     private void InstantiatePinkMist() 
     {
         pinkMist = Instantiate<AreaOfEffect>(pinkMistPrefab, this.transform);
@@ -179,6 +178,10 @@ public class Arsenal : MonoBehaviour, IResettable
         pinkMist.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Set Pink Mist to its disabled behavior
+    /// </summary>
+    /// <param name="entity">Reference to Pink Mist entity</param>
     private void HandlePinkMistDespawn(SelfDespawn entity) 
     {
         pinkMist.Reset();
@@ -240,6 +243,12 @@ public class Arsenal : MonoBehaviour, IResettable
         }
     }
 
+    /// <summary>
+    /// Triggers Pink Mist if conditions are right
+    /// </summary>
+    /// <param name="oldMax">Previous bar max</param>
+    /// <param name="newMax">Current bar max</param>
+    /// <param name="hpIsOverBarMax3">True if hitPoints > BarMax3</param>
     private void HandleBarMaxUpdate(BarMax oldMax, BarMax newMax, bool hpIsOverBarMax3) 
     {
         if (newMax > oldMax || hpIsOverBarMax3)

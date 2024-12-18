@@ -88,20 +88,29 @@ namespace Gun
         {
             if (isPinkMist) 
             {
-                if (other.GetComponent<Ai>() != null)
-                {
-                    Ai ai = other.GetComponent<Ai>();
-                    // TODO: Verify this works when merging with master
-                    ai.Die();
-                }
-
-                BulletProjectile bp = other.GetComponent<BulletProjectile>();
-                if (bp != null && bp.IsEnemyProjectile)
-                {
-                    bp.DespawnSelf();
-                }
+                PinkMistDestroys(other);
             }
             
+        }
+
+        /// <summary>
+        /// Pink mist will try to despawn or kill specified collider's object
+        /// </summary>
+        /// <param name="other">Colliding object to try to destroy</param>
+        private void PinkMistDestroys(Collider other) 
+        {
+            if (other.GetComponent<Ai>() != null)
+            {
+                Ai ai = other.GetComponent<Ai>();
+                // TODO: Verify this works when merging with master
+                ai.Die();
+            }
+
+            BulletProjectile bp = other.GetComponent<BulletProjectile>();
+            if (bp != null && bp.IsEnemyProjectile)
+            {
+                bp.DespawnSelf();
+            }
         }
 
         /// <summary>
