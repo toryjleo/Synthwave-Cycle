@@ -15,10 +15,13 @@ MonoBehaviour:
   allUnlockableGuns:
   - stats: {fileID: 11400000, guid: daa7f538aa123c04baf8df49e9dd3632, type: 2}
     barrelColor: {r: 1, g: 0.07075471, b: 0.07075471, a: 0}
+    chanceToDrop: 0.55616385
   - stats: {fileID: 11400000, guid: ddeb8cb357d00fa4ca4bfd23b97bb828, type: 2}
-    barrelColor: {r: 0.3932223, g: 1, b: 0.07058823, a: 0}
+    barrelColor: {r: 0.07058823, g: 0.20226529, b: 1, a: 0}
+    chanceToDrop: 0.19083612
   - stats: {fileID: 11400000, guid: 9df82afbd55ad86429841337039def25, type: 2}
-    barrelColor: {r: 0.07058823, g: 0.18872023, b: 1, a: 0}
+    barrelColor: {r: 1, g: 0.61952674, b: 0.07058823, a: 0}
+    chanceToDrop: 0.253
   equippedGuns:
   - listIdx: 0
     ammoCount: 200

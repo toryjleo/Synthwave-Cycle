@@ -12,14 +12,15 @@ using UnityEngineInternal;
 /// </summary>
 public class PickupInstantiateData : IPoolableInstantiateData 
 {
-    public PickupInstantiateData(EditorObject.Arsenal arsenal) 
+    private ProbablilityMachine machine;
+
+    public PickupInstantiateData(ProbablilityMachine machine) 
     {
-        this.arsenal = arsenal;
+        
+        this.machine = machine;
     }
 
-    private EditorObject.Arsenal arsenal;
-
-    public EditorObject.Arsenal Arsenal { get { return arsenal; } }
+    public ProbablilityMachine Machine { get { return machine; } }
 }
 
 /// <summary>
@@ -31,7 +32,8 @@ public class Pickup : Poolable
     /// Used to reference alll gun objects. This data comes from the pool.
     /// Can set this in the Unity editor if manually dropping in pickups to world without pool.
     /// </summary>
-    [SerializeField] private EditorObject.Arsenal arsenal;
+    ///
+    private ProbablilityMachine machine = null;
     Renderer renderer = null;
     GunStats gun = null;
 
@@ -63,7 +65,7 @@ public class Pickup : Poolable
     public override void Init(IPoolableInstantiateData stats)
     {
         PickupInstantiateData data = stats as PickupInstantiateData;
-        arsenal = data.Arsenal;
+        machine = data.Machine;
 
         renderer = GetComponent<Renderer>();
         if (renderer == null)
@@ -86,9 +88,9 @@ public class Pickup : Poolable
                 Debug.LogError("Pickup needs a renderer for a visual");
             }
 
-            if (arsenal == null)
+            if (machine == null)
             {
-                Debug.LogError("Must reference an EditorObject.Arsenal when spawing without pool");
+                Debug.LogError("Must reference a ProbablilityMachine when spawing without pool");
             }
             else
             {
@@ -136,12 +138,10 @@ public class Pickup : Poolable
     /// <returns>A color which represents a gun</returns>
     private UnityEngine.Color AssignRandomGun() 
     {
-        DefinedGun[] allGuns = arsenal.AllUnlockableGuns;
-        int idx = Random.Range(0, allGuns.Length);
-        DefinedGun gunToAssign = allGuns[idx];
-        gun = gunToAssign.stats;
+        ProbabilityGun gunToAssign = machine.RandomGun();
+        gun = gunToAssign.Stats;
         ammoCount = new AmmoCount(gun);
-        return gunToAssign.barrelColor;
+        return gunToAssign.DropColor;
     }
 
     /// <summary>

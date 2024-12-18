@@ -30,6 +30,8 @@ public class PickupPooler : MonoBehaviour, IResettable
     /// Used only when PickupPooler is in a scene without LevelLoader
     /// </summary>
     [SerializeField] EditorObject.Arsenal testArsenal = null;
+
+    private ProbablilityMachine machine = null;
     #endregion
 
     private void Awake()
@@ -61,7 +63,8 @@ public class PickupPooler : MonoBehaviour, IResettable
         }
         else 
         {
-            PickupInstantiateData data = new PickupInstantiateData(arsenal);
+            machine = new ProbablilityMachine(arsenal);
+            PickupInstantiateData data = new PickupInstantiateData(machine);
 
             pool = new Generic.ObjectPool(data, prefab);
             pool.PoolObjects(INSTANTIATE_COUNT);
@@ -73,6 +76,7 @@ public class PickupPooler : MonoBehaviour, IResettable
         if (pool != null) 
         {
             pool.ResetGameObject();
+            machine.Reset();
         }
         else 
         {
