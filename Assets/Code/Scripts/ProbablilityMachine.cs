@@ -107,8 +107,12 @@ public class ProbablilityMachine
     /// <summary>
     /// Maximum times a gun can spawn before it is no longer an option to spawn
     /// </summary>
-    private int MAX_EXCLUSIONS = 3;
+    private int MAX_EXCLUSIONS = 0;
 
+    private bool HasOneItemInArsenal 
+    {
+        get => (exclusions.Count + probabilities.Count <= 1);
+    }
     private bool IsOverMaxExclusionCount
     {
         get => (exclusions.Count > MAX_EXCLUSIONS);
@@ -134,6 +138,7 @@ public class ProbablilityMachine
         {
             probabilities.Add(new ProbabilityGun(allUnlockableGuns[i]));
         }
+        MAX_EXCLUSIONS = probabilities.Count / 3;
     }
 
     /// <summary>
@@ -173,17 +178,20 @@ public class ProbablilityMachine
     /// <param name="newExclusion">New gun to exclude from spawn</param>
     private void CreateNewExclusion(ProbabilityGun newExclusion) 
     {
-        if (IsOverMaxExclusionCount || HasOneProbabilityOrLess)
+        if (!HasOneItemInArsenal) 
         {
-            ResetExclusions();
+            if (IsOverMaxExclusionCount || HasOneProbabilityOrLess)
+            {
+                ResetExclusions();
+            }
+
+            newExclusion.ResetDropCount();
+
+            // Create a new exclusion
+            probabilities.Remove(newExclusion);
+            DropChance.DecreaseBy(newExclusion.ChanceToDrop);
+            exclusions.Add(newExclusion);
         }
-
-        newExclusion.ResetDropCount();
-
-        // Create a new exclusion
-        probabilities.Remove(newExclusion);
-        DropChance.DecreaseBy(newExclusion.ChanceToDrop);
-        exclusions.Add(newExclusion);
     }
 
     /// <summary>
@@ -216,7 +224,7 @@ public class ProbablilityMachine
         }
     }
 
-    public void Reset() 
+    public void Reset()
     { 
         ResetExclusions();
         DropChance.ResetChance();

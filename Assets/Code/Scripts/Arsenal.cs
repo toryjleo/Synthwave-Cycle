@@ -143,7 +143,6 @@ public class Arsenal : MonoBehaviour, IResettable
             gun.UpdateBarrelColor(savedData.AllUnlockableGuns[i].barrelColor);
             gun.onOutOfAmmo += RemoveEquippedGun;
 
-
             gunList[i] = gun;
         }
     }
