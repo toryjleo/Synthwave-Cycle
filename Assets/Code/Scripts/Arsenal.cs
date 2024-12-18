@@ -27,6 +27,11 @@ public class Arsenal : MonoBehaviour, IResettable
     /// </summary>
     [SerializeField] private Gun.Gun gunPrefab = null;
 
+    private AreaOfEffect pinkMist = null;
+    [SerializeField] private AreaOfEffect pinkMistPrefab = null;
+    [SerializeField] private GunStats pinkMistStats = null;
+
+
     #region Equipped Guns
     /// <summary>
     /// Represents visible guns player has. Functions as a lookup table that routes to the gun index in gunList.
@@ -93,6 +98,15 @@ public class Arsenal : MonoBehaviour, IResettable
     private void Update()
     {
         GatherPlayerInput();
+
+        if (Input.GetKeyDown(KeyCode.Space)) 
+        {
+
+            pinkMist.Reset();
+            pinkMist.gameObject.SetActive(true);
+            pinkMist.Shoot(transform.position, Vector3.zero, Vector3.zero);
+
+        }
     }
 
     #region Initialization
@@ -146,6 +160,22 @@ public class Arsenal : MonoBehaviour, IResettable
 
             gunList[i] = gun;
         }
+
+        InstantiatePinkMist();
+    }
+
+    private void InstantiatePinkMist() 
+    {
+        pinkMist = Instantiate<AreaOfEffect>(pinkMistPrefab, this.transform);
+        pinkMist.Init(pinkMistStats);
+        pinkMist.Despawn += HandlePinkMistDespawn;
+        pinkMist.gameObject.SetActive(false);
+    }
+
+    private void HandlePinkMistDespawn(SelfDespawn entity) 
+    {
+        pinkMist.Reset();
+        pinkMist.gameObject.SetActive(false);
     }
 
     /// <summary>

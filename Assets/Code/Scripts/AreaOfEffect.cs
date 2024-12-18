@@ -21,7 +21,8 @@ namespace Gun
     /// Implementation of Projectile that deals damage and can grow/shrink over time.
     /// </summary>
     public class AreaOfEffect : Projectile
-    {   
+    {
+        [SerializeField] private bool isPinkMist = false;
         private float timer = 0.0f;
         private AOEPhases currentPhase = 0;
 
@@ -47,7 +48,6 @@ namespace Gun
                 default:
                     break;
             }
-
         }
 
         public override void Reset() 
@@ -81,6 +81,27 @@ namespace Gun
                     otherHealth.TakeDamage(gunStats.DamagePerSecond * deltaTime);
                 }
             }
+        }
+
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (isPinkMist) 
+            {
+                if (other.GetComponent<Ai>() != null)
+                {
+                    Ai ai = other.GetComponent<Ai>();
+                    // TODO: Verify this works when merging with master
+                    ai.Die();
+                }
+
+                BulletProjectile bp = other.GetComponent<BulletProjectile>();
+                if (bp != null && bp.IsEnemyProjectile)
+                {
+                    bp.DespawnSelf();
+                }
+            }
+            
         }
 
         /// <summary>
