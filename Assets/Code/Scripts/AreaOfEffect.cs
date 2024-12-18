@@ -21,7 +21,11 @@ namespace Gun
     /// Implementation of Projectile that deals damage and can grow/shrink over time.
     /// </summary>
     public class AreaOfEffect : Projectile
-    {   
+    {
+        /// <summary>
+        /// Set in custom PinkMist prefab
+        /// </summary>
+        [SerializeField] private bool isPinkMist = false;
         private float timer = 0.0f;
         private AOEPhases currentPhase = 0;
 
@@ -47,7 +51,6 @@ namespace Gun
                 default:
                     break;
             }
-
         }
 
         public override void Reset() 
@@ -82,6 +85,17 @@ namespace Gun
                 }
             }
         }
+
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (isPinkMist) 
+            {
+                PinkMistDestroys(other);
+            }
+            
+        }
+
 
         /// <summary>
         /// Adjusts the timer's time and can transition to sequential phases
@@ -135,6 +149,26 @@ namespace Gun
             curScale.x += growth * deltaTime;
             curScale.z += growth * deltaTime;
             transform.localScale = curScale;
+        }
+
+        /// <summary>
+        /// Pink mist will try to despawn or kill specified collider's object
+        /// </summary>
+        /// <param name="other">Colliding object to try to destroy</param>
+        private void PinkMistDestroys(Collider other)
+        {
+            if (other.GetComponent<Ai>() != null)
+            {
+                Ai ai = other.GetComponent<Ai>();
+                // TODO: Verify this works when merging with master
+                ai.Die();
+            }
+
+            BulletProjectile bp = other.GetComponent<BulletProjectile>();
+            if (bp != null && bp.IsEnemyProjectile)
+            {
+                bp.DespawnSelf();
+            }
         }
     }
 }
