@@ -18,6 +18,11 @@ namespace Gun
 
         internal List<GameObject> alreadyHit = new List<GameObject>();
 
+        public bool IsEnemyProjectile 
+        {
+            get => !gunStats.IsPlayerGun;
+        }
+
         // Update is called once per frame
         public override void Update()
         {
@@ -86,6 +91,11 @@ namespace Gun
         protected void NotifyListenersHit() 
         {
             notifyListenersHit?.Invoke(transform.position);
+        }
+
+        public void DespawnSelf() 
+        {
+            OnDespawn();
         }
     }
 }
