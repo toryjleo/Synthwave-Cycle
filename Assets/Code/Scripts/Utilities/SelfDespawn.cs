@@ -22,6 +22,9 @@ public abstract class SelfDespawn : MonoBehaviour
         UpdateLifetime();
     }
 
+    /// <summary>
+    /// Calls Despawn event
+    /// </summary>
     protected virtual void OnDespawn() // protected virtual method
     {
         // if Despawn is not null then call delegate

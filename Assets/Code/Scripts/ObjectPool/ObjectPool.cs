@@ -32,6 +32,16 @@ namespace Generic
 
         public ArrayList ObjectsInWorld { get => objectsInWorld; }
 
+        private bool NoObjectsAwaitingSpawn 
+        {
+            get => objectsAwaitingSpawn.Count == 0;
+        }
+
+        private bool NoObjectsInWorld 
+        {
+            get => objectsInWorld.Count == 0;
+        }
+
         /// <summary>
         /// The class contructor
         /// </summary>
@@ -92,9 +102,12 @@ namespace Generic
         /// <returns>A currently unused Poolable object.</returns>
         public Poolable SpawnFromPool()
         {
-            // TODO: Throw warning if we have not called PoolObjects() yet
+            if (NoObjectsAwaitingSpawn && NoObjectsInWorld) 
+            {
+                Debug.LogError("Trying to spawn objects before calling PoolObjects()");
+            }
 
-            if (objectsAwaitingSpawn.Count == 0)
+            if (NoObjectsAwaitingSpawn)
             {
                 Poolable newObject = CreateNewPoolableObject();
                 objectsAwaitingSpawn.Enqueue(newObject);
@@ -127,7 +140,8 @@ namespace Generic
         /// </summary>
         public void ResetGameObject()
         {
-            // TODO: when an object gets reset, make sure to not trigger despawn event from SelfWorldDespawn. It will remove itself from objectsInWorld
+            // NOTE: Make sure to not trigger despawn event from SelfWorldDespawn in this method.
+            // It will remove itself from objectsInWorld.
             for (int i = 0; i < objectsInWorld.Count; i++)
             {
                 Poolable b = (Poolable)objectsInWorld[i];
