@@ -86,6 +86,8 @@ namespace EditorObject
         /// Adds a random variation to each projectile's shot
         /// </summary>
         [Range(0, 180)][SerializeField] private float projectileSpread = 0;
+
+        [Range(.01f, 1)][SerializeField] private float percentSpread = 1;
         #endregion
 
         #region Overheat
@@ -178,6 +180,7 @@ namespace EditorObject
         public int ProjectileCountPerShot { get { return projectileCountPerShot; } }
         public float DistanceBetweenProjectiles { get { return distanceBetweenProjectiles; } }
         public float ProjectileSpread { get { return projectileSpread; } }
+        public float PercentSpread { get { return percentSpread; } }
         #endregion
 
         #region Overheat

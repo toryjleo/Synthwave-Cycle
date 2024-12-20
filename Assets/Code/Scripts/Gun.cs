@@ -603,7 +603,9 @@ namespace Gun
             Vector3 initialForward = BulletSpawn.transform.forward;
 
             // Rotate the BulletSpawn to the initial firing position
-            float radius = gunStats.DistanceBetweenProjectiles * (gunStats.ProjectileCountPerShot - 1);
+
+            // TODO: scale by a percentage for accuracy
+            float radius = gunStats.PercentSpread * gunStats.DistanceBetweenProjectiles * (gunStats.ProjectileCountPerShot - 1);
             float angleStart = radius / 2;
             Quaternion rotationToApply = Quaternion.AngleAxis(-angleStart, Vector3.up);
             BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationToApply;
@@ -612,7 +614,8 @@ namespace Gun
 
             for (int i = 0; i < gunStats.ProjectileCountPerShot; i++)
             {
-                float randDegreeRot = rand.NextFloat(-gunStats.ProjectileSpread, gunStats.ProjectileSpread);
+                // TODO: scale by a percentage for accuracy
+                float randDegreeRot = gunStats.PercentSpread * rand.NextFloat(-gunStats.ProjectileSpread, gunStats.ProjectileSpread);
                 Quaternion randomRotation = Quaternion.AngleAxis(randDegreeRot, Vector3.up);
 
                 if (gunStats.ProjectileCountPerShot == 1)

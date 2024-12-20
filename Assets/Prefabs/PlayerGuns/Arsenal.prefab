@@ -44,10 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fb29119b69828b46be33f3ffdfdf754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pinkMist:
+    pinkMistPrefab: {fileID: 8449599044929040007, guid: 65a5bfd23ac76b84895020a3b5e62f88, type: 3}
+    pinkMistStats: {fileID: 11400000, guid: a2817436e2a84d04f9573b56652d3a0b, type: 2}
   savedData: {fileID: 11400000, guid: ccc2313d017186e4bbb934e94ece848d, type: 2}
   gunPrefab: {fileID: 282783825117958716, guid: 92cbfd4f48e2d46409566485c645da27, type: 3}
-  pinkMistPrefab: {fileID: 8449599044929040007, guid: 65a5bfd23ac76b84895020a3b5e62f88, type: 3}
-  pinkMistStats: {fileID: 11400000, guid: a2817436e2a84d04f9573b56652d3a0b, type: 2}
 --- !u!82 &4170937296336823507
 AudioSource:
   m_ObjectHideFlags: 0
