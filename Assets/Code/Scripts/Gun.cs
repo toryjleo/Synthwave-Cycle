@@ -22,7 +22,10 @@ namespace Gun
     public class Gun : MonoBehaviour
     {
 
-        private class Accuracy
+        /// <summary>
+        /// Wrapper Class that manages the current accuracy
+        /// </summary>
+        private class AccuracyManager
         {
             private GunStats stats = null;
             /// <summary>
@@ -30,36 +33,53 @@ namespace Gun
             /// </summary>
             private float m_currentAccuracy = 0;
 
+            /// <summary>
+            /// Firing radius
+            /// </summary>
             public float Radius
             {
                 get => m_currentAccuracy * stats.DistanceBetweenProjectiles * (stats.ProjectileCountPerShot - 1);
             }
 
+            /// <summary>
+            /// Random rotation within the projectile spread
+            /// </summary>
             public float RandomDegreeRotation
             { 
                 get => m_currentAccuracy * Random.Range(-stats.ProjectileSpread, stats.ProjectileSpread);
             }
 
+            /// <summary>
+            /// Distance between each projectile
+            /// </summary>
             public float DistanceBetweenProjectiles
             {
                 get => stats.DistanceBetweenProjectiles * m_currentAccuracy;
             }
 
+            /// <summary>
+            /// True if the stats.MaxAccuracyChange is less than 100 percent
+            /// </summary>
             private bool MaxLessThanOneHundredPercent 
             {
                 get => stats.MaxAccuracyChange < 1.0f;
             }
 
-            public Accuracy(GunStats gunStats)
+            public AccuracyManager(GunStats gunStats)
             {
                 stats = gunStats;
                 Reset();
             }
 
-            public void Update(float deltaTime, bool shootThisFrame) 
+            /// <summary>
+            /// Updates the m_currentAccuracy
+            /// </summary>
+            /// <param name="deltaTime">time since last frame</param>
+            /// <param name="isShooting">true if the player is shooting</param>
+            public void Update(float deltaTime, bool isShooting) 
             {
 
-                if (shootThisFrame) 
+                if (isShooting) 
                 {
                     if (MaxLessThanOneHundredPercent)
                     {
@@ -111,6 +131,9 @@ namespace Gun
             }
         }
 
+        /// <summary>
+        /// Wrapper Class that manages the curren time between shots
+        /// </summary>
         private class TimeBetweenShotsManager 
         {
             private GunStats stats = null;
@@ -119,17 +142,26 @@ namespace Gun
             /// </summary>
             private float m_currentPercentTimeBetweenShots = 0;
             
+            /// <summary>
+            /// Time between each burst shot
+            /// </summary>
             public float TimeBetweenBurstShots
             {
                 get => stats.TimeBetweenBurstShots * m_currentPercentTimeBetweenShots;
             }
 
+            /// <summary>
+            /// Time between each consecutive shot
+            /// </summary>
             public float TimeBetweenShots
             {
                 get => stats.TimeBetweenShots * m_currentPercentTimeBetweenShots;
             }
-            
 
+
+            /// <summary>
+            /// True if the stats.MaxPercentTimeBetweenShots is less than 100 percent
+            /// </summary>
             private bool MaxLessThanOneHundredPercent 
             {
                 get => stats.MaxPercentTimeBetweenShots < 1.0f;
@@ -142,6 +174,11 @@ namespace Gun
                 Reset();
             }
 
+            /// <summary>
+            /// Updates the m_currentPercentTimeBetweenShots
+            /// </summary>
+            /// <param name="deltaTime">time since last frame</param>
+            /// <param name="isShooting">true if the player is shooting</param>
             public void Update(float deltaTime, bool shootThisFrame)
             {
                 if (shootThisFrame)
@@ -189,7 +226,7 @@ namespace Gun
             }
         }
 
-        private Accuracy m_accuracy = null;
+        private AccuracyManager m_accuracy = null;
         private TimeBetweenShotsManager m_timeBetweenShots = null;
         /// <summary>
         /// Data object that defines this gun's stats
@@ -421,7 +458,7 @@ namespace Gun
             }
             else 
             {
-                m_accuracy = new Accuracy(gunStats);
+                m_accuracy = new AccuracyManager(gunStats);
                 m_timeBetweenShots = new TimeBetweenShotsManager(gunStats);
                 turretInputManager = new TurretInputManager(this.transform, crossHair, gunStats.IsTurret);
                 player = FindObjectOfType<PlayerMovement>();

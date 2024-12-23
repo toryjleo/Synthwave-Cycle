@@ -80,7 +80,10 @@ namespace CustomInspector
 
         }
 
-
+        /// <summary>
+        /// Display Time Between Shots Options
+        /// </summary>
+        /// <param name="gunStats">ScriptableObject to modify</param>
         private void TimeBetweenShots(EditorObject.GunStats gunStats)
         {
             EditorGUILayout.Space(SECTION_SPACE);
