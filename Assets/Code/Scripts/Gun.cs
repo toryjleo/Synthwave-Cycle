@@ -45,6 +45,11 @@ namespace Gun
                 get => stats.DistanceBetweenProjectiles * m_currentAccuracy;
             }
 
+            private bool MaxLessThanOneHundredPercent 
+            {
+                get => stats.MaxAccuracyChange < 1.0f;
+            }
+
             public Accuracy(GunStats gunStats)
             {
                 stats = gunStats;
@@ -56,31 +61,30 @@ namespace Gun
 
                 if (shootThisFrame) 
                 {
-                    if (stats.MaxAccuracyChange < 1.0f)
+                    if (MaxLessThanOneHundredPercent)
                     {
-                        m_currentAccuracy -= (stats.DeltaSpreadPerSecond * deltaTime);
+                        m_currentAccuracy -= (stats.DeltaWindUpSpreadPerSecond * deltaTime);
                     }
                     else
                     {
-                        m_currentAccuracy += (stats.DeltaSpreadPerSecond * deltaTime);
+                        m_currentAccuracy += (stats.DeltaWindUpSpreadPerSecond * deltaTime);
                     }
                 }
                 else 
                 {
-                    float slowDownVal = .7f;
-                    if (stats.MaxAccuracyChange < 1.0f)
+                    if (MaxLessThanOneHundredPercent)
                     {
-                        m_currentAccuracy += (stats.DeltaSpreadPerSecond * deltaTime * slowDownVal);
+                        m_currentAccuracy += (stats.DeltaWindDownSpreadPerSecond * deltaTime);
                     }
                     else
                     {
-                        m_currentAccuracy -= (stats.DeltaSpreadPerSecond * deltaTime * slowDownVal);
+                        m_currentAccuracy -= (stats.DeltaWindDownSpreadPerSecond * deltaTime);
                     }
                 }
 
                 float lowerBounds = 0;
                 float upperBounds = 0;
-                if (stats.MaxAccuracyChange < 1.0f)
+                if (MaxLessThanOneHundredPercent)
                 {
                     lowerBounds = stats.MaxAccuracyChange;
                     upperBounds = 1.0f;

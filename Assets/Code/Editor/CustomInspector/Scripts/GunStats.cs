@@ -17,7 +17,7 @@ namespace CustomInspector
         private const int SECTION_SPACE = 8;
 
         private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", };
-        private string[] accuracyOverTime = { "maxChangeToNormalAccuracy", "deltaSpreadPerSecond", };
+        private string[] accuracyOverTime = { "maxChangeToNormalAccuracy", "deltaWindUpSpreadPerSecond", "deltaWindDownSpreadPerSecond" };
         private string[] timeBetweenShots = { "timeBetweenShots", "deltaWindupPercentTimeBetweenShots", "deltaWindDownPercentTimeBetweenShots", "maxPercentTimeBetweenShots" };
         private string[] overheatProps = { "coolDownBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
         private string[] explosionProps = { "radius", "force", "explosionDamage", "isCountDownExplosion" };

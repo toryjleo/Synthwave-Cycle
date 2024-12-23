@@ -92,8 +92,9 @@ namespace EditorObject
         /// </summary>
         [Range(0, 180)][SerializeField] private float projectileSpread = 0;
 
-        [Range(0, 100f)][SerializeField] private float deltaSpreadPerSecond = 0;
-        
+        [Range(0, 100f)][SerializeField] private float deltaWindUpSpreadPerSecond = 0;
+        [Range(0, 100f)][SerializeField] private float deltaWindDownSpreadPerSecond = 0;
+
         // TODO: make this the limit of change
         [Range(.001f, 400f)][SerializeField] private float maxChangeToNormalAccuracy = 100;
         #endregion
@@ -192,7 +193,8 @@ namespace EditorObject
         public int ProjectileCountPerShot { get { return projectileCountPerShot; } }
         public float DistanceBetweenProjectiles { get { return distanceBetweenProjectiles; } }
         public float ProjectileSpread { get { return projectileSpread; } }
-        public float DeltaSpreadPerSecond { get { return deltaSpreadPerSecond / 100f; } }
+        public float DeltaWindUpSpreadPerSecond { get { return deltaWindUpSpreadPerSecond / 100f; } }
+        public float DeltaWindDownSpreadPerSecond { get { return deltaWindDownSpreadPerSecond / 100f; } }
         public float MaxAccuracyChange { get { return maxChangeToNormalAccuracy / 100f; } }
         #endregion
 
