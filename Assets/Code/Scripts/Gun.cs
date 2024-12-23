@@ -38,7 +38,7 @@ namespace Gun
             /// </summary>
             public float Radius
             {
-                get => m_currentAccuracy * stats.DistanceBetweenProjectiles * (stats.ProjectileCountPerShot - 1);
+                get => m_currentAccuracy * stats.DistanceBetweenProjectiles * (stats.ProjectilesReleasedPerShot - 1);
             }
 
             /// <summary>
@@ -475,37 +475,37 @@ namespace Gun
 
                     // TODO: Make this prediction number a single method
 
-                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
-                                                                   gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
+                                                                   gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot;
                     projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, HandleBulletHit);
                     projectilePool.PoolObjects(instantiateCount);
                 }
                 if (areaOfEffectPool == null)
                 {
-                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
-                                                       gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
+                                                       gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot;
                     areaOfEffectPool = new ProjectileObjectPool(gunStats, areaOfEffectPrefab, HandleBulletHit);
                     areaOfEffectPool.PoolObjects(instantiateCount);
                 }
                 if (hitScan == null)
                 {
-                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
-                                                                  gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
+                                                                  gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot;
                     hitScan = new HitScan(gunStats, hitScanBulletTrailPrefab, instantiateCount);
                 }
                 if (explosionPool == null)
                 {
                     int numberOfHits = gunStats.BulletPenetration + 1; // Needs to be 1 more than penetration to get bullet hit number
                     int instantiateCount = gunStats.InfiniteAmmo ?
-                                           INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot * numberOfHits :
-                                           gunStats.AmmoCount * gunStats.ProjectileCountPerShot * numberOfHits;
+                                           INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot * numberOfHits :
+                                           gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot * numberOfHits;
                     explosionPool = new Generic.ObjectPool(gunStats, explosionPrefab);
                     explosionPool.PoolObjects(instantiateCount);
                 }
                 if (impactEffectPool == null)
                 {
-                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
-                                                                   gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
+                                                                   gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot;
                     impactEffectPool = new Generic.ObjectPool(gunStats, impactEffectPrefab);
                     impactEffectPool.PoolObjects(instantiateCount);
                 }
@@ -829,11 +829,11 @@ namespace Gun
 
             Quaternion rotationPerIteration = Quaternion.AngleAxis(m_accuracy.DistanceBetweenProjectiles, Vector3.up);
 
-            for (int i = 0; i < gunStats.ProjectileCountPerShot; i++)
+            for (int i = 0; i < gunStats.ProjectilesReleasedPerShot; i++)
             {   
                 Quaternion randomRotation = Quaternion.AngleAxis(m_accuracy.RandomDegreeRotation, Vector3.up);
 
-                if (gunStats.ProjectileCountPerShot == 1)
+                if (gunStats.ProjectilesReleasedPerShot == 1)
                 {
                     // Case for if we are only shooting once and want to apply a random rotation
                     BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * randomRotation;

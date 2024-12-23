@@ -82,7 +82,7 @@ namespace EditorObject
         /// <summary>
         /// Number of projectiles shot per gun shot
         /// </summary>
-        [Range(1, 40)][SerializeField] private int projectileCountPerShot = 1;
+        [Range(1, 40)][SerializeField] private int projectilesReleasedPerShot = 1;
         /// <summary>
         /// Angle between each projectile shot
         /// </summary>
@@ -190,7 +190,7 @@ namespace EditorObject
         #endregion
 
         #region Multiple Projectiles
-        public int ProjectileCountPerShot { get { return projectileCountPerShot; } }
+        public int ProjectilesReleasedPerShot { get { return projectilesReleasedPerShot; } }
         public float DistanceBetweenProjectiles { get { return distanceBetweenProjectiles; } }
         public float ProjectileSpread { get { return projectileSpread; } }
         public float DeltaWindUpSpreadPerSecond { get { return deltaWindUpSpreadPerSecond / 100f; } }

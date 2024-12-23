@@ -23,6 +23,13 @@ namespace CustomInspector
         private string[] explosionProps = { "radius", "force", "explosionDamage", "isCountDownExplosion" };
         private string[] areaOfEffectProps = { "numPhases" };
         private string[] countdownExplosionProps = { "secondsBeforeExplode" };
+
+        bool showAmmo = true;
+        bool showBulletOptions = false;
+        bool showAccuracy = false;
+        bool showShotTiming = false;
+        bool showExplosions = false;
+        bool showAreaOfEffect = true;
         #endregion
 
         private EditorObject.GunStats GetGunStats
@@ -36,21 +43,16 @@ namespace CustomInspector
         {
             EditorObject.GunStats gunStats = GetGunStats;
 
-            FindAndShowProperties(generalProps);
+            
 
             if (gunStats != null)
             {
-                Accuracy(gunStats);
-                Damage(gunStats);
-                Ammunition(gunStats);
-                TimeBetweenShots(gunStats);
-                MultipleProjectiles(gunStats);
-                Overheat(gunStats);
+                GeneralProps(gunStats);
                 BulletOptions(gunStats);
+                Accuracy(gunStats);
+                TimeBetweenShots(gunStats);
                 Explosions(gunStats);
                 AreaOfEffect(gunStats);
-
-                GeneratedStats(gunStats);
             }
             serializedObject.ApplyModifiedProperties();
 
@@ -59,44 +61,15 @@ namespace CustomInspector
 
 
         #region Custom Methods
-
         /// <summary>
         /// Display Burst Fire options
         /// </summary>
         /// <param name="gunStats">ScriptableObject to modify</param>
-        private void Accuracy(EditorObject.GunStats gunStats)
+        private void GeneralProps(EditorObject.GunStats gunStats)
         {
             EditorGUILayout.Space(SECTION_SPACE);
 
-            EditorGUILayout.LabelField("Accuracy");
-
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileSpread"));
-            if (gunStats.ProjectileCountPerShot > 1)
-            {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("distanceBetweenProjectiles"));
-            }
-
-            FindAndShowProperties(accuracyOverTime);
-
-        }
-
-        /// <summary>
-        /// Display Time Between Shots Options
-        /// </summary>
-        /// <param name="gunStats">ScriptableObject to modify</param>
-        private void TimeBetweenShots(EditorObject.GunStats gunStats)
-        {
-            EditorGUILayout.Space(SECTION_SPACE);
-
-            EditorGUILayout.LabelField("Time Between Shots");
-
-            FindAndShowProperties(timeBetweenShots);
-
-            //Burst Fire checkbox
-            if (gunStats.IsBurstFire)
-            {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("timeBetweenBurstShots"));
-            }
+            FindAndShowProperties(generalProps);
         }
 
         /// <summary>
@@ -107,85 +80,93 @@ namespace CustomInspector
         {
             EditorGUILayout.Space(SECTION_SPACE);
 
-            EditorGUILayout.LabelField("Bullet Options");
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletType"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("numBurstShots"));
+            showBulletOptions = EditorGUILayout.Foldout(showBulletOptions, "Bullet Options");
 
-
-            switch (gunStats.BulletType) 
+            if (showBulletOptions) 
             {
-                case EditorObject.BulletType.HitScan:
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("range"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
-                    break;
-                case EditorObject.BulletType.AreaOfEffect:
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("damagePerSecond"));
-                    break;
-                case EditorObject.BulletType.BulletProjectile:
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("muzzleVelocity"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileScale"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
-                    break;
+                showAmmo = EditorGUILayout.Foldout(showAmmo, "Ammunition");
+                if (showAmmo)
+                {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("infiniteAmmo"));
+                    if (!gunStats.InfiniteAmmo)
+                    {
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("ammoCount"));
+                    }
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("canOverheat"));
+                    //Overheat checkbox
+                    if (gunStats.CanOverheat)
+                    {
+                        FindAndShowProperties(overheatProps);
+                    }
+                }
+                EditorGUILayout.Space(SECTION_SPACE);
 
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletType"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("numBurstShots"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("projectilesReleasedPerShot"));
+
+                switch (gunStats.BulletType)
+                {
+                    case EditorObject.BulletType.HitScan:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("range"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
+                        break;
+                    case EditorObject.BulletType.AreaOfEffect:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("damagePerSecond"));
+                        break;
+                    case EditorObject.BulletType.BulletProjectile:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("muzzleVelocity"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileScale"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
+                        break;
+
+                }
             }
         }
 
         /// <summary>
-        /// Display Damage options
+        /// Display Burst Fire options
         /// </summary>
         /// <param name="gunStats">ScriptableObject to modify</param>
-        private void Damage(EditorObject.GunStats gunStats) 
-        {
-
-
-        }
-
-        /// <summary>
-        /// Display Ammo options
-        /// </summary>
-        /// <param name="gunStats">ScriptableObject to modify</param>
-        private void Ammunition(EditorObject.GunStats gunStats)
+        private void Accuracy(EditorObject.GunStats gunStats)
         {
             EditorGUILayout.Space(SECTION_SPACE);
 
-            EditorGUILayout.LabelField("Ammo");
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("infiniteAmmo"));
-            if (!gunStats.InfiniteAmmo)
+            showAccuracy = EditorGUILayout.Foldout(showAccuracy, "Accuracy");
+            if(showAccuracy) 
             {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("ammoCount"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileSpread"));
+                if (gunStats.ProjectilesReleasedPerShot > 1)
+                {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("distanceBetweenProjectiles"));
+                }
+
+                FindAndShowProperties(accuracyOverTime);
             }
         }
 
         /// <summary>
-        /// Display Overheat options
+        /// Display Time Between Shots Options
         /// </summary>
         /// <param name="gunStats">ScriptableObject to modify</param>
-        private void Overheat(EditorObject.GunStats gunStats)
+        private void TimeBetweenShots(EditorObject.GunStats gunStats)
         {
             EditorGUILayout.Space(SECTION_SPACE);
 
-            EditorGUILayout.LabelField("Overheat");
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("canOverheat"));
-            //Overheat checkbox
-            if (gunStats.CanOverheat)
+            showShotTiming = EditorGUILayout.Foldout(showShotTiming, "Shot Timing");
+
+            if (showShotTiming) 
             {
-                FindAndShowProperties(overheatProps);
+                FindAndShowProperties(timeBetweenShots);
+
+                //Burst Fire checkbox
+                if (gunStats.IsBurstFire)
+                {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("timeBetweenBurstShots"));
+                }
             }
-        }
-
-        /// <summary>
-        /// Display Multiple Projectile options
-        /// </summary>
-        /// <param name="gunStats">ScriptableObject to modify</param>
-        private void MultipleProjectiles(EditorObject.GunStats gunStats)
-        {
-            EditorGUILayout.Space(SECTION_SPACE);
-
-            EditorGUILayout.LabelField("Multiple Projectiles");
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileCountPerShot"));
-            
         }
 
         /// <summary>
@@ -196,14 +177,17 @@ namespace CustomInspector
         {
             EditorGUILayout.Space(SECTION_SPACE);
 
-            EditorGUILayout.LabelField("Explosions");
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("isExplosive"));
-            if (gunStats.IsExplosive)
+            showExplosions = EditorGUILayout.Foldout(showExplosions, "Explosions");
+            if (showExplosions) 
             {
-                FindAndShowProperties(explosionProps);
-                if (gunStats.IsCountDownExplosion)
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("isExplosive"));
+                if (gunStats.IsExplosive)
                 {
-                    FindAndShowProperties(countdownExplosionProps);
+                    FindAndShowProperties(explosionProps);
+                    if (gunStats.IsCountDownExplosion)
+                    {
+                        FindAndShowProperties(countdownExplosionProps);
+                    }
                 }
             }
         }
@@ -214,31 +198,35 @@ namespace CustomInspector
         /// <param name="gunStats">ScriptableObject to modify</param>
         private void AreaOfEffect(EditorObject.GunStats gunStats)
         {
+
+            
+            
             if (gunStats.IsAreaOfEffect)
             {
                 EditorGUILayout.Space(SECTION_SPACE);
 
-                EditorGUILayout.LabelField("Area Of Effect");
+                showAreaOfEffect = EditorGUILayout.Foldout(showAreaOfEffect, "Area Of Effect");
 
-                FindAndShowProperties(areaOfEffectProps);
-
-                switch (gunStats.NumPhases) 
+                if (showAreaOfEffect) 
                 {
-                    case Gun.AOEPhases.Persistant:
-                        break;
-                    case Gun.AOEPhases.OnePhase:
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
-                        break;
-                    case Gun.AOEPhases.TwoPhase:
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty("phase2"));
-                        break;
-                    default: 
-                        break;
-                }
+                    FindAndShowProperties(areaOfEffectProps);
 
+                    switch (gunStats.NumPhases)
+                    {
+                        case Gun.AOEPhases.Persistant:
+                            break;
+                        case Gun.AOEPhases.OnePhase:
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
+                            break;
+                        case Gun.AOEPhases.TwoPhase:
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
+                            EditorGUILayout.PropertyField(serializedObject.FindProperty("phase2"));
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
-            
         }
 
         /// <summary>
@@ -253,6 +241,8 @@ namespace CustomInspector
                 EditorGUILayout.PropertyField(prop);
             }
         }
+
+        // TODO: Move GeneratedStats to relevant field
 
         /// <summary>
         /// Prints labels with statistics generated by specified stats
