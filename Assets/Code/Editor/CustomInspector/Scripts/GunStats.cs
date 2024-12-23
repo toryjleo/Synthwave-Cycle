@@ -16,10 +16,10 @@ namespace CustomInspector
         #region Members
         private const int SECTION_SPACE = 8;
 
-        private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", "projectileSpread", "percentSpread" };
+        private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", };
+        private string[] accuracyOverTime = { "maxChangeToNormalAccuracy", "deltaSpreadPerSecond", };
         private string[] burstFireProps = { "timeBetweenBurstShots" };
         private string[] overheatProps = { "coolDownBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
-        private string[] multipleProjectileProps = { "distanceBetweenProjectiles" };
         private string[] explosionProps = { "radius", "force", "explosionDamage", "isCountDownExplosion" };
         private string[] areaOfEffectProps = { "numPhases" };
         private string[] countdownExplosionProps = { "secondsBeforeExplode" };
@@ -40,6 +40,7 @@ namespace CustomInspector
 
             if (gunStats != null)
             {
+                Accuracy(gunStats);
                 Damage(gunStats);
                 Ammunition(gunStats);
                 BurstFire(gunStats);
@@ -58,6 +59,27 @@ namespace CustomInspector
 
 
         #region Custom Methods
+
+        /// <summary>
+        /// Display Burst Fire options
+        /// </summary>
+        /// <param name="gunStats">ScriptableObject to modify</param>
+        private void Accuracy(EditorObject.GunStats gunStats)
+        {
+            EditorGUILayout.Space(SECTION_SPACE);
+
+            EditorGUILayout.LabelField("Accuracy");
+
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileSpread"));
+            if (gunStats.ProjectileCountPerShot > 1)
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("distanceBetweenProjectiles"));
+            }
+
+            FindAndShowProperties(accuracyOverTime);
+
+        }
+
         /// <summary>
         /// Display Burst Fire options
         /// </summary>
@@ -161,10 +183,7 @@ namespace CustomInspector
 
             EditorGUILayout.LabelField("Multiple Projectiles");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileCountPerShot"));
-            if (gunStats.ProjectileCountPerShot > 1)
-            {
-                FindAndShowProperties(multipleProjectileProps);
-            }
+            
         }
 
         /// <summary>

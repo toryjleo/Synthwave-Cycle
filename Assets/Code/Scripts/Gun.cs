@@ -21,6 +21,93 @@ namespace Gun
     /// </summary>
     public class Gun : MonoBehaviour
     {
+
+        private class Accuracy
+        {
+            private GunStats stats = null;
+            /// <summary>
+            /// Adjustable Accuracy
+            /// </summary>
+            private float m_currentAccuracy = 0;
+
+            public float Radius
+            {
+                get => m_currentAccuracy * stats.DistanceBetweenProjectiles * (stats.ProjectileCountPerShot - 1);
+            }
+
+            public float RandomDegreeRotation
+            { 
+                get => m_currentAccuracy * Random.Range(-stats.ProjectileSpread, stats.ProjectileSpread);
+            }
+
+            public float DistanceBetweenProjectiles
+            {
+                get => stats.DistanceBetweenProjectiles * m_currentAccuracy;
+            }
+
+            public Accuracy(GunStats gunStats)
+            {
+                stats = gunStats;
+                Reset();
+            }
+
+            public void Update(float deltaTime, bool shootThisFrame) 
+            {
+
+                if (shootThisFrame) 
+                {
+                    if (stats.MaxAccuracyChange < 1.0f)
+                    {
+                        m_currentAccuracy -= (stats.DeltaSpreadPerSecond * deltaTime);
+                    }
+                    else
+                    {
+                        m_currentAccuracy += (stats.DeltaSpreadPerSecond * deltaTime);
+                    }
+                }
+                else 
+                {
+                    float slowDownVal = .7f;
+                    if (stats.MaxAccuracyChange < 1.0f)
+                    {
+                        m_currentAccuracy += (stats.DeltaSpreadPerSecond * deltaTime * slowDownVal);
+                    }
+                    else
+                    {
+                        m_currentAccuracy -= (stats.DeltaSpreadPerSecond * deltaTime * slowDownVal);
+                    }
+                }
+
+                float lowerBounds = 0;
+                float upperBounds = 0;
+                if (stats.MaxAccuracyChange < 1.0f)
+                {
+                    lowerBounds = stats.MaxAccuracyChange;
+                    upperBounds = 1.0f;
+                }
+                else
+                {
+                    lowerBounds = 1.0f;
+                    upperBounds = stats.MaxAccuracyChange;
+                }
+
+                Debug.Log("Max accuracy change: " + stats.MaxAccuracyChange);
+                Debug.Log("Clamped value: " + Mathf.Clamp(m_currentAccuracy, lowerBounds, upperBounds));
+
+                m_currentAccuracy = Mathf.Clamp(m_currentAccuracy, lowerBounds, upperBounds);
+
+
+                // Debug.Log("m_currentAccuracy: " + m_currentAccuracy);
+
+            }
+
+            public void Reset() 
+            {
+                m_currentAccuracy = 1.0f;
+            }
+        }
+
+        private Accuracy m_Accuracy = null;
         /// <summary>
         /// Data object that defines this gun's stats
         /// </summary>
@@ -227,6 +314,7 @@ namespace Gun
             nextTimeToFireBurst = 0.0f;
             overHeatPercent = 0.0f;
 
+            m_Accuracy.Reset();
             stateController.Reset();
             hitScan.Reset();
 
@@ -243,54 +331,62 @@ namespace Gun
         /// </summary>
         private void GatherMemberReferences()
         {
-            turretInputManager = new TurretInputManager(this.transform, crossHair, gunStats.IsTurret);
-            player = FindObjectOfType<PlayerMovement>();
+            if (gunStats  == null) 
+            {
+                Debug.LogError("Gunstats is null");
+            }
+            else 
+            {
+                m_Accuracy = new Accuracy(gunStats);
+                turretInputManager = new TurretInputManager(this.transform, crossHair, gunStats.IsTurret);
+                player = FindObjectOfType<PlayerMovement>();
 
-            stateController = new GunState.StateController(gunStats.NumBurstShots, gunStats.PrintDebugState);
-            impactManager = FindObjectOfType<ImpactManager>();
-            if (impactManager == null)
-            {
-                Debug.LogError("There is no impactManager in the scene!");
-            }
+                stateController = new GunState.StateController(gunStats.NumBurstShots, gunStats.PrintDebugState);
+                impactManager = FindObjectOfType<ImpactManager>();
+                if (impactManager == null)
+                {
+                    Debug.LogError("There is no impactManager in the scene!");
+                }
 
-            if (projectilePool == null)
-            {
+                if (projectilePool == null)
+                {
 
-                // TODO: Make this prediction number a single method
+                    // TODO: Make this prediction number a single method
 
-                int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
-                                                               gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
-                projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, HandleBulletHit);
-                projectilePool.PoolObjects(instantiateCount);
-            }
-            if (areaOfEffectPool == null)
-            {
-                int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
-                                                   gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
-                areaOfEffectPool = new ProjectileObjectPool(gunStats, areaOfEffectPrefab, HandleBulletHit);
-                areaOfEffectPool.PoolObjects(instantiateCount);
-            }
-            if (hitScan == null)
-            {
-                int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
-                                                              gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
-                hitScan = new HitScan(gunStats, hitScanBulletTrailPrefab, instantiateCount);
-            }
-            if (explosionPool == null)
-            {
-                int numberOfHits = gunStats.BulletPenetration + 1; // Needs to be 1 more than penetration to get bullet hit number
-                int instantiateCount = gunStats.InfiniteAmmo ?
-                                       INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot * numberOfHits :
-                                       gunStats.AmmoCount * gunStats.ProjectileCountPerShot * numberOfHits;
-                explosionPool = new Generic.ObjectPool(gunStats, explosionPrefab);
-                explosionPool.PoolObjects(instantiateCount);
-            }
-            if (impactEffectPool == null)
-            {
-                int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
-                                                               gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
-                impactEffectPool = new Generic.ObjectPool(gunStats, impactEffectPrefab);
-                impactEffectPool.PoolObjects(instantiateCount);
+                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
+                                                                   gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                    projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, HandleBulletHit);
+                    projectilePool.PoolObjects(instantiateCount);
+                }
+                if (areaOfEffectPool == null)
+                {
+                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
+                                                       gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                    areaOfEffectPool = new ProjectileObjectPool(gunStats, areaOfEffectPrefab, HandleBulletHit);
+                    areaOfEffectPool.PoolObjects(instantiateCount);
+                }
+                if (hitScan == null)
+                {
+                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
+                                                                  gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                    hitScan = new HitScan(gunStats, hitScanBulletTrailPrefab, instantiateCount);
+                }
+                if (explosionPool == null)
+                {
+                    int numberOfHits = gunStats.BulletPenetration + 1; // Needs to be 1 more than penetration to get bullet hit number
+                    int instantiateCount = gunStats.InfiniteAmmo ?
+                                           INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot * numberOfHits :
+                                           gunStats.AmmoCount * gunStats.ProjectileCountPerShot * numberOfHits;
+                    explosionPool = new Generic.ObjectPool(gunStats, explosionPrefab);
+                    explosionPool.PoolObjects(instantiateCount);
+                }
+                if (impactEffectPool == null)
+                {
+                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectileCountPerShot :
+                                                                   gunStats.AmmoCount * gunStats.ProjectileCountPerShot;
+                    impactEffectPool = new Generic.ObjectPool(gunStats, impactEffectPrefab);
+                    impactEffectPool.PoolObjects(instantiateCount);
+                }
             }
         }
 
@@ -486,6 +582,7 @@ namespace Gun
             UpdateNextTimeToBurstFire(deltaTime);
 
             UpdateOverHeat(deltaTime);
+            m_Accuracy.Update(deltaTime, ExternalFire);
         }
 
         /// <summary>
@@ -603,20 +700,15 @@ namespace Gun
             Vector3 initialForward = BulletSpawn.transform.forward;
 
             // Rotate the BulletSpawn to the initial firing position
-
-            // TODO: scale by a percentage for accuracy
-            float radius = gunStats.PercentSpread * gunStats.DistanceBetweenProjectiles * (gunStats.ProjectileCountPerShot - 1);
-            float angleStart = radius / 2;
+            float angleStart = m_Accuracy.Radius / 2;
             Quaternion rotationToApply = Quaternion.AngleAxis(-angleStart, Vector3.up);
             BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationToApply;
 
-            Quaternion rotationPerIteration = Quaternion.AngleAxis(gunStats.DistanceBetweenProjectiles, Vector3.up);
+            Quaternion rotationPerIteration = Quaternion.AngleAxis(m_Accuracy.DistanceBetweenProjectiles, Vector3.up);
 
             for (int i = 0; i < gunStats.ProjectileCountPerShot; i++)
-            {
-                // TODO: scale by a percentage for accuracy
-                float randDegreeRot = gunStats.PercentSpread * rand.NextFloat(-gunStats.ProjectileSpread, gunStats.ProjectileSpread);
-                Quaternion randomRotation = Quaternion.AngleAxis(randDegreeRot, Vector3.up);
+            {   
+                Quaternion randomRotation = Quaternion.AngleAxis(m_Accuracy.RandomDegreeRotation, Vector3.up);
 
                 if (gunStats.ProjectileCountPerShot == 1)
                 {
