@@ -46,6 +46,11 @@ namespace EditorObject
         /// Number of seconds after the final shot the gun must wait before shooting again
         /// </summary>
         [Range(0.01f, 20f)][SerializeField] private float timeBetweenShots = 10f;
+
+        [Range(0.01f, 100)][SerializeField] private float deltaWindupPercentTimeBetweenShots = 0.0f;
+        [Range(0.01f, 100)][SerializeField] private float deltaWindDownPercentTimeBetweenShots = 0.0f;
+        [Range(0.01f, 400)][SerializeField] private float maxPercentTimeBetweenShots = 100.0f;
+
         /// <summary>
         /// Number of hit points to depleat on bullet hit
         /// </summary>
@@ -172,6 +177,10 @@ namespace EditorObject
         public int NumBurstShots { get { return numBurstShots; } }
         public float TimeBetweenBurstShots { get { return timeBetweenBurstShots; } }
         public float TimeBetweenShots { get { return timeBetweenShots; } }
+        public float DeltaWindupPercentTimeBetweenShots { get { return deltaWindupPercentTimeBetweenShots / 100f; } }
+        public float DeltaWindDownPercentTimeBetweenShots { get { return deltaWindDownPercentTimeBetweenShots / 100f; } }
+        public float MaxPercentTimeBetweenShots { get { return maxPercentTimeBetweenShots / 100f; } }
+
         #endregion
 
         #region Ammo

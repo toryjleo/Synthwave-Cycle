@@ -16,9 +16,9 @@ namespace CustomInspector
         #region Members
         private const int SECTION_SPACE = 8;
 
-        private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", "timeBetweenShots", };
+        private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", };
         private string[] accuracyOverTime = { "maxChangeToNormalAccuracy", "deltaSpreadPerSecond", };
-        private string[] burstFireProps = { "timeBetweenBurstShots" };
+        private string[] timeBetweenShots = { "timeBetweenShots", "deltaWindupPercentTimeBetweenShots", "deltaWindDownPercentTimeBetweenShots", "maxPercentTimeBetweenShots" };
         private string[] overheatProps = { "coolDownBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
         private string[] explosionProps = { "radius", "force", "explosionDamage", "isCountDownExplosion" };
         private string[] areaOfEffectProps = { "numPhases" };
@@ -43,7 +43,7 @@ namespace CustomInspector
                 Accuracy(gunStats);
                 Damage(gunStats);
                 Ammunition(gunStats);
-                BurstFire(gunStats);
+                TimeBetweenShots(gunStats);
                 MultipleProjectiles(gunStats);
                 Overheat(gunStats);
                 BulletOptions(gunStats);
@@ -80,21 +80,19 @@ namespace CustomInspector
 
         }
 
-        /// <summary>
-        /// Display Burst Fire options
-        /// </summary>
-        /// <param name="gunStats">ScriptableObject to modify</param>
-        private void BurstFire(EditorObject.GunStats gunStats)
+
+        private void TimeBetweenShots(EditorObject.GunStats gunStats)
         {
             EditorGUILayout.Space(SECTION_SPACE);
 
-            EditorGUILayout.LabelField("Burst Fire");
+            EditorGUILayout.LabelField("Time Between Shots");
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("numBurstShots"));
+            FindAndShowProperties(timeBetweenShots);
+
             //Burst Fire checkbox
             if (gunStats.IsBurstFire)
             {
-                FindAndShowProperties(burstFireProps);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("timeBetweenBurstShots"));
             }
         }
 
@@ -108,6 +106,7 @@ namespace CustomInspector
 
             EditorGUILayout.LabelField("Bullet Options");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletType"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("numBurstShots"));
 
 
             switch (gunStats.BulletType) 

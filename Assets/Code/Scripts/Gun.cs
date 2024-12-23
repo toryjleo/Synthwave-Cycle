@@ -107,7 +107,86 @@ namespace Gun
             }
         }
 
-        private Accuracy m_Accuracy = null;
+        private class TimeBetweenShotsManager 
+        {
+            private GunStats stats = null;
+            /// <summary>
+            /// Adjustable TimeBetweenShots
+            /// </summary>
+            private float m_currentPercentTimeBetweenShots = 0;
+            
+            public float TimeBetweenBurstShots
+            {
+                get => stats.TimeBetweenBurstShots * m_currentPercentTimeBetweenShots;
+            }
+
+            public float TimeBetweenShots
+            {
+                get => stats.TimeBetweenShots * m_currentPercentTimeBetweenShots;
+            }
+            
+
+            private bool MaxLessThanOneHundredPercent 
+            {
+                get => stats.MaxPercentTimeBetweenShots < 1.0f;
+            }
+                        
+
+            public TimeBetweenShotsManager(GunStats gunStats)
+            {
+                stats = gunStats;
+                Reset();
+            }
+
+            public void Update(float deltaTime, bool shootThisFrame)
+            {
+                if (shootThisFrame)
+                {
+                    if (MaxLessThanOneHundredPercent)
+                    {
+                        m_currentPercentTimeBetweenShots -= (stats.DeltaWindupPercentTimeBetweenShots * deltaTime);
+                    }
+                    else
+                    {
+                        m_currentPercentTimeBetweenShots += (stats.DeltaWindupPercentTimeBetweenShots * deltaTime);
+                    }
+                }
+                else
+                {
+                    if (MaxLessThanOneHundredPercent)
+                    {
+                        m_currentPercentTimeBetweenShots += (stats.DeltaWindDownPercentTimeBetweenShots * deltaTime);
+                    }
+                    else
+                    {
+                        m_currentPercentTimeBetweenShots -= (stats.DeltaWindDownPercentTimeBetweenShots * deltaTime);
+                    }
+                }
+
+                float lowerBounds = 0;
+                float upperBounds = 0;
+                if (MaxLessThanOneHundredPercent)
+                {
+                    lowerBounds = stats.MaxPercentTimeBetweenShots;
+                    upperBounds = 1.0f;
+                }
+                else
+                {
+                    lowerBounds = 1.0f;
+                    upperBounds = stats.MaxPercentTimeBetweenShots;
+                }
+
+                m_currentPercentTimeBetweenShots = Mathf.Clamp(m_currentPercentTimeBetweenShots, lowerBounds, upperBounds);
+            }
+
+            public void Reset()
+            {
+                m_currentPercentTimeBetweenShots = 1;
+            }
+        }
+
+        private Accuracy m_accuracy = null;
+        private TimeBetweenShotsManager m_timeBetweenShots = null;
         /// <summary>
         /// Data object that defines this gun's stats
         /// </summary>
@@ -314,7 +393,8 @@ namespace Gun
             nextTimeToFireBurst = 0.0f;
             overHeatPercent = 0.0f;
 
-            m_Accuracy.Reset();
+            m_accuracy.Reset();
+            m_timeBetweenShots.Reset();
             stateController.Reset();
             hitScan.Reset();
 
@@ -337,7 +417,8 @@ namespace Gun
             }
             else 
             {
-                m_Accuracy = new Accuracy(gunStats);
+                m_accuracy = new Accuracy(gunStats);
+                m_timeBetweenShots = new TimeBetweenShotsManager(gunStats);
                 turretInputManager = new TurretInputManager(this.transform, crossHair, gunStats.IsTurret);
                 player = FindObjectOfType<PlayerMovement>();
 
@@ -422,7 +503,7 @@ namespace Gun
         public void HandleFireBurstShotEnter()
         {
             FireOnce();
-            nextTimeToFireBurst = gunStats.TimeBetweenBurstShots;
+            nextTimeToFireBurst = m_timeBetweenShots.TimeBetweenBurstShots;
         }
 
         /// <summary>
@@ -430,7 +511,7 @@ namespace Gun
         /// </summary>
         public void HandleBetweenShotsEnter()
         {
-            nextTimeToFire = gunStats.TimeBetweenShots;
+            nextTimeToFire = 0;
         }
 
         /// <summary>
@@ -582,7 +663,8 @@ namespace Gun
             UpdateNextTimeToBurstFire(deltaTime);
 
             UpdateOverHeat(deltaTime);
-            m_Accuracy.Update(deltaTime, ExternalFire);
+            m_accuracy.Update(deltaTime, ExternalFire);
+            m_timeBetweenShots.Update(deltaTime, ExternalFire);
         }
 
         /// <summary>
@@ -602,9 +684,9 @@ namespace Gun
         /// <param name="deltaTime">Amount of time since last frame update</param>
         private void UpdateNextTimeToFire(float deltaTime)
         {
-            nextTimeToFire = Mathf.Clamp(nextTimeToFire - deltaTime, 0, float.MaxValue);
+            nextTimeToFire = Mathf.Clamp(nextTimeToFire + deltaTime, 0, float.MaxValue);
 
-            if (nextTimeToFire == 0)
+            if (nextTimeToFire > m_timeBetweenShots.TimeBetweenShots)
             {
                 stateController.HandleTrigger(GunState.StateTrigger.TimeToFireComplete);
             }
@@ -700,15 +782,15 @@ namespace Gun
             Vector3 initialForward = BulletSpawn.transform.forward;
 
             // Rotate the BulletSpawn to the initial firing position
-            float angleStart = m_Accuracy.Radius / 2;
+            float angleStart = m_accuracy.Radius / 2;
             Quaternion rotationToApply = Quaternion.AngleAxis(-angleStart, Vector3.up);
             BulletSpawn.transform.rotation = BulletSpawn.transform.rotation * rotationToApply;
 
-            Quaternion rotationPerIteration = Quaternion.AngleAxis(m_Accuracy.DistanceBetweenProjectiles, Vector3.up);
+            Quaternion rotationPerIteration = Quaternion.AngleAxis(m_accuracy.DistanceBetweenProjectiles, Vector3.up);
 
             for (int i = 0; i < gunStats.ProjectileCountPerShot; i++)
             {   
-                Quaternion randomRotation = Quaternion.AngleAxis(m_Accuracy.RandomDegreeRotation, Vector3.up);
+                Quaternion randomRotation = Quaternion.AngleAxis(m_accuracy.RandomDegreeRotation, Vector3.up);
 
                 if (gunStats.ProjectileCountPerShot == 1)
                 {
