@@ -18,8 +18,10 @@ namespace CustomInspector
         private const int SECTION_SPACE = 8;
 
         private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", };
+        private string[] accuracy = { "randomSpreadPerProjectile", "projectilesReleasedPerShot" };
         private string[] accuracyOverTime = { "deltaWindUpSpreadPerSecond", "deltaWindDownSpreadPerSecond" };
-        private string[] timeBetweenShots = { "timeBetweenShots", "deltaWindupPercentTimeBetweenShots", "deltaWindDownPercentTimeBetweenShots", "maxPercentTimeBetweenShots", "numBurstShots", "projectilesReleasedPerShot" };
+        private string[] timeBetweenShots = { "timeBetweenShots", "numBurstShots" };
+        private string[] timeBetweenShotsOverTime = { "deltaWindupPercentTimeBetweenShots", "deltaWindDownPercentTimeBetweenShots",};
         private string[] overheatProps = { "coolDownPercentageBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
         private string[] explosionProps = { "radius", "force", "explosionDamage", "isCountDownExplosion" };
 
@@ -132,7 +134,7 @@ namespace CustomInspector
             showAccuracy = EditorGUILayout.Foldout(showAccuracy, "Accuracy");
             if (showAccuracy) 
             {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("randomSpreadPerProjectile"));
+                FindAndShowProperties(accuracy);
                 if (gunStats.ProjectilesReleasedPerShot > 1)
                 {
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("angleBetweenProjectiles"));
@@ -165,15 +167,24 @@ namespace CustomInspector
                 {
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("timeBetweenBurstShots"));
                 }
+
+
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("timeBetweenShotsArrivalOverTime"));
+                if (gunStats.TimeBetweenShotsArrivalOverTime != 1)
+                {
+                    FindAndShowProperties(timeBetweenShotsOverTime);
+                }
+
+
+                // Time Between Player Fire
+                float timeBetweenPlayerFire = gunStats.TimeBetweenShots;
+                if (gunStats.IsBurstFire)
+                {
+                    timeBetweenPlayerFire += ((gunStats.NumBurstShots - 1) * gunStats.TimeBetweenBurstShots);
+                }
+                EditorGUILayout.LabelField("Time Between Player Fire (without time change): " + timeBetweenPlayerFire + " seconds");
             }
 
-            // Time Between Player Fire
-            float timeBetweenPlayerFire = gunStats.TimeBetweenShots;
-            if (gunStats.IsBurstFire)
-            {
-                timeBetweenPlayerFire += ((gunStats.NumBurstShots - 1) * gunStats.TimeBetweenBurstShots);
-            }
-            EditorGUILayout.LabelField("Time Between Player Fire: " + timeBetweenPlayerFire + " seconds");
         }
 
         #region Bullet Effects

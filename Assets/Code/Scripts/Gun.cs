@@ -164,7 +164,7 @@ namespace Gun
             /// </summary>
             private bool MaxLessThanOneHundredPercent 
             {
-                get => stats.MaxPercentTimeBetweenShots < 1.0f;
+                get => stats.TimeBetweenShotsArrivalOverTime < 1.0f;
             }
                         
 
@@ -208,13 +208,13 @@ namespace Gun
                 float upperBounds = 0;
                 if (MaxLessThanOneHundredPercent)
                 {
-                    lowerBounds = stats.MaxPercentTimeBetweenShots;
+                    lowerBounds = stats.TimeBetweenShotsArrivalOverTime;
                     upperBounds = 1.0f;
                 }
                 else
                 {
                     lowerBounds = 1.0f;
-                    upperBounds = stats.MaxPercentTimeBetweenShots;
+                    upperBounds = stats.TimeBetweenShotsArrivalOverTime;
                 }
 
                 m_currentPercentTimeBetweenShots = Mathf.Clamp(m_currentPercentTimeBetweenShots, lowerBounds, upperBounds);
