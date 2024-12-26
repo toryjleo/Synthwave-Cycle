@@ -233,6 +233,10 @@ namespace EditorObject
         public float SecondsBeforeExplode { get { return secondsBeforeExplode; } }
         #endregion
 
+
+        public bool IsHitScan { get { return BulletType == EditorObject.BulletType.HitScan; } }
+        public bool IsBulletProjectile { get { return BulletType == EditorObject.BulletType.BulletProjectile; } }
+
         #region Area of Effect
         public bool IsAreaOfEffect { get { return BulletType == EditorObject.BulletType.AreaOfEffect; } }
         public float DamagePerSecond { get { return damagePerSecond; } }
