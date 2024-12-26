@@ -169,8 +169,8 @@ namespace CustomInspector
                 }
 
 
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("timeBetweenShotsArrivalOverTime"));
-                if (gunStats.TimeBetweenShotsArrivalOverTime != 1)
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("timeBetweenShotsScalingOverTime"));
+                if (gunStats.TimeBetweenShotsScalingOverTime != 1)
                 {
                     FindAndShowProperties(timeBetweenShotsOverTime);
                 }

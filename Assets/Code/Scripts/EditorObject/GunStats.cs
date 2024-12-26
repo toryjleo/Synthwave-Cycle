@@ -49,7 +49,7 @@ namespace EditorObject
 
         [Range(0.01f, 100)][SerializeField] private float deltaWindupPercentTimeBetweenShots = 0.0f;
         [Range(0.01f, 100)][SerializeField] private float deltaWindDownPercentTimeBetweenShots = 0.0f;
-        [Range(0.01f, 400)][SerializeField] private float timeBetweenShotsArrivalOverTime = 100.0f;
+        [Range(0.01f, 400)][SerializeField] private float timeBetweenShotsScalingOverTime = 100.0f;
 
         /// <summary>
         /// Number of hit points to depleat on bullet hit
@@ -180,7 +180,7 @@ namespace EditorObject
         public float TimeBetweenShots { get { return timeBetweenShots; } }
         public float DeltaWindupPercentTimeBetweenShots { get { return deltaWindupPercentTimeBetweenShots / 100f; } }
         public float DeltaWindDownPercentTimeBetweenShots { get { return deltaWindDownPercentTimeBetweenShots / 100f; } }
-        public float TimeBetweenShotsArrivalOverTime { get { return timeBetweenShotsArrivalOverTime / 100f; } }
+        public float TimeBetweenShotsScalingOverTime { get { return timeBetweenShotsScalingOverTime / 100f; } }
 
         #endregion
 
