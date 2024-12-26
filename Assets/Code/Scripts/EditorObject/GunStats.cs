@@ -17,7 +17,7 @@ namespace EditorObject
         /// <summary>
         /// In seconds
         /// </summary>
-        public float Duration;
+        public float DurationInSeconds;
         /// <summary>
         /// In meters/second
         /// </summary>
@@ -60,7 +60,7 @@ namespace EditorObject
         /// <summary>
         /// If the gun has infinite ammo
         /// </summary>
-        [SerializeField] private bool infiniteAmmo = true;
+        [SerializeField] private bool hasInfiniteAmmo = true;
         /// <summary>
         /// Number of shots before the gun runs out of ammo
         /// </summary>
@@ -105,9 +105,9 @@ namespace EditorObject
         /// </summary>
         [SerializeField] private bool canOverheat = false;
         /// <summary>
-        /// The amount the gun must cool down to before shooting again
+        /// The percentage the gun must cool down to before shooting again
         /// </summary>
-        [Range(0, 100)][SerializeField] private float coolDownBarrier = 50;
+        [Range(0, 100)][SerializeField] private float coolDownPercentageBarrier = 50;
         /// <summary>
         /// How much each shot will overheat the gun
         /// </summary>
@@ -185,7 +185,7 @@ namespace EditorObject
         #endregion
 
         #region Ammo
-        public bool InfiniteAmmo { get { return infiniteAmmo; } }
+        public bool HasInfiniteAmmo { get { return hasInfiniteAmmo; } }
         public int AmmoCount { get { return ammoCount; } }
         #endregion
 
@@ -200,7 +200,7 @@ namespace EditorObject
 
         #region Overheat
         public bool CanOverheat { get { return canOverheat; } }
-        public float CoolDownBarrier { get { return coolDownBarrier; } }
+        public float CoolDownPercentageBarrier { get { return coolDownPercentageBarrier; } }
         public float OverHeatPercentPerShot { get { return overHeatPercentPerShot; } }
         public float CoolDownPerSecond { get { return coolDownPerSecond; } }
         #endregion

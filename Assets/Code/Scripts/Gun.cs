@@ -475,28 +475,28 @@ namespace Gun
 
                     // TODO: Make this prediction number a single method
 
-                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
+                    int instantiateCount = gunStats.HasInfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
                                                                    gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot;
                     projectilePool = new ProjectileObjectPool(gunStats, bulletPrefab, HandleBulletHit);
                     projectilePool.PoolObjects(instantiateCount);
                 }
                 if (areaOfEffectPool == null)
                 {
-                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
+                    int instantiateCount = gunStats.HasInfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
                                                        gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot;
                     areaOfEffectPool = new ProjectileObjectPool(gunStats, areaOfEffectPrefab, HandleBulletHit);
                     areaOfEffectPool.PoolObjects(instantiateCount);
                 }
                 if (hitScan == null)
                 {
-                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
+                    int instantiateCount = gunStats.HasInfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
                                                                   gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot;
                     hitScan = new HitScan(gunStats, hitScanBulletTrailPrefab, instantiateCount);
                 }
                 if (explosionPool == null)
                 {
                     int numberOfHits = gunStats.BulletPenetration + 1; // Needs to be 1 more than penetration to get bullet hit number
-                    int instantiateCount = gunStats.InfiniteAmmo ?
+                    int instantiateCount = gunStats.HasInfiniteAmmo ?
                                            INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot * numberOfHits :
                                            gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot * numberOfHits;
                     explosionPool = new Generic.ObjectPool(gunStats, explosionPrefab);
@@ -504,7 +504,7 @@ namespace Gun
                 }
                 if (impactEffectPool == null)
                 {
-                    int instantiateCount = gunStats.InfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
+                    int instantiateCount = gunStats.HasInfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
                                                                    gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot;
                     impactEffectPool = new Generic.ObjectPool(gunStats, impactEffectPrefab);
                     impactEffectPool.PoolObjects(instantiateCount);
@@ -756,7 +756,7 @@ namespace Gun
         {
             overHeatPercent = Mathf.Clamp(overHeatPercent - (deltaTime * gunStats.CoolDownPerSecond), 0, 100);
 
-            if (overHeatPercent < gunStats.CoolDownBarrier && stateController.IsOverHeated)
+            if (overHeatPercent < gunStats.CoolDownPercentageBarrier && stateController.IsOverHeated)
             {
                 stateController.HandleTrigger(GunState.StateTrigger.OverHeatComplete);
             }

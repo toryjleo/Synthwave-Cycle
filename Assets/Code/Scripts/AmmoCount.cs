@@ -35,7 +35,7 @@ public class AmmoCount
 
     public AmmoCount(EditorObject.GunStats gunStats)
     {
-        infiniteAmmo = gunStats.InfiniteAmmo;
+        infiniteAmmo = gunStats.HasInfiniteAmmo;
         maxAmmo = gunStats.AmmoCount;
         ammoCount = gunStats.AmmoCount;
     }

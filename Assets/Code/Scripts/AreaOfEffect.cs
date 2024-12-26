@@ -108,13 +108,13 @@ namespace Gun
             switch (currentPhase) 
             {
                 case AOEPhases.TwoPhase:
-                    if (timer >= gunStats.Phase2.Duration)
+                    if (timer >= gunStats.Phase2.DurationInSeconds)
                     {
                         OnDespawn();
                     }
                     break;
                 case AOEPhases.OnePhase:
-                    if (timer >= gunStats.Phase1.Duration)
+                    if (timer >= gunStats.Phase1.DurationInSeconds)
                     {
                         timer = 0;
                         currentPhase++;

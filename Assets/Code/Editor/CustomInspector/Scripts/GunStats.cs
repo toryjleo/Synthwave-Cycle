@@ -18,10 +18,11 @@ namespace CustomInspector
 
         private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", };
         private string[] accuracyOverTime = { "maxChangeToNormalAccuracy", "deltaWindUpSpreadPerSecond", "deltaWindDownSpreadPerSecond" };
-        private string[] timeBetweenShots = { "timeBetweenShots", "deltaWindupPercentTimeBetweenShots", "deltaWindDownPercentTimeBetweenShots", "maxPercentTimeBetweenShots" };
-        private string[] overheatProps = { "coolDownBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
+        private string[] timeBetweenShots = { "timeBetweenShots", "deltaWindupPercentTimeBetweenShots", "deltaWindDownPercentTimeBetweenShots", "maxPercentTimeBetweenShots", "numBurstShots", "projectilesReleasedPerShot" };
+        private string[] overheatProps = { "coolDownPercentageBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
         private string[] explosionProps = { "radius", "force", "explosionDamage", "isCountDownExplosion" };
-        private string[] areaOfEffectProps = { "numPhases" };
+        private string[] areaOfEffectProps = { "damagePerSecond", "numPhases", };
+
         private string[] countdownExplosionProps = { "secondsBeforeExplode" };
 
         bool showAmmo = true;
@@ -51,8 +52,6 @@ namespace CustomInspector
                 BulletOptions(gunStats);
                 Accuracy(gunStats);
                 TimeBetweenShots(gunStats);
-                Explosions(gunStats);
-                AreaOfEffect(gunStats);
             }
             serializedObject.ApplyModifiedProperties();
 
@@ -87,8 +86,8 @@ namespace CustomInspector
                 showAmmo = EditorGUILayout.Foldout(showAmmo, "Ammunition");
                 if (showAmmo)
                 {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("infiniteAmmo"));
-                    if (!gunStats.InfiniteAmmo)
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("hasInfiniteAmmo"));
+                    if (!gunStats.HasInfiniteAmmo)
                     {
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("ammoCount"));
                     }
@@ -97,31 +96,38 @@ namespace CustomInspector
                     if (gunStats.CanOverheat)
                     {
                         FindAndShowProperties(overheatProps);
+                        // Time To Cool After Overheat
+                        float timeToCoolAfterOverheat = (100 - gunStats.CoolDownPercentageBarrier) / gunStats.CoolDownPerSecond;
+                        if (gunStats.CanOverheat)
+                        {
+                            EditorGUILayout.LabelField("Time To Cool After Overheat: " + timeToCoolAfterOverheat + " seconds");
+                        }
                     }
+                    Explosions(gunStats);
+
                 }
                 EditorGUILayout.Space(SECTION_SPACE);
 
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletType"));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("numBurstShots"));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("projectilesReleasedPerShot"));
 
                 switch (gunStats.BulletType)
                 {
                     case EditorObject.BulletType.HitScan:
+                        // TODO: HitScan DropDown
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("range"));
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
                         break;
                     case EditorObject.BulletType.AreaOfEffect:
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty("damagePerSecond"));
+                        AreaOfEffect(gunStats);
                         break;
                     case EditorObject.BulletType.BulletProjectile:
+                        // TODO: BulletProjectile dropdown
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("muzzleVelocity"));
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileScale"));
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("damageDealt"));
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletPenetration"));
                         break;
-
                 }
             }
         }
@@ -167,6 +173,14 @@ namespace CustomInspector
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("timeBetweenBurstShots"));
                 }
             }
+
+            // Time Between Player Fire
+            float timeBetweenPlayerFire = gunStats.TimeBetweenShots;
+            if (gunStats.IsBurstFire)
+            {
+                timeBetweenPlayerFire += ((gunStats.NumBurstShots - 1) * gunStats.TimeBetweenBurstShots);
+            }
+            EditorGUILayout.LabelField("Time Between Player Fire: " + timeBetweenPlayerFire + " seconds");
         }
 
         /// <summary>
@@ -175,13 +189,12 @@ namespace CustomInspector
         /// <param name="gunStats">ScriptableObject to modify</param>
         private void Explosions(EditorObject.GunStats gunStats)
         {
-            EditorGUILayout.Space(SECTION_SPACE);
 
-            showExplosions = EditorGUILayout.Foldout(showExplosions, "Explosions");
-            if (showExplosions) 
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("isExplosive"));
+            if (gunStats.IsExplosive)
             {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("isExplosive"));
-                if (gunStats.IsExplosive)
+                showExplosions = EditorGUILayout.Foldout(showExplosions, "Explosions");
+                if (showExplosions)
                 {
                     FindAndShowProperties(explosionProps);
                     if (gunStats.IsCountDownExplosion)
@@ -198,12 +211,8 @@ namespace CustomInspector
         /// <param name="gunStats">ScriptableObject to modify</param>
         private void AreaOfEffect(EditorObject.GunStats gunStats)
         {
-
-            
-            
             if (gunStats.IsAreaOfEffect)
             {
-                EditorGUILayout.Space(SECTION_SPACE);
 
                 showAreaOfEffect = EditorGUILayout.Foldout(showAreaOfEffect, "Area Of Effect");
 
@@ -211,23 +220,30 @@ namespace CustomInspector
                 {
                     FindAndShowProperties(areaOfEffectProps);
 
+                    float lifetime = 0;
+
                     switch (gunStats.NumPhases)
                     {
                         case Gun.AOEPhases.Persistant:
                             break;
                         case Gun.AOEPhases.OnePhase:
                             EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
+                            lifetime = gunStats.Phase1.DurationInSeconds;
                             break;
                         case Gun.AOEPhases.TwoPhase:
                             EditorGUILayout.PropertyField(serializedObject.FindProperty("phase1"));
                             EditorGUILayout.PropertyField(serializedObject.FindProperty("phase2"));
+                            lifetime = gunStats.Phase1.DurationInSeconds + gunStats.Phase2.DurationInSeconds;
                             break;
                         default:
                             break;
                     }
+
+                    EditorGUILayout.LabelField("Lifetime of AOE: " + lifetime + " seconds");
                 }
             }
         }
+
 
         /// <summary>
         /// Shows all input properties
@@ -253,20 +269,9 @@ namespace CustomInspector
             EditorGUILayout.Space(SECTION_SPACE);
             EditorGUILayout.LabelField("Generated Stats");
 
-            // Time Between Player Fire
-            float timeBetweenPlayerFire = gunStats.TimeBetweenShots;
-            if (gunStats.IsBurstFire)
-            {
-                timeBetweenPlayerFire += ((gunStats.NumBurstShots - 1) * gunStats.TimeBetweenBurstShots);
-            }
-            EditorGUILayout.LabelField("Time Between Player Fire: " + timeBetweenPlayerFire + " seconds");
 
-            // Time To Cool After Overheat
-            float timeToCoolAfterOverheat = (100 - gunStats.CoolDownBarrier) / gunStats.CoolDownPerSecond;
-            if (gunStats.CanOverheat)
-            {
-                EditorGUILayout.LabelField("Time To Cool After Overheat: " + timeToCoolAfterOverheat + " seconds");
-            }
+
+
         }
         #endregion
     }
