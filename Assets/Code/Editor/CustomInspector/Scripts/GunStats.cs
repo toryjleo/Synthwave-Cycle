@@ -20,7 +20,7 @@ namespace CustomInspector
         private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", };
         private string[] accuracy = { "randomSpreadPerProjectile", "projectilesReleasedPerShot" };
         private string[] accuracyOverTime = { "deltaWindUpSpreadPerSecond", "deltaWindDownSpreadPerSecond" };
-        private string[] timeBetweenShots = { "timeBetweenShots", "numBurstShots" };
+        private string[] timeBetweenShots = { "timeBetweenShots", "shotBurstCount" };
         private string[] timeBetweenShotsOverTime = { "deltaWindupPercentTimeBetweenShots", "deltaWindDownPercentTimeBetweenShots",};
         private string[] overheatProps = { "coolDownPercentageBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
         private string[] explosionProps = { "radius", "force", "explosionDamage", "isCountDownExplosion" };
@@ -57,8 +57,6 @@ namespace CustomInspector
         public override void OnInspectorGUI()
         {
             EditorObject.GunStats gunStats = GetGunStats;
-
-            
 
             if (gunStats != null)
             {
@@ -138,6 +136,9 @@ namespace CustomInspector
                 if (gunStats.ProjectilesReleasedPerShot > 1)
                 {
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("angleBetweenProjectiles"));
+
+                    float arc = (gunStats.ProjectilesReleasedPerShot * gunStats.AngleBetweenProjectiles) + gunStats.RandomSpreadPerProjectile;
+                    EditorGUILayout.LabelField("Projectile Arc: " + arc + " degrees");
                 }
 
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("accuracyArrivalOverTime"));
@@ -180,7 +181,7 @@ namespace CustomInspector
                 float timeBetweenPlayerFire = gunStats.TimeBetweenShots;
                 if (gunStats.IsBurstFire)
                 {
-                    timeBetweenPlayerFire += ((gunStats.NumBurstShots - 1) * gunStats.TimeBetweenBurstShots);
+                    timeBetweenPlayerFire += ((gunStats.ShotBurstCount - 1) * gunStats.TimeBetweenBurstShots);
                 }
                 EditorGUILayout.LabelField("Time Between Player Fire (without time change): " + timeBetweenPlayerFire + " seconds");
             }
@@ -265,7 +266,10 @@ namespace CustomInspector
                         break;
                 }
 
-                EditorGUILayout.LabelField("Lifetime of AOE: " + lifetime + " seconds");
+                if (gunStats.NumPhases != Gun.AOEPhases.Persistant)
+                {
+                    EditorGUILayout.LabelField("Lifetime of AOE: " + lifetime + " seconds");
+                }
             }
         }
 

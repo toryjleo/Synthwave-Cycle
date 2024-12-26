@@ -45,7 +45,7 @@ namespace EditorObject
         /// <summary>
         /// Number of seconds after the final shot the gun must wait before shooting again
         /// </summary>
-        [Range(0.01f, 20f)][SerializeField] private float timeBetweenShots = 10f;
+        [Range(0.01f, 5f)][SerializeField] private float timeBetweenShots = 10f;
 
         [Range(0.01f, 100)][SerializeField] private float deltaWindupPercentTimeBetweenShots = 0.0f;
         [Range(0.01f, 100)][SerializeField] private float deltaWindDownPercentTimeBetweenShots = 0.0f;
@@ -64,18 +64,18 @@ namespace EditorObject
         /// <summary>
         /// Number of shots before the gun runs out of ammo
         /// </summary>
-        [Range(1, 10000)][SerializeField] private int ammoCount = 200;
+        [Range(1, 5000)][SerializeField] private int ammoCount = 200;
         #endregion
 
         #region Burst Fire
         /// <summary>
         /// Number of bullet bursts per fire action
         /// </summary>
-        [Range(1, 20)][SerializeField] private int numBurstShots = 1;
+        [Range(1, 20)][SerializeField] private int shotBurstCount = 1;
         /// <summary>
         /// Time between each bullet burst
         /// </summary>
-        [Range(0.01f, 10)][SerializeField] private float timeBetweenBurstShots = .01f;
+        [Range(0.001f, 1)][SerializeField] private float timeBetweenBurstShots = .01f;
         #endregion
 
         #region Multiple Projectiles
@@ -174,8 +174,8 @@ namespace EditorObject
         public bool IsPlayerGun { get { return isPlayerGun; } }
 
         #region Burst Fire
-        public bool IsBurstFire { get { return numBurstShots > 1; } }
-        public int NumBurstShots { get { return numBurstShots; } }
+        public bool IsBurstFire { get { return shotBurstCount > 1; } }
+        public int ShotBurstCount { get { return shotBurstCount; } }
         public float TimeBetweenBurstShots { get { return timeBetweenBurstShots; } }
         public float TimeBetweenShots { get { return timeBetweenShots; } }
         public float DeltaWindupPercentTimeBetweenShots { get { return deltaWindupPercentTimeBetweenShots / 100f; } }

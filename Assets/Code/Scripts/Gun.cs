@@ -463,7 +463,7 @@ namespace Gun
                 turretInputManager = new TurretInputManager(this.transform, crossHair, gunStats.IsTurret);
                 player = FindObjectOfType<PlayerMovement>();
 
-                stateController = new GunState.StateController(gunStats.NumBurstShots, gunStats.PrintDebugState);
+                stateController = new GunState.StateController(gunStats.ShotBurstCount, gunStats.PrintDebugState);
                 impactManager = FindObjectOfType<ImpactManager>();
                 if (impactManager == null)
                 {
