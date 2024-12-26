@@ -86,17 +86,17 @@ namespace EditorObject
         /// <summary>
         /// Angle between each projectile shot
         /// </summary>
-        [Range(0, 180)][SerializeField] private float distanceBetweenProjectiles = 0;
+        [Range(0, 180)][SerializeField] private float angleBetweenProjectiles = 0;
         /// <summary>
         /// Adds a random variation to each projectile's shot
         /// </summary>
-        [Range(0, 180)][SerializeField] private float projectileSpread = 0;
+        [Range(0, 180)][SerializeField] private float randomSpreadPerProjectile = 0;
 
         [Range(0, 100f)][SerializeField] private float deltaWindUpSpreadPerSecond = 0;
         [Range(0, 100f)][SerializeField] private float deltaWindDownSpreadPerSecond = 0;
 
         // TODO: make this the limit of change
-        [Range(.001f, 400f)][SerializeField] private float maxChangeToNormalAccuracy = 100;
+        [Range(.001f, 400f)][SerializeField] private float accuracyArrivalOverTime = 100;
         #endregion
 
         #region Overheat
@@ -191,11 +191,11 @@ namespace EditorObject
 
         #region Multiple Projectiles
         public int ProjectilesReleasedPerShot { get { return projectilesReleasedPerShot; } }
-        public float DistanceBetweenProjectiles { get { return distanceBetweenProjectiles; } }
-        public float ProjectileSpread { get { return projectileSpread; } }
+        public float AngleBetweenProjectiles { get { return angleBetweenProjectiles; } }
+        public float RandomSpreadPerProjectile { get { return randomSpreadPerProjectile; } }
         public float DeltaWindUpSpreadPerSecond { get { return deltaWindUpSpreadPerSecond / 100f; } }
         public float DeltaWindDownSpreadPerSecond { get { return deltaWindDownSpreadPerSecond / 100f; } }
-        public float MaxAccuracyChange { get { return maxChangeToNormalAccuracy / 100f; } }
+        public float AccuracyArrivalOverTime { get { return accuracyArrivalOverTime / 100f; } }
         #endregion
 
         #region Overheat

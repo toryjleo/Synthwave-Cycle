@@ -38,7 +38,7 @@ namespace Gun
             /// </summary>
             public float Radius
             {
-                get => m_currentAccuracy * stats.DistanceBetweenProjectiles * (stats.ProjectilesReleasedPerShot - 1);
+                get => m_currentAccuracy * stats.AngleBetweenProjectiles * (stats.ProjectilesReleasedPerShot - 1);
             }
 
             /// <summary>
@@ -46,7 +46,7 @@ namespace Gun
             /// </summary>
             public float RandomDegreeRotation
             { 
-                get => m_currentAccuracy * Random.Range(-stats.ProjectileSpread, stats.ProjectileSpread);
+                get => m_currentAccuracy * Random.Range(-stats.RandomSpreadPerProjectile, stats.RandomSpreadPerProjectile);
             }
 
             /// <summary>
@@ -54,7 +54,7 @@ namespace Gun
             /// </summary>
             public float DistanceBetweenProjectiles
             {
-                get => stats.DistanceBetweenProjectiles * m_currentAccuracy;
+                get => stats.AngleBetweenProjectiles * m_currentAccuracy;
             }
 
             /// <summary>
@@ -62,7 +62,7 @@ namespace Gun
             /// </summary>
             private bool MaxLessThanOneHundredPercent 
             {
-                get => stats.MaxAccuracyChange < 1.0f;
+                get => stats.AccuracyArrivalOverTime < 1.0f;
             }
 
             public AccuracyManager(GunStats gunStats)
@@ -106,16 +106,16 @@ namespace Gun
                 float upperBounds = 0;
                 if (MaxLessThanOneHundredPercent)
                 {
-                    lowerBounds = stats.MaxAccuracyChange;
+                    lowerBounds = stats.AccuracyArrivalOverTime;
                     upperBounds = 1.0f;
                 }
                 else
                 {
                     lowerBounds = 1.0f;
-                    upperBounds = stats.MaxAccuracyChange;
+                    upperBounds = stats.AccuracyArrivalOverTime;
                 }
 
-                Debug.Log("Max accuracy change: " + stats.MaxAccuracyChange);
+                Debug.Log("Max accuracy change: " + stats.AccuracyArrivalOverTime);
                 Debug.Log("Clamped value: " + Mathf.Clamp(m_currentAccuracy, lowerBounds, upperBounds));
 
                 m_currentAccuracy = Mathf.Clamp(m_currentAccuracy, lowerBounds, upperBounds);

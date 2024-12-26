@@ -18,7 +18,7 @@ namespace CustomInspector
         private const int SECTION_SPACE = 8;
 
         private string[] generalProps = { "isPlayerGun", "isTurret", "isAutomatic", };
-        private string[] accuracyOverTime = { "maxChangeToNormalAccuracy", "deltaWindUpSpreadPerSecond", "deltaWindDownSpreadPerSecond" };
+        private string[] accuracyOverTime = { "deltaWindUpSpreadPerSecond", "deltaWindDownSpreadPerSecond" };
         private string[] timeBetweenShots = { "timeBetweenShots", "deltaWindupPercentTimeBetweenShots", "deltaWindDownPercentTimeBetweenShots", "maxPercentTimeBetweenShots", "numBurstShots", "projectilesReleasedPerShot" };
         private string[] overheatProps = { "coolDownPercentageBarrier", "overHeatPercentPerShot", "coolDownPerSecond" };
         private string[] explosionProps = { "radius", "force", "explosionDamage", "isCountDownExplosion" };
@@ -130,15 +130,19 @@ namespace CustomInspector
             EditorGUILayout.Space(SECTION_SPACE);
 
             showAccuracy = EditorGUILayout.Foldout(showAccuracy, "Accuracy");
-            if(showAccuracy) 
+            if (showAccuracy) 
             {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("projectileSpread"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("randomSpreadPerProjectile"));
                 if (gunStats.ProjectilesReleasedPerShot > 1)
                 {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("distanceBetweenProjectiles"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("angleBetweenProjectiles"));
                 }
 
-                FindAndShowProperties(accuracyOverTime);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("accuracyArrivalOverTime"));
+                if (gunStats.AccuracyArrivalOverTime != 1)
+                {
+                    FindAndShowProperties(accuracyOverTime);
+                }
             }
         }
 
