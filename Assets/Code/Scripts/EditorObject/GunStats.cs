@@ -30,6 +30,12 @@ namespace EditorObject
     [CreateAssetMenu(menuName = "EditorObject/GunStats", fileName = "New GunStats")]
     public class GunStats : ScriptableObject, Generic.IPoolableInstantiateData
     {
+
+
+
+
+        #region Members
+        #region General
         /// <summary>
         /// If the gun is for a player. Else an enemy
         /// </summary>
@@ -42,16 +48,18 @@ namespace EditorObject
         /// If the gun will continue shooting on fire held down
         /// </summary>
         [SerializeField] private bool isAutomatic = true;
+        #endregion
+        #region Bullet Options
         /// <summary>
-        /// Number of seconds after the final shot the gun must wait before shooting again
+        /// Type of bullet to shoot
         /// </summary>
-        [Range(0.01f, 5f)][SerializeField] private float timeBetweenShots = 10f;
-
-        [Range(0.01f, 100)][SerializeField] private float deltaWindupPercentTimeBetweenShots = 0.0f;
-        [Range(0.01f, 100)][SerializeField] private float deltaWindDownPercentTimeBetweenShots = 0.0f;
-        [Range(0.01f, 400)][SerializeField] private float timeBetweenShotsScalingOverTime = 100.0f;
-
+        [SerializeField] private BulletType bulletType;
         /// <summary>
+        /// Number of enemies that bullet can penetrate before despawning
+        /// </summary>
+        [Range(0, 20)][SerializeField] private int bulletPenetration;
+
+                /// <summary>
         /// Number of hit points to depleat on bullet hit
         /// </summary>
         [Range(0, 1000)][SerializeField] private float damageDealt = 70;
@@ -67,39 +75,16 @@ namespace EditorObject
         [Range(1, 5000)][SerializeField] private int ammoCount = 200;
         #endregion
 
-        #region Burst Fire
-        /// <summary>
-        /// Number of bullet bursts per fire action
-        /// </summary>
-        [Range(1, 20)][SerializeField] private int shotBurstCount = 1;
-        /// <summary>
-        /// Time between each bullet burst
-        /// </summary>
-        [Range(0.001f, 1)][SerializeField] private float timeBetweenBurstShots = .01f;
-        #endregion
-
         #region Multiple Projectiles
         /// <summary>
         /// Number of projectiles shot per gun shot
         /// </summary>
         [Range(1, 40)][SerializeField] private int projectilesReleasedPerShot = 1;
         /// <summary>
-        /// Angle between each projectile shot
-        /// </summary>
-        [Range(0, 180)][SerializeField] private float angleBetweenProjectiles = 0;
-        /// <summary>
         /// Adds a random variation to each projectile's shot
         /// </summary>
         [Range(0, 180)][SerializeField] private float randomSpreadPerProjectile = 0;
-
-        [Range(1, 90f)][SerializeField] private float deltaWindUpSpreadPerSecond = 0;
-        [Range(1, 100f)][SerializeField] private float deltaWindDownSpreadPerSecond = 0;
-
-        // TODO: make this the limit of change
-        [Range(.001f, 400f)][SerializeField] private float accuracyArrivalOverTime = 100;
         #endregion
-
-
 
         #region DEBUG
         /// <summary>
@@ -108,15 +93,6 @@ namespace EditorObject
         [SerializeField] private bool printDebugState = false;
         #endregion
 
-        #region Bullet Options
-        /// <summary>
-        /// Type of bullet to shoot
-        /// </summary>
-        [SerializeField] private BulletType bulletType;
-        /// <summary>
-        /// Number of enemies that bullet can penetrate before despawning
-        /// </summary>
-        [Range(0, 20)][SerializeField] private int bulletPenetration;
 
         #region Projectile
         /// <summary>
@@ -168,6 +144,43 @@ namespace EditorObject
         [SerializeField] private AOEPhase phase2;
         #endregion
         #endregion
+
+        #region Accuracy
+
+        /// <summary>
+        /// Angle between each projectile shot
+        /// </summary>
+        [Range(0, 180)][SerializeField] private float angleBetweenProjectiles = 0;
+
+
+        [Range(.001f, 400f)][SerializeField] private float accuracyArrivalOverTime = 100;
+
+        [Range(1, 90f)][SerializeField] private float deltaWindUpSpreadPerSecond = 0;
+        [Range(1, 100f)][SerializeField] private float deltaWindDownSpreadPerSecond = 0;
+        #endregion
+
+        #region TimeBetweenShots
+        /// <summary>
+        /// Number of seconds after the final shot the gun must wait before shooting again
+        /// </summary>
+        [Range(0.01f, 5f)][SerializeField] private float timeBetweenShots = 10f;
+        /// <summary>
+        /// Number of bullet bursts per fire action
+        /// </summary>
+        [Range(1, 20)][SerializeField] private int shotBurstCount = 1;
+
+        /// <summary>
+        /// Time between each bullet burst
+        /// </summary>
+        [Range(0.001f, 1)][SerializeField] private float timeBetweenBurstShots = .01f;
+        [Range(0.01f, 400)][SerializeField] private float timeBetweenShotsScalingOverTime = 100.0f;
+
+        [Range(0.01f, 100)][SerializeField] private float deltaWindupPercentTimeBetweenShots = 0.0f;
+        [Range(0.01f, 100)][SerializeField] private float deltaWindDownPercentTimeBetweenShots = 0.0f;
+
+        #endregion
+        #endregion
+
 
         #region Properties
         public bool IsTurret { get { return isTurret; } }
