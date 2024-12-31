@@ -160,8 +160,7 @@ namespace Gun
             if (other.GetComponent<Ai>() != null)
             {
                 Ai ai = other.GetComponent<Ai>();
-                // TODO: Verify this works when merging with master
-                ai.Die();
+                ai.Kill();
             }
 
             BulletProjectile bp = other.GetComponent<BulletProjectile>();

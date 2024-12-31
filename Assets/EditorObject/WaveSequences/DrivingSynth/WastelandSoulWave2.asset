@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DLThreshold: 160
   waveEnemies:
-  - enemyType: 0
+  - enemyType: 3
     spawnLocation: 3
-  - enemyType: 0
-    spawnLocation: 1
+    enemyAmount: 2
   TrackVariation: {fileID: 8300000, guid: bce47a2d326b7764cb40d276cc8d3ac9, type: 3}
   RadioClip: {fileID: 8300000, guid: 590ca4ce7adef564c95f6be55565e799, type: 3}

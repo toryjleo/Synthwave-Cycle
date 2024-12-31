@@ -35,7 +35,7 @@ public class Jukebox : MonoBehaviour, IResettable
     public void Init(EditorObject.WaveSequence seq)
     {
         sequence = seq;
-        sequence.Init(GameObject.FindObjectOfType<SquadSpawner>());
+        sequence.Init(GameObject.FindObjectOfType<EnemyManager>());
 
         InitializeDualAudioEmitter(musicPlayer);
         InitializeDualAudioEmitter(radioClipPlayer);

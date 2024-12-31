@@ -9,12 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3780906798646803480}
-  - component: {fileID: 609589166}
+  - component: {fileID: 4120592820872180829}
   - component: {fileID: 1166159769048400175}
-  - component: {fileID: 1202201957}
-  - component: {fileID: 1202201958}
   m_Layer: 0
-  m_Name: Spawner
+  m_Name: EnemyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &609589166
+--- !u!114 &4120592820872180829
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,18 +41,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 3780906798646803492}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d23823ba437049428de7b09ff75cd9b, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d266f72ad1e6a741918dac71a45c87a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pools:
-  - prefab: {fileID: 3874834857555224722, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
-    poolSize: 30
-  - prefab: {fileID: 8118981365188568940, guid: 96ce3a25c9aa3fb40a86136e9660d45c, type: 3}
-    poolSize: 30
-  - prefab: {fileID: 2279930514937360738, guid: a23ba0f3917956441aeea0559be2b437, type: 3}
-    poolSize: 30
-  - prefab: {fileID: 613234458188402560, guid: 7e68f47082f738f43834ed59576c7f28, type: 3}
-    poolSize: 30
+  riflemanPrefab: {fileID: 0}
+  riflemanAi: {fileID: 0}
+  rangerPrefab: {fileID: 0}
+  rangerAi: {fileID: 0}
+  shotgunnerPrefab: {fileID: 0}
+  shotgunnerAi: {fileID: 0}
+  ramCarPrefab: {fileID: 0}
+  ramCarAi: {fileID: 0}
+  sbomberPrefab: {fileID: 0}
+  sbomberAi: {fileID: 0}
+  player: {fileID: 0}
 --- !u!114 &1166159769048400175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,34 +68,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dangerLevel: 0
---- !u!114 &1202201957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3780906798646803492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d719866dce005bc47b09ce95e8f09292, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  ops: {fileID: 609589166}
-  spawnDistance: 150
-  spawnBiasAngle: 30
---- !u!114 &1202201958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3780906798646803492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fc287a7379551e498ef551f73c86067, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  squadSpawner: {fileID: 1202201957}
-  dl: {fileID: 0}
-  currentEnemies: []

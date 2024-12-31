@@ -563,23 +563,63 @@ PrefabInstance:
     - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: prefab
       value: 
-      objectReference: {fileID: 3874834857555224722, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
+      objectReference: {fileID: 7084069829360757914, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
     - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: testAi
       value: 
-      objectReference: {fileID: 11400000, guid: c361d60c2f386f3439612f7933891331, type: 2}
+      objectReference: {fileID: 11400000, guid: 9d211772745396f419224250b7b681ef, type: 2}
+    - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: ramCarAi
+      value: 
+      objectReference: {fileID: 11400000, guid: dc761053e9e36364dbd6ba45a18bd1d1, type: 2}
+    - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: rangerAi
+      value: 
+      objectReference: {fileID: 11400000, guid: 1aae7b29e2726f64fbe9d76f16f7cfb2, type: 2}
+    - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: sbomberAi
+      value: 
+      objectReference: {fileID: 11400000, guid: 88b26c88d8b7f8041bc27723113fcb08, type: 2}
+    - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: riflemanAi
+      value: 
+      objectReference: {fileID: 11400000, guid: 9d211772745396f419224250b7b681ef, type: 2}
+    - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: ramCarPrefab
+      value: 
+      objectReference: {fileID: 2279930514937360738, guid: a23ba0f3917956441aeea0559be2b437, type: 3}
+    - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: rangerPrefab
+      value: 
+      objectReference: {fileID: -2145616964191635160, guid: 0eb95e7c3d18e884b99ecde9100043c9, type: 3}
+    - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: shotgunnerAi
+      value: 
+      objectReference: {fileID: 11400000, guid: 122c8d0ec967ba94bbe4a9f3d35803cf, type: 2}
+    - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: sbomberPrefab
+      value: 
+      objectReference: {fileID: 613234458188402560, guid: 7e68f47082f738f43834ed59576c7f28, type: 3}
     - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: testVehicleAi
       value: 
-      objectReference: {fileID: 11400000, guid: d642cc3bfd44abb40b606f2e8e5b0c20, type: 2}
+      objectReference: {fileID: 11400000, guid: dc761053e9e36364dbd6ba45a18bd1d1, type: 2}
     - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: vehiclePrefab
       value: 
       objectReference: {fileID: 2279930514937360738, guid: a23ba0f3917956441aeea0559be2b437, type: 3}
     - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: riflemanPrefab
+      value: 
+      objectReference: {fileID: 7084069829360757914, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
+    - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: pools.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 609589166, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: shotgunnerPrefab
+      value: 
+      objectReference: {fileID: 2727301570077465994, guid: 96ce3a25c9aa3fb40a86136e9660d45c, type: 3}
     - target: {fileID: 1202201958, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: scoreKeeper
       value: 
@@ -630,8 +670,56 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3780906798646803492, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: m_Name
-      value: Spawner
+      value: EnemyManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: ramCarAi
+      value: 
+      objectReference: {fileID: 11400000, guid: dc761053e9e36364dbd6ba45a18bd1d1, type: 2}
+    - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: rangerAi
+      value: 
+      objectReference: {fileID: 11400000, guid: 1aae7b29e2726f64fbe9d76f16f7cfb2, type: 2}
+    - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: sbomberAi
+      value: 
+      objectReference: {fileID: 11400000, guid: 88b26c88d8b7f8041bc27723113fcb08, type: 2}
+    - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: riflemanAi
+      value: 
+      objectReference: {fileID: 11400000, guid: 9d211772745396f419224250b7b681ef, type: 2}
+    - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: ramCarPrefab
+      value: 
+      objectReference: {fileID: 2279930514937360738, guid: a23ba0f3917956441aeea0559be2b437, type: 3}
+    - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: rangerPrefab
+      value: 
+      objectReference: {fileID: -2145616964191635160, guid: 0eb95e7c3d18e884b99ecde9100043c9, type: 3}
+    - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: shotgunnerAi
+      value: 
+      objectReference: {fileID: 11400000, guid: 122c8d0ec967ba94bbe4a9f3d35803cf, type: 2}
+    - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: sbomberPrefab
+      value: 
+      objectReference: {fileID: 613234458188402560, guid: 7e68f47082f738f43834ed59576c7f28, type: 3}
+    - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: spawnDistance
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: riflemanPrefab
+      value: 
+      objectReference: {fileID: 7084069829360757914, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
+    - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: spawnBiasAngle
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: shotgunnerPrefab
+      value: 
+      objectReference: {fileID: 2727301570077465994, guid: 96ce3a25c9aa3fb40a86136e9660d45c, type: 3}
     m_RemovedComponents:
     - {fileID: 1202201958, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}

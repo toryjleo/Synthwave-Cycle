@@ -11,70 +11,54 @@ public abstract class VehicleAi : Ai
 {
     public ArcadeAiVehicleController vehicleController;
 
-    //How much damage ramming deals
-    [SerializeField]
-    public float DamageMultiplier = 1.0f;
+    /// <summary>
+    /// How much damage ramming deals
+    /// </summary>
+    [SerializeField] public float damageMultiplier = 1.0f;
 
-    //How much additional force does a ram apply
-    [SerializeField]
-    public float RamModifier = 0.2f;
+    [SerializeField] public GameObject itemDrop;
 
-    [SerializeField]
-    public GameObject itemDrop;
+    [SerializeField] public GameObject movementTargetPosition;
 
-    [SerializeField]
-    public GameObject movementTargetPosition;
-
-    //How much directional/rotational force effects the player on a ram
-    private const float MAX_RANDOM_TORQUE = 4500f;
-    private const float MAX_RAM_MAGNITUDE = 200f;
-
-    //This is the time the Vehicle has spent within CONFIDENCE_BUILD_DISTANCE to it's target
-    //When it exceeds TIME_BY_TARGET_TO_ATTACK the car is ready to attack
-
-    // internal float timeByTarget = 0;
-    // internal float TIME_BY_TARGET_TO_ATTACK;
-    internal const float CONFIDENCE_BUILD_DISTANCE = 45f;
-
-    //All vehicles have a target, but some vehicles interact with their targets in different ways
-    public abstract void UpdateMovementLocation();
-
-    public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection)
+    public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
-        base.ManualUpdate(enemies, wanderDirection);
-        //Figure out where to moved based on the child class movement pattern
-        UpdateMovementLocation();
+        base.ManualUpdate(enemies, wanderDirection, fixedDeltaTime);
     }
 
-    // TODO: rename to Init
     public override void Init(IPoolableInstantiateData stats)
     {
-        TestAi aiStats = stats as TestAi;
+        AiStats aiStats = stats as AiStats;
         if (!aiStats)
         {
-            Debug.LogWarning("InfantryAi stats are not readable as TestAi!");
+            Debug.LogWarning("VehicleAi stats are not readable as TestAi!");
         }
 
-        hp = GetComponentInChildren<Health>();
+        health = GetComponentInChildren<Health>();
         vehicleController = GetComponent<ArcadeAiVehicleController>();
         vehicleController.enabled = false;
-        hp.Init(aiStats.Health);
+        health.Init(aiStats.Health);
 
         base.Init(stats);
 
-        //Must ba called after base.Init()
+        //Must be called after base.Init()
         vehicleController.MaxSpeed = maxSpeed;
     }
-
-    // public override void InitStateController()
-    // {
-    //     base.InitStateController();
-    // }
 
     public override void HandleInPoolExit()
     {
         vehicleController.enabled = true;
         base.HandleInPoolExit();
+    }
+
+    public override void HandleAttackingEnter()
+    {
+        Attack();
+    }
+
+    public override void Attack()
+    {
+        //Vehicle just drives directly into the player
+        CalculateAttackMovement();
     }
 
     public override void SetTarget(GameObject targ)
@@ -83,7 +67,7 @@ public abstract class VehicleAi : Ai
         base.SetTarget(targ);
     }
 
-    void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
         {
@@ -93,14 +77,14 @@ public abstract class VehicleAi : Ai
 
             Debug.DrawLine(transform.position, transform.position + vehicleController.carVelocity);
             //Damage player bike based on difference in velocity * multiplier
-            playerHealth.TakeDamage(DamageMultiplier *
+            playerHealth.TakeDamage(damageMultiplier *
                 (vehicleController.carVelocity - playerMovement.Velocity).magnitude);
 
             //bikeRB.AddTorque(Vector3.up * Random.Range(-MAX_RANDOM_TORQUE, MAX_RANDOM_TORQUE), ForceMode.Impulse);
         }
     }
 
-    public override void Die()
+    public override void HandleDeathEnter()
     {
         float minMaxTorque = 1800f;
         rb.angularDrag = 1;
@@ -111,9 +95,92 @@ public abstract class VehicleAi : Ai
                                 Random.Range(-minMaxTorque, minMaxTorque)),
                                 ForceMode.Impulse);
         vehicleController.enabled = false;
-        Instantiate(itemDrop, this.transform.position, Quaternion.identity);
 
-        base.Die();
+        base.HandleDeathEnter();
     }
 
+    #region MOVEMENT
+    //All vehicles have a target, but some vehicles interact with their targets in different ways
+
+    /// <summary>
+    /// Tells the vehicle to follow at a distance from the target
+    /// </summary>
+    protected void UpdateMovementLocation()
+    {
+        if (target != null)
+        {
+            movementTargetPosition.transform.position = GetChaseLocation();
+            vehicleController.target = movementTargetPosition.transform;
+        }
+    }
+
+    /// <summary>
+    /// Calculates a position through the target so the vehicle will drive straight through it to ram
+    /// </summary>
+    protected void CalculateAttackMovement()
+    {
+        Vector3 direction = (target.transform.position - transform.position).normalized;
+        movementTargetPosition.transform.position = (20 * direction) + target.transform.position;
+    }
+
+    /// <summary>
+    /// Calculates the position at a ChaseRange distance between the vehicle and the target
+    /// </summary>
+    /// <returns>Position to chase for a vehicle</returns>
+    protected Vector3 GetChaseLocation()
+    {
+        return stats.ChaseRange * Vector3.Normalize(transform.position - target.transform.position) + target.transform.position;
+    }
+
+    public override void Chase(Vector3 target, float fixedDeltaTime)
+    {
+        UpdateMovementLocation();
+    }
+
+    public override void Wander(Vector3 wanderDirection, float fixedDeltaTime)
+    {
+
+    }
+
+    public override void Separate(ArrayList pool, float fixedDeltaTime)
+    {
+        float separateForce = stats.MaxSeparateForce;
+        float maxDistanceToSeparate = stats.SeparateRange;
+
+        //the vector that will be used to calculate flee behavior if a too close interaction happens
+        Vector3 sum = new Vector3();
+        //this counts how many TOO CLOSE interactions an entity has, if it has more than one
+        int count = 0;
+
+        foreach (Ai ai in pool)
+        {
+            float distance = Vector3.Distance(ai.transform.position, transform.position);
+
+            if (ai.transform.position != transform.position && distance < maxDistanceToSeparate)
+            {
+                // creates vec between two objects
+                Vector3 diff = transform.position - ai.transform.position;
+                diff.Normalize();
+                // sum is the flee direction added together
+                sum += diff;
+                count++;
+            }
+        }
+
+        if (count > 0)
+        {
+            float targetDistanceSquared = Vector3.SqrMagnitude(movementTargetPosition.transform.position - transform.position);
+            sum.Normalize();
+
+            Vector3 steer = sum * (targetDistanceSquared / (separateForce * separateForce));
+
+            movementTargetPosition.transform.position = steer;
+        }
+    }
+
+    public override void Group(ArrayList pool, float fixedDeltaTime)
+    {
+
+    }
+    #endregion
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,24 +9,25 @@ using UnityEngine;
 public class RamCarAi : VehicleAi
 {
 
-    public override void Attack() // TODO: Use this function to attack (UpdateMovementLocation)
+    public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {
-        //RamCar just drives directly into the player (if targeted)
-        if (target != null)
+        base.ManualUpdate(enemies, wanderDirection, fixedDeltaTime);
+        if (stateController.isAttacking)
         {
-            movementTargetPosition.transform.position = target.transform.position;
-            //movementTargetPosition.transform.position = (Vector3.Normalize(this.transform.position - target.transform.position) + target.transform.position) * 2;
-            vehicleController.target = movementTargetPosition.transform;
+            Attack();
         }
     }
 
-    public override Enemy GetEnemyType()
+    protected override void OnCollisionEnter(Collision collision)
     {
-        return Enemy.RamCar;
-    }
-
-    public override void UpdateMovementLocation() // TODO: Use this function to follow player (?)
-    {
-
+        if (collision.gameObject.tag == "Player")
+        {
+            stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
+        }
+        else if (collision.gameObject.tag == "Enemy")
+        {
+            stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
+        }
+        base.OnCollisionEnter(collision);
     }
 }
