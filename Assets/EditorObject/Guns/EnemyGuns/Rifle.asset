@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 401f65c6e22c3214ba4591335c82ef86, type: 3}
+  m_Name: Rifle
+  m_EditorClassIdentifier: 
+  isPlayerGun: 0
+  isTurret: 0
+  isAutomatic: 1
+  bulletType: 1
+  bulletPenetration: 0
+  damageDealt: 20
+  hasInfiniteAmmo: 1
+  ammoCount: 200
+  projectilesReleasedPerShot: 1
+  randomSpreadPerProjectile: 30
+  printDebugState: 0
+  muzzleVelocity: 60
+  projectileScale: {x: 1, y: 1, z: 1}
+  range: 100
+  isExplosive: 0
+  isCountDownExplosion: 0
+  radius: 5
+  force: 12000
+  explosionDamage: 25
+  secondsBeforeExplode: 1
+  canOverheat: 0
+  coolDownPercentageBarrier: 50
+  overHeatPercentPerShot: 5
+  coolDownPerSecond: 2.5
+  damagePerSecond: 10
+  numPhases: 2
+  phase1:
+    DurationInSeconds: 0
+    RateOfScaleGrowth: 0
+  phase2:
+    DurationInSeconds: 0
+    RateOfScaleGrowth: 0
+  angleBetweenProjectiles: 0
+  accuracyArrivalOverTime: 100
+  deltaWindUpSpreadPerSecond: 0
+  deltaWindDownSpreadPerSecond: 0
+  timeBetweenShots: 0.3
+  shotBurstCount: 1
+  timeBetweenBurstShots: 0.01
+  timeBetweenShotsScalingOverTime: 100
+  deltaWindupPercentTimeBetweenShots: 0
+  deltaWindDownPercentTimeBetweenShots: 0

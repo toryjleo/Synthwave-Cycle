@@ -25,5 +25,7 @@ MonoBehaviour:
   dlScore: 15
   attackRange: 15
   timeToAttack: 1
+  timeToDie: 3
   canAim: 1
   enemyType: 1
+  gunStats: {fileID: 11400000, guid: 30487321f7240f740b75bba4ef12021f, type: 2}

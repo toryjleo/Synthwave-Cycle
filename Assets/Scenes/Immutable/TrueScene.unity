@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748171, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -689,13 +689,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 9d211772745396f419224250b7b681ef, type: 2}
     - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
+      propertyPath: riflemanGun
+      value: 
+      objectReference: {fileID: 11400000, guid: 30487321f7240f740b75bba4ef12021f, type: 2}
+    - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: ramCarPrefab
       value: 
       objectReference: {fileID: 2279930514937360738, guid: a23ba0f3917956441aeea0559be2b437, type: 3}
     - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: rangerPrefab
       value: 
-      objectReference: {fileID: -2145616964191635160, guid: 0eb95e7c3d18e884b99ecde9100043c9, type: 3}
+      objectReference: {fileID: -2145616964191635160, guid: fbbff513c398bfd45b217c152ad66583, type: 3}
     - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: shotgunnerAi
       value: 
@@ -711,7 +715,7 @@ PrefabInstance:
     - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: riflemanPrefab
       value: 
-      objectReference: {fileID: 7084069829360757914, guid: b3f2da857f465214b857903ca89ee3be, type: 3}
+      objectReference: {fileID: -2145616964191635160, guid: fbbff513c398bfd45b217c152ad66583, type: 3}
     - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: spawnBiasAngle
       value: 33
@@ -719,7 +723,7 @@ PrefabInstance:
     - target: {fileID: 4120592820872180829, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
       propertyPath: shotgunnerPrefab
       value: 
-      objectReference: {fileID: 2727301570077465994, guid: 96ce3a25c9aa3fb40a86136e9660d45c, type: 3}
+      objectReference: {fileID: -2145616964191635160, guid: fbbff513c398bfd45b217c152ad66583, type: 3}
     m_RemovedComponents:
     - {fileID: 1202201958, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3887bbe02b34b334696568b12e9fd0cf, type: 3}

@@ -204,12 +204,12 @@ public abstract class Ai : Poolable
 
     #region EventHandlers
 
-    public void HandleInRangeEnter()
+    public virtual void HandleInRangeEnter()
     {
         attackTelegraph.SetActive(true);
     }
 
-    public void HandleInRangeExit()
+    public virtual void HandleInRangeExit()
     {
         attackTelegraph.SetActive(false);
     }

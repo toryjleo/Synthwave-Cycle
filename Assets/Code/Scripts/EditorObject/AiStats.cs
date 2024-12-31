@@ -85,6 +85,8 @@ namespace EditorObject
         /// </summary>
         [SerializeField] private Enemy enemyType = Enemy.Rifleman;
 
+        [SerializeField] private GunStats gunStats = null;
+
         public float Health { get => health; }
         public float MovementGroup { get => movementGroup; }
         public float GearModifier { get => gearModifier; }
@@ -101,5 +103,20 @@ namespace EditorObject
         public float TimeToDie { get => timeToDie; }
         public bool CanAim { get => canAim; }
         public Enemy EnemyType { get => enemyType; }
+        public GunStats GunStats
+        {
+            get
+            {
+                if (gunStats == null)
+                {
+                    Debug.LogError("No gunStats on this " + EnemyType.ToString());
+                    return null;
+                }
+                else
+                {
+                    return gunStats;
+                }
+            }
+        }
     }
 }

@@ -17,14 +17,13 @@ public class InfantryAI : Ai
 
     public override void Attack()
     {
-
         /*if (myGuns != null && myGuns[0].CanShootAgain())
         {
             this.myGuns[0].PrimaryFire(target.transform.position);
             animationStateController.AimWhileWalking(true);
         }*/
 
-
+        myGuns[0].ExternalFire = true;
     }
 
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
@@ -51,8 +50,7 @@ public class InfantryAI : Ai
         animationStateController = GetComponent<CyborgAnimationStateController>();
         health.Init(aiStats.Health);
 
-
-        // TODO: replace: myGuns[0].Init();
+        myGuns[0].Init(aiStats.GunStats);
 
         // Error checking
         if (animationStateController == null)
@@ -81,6 +79,18 @@ public class InfantryAI : Ai
         {
             animationStateController.SetSpeed(animationSpeed);
         }
+    }
+
+    public override void HandleInRangeEnter()
+    {
+        animationStateController.AimWhileWalking(true);
+        base.HandleInRangeEnter();
+    }
+
+    public override void HandleInRangeExit()
+    {
+        animationStateController.AimWhileWalking(false);
+        base.HandleInRangeExit();
     }
 
     public override void HandleDeathEnter()
