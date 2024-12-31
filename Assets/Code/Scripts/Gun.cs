@@ -326,6 +326,10 @@ namespace Gun
             get { return externalFire; } set {  externalFire = value; }
         }
 
+        private bool IsPlayerGun 
+        {
+            get => gunStats.IsPlayerGun;
+        }
 
         /// <summary>
         /// Returns true if this gun is firing this frame
@@ -455,7 +459,10 @@ namespace Gun
             {
                 m_accuracy = new AccuracyManager(gunStats);
                 m_timeBetweenShots = new TimeBetweenShotsManager(gunStats);
-                turretInputManager = new TurretInputManager(this.transform, crossHair, gunStats.IsTurret);
+                if (IsPlayerGun) 
+                {
+                    turretInputManager = new TurretInputManager(this.transform, crossHair, gunStats.IsTurret);
+                }
                 player = FindObjectOfType<PlayerMovement>();
 
                 stateController = new GunState.StateController(gunStats.ShotBurstCount, gunStats.PrintDebugState);
@@ -563,7 +570,10 @@ namespace Gun
         // Update is called once per frame
         void Update()
         {
-            turretInputManager.UpdateInputMethod();
+            if (IsPlayerGun) 
+            {
+                turretInputManager.UpdateInputMethod();
+            }
 
             UpdateGun(Time.deltaTime);
         }
@@ -571,7 +581,7 @@ namespace Gun
         // Update is called once per frame
         void FixedUpdate()
         {
-            if (gunStats.IsTurret && GameStateController.CanRunGameplay)
+            if (gunStats.IsTurret && IsPlayerGun && GameStateController.CanRunGameplay)
             {
                 turretInputManager.FixedUpdate();
             }
