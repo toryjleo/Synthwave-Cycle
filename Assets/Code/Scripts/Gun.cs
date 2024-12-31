@@ -411,8 +411,15 @@ namespace Gun
 
         public void Init(EditorObject.GunStats stats) 
         {
-            this.gunStats = stats;
-            Init();
+            if (stats == null) 
+            {
+                Debug.Log("Gun was passed a null gunstats");
+            }
+            else 
+            {
+                this.gunStats = stats;
+                Init();
+            }
         }
 
         private void Init() 
