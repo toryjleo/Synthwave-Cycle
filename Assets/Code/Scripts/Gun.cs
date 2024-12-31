@@ -714,9 +714,12 @@ namespace Gun
         /// <param name="color">Color to set the barrel to</param>
         public void UpdateBarrelColor(Color color) 
         {
-            Material newMaterial = new Material(barrel.material);
-            newMaterial.color = color;
-            barrel.material = newMaterial;
+            if (gunStats.IsPlayerGun) 
+            {
+                Material newMaterial = new Material(barrel.material);
+                newMaterial.color = color;
+                barrel.material = newMaterial;
+            }
         }
 
         /// <summary>
