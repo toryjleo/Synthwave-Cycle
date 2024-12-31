@@ -30,6 +30,8 @@ namespace Generic
 
         protected IPoolableInstantiateData stats = null;
 
+        private bool limitedPool = false;
+
         public ArrayList ObjectsInWorld { get => objectsInWorld; }
 
         private bool NoObjectsAwaitingSpawn 
@@ -45,12 +47,16 @@ namespace Generic
         /// <summary>
         /// The class contructor
         /// </summary>
+        /// <param name="stats">Data used to initialize each prefab instance.</param>
         /// <param name="prefab">The template object for this pool.</param>
-        public ObjectPool(IPoolableInstantiateData stats, Poolable prefab)
+        /// <param name="limitedPool">If true, will not pool any extra objects at runtime.</param>
+        public ObjectPool(IPoolableInstantiateData stats, Poolable prefab, bool limitedPool = false)
         {
             this.stats = stats;
 
             this.prefab = prefab;
+
+            this.limitedPool = limitedPool;
 
             if (objectsAwaitingSpawn == null)
             {
@@ -101,12 +107,15 @@ namespace Generic
         /// <returns>A currently unused Poolable object.</returns>
         public Poolable SpawnFromPool()
         {
-            if (NoObjectsAwaitingSpawn && NoObjectsInWorld) 
+            if (NoObjectsAwaitingSpawn && NoObjectsInWorld)
             {
                 Debug.LogError("Trying to spawn objects before calling PoolObjects()");
             }
-
-            if (NoObjectsAwaitingSpawn)
+            else if (NoObjectsAwaitingSpawn && limitedPool)
+            {
+                return null;
+            }
+            else if (NoObjectsAwaitingSpawn)
             {
                 Poolable newObject = CreateNewPoolableObject();
                 objectsAwaitingSpawn.Enqueue(newObject);
