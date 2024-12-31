@@ -115,14 +115,7 @@ namespace Gun
                     upperBounds = stats.AccuracyArrivalOverTime;
                 }
 
-                Debug.Log("Max accuracy change: " + stats.AccuracyArrivalOverTime);
-                Debug.Log("Clamped value: " + Mathf.Clamp(m_currentAccuracy, lowerBounds, upperBounds));
-
                 m_currentAccuracy = Mathf.Clamp(m_currentAccuracy, lowerBounds, upperBounds);
-
-
-                // Debug.Log("m_currentAccuracy: " + m_currentAccuracy);
-
             }
 
             public void Reset() 
@@ -413,7 +406,7 @@ namespace Gun
         {
             if (stats == null) 
             {
-                Debug.Log("Gun was passed a null gunstats");
+                Debug.LogError("Gun was passed a null gunstats");
             }
             else 
             {
