@@ -277,10 +277,6 @@ namespace Gun
         // Explosions
         protected Generic.ObjectPool explosionPool = null;
         [SerializeField] private Explosion explosionPrefab = null;
-
-        // Impact Effect
-        protected Generic.ObjectPool impactEffectPool = null;
-        [SerializeField] private PooledParticle impactEffectPrefab = null;
         #endregion
 
         #region Turret Members
@@ -441,7 +437,6 @@ namespace Gun
 
             projectilePool.ResetGameObject();
             explosionPool.ResetGameObject();
-            impactEffectPool.ResetGameObject();
             areaOfEffectPool.ResetGameObject();
         }
 
@@ -501,13 +496,6 @@ namespace Gun
                                            gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot * numberOfHits;
                     explosionPool = new Generic.ObjectPool(gunStats, explosionPrefab);
                     explosionPool.PoolObjects(instantiateCount);
-                }
-                if (impactEffectPool == null)
-                {
-                    int instantiateCount = gunStats.HasInfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
-                                                                   gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot;
-                    impactEffectPool = new Generic.ObjectPool(gunStats, impactEffectPrefab);
-                    impactEffectPool.PoolObjects(instantiateCount);
                 }
             }
         }
