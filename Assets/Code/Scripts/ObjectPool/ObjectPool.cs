@@ -5,31 +5,9 @@ using UnityEngine;
 
 namespace Generic
 {
-    /// <summary>
-    /// Used in initializing a Poolable object
-    /// </summary>
-    public interface IPoolableInstantiateData { };
 
-    /// <summary>
-    /// Component necessary for an object in the ObjectPool
-    /// </summary>
-    public abstract class Poolable : SelfWorldBoundsDespawn
-    {
-        /// <summary>
-        /// Set the poolable object to its initial state before spawning
-        /// </summary>
-        /// <param name="stats">The stats to apply to this poolable object</param>
-        public abstract void Init(IPoolableInstantiateData stats);
-
-        /// <summary>
-        /// Initialize all data that changes throughout a level
-        /// </summary>
-        public abstract void Reset();
-    }
-
-
-    /// <summary> A Unity Component works as an object pool for Poolable objects.</summary>
-    public class ObjectPool : IResettable
+    /// <summary> Works as an object pool for Poolable objects.</summary>
+    public class ObjectPool
     {
         /// <summary>
         /// Prefab to duplicate
@@ -50,9 +28,19 @@ namespace Generic
         /// </summary>
         private ArrayList objectsInWorld;
 
+        protected IPoolableInstantiateData stats = null;
+
         public ArrayList ObjectsInWorld { get => objectsInWorld; }
 
-        protected IPoolableInstantiateData stats = null;
+        private bool NoObjectsAwaitingSpawn 
+        {
+            get => objectsAwaitingSpawn.Count == 0;
+        }
+
+        private bool NoObjectsInWorld 
+        {
+            get => objectsInWorld.Count == 0;
+        }
 
         /// <summary>
         /// The class contructor
@@ -113,7 +101,12 @@ namespace Generic
         /// <returns>A currently unused Poolable object.</returns>
         public Poolable SpawnFromPool()
         {
-            if (objectsAwaitingSpawn.Count == 0)
+            if (NoObjectsAwaitingSpawn && NoObjectsInWorld) 
+            {
+                Debug.LogError("Trying to spawn objects before calling PoolObjects()");
+            }
+
+            if (NoObjectsAwaitingSpawn)
             {
                 Poolable newObject = CreateNewPoolableObject();
                 objectsAwaitingSpawn.Enqueue(newObject);
@@ -146,14 +139,14 @@ namespace Generic
         /// </summary>
         public void ResetGameObject()
         {
+            // NOTE: Make sure to not trigger despawn event from SelfWorldDespawn in this method.
+            // It will remove itself from objectsInWorld.
             for (int i = 0; i < objectsInWorld.Count; i++)
             {
                 Poolable b = (Poolable)objectsInWorld[i];
                 b.Reset();
-                // objectsInWorld.Remove(b);
                 objectsAwaitingSpawn.Enqueue(b);
             }
-
             objectsInWorld = new ArrayList();
         }
     }

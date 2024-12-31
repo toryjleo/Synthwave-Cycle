@@ -95,6 +95,7 @@ public class HealthPool : MonoBehaviour
         {
             PlayerHealth playerHealthRef = other.GetComponentInChildren<PlayerHealth>();
             playerHealthRef.HealFromHealthPool();
+            PickupPooler.SpawnAtLocation(transform.position);
             onDespawnConditionMet?.Invoke();
         }
     }

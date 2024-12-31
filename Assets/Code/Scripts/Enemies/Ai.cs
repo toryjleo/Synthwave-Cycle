@@ -14,7 +14,7 @@ public abstract class Ai : Poolable
     public PlayerHealth playerHealth;
     public GameObject target;
     public Rigidbody rb;
-    public Gun[] myGuns;
+    public Gun.Gun[] myGuns;
     /// <summary>
     /// This object appears and disappears when the target is preparing to attack
     /// </summary>
@@ -154,9 +154,10 @@ public abstract class Ai : Poolable
         //Notify all listeners that this AI has died
         DeadVisualsEvent?.Invoke();
 
+
         if (myGuns != null && myGuns.Length > 0)
         {
-            foreach (Gun gun in myGuns)
+            foreach (Gun.Gun gun in myGuns)
             {
                 gun.StopAllCoroutines();
             }
@@ -191,6 +192,14 @@ public abstract class Ai : Poolable
         {
             stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
         }
+    }
+
+    /// <summary>
+    /// This method is used by outside sources to kill this AI guy
+    /// </summary>
+    public void Kill()
+    {
+        stateController.HandleTrigger(AIState.StateTrigger.AiKilled);
     }
 
     #region EventHandlers

@@ -8,10 +8,6 @@ using UnityEngine;
 
 public class RamCarAi : VehicleAi
 {
-    public override void Initialize()
-    {
-
-    }
 
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
     {

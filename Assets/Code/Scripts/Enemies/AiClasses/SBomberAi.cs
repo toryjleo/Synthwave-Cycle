@@ -13,11 +13,6 @@ public class SBomberAi : VehicleAi
     private float timer = 0f;
     private bool timerCountdown = false;
 
-    public override void Initialize()
-    {
-
-    }
-
     //TODO: Spawn explosion when they are killed (heath.Kill())
 
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)

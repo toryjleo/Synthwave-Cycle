@@ -17,11 +17,14 @@ public class InfantryAI : Ai
 
     public override void Attack()
     {
-        if (myGuns != null && myGuns[0].CanShootAgain())
+
+        /*if (myGuns != null && myGuns[0].CanShootAgain())
         {
             this.myGuns[0].PrimaryFire(target.transform.position);
             animationStateController.AimWhileWalking(true);
-        }
+        }*/
+
+
     }
 
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
@@ -48,7 +51,8 @@ public class InfantryAI : Ai
         animationStateController = GetComponent<CyborgAnimationStateController>();
         health.Init(aiStats.Health);
 
-        myGuns[0].Init();
+
+        // TODO: replace: myGuns[0].Init();
 
         // Error checking
         if (animationStateController == null)
@@ -96,11 +100,6 @@ public class InfantryAI : Ai
         rb.constraints = RigidbodyConstraints.FreezePositionY;
         animationStateController.SetAlive(true);
         base.Reset();
-    }
-
-    public override void Initialize()
-    {
-
     }
 
     #region MOVEMENT
