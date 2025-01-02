@@ -121,6 +121,7 @@ public class InfantryAI : Ai
     public void ApplyForce(Vector3 force, float fixedDeltaTime)
     {
         rb.AddForce(force * fixedDeltaTime);
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
     }
 
 

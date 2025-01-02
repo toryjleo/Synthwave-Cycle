@@ -286,6 +286,8 @@ public abstract class Ai : Poolable
     public abstract void Separate(ArrayList pool, float fixedDeltaTime);
 
     public abstract void Group(ArrayList pool, float fixedDeltaTime);
+
+
     #endregion
 
     #region Getters & Setters
