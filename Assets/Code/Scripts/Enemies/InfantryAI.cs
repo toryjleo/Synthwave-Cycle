@@ -123,14 +123,29 @@ public class InfantryAI : Ai
         rb.AddForce(force * fixedDeltaTime);
     }
 
+
     public override void Chase(Vector3 target, float fixedDeltaTime)
     {
         Vector3 toTarget = target - transform.position;
         float distanceFromUsToTarget = toTarget.magnitude;
         float distancefromUsToChasePoint = distanceFromUsToTarget - stats.ChaseRange;
-        Vector3 currentLocationToChasePoint = toTarget.normalized * distancefromUsToChasePoint;
 
-        Vector3 steer = currentLocationToChasePoint.normalized * stats.MaxChaseForce;
+
+        bool withinRange = distancefromUsToChasePoint < 0;
+        Vector3 steer = Vector3.zero;
+        if (withinRange) 
+        {
+            // We are trying to slow down, not chase
+            Vector3 velocity = rb.velocity;
+            steer = -velocity * stats.ArrivalWeight;
+        }
+        else
+        {
+
+            Vector3 currentLocationToChasePoint = toTarget.normalized * distancefromUsToChasePoint;
+            steer = currentLocationToChasePoint.normalized * stats.MaxChaseForce;
+        }
+
         ApplyForce(steer, fixedDeltaTime);
     }
 
