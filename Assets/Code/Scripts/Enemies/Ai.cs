@@ -222,6 +222,8 @@ public abstract class Ai : Poolable
         }
         Attack();
 
+        timeByTarget = 0f;
+
         stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
     }
 

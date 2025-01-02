@@ -24,6 +24,7 @@ public class InfantryAI : Ai
         }*/
 
         myGuns[0].ExternalFire = true;
+        animationStateController.AimWhileWalking(true);
     }
 
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
@@ -70,7 +71,7 @@ public class InfantryAI : Ai
     }
 
     /// <summary>
-    /// This Metod is used to set the animation speed without causing errors or Ai that do not have an animation state controller.
+    /// This Method is used to set the animation speed without causing errors or Ai that do not have an animation state controller.
     /// </summary>
     /// <param name="animationSpeed"></param>
     public virtual void SetAnimationSpeed(float animationSpeed)
