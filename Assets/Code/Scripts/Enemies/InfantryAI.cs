@@ -189,11 +189,6 @@ public class InfantryAI : Ai
                 sum *= maxSpeed;
 
                 Vector3 steer = (sum - rb.velocity) * separateForce;
-                if (steer.magnitude > stats.MaxMovementForce)
-                {
-                    steer.Normalize();
-                    steer *= stats.MaxMovementForce;
-                }
 
                 ApplyForce(steer, fixedDeltaTime);
             }
@@ -236,11 +231,6 @@ public class InfantryAI : Ai
                 sum *= maxSpeed;
 
                 Vector3 steer = (sum - rb.velocity) * groupForce;
-                if (steer.magnitude > stats.MaxMovementForce)
-                {
-                    steer.Normalize();
-                    steer *= stats.MaxMovementForce;
-                }
 
                 ApplyForce(steer, fixedDeltaTime);
             }
