@@ -26,7 +26,6 @@ namespace EditorObject
         /// <summary>
         /// The maximum force determines how quickly an enemy groups and separates
         /// </summary>
-        [SerializeField] private float maxMovementForce = 1;
 
         /// <summary>
         /// The maximum chase force determines how much priority chasing has
@@ -90,7 +89,6 @@ namespace EditorObject
         public float Health { get => health; }
         public float MovementGroup { get => movementGroup; }
         public float GearModifier { get => gearModifier; }
-        public float MaxMovementForce { get => maxMovementForce; }
         public float MaxChaseForce { get => maxChaseForce; }
         public float ChaseRange { get => chaseRange; }
         public float MaxGroupingForce { get => maxGroupingForce; }
