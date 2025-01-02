@@ -58,6 +58,11 @@ namespace EditorObject
         [SerializeField] private float separateRange = 10;
 
         /// <summary>
+        /// This float will determine how fast an enemy slows down when they've arrived near the player
+        /// </summary>
+        [SerializeField] private float arrivalWeight = 0.0f;
+
+        /// <summary>
         /// The amount of danger level score an enemy gives upon death
         /// </summary>
         [SerializeField] private int dlScore = 10;
@@ -95,6 +100,7 @@ namespace EditorObject
         public float GroupingRange { get => groupingRange; }
         public float MaxSeparateForce { get => maxSeparateForce; }
         public float SeparateRange { get => separateRange; }
+        public float ArrivalWeight { get => arrivalWeight; }
         public int DlScore { get => dlScore; }
         public float AttackRange { get => attackRange; }
         public float TimeToAttack { get => timeToAttack; }
