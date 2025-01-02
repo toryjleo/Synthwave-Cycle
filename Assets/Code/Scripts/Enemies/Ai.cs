@@ -270,6 +270,10 @@ public abstract class Ai : Poolable
     /// <param name="target"> Vector to target </param>
     public virtual void Move(Vector3 target, ArrayList enemyList, float fixedDeltaTime)
     {
+        if (stats.CanAim) 
+        {
+            transform.LookAt(target);
+        }
         Chase(target, fixedDeltaTime);
         Separate(enemyList, fixedDeltaTime);
         Group(enemyList, fixedDeltaTime);

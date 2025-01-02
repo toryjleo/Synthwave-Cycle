@@ -125,32 +125,12 @@ public class InfantryAI : Ai
 
     public override void Chase(Vector3 target, float fixedDeltaTime)
     {
-        float desiredChase = stats.MaxChaseForce;
+        Vector3 toTarget = target - transform.position;
+        float distanceFromUsToTarget = toTarget.magnitude;
+        float distancefromUsToChasePoint = distanceFromUsToTarget - stats.ChaseRange;
+        Vector3 currentLocationToChasePoint = toTarget.normalized * distancefromUsToChasePoint;
 
-        // this logic creates the vector between where the entity is and where it wants to be
-        Vector3 desiredVec = target - transform.position;
-        // this creates a magnitude of the desired vector. This is the distance between the points
-        float dMag = desiredVec.magnitude;
-        // dMag is the distance between the two objects, by subtracting this, I make it so the object doesn't desire to move as far.
-        dMag -= stats.ChaseRange;
-
-        // one the distance is measured this vector can now be used to actually generate movement, 
-        // but that movement has to be constant or at least adaptable, which is what the next part does
-        desiredVec.Normalize();
-        transform.LookAt(target);
-
-        //Currently Walking towards the target
-        if (dMag < maxSpeed)
-        {
-            desiredVec *= dMag;
-        }
-        else
-        {
-            desiredVec *= maxSpeed;
-        }
-
-        // Subtract Velocity so we are not constantly adding to the velocity of the Entity
-        Vector3 steer = (desiredVec - rb.velocity) * desiredChase;
+        Vector3 steer = currentLocationToChasePoint.normalized * stats.MaxChaseForce;
         ApplyForce(steer, fixedDeltaTime);
     }
 
