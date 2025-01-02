@@ -90,7 +90,7 @@ public class BiasSpawnVector
 
         spawnVector.Normalize();
         spawnVector *= distance;
-        spawnVector += player.transform.position;
+        // spawnVector += player.transform.position;
         return spawnVector;
     }
     #endregion

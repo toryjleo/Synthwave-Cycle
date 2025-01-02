@@ -15,13 +15,13 @@ MonoBehaviour:
   health: 10
   movementGroup: 1
   gearModifier: 0.6
-  maxMovementForce: 1
-  maxChaseForce: 1.2
+  maxChaseForce: 200
   chaseRange: 10
-  maxGroupingForce: 1
+  maxGroupingForce: 70
   groupingRange: 10
-  maxSeparateForce: 1
+  maxSeparateForce: 70
   separateRange: 10
+  arrivalWeight: 200
   dlScore: 10
   attackRange: 25
   timeToAttack: 3

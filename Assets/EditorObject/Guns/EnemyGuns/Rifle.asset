@@ -21,7 +21,7 @@ MonoBehaviour:
   hasInfiniteAmmo: 1
   ammoCount: 200
   projectilesReleasedPerShot: 1
-  randomSpreadPerProjectile: 30
+  randomSpreadPerProjectile: 0
   printDebugState: 0
   muzzleVelocity: 60
   projectileScale: {x: 1, y: 1, z: 1}

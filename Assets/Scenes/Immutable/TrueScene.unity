@@ -778,10 +778,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4324949829967858818, guid: 3a3b6fa98668d8d4cbc538c699a2721e, type: 3}
-      propertyPath: isInvulnurable
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4324949829967858821, guid: 3a3b6fa98668d8d4cbc538c699a2721e, type: 3}
       propertyPath: m_Name
       value: TestPlayer

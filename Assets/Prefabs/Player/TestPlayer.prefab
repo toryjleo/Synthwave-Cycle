@@ -339,6 +339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0f04c168b2382c45b298589edb32cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  start_position: {x: 0, y: -1, z: 0}
   gears:
   - {fileID: 11400000, guid: 837d5bab8b68ccb4f9f790ff8c635b48, type: 2}
   - {fileID: 11400000, guid: c2c0ae608ff680b40b84e3cf873fe015, type: 2}
@@ -355,7 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4ab0e4894211d4c9a81a2ed4018d68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitPoints: 0
+  hitPoints: 0
   playerHealth: {fileID: 11400000, guid: 631b7b7e3e8e8d84a9a4791e695dcc86, type: 2}
   isInvulnurable: 0
 --- !u!1 &9110659423295477897

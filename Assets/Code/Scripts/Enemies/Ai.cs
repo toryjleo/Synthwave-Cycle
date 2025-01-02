@@ -175,7 +175,8 @@ public abstract class Ai : Poolable
     /// <param name="aimAt"></param>
     public virtual void Aim(Vector3 aimAt)
     {
-        transform.LookAt(aimAt);
+        Vector3 flatAim = new Vector3(aimAt.x, transform.position.y, aimAt.z);
+        transform.LookAt(flatAim);
     }
 
     /// <summary>
@@ -216,10 +217,6 @@ public abstract class Ai : Poolable
 
     public virtual void HandleAttackingEnter()
     {
-        if (stats.CanAim)
-        {
-            Aim(target.transform.position);
-        }
         Attack();
 
         timeByTarget = 0f;
@@ -270,9 +267,9 @@ public abstract class Ai : Poolable
     /// <param name="target"> Vector to target </param>
     public virtual void Move(Vector3 target, ArrayList enemyList, float fixedDeltaTime)
     {
-        if (stats.CanAim) 
+        if (stats.CanAim)
         {
-            transform.LookAt(target);
+            Aim(target);
         }
         Chase(target, fixedDeltaTime);
         Separate(enemyList, fixedDeltaTime);
