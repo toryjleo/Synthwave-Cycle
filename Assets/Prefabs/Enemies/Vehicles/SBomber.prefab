@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2279930513740452991}
   - component: {fileID: 2279930513740452989}
   - component: {fileID: 2279930513740452990}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Teker_3_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930513741572692}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Armor_3_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 2279930513848733468}
   - component: {fileID: 2279930513848733466}
   - component: {fileID: 2279930513848733467}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: B_Car_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 2279930513853044992}
   - component: {fileID: 2279930513853045022}
   - component: {fileID: 2279930513853045023}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Teker_2_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -290,7 +290,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930514011589223}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WheelFL Axel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,7 +325,7 @@ GameObject:
   - component: {fileID: 2279930514028191588}
   - component: {fileID: 2279930514028191589}
   - component: {fileID: 2279930514028191590}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Skid marks FL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5160,7 +5160,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930514056292788}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WheelFL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5193,7 +5193,7 @@ GameObject:
   - component: {fileID: 2279930514069222121}
   - component: {fileID: 2279930514069222119}
   - component: {fileID: 2279930514069222120}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: sopa_1_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5272,7 +5272,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930514165529432}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WheelFR Axel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5305,7 +5305,7 @@ GameObject:
   - component: {fileID: 2279930514237548426}
   - component: {fileID: 2279930514237548424}
   - component: {fileID: 2279930514237548425}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Lam_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5386,7 +5386,7 @@ GameObject:
   - component: {fileID: 2279930514350393859}
   - component: {fileID: 2279930514350393857}
   - component: {fileID: 2279930514350393858}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Armor_4_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5465,7 +5465,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930514453982623}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Apparatius_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5503,7 +5503,7 @@ GameObject:
   - component: {fileID: 2279930514479841556}
   - component: {fileID: 2279930514479841554}
   - component: {fileID: 2279930514479841555}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Armor_6_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5582,7 +5582,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930514488642044}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5616,7 +5616,7 @@ GameObject:
   - component: {fileID: 2279930514530217654}
   - component: {fileID: 2279930514530217652}
   - component: {fileID: 2279930514530217653}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: egzoz_2_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5695,7 +5695,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930514685357656}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WheelRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5726,7 +5726,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930514783020704}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5757,7 +5757,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930514843703348}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BattleCar2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5797,7 +5797,7 @@ GameObject:
   - component: {fileID: 2279930514937360736}
   - component: {fileID: 3840444340308158616}
   - component: {fileID: 613234458188402560}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SBomber
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -5835,7 +5835,7 @@ CapsuleCollider:
   m_Radius: 5.29
   m_Height: 20.59
   m_Direction: 1
-  m_Center: {x: 0, y: 6.35, z: 0}
+  m_Center: {x: 0, y: 4.19, z: 0}
 --- !u!54 &2279930514937360765
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6177,17 +6177,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f7c2bb67d9e4a54abccfd3d0819cdd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasFiniteLifetime: 0
+  lifetime: 3.4028235e+38
   playerHealth: {fileID: 0}
   target: {fileID: 0}
   rb: {fileID: 2279930514937360765}
   myGuns: []
+  attackTelegraph: {fileID: 6633049976547049146}
   health: {fileID: 0}
   inWorld: 0
   vehicleController: {fileID: 2279930514937360766}
   damageMultiplier: 1
   itemDrop: {fileID: 2157447271029124370, guid: f07931c8c60cd724e8844ab074e56069, type: 3}
   movementTargetPosition: {fileID: 6796091550952333636}
-  attackTelegraph: {fileID: 6633049976547049146}
   ExplosionDamage: 50
 --- !u!1 &2279930514973692283
 GameObject:
@@ -6200,7 +6202,7 @@ GameObject:
   - component: {fileID: 2279930514973692282}
   - component: {fileID: 2279930514973692280}
   - component: {fileID: 2279930514973692281}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: sopa_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6281,7 +6283,7 @@ GameObject:
   - component: {fileID: 2279930514984270189}
   - component: {fileID: 2279930514984270187}
   - component: {fileID: 2279930514984270188}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Armor_5_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6362,7 +6364,7 @@ GameObject:
   - component: {fileID: 2279930515020093391}
   - component: {fileID: 2279930515020093389}
   - component: {fileID: 2279930515020093390}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Armor_1_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6445,7 +6447,7 @@ GameObject:
   - component: {fileID: 2279930515040519957}
   - component: {fileID: 2279930515040519958}
   - component: {fileID: 2279930515040519959}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Skid marks FR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11280,7 +11282,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930515053018597}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WheelRR Axel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11313,7 +11315,7 @@ GameObject:
   - component: {fileID: 2279930515116296908}
   - component: {fileID: 2279930515116296906}
   - component: {fileID: 2279930515116296907}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Armor_2_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11394,7 +11396,7 @@ GameObject:
   - component: {fileID: 2279930515157954470}
   - component: {fileID: 2279930515157954468}
   - component: {fileID: 2279930515157954469}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Armor_3_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11477,7 +11479,7 @@ GameObject:
   - component: {fileID: 2279930515226922964}
   - component: {fileID: 2279930515226922965}
   - component: {fileID: 2279930515226922966}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Skid marks RR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16316,7 +16318,7 @@ GameObject:
   - component: {fileID: 2279930515288756140}
   - component: {fileID: 2279930515288756141}
   - component: {fileID: 2279930515288756142}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Skid marks RL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21151,7 +21153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930515372705400}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Wheels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21191,7 +21193,7 @@ GameObject:
   - component: {fileID: 2279930515386757156}
   - component: {fileID: 2279930515386757154}
   - component: {fileID: 2279930515386757155}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Armor_4_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21270,7 +21272,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930515411524451}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WheelRR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21303,7 +21305,7 @@ GameObject:
   - component: {fileID: 2279930515487617963}
   - component: {fileID: 2279930515487617961}
   - component: {fileID: 2279930515487617962}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Engine_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21382,7 +21384,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930515489133964}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WheelFR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21416,7 +21418,7 @@ GameObject:
   - component: {fileID: 2279930515495505836}
   - component: {fileID: 2279930515495505838}
   - component: {fileID: 2279930515495505837}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SphereRB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21513,7 +21515,7 @@ GameObject:
   - component: {fileID: 2279930515616378413}
   - component: {fileID: 2279930515616378411}
   - component: {fileID: 2279930515616378412}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Teker_3_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21594,7 +21596,7 @@ GameObject:
   - component: {fileID: 2279930515646486494}
   - component: {fileID: 2279930515646486492}
   - component: {fileID: 2279930515646486493}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Teker_1_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21675,7 +21677,7 @@ GameObject:
   - component: {fileID: 2279930515761040712}
   - component: {fileID: 2279930515761040710}
   - component: {fileID: 2279930515761040711}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Attack_buffer_3_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21754,7 +21756,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2279930515801702251}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WheelRL Axel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21787,7 +21789,7 @@ GameObject:
   - component: {fileID: 2279930515881523466}
   - component: {fileID: 2279930515881523464}
   - component: {fileID: 2279930515881523465}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Armor_7_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21868,7 +21870,7 @@ GameObject:
   - component: {fileID: 1401623557681521575}
   - component: {fileID: 3371111785029449987}
   - component: {fileID: 3685595565479207035}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AttackCharge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21947,7 +21949,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6587410343638451361}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MovementTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
