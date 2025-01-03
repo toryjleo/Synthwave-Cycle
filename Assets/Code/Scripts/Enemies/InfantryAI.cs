@@ -17,12 +17,6 @@ public class InfantryAI : Ai
 
     public override void Attack()
     {
-        /*if (myGuns != null && myGuns[0].CanShootAgain())
-        {
-            this.myGuns[0].PrimaryFire(target.transform.position);
-            animationStateController.AimWhileWalking(true);
-        }*/
-
         myGuns[0].ExternalFire = true;
         animationStateController.AimWhileWalking(true);
     }
@@ -134,7 +128,7 @@ public class InfantryAI : Ai
 
         bool withinRange = distancefromUsToChasePoint < 0;
         Vector3 steer = Vector3.zero;
-        if (withinRange) 
+        if (withinRange)
         {
             // We are trying to slow down, not chase
             Vector3 velocity = rb.velocity;
