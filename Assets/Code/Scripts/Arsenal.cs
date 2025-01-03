@@ -16,27 +16,28 @@ public class Arsenal : MonoBehaviour, IResettable
     /// <summary>
     /// Contains code for handling Pink Mist
     /// </summary>
-    [Serializable] private class PinkMist 
+    [Serializable]
+    private class PinkMist
     {
         private AreaOfEffect pinkMist = null;
         private Transform parentTransform = null;
         [SerializeField] private AreaOfEffect pinkMistPrefab = null;
         [SerializeField] private GunStats pinkMistStats = null;
 
-        
+
         /// <summary>
         /// Fill-in for a constructor
         /// </summary>
         /// <param name="parentTransform">Transform of PinkMist's parent</param>
-        public void Instantiate(Transform parentTransform) 
+        public void Instantiate(Transform parentTransform)
         {
             this.parentTransform = parentTransform;
 
-            if (pinkMistPrefab == null) 
+            if (pinkMistPrefab == null)
             {
                 Debug.LogError("Need reference to PinkMist prefab");
             }
-            else 
+            else
             {
                 pinkMist = Instantiate<AreaOfEffect>(pinkMistPrefab, parentTransform);
                 pinkMist.Init(pinkMistStats);
@@ -48,7 +49,7 @@ public class Arsenal : MonoBehaviour, IResettable
         /// <summary>
         /// Hooks up all event handlers
         /// </summary>
-        private void SetUpEventHandlers() 
+        private void SetUpEventHandlers()
         {
             pinkMist.Despawn += HandlePinkMistDespawn;
 
@@ -139,36 +140,38 @@ public class Arsenal : MonoBehaviour, IResettable
     /// <summary>
     /// Returns a reference to the Gun component of the player's currently held gun or null
     /// </summary>
-    private Gun.Gun CurrentGun {
-        get {
+    private Gun.Gun CurrentGun
+    {
+        get
+        {
 
             if (currentEquippedSlot != -1 && equippedGunSlots[currentEquippedSlot] != -1)
-            { 
+            {
                 return gunList[equippedGunSlots[currentEquippedSlot]];
             }
-            else 
+            else
             {
-                return null; 
+                return null;
             }
-        } 
+        }
     }
 
     /// <summary>
     /// True if the arsenal has an open slot
     /// </summary>
-    private bool HasOpenSlot 
+    private bool HasOpenSlot
     {
-        get 
+        get
         {
-            if (equippedGunSlots == null) 
+            if (equippedGunSlots == null)
             {
                 return false;
             }
-            else 
+            else
             {
-                for(int i = 0; i < equippedGunSlots.Length; i++) 
+                for (int i = 0; i < equippedGunSlots.Length; i++)
                 {
-                    if (equippedGunSlots[i] == -1) 
+                    if (equippedGunSlots[i] == -1)
                     {
                         return true;
                     }
@@ -198,7 +201,7 @@ public class Arsenal : MonoBehaviour, IResettable
     /// Initialize this Arsenal
     /// </summary>
     /// <param name="gameSave">Save which contains our current arsenal</param>
-    public void Init(GameSave gameSave) 
+    public void Init(GameSave gameSave)
     {
         this.savedData = gameSave.arsenal;
 
@@ -228,7 +231,7 @@ public class Arsenal : MonoBehaviour, IResettable
     /// <summary>
     /// Generate all guns the player can equip
     /// </summary>
-    private void InstantiateAllGuns() 
+    private void InstantiateAllGuns()
     {
         gunList = new Gun.Gun[savedData.AllUnlockableGuns.Length];
         for (int i = 0; i < savedData.AllUnlockableGuns.Length; i++)
@@ -249,12 +252,12 @@ public class Arsenal : MonoBehaviour, IResettable
     /// <summary>
     /// Sets the gun state to the state outlined in SaveData
     /// </summary>
-    private void SetStateToSaveData() 
+    private void SetStateToSaveData()
     {
         // A value of -1 is a "null" slot
         equippedGunSlots = new int[savedData.NumberOfGunSlots];
 
-        for (int i = 0; i < savedData.NumberOfGunSlots; i++) 
+        for (int i = 0; i < savedData.NumberOfGunSlots; i++)
         {
             equippedGunSlots[i] = savedData.EquippedGuns[i].listIdx;
         }
@@ -263,7 +266,7 @@ public class Arsenal : MonoBehaviour, IResettable
         HideAllGuns();
         SwapToSlot();
         SetGunAmmoToSaveData();
-
+        //TODO: event to update UI info with all equippedGunSlots
     }
 
     /// <summary>
@@ -292,22 +295,22 @@ public class Arsenal : MonoBehaviour, IResettable
     /// <summary>
     /// Get player input this frame
     /// </summary>
-    private void GatherPlayerInput() 
+    private void GatherPlayerInput()
     {
         if (CurrentGun != null)
         {
             CurrentGun.ExternalFire = CheckCanShootGun();
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             SwapToSlot(0);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2)) 
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             SwapToSlot(1);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3)) 
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             SwapToSlot(2);
         }
@@ -343,10 +346,10 @@ public class Arsenal : MonoBehaviour, IResettable
     /// Equips gun at the desired slot
     /// </summary>
     /// <param name="slot">Index of the equippedGunSlots to set the quipped gun</param>
-    private void SwapToSlot(int slot) 
+    private void SwapToSlot(int slot)
     {
         // Disable the gun that is out
-        if (CurrentGun != null) 
+        if (CurrentGun != null)
         {
             CurrentGun.gameObject.SetActive(false);
         }
@@ -361,6 +364,8 @@ public class Arsenal : MonoBehaviour, IResettable
     /// </summary>
     private void SwapToSlot()
     {
+        //TODO: Trigger notification that slot has swapped
+        //Use currentEquippedSlot for UI
         if (CurrentGun != null)
         {
             CurrentGun.gameObject.SetActive(true);
@@ -382,6 +387,8 @@ public class Arsenal : MonoBehaviour, IResettable
         {
             SwapToSlot(slotIndex);
         }
+
+        //TODO: Update UI
     }
 
     /// <summary>
@@ -500,7 +507,7 @@ public class Arsenal : MonoBehaviour, IResettable
     /// <summary>
     /// Triggers logic that should happen on level complete
     /// </summary>
-    public void LevelComplete() 
+    public void LevelComplete()
     {
         savedData.UpdateSaveData(gunList, equippedGunSlots, currentEquippedSlot);
     }
@@ -509,17 +516,18 @@ public class Arsenal : MonoBehaviour, IResettable
     /// Removes the equipped gun
     /// </summary>
     /// <param name="gun">Gun reference to be removed/disabled</param>
-    private void RemoveEquippedGun(Gun.Gun gun) 
+    private void RemoveEquippedGun(Gun.Gun gun)
     {
-        for(int i = 0; i < equippedGunSlots.Length; i++) 
+        for (int i = 0; i < equippedGunSlots.Length; i++)
         {
             int equippedGunIdx = equippedGunSlots[i];
-            
-            if (gunList[equippedGunIdx] == gun) 
+
+            if (gunList[equippedGunIdx] == gun)
             {
                 // Remove the gun
                 equippedGunSlots[i] = -1;
                 gunList[equippedGunIdx].gameObject.SetActive(false);
+                //TODO: Update UI
                 break;
             }
         }
