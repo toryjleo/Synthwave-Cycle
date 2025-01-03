@@ -392,6 +392,46 @@ public class Arsenal : MonoBehaviour, IResettable
     }
 
     /// <summary>
+    /// Gets a list of colors that represent each gun in the equippedGunSlots
+    /// </summary>
+    /// <returns>List of colors</returns>
+    private List<Color> GetSlotColors()
+    {
+        List<Color> colors = new List<Color>();
+        for (int i = 0; i < equippedGunSlots.Length; i++) 
+        {
+            Color toAdd = GetColorFromSlot(i);
+            colors.Add(toAdd);
+        }
+        return colors;
+    }
+
+    /// <summary>
+    /// Returns the color of a gun at an index or Color(0f, 0f, 0f, 0f)
+    /// </summary>
+    /// <param name="slotIndex">Index of equippedGunSlots to get color of</param>
+    /// <returns>A color</returns>
+    private Color GetColorFromSlot(int slotIndex) 
+    {
+        if (slotIndex == -1)
+        {
+            return new Color(0f, 0f, 0f, 0f);
+        }
+        else 
+        {
+            int gunListIndex = equippedGunSlots[slotIndex];
+            if (gunListIndex == -1)
+            {
+                return new Color(0f, 0f, 0f, 0f);
+            }
+            else
+            {
+                return gunList[gunListIndex].BarrelColor;
+            }
+        }
+    }
+
+    /// <summary>
     /// 
     /// </summary>
     /// <param name="stats">The gun type of the pickup</param>
@@ -521,7 +561,6 @@ public class Arsenal : MonoBehaviour, IResettable
         for (int i = 0; i < equippedGunSlots.Length; i++)
         {
             int equippedGunIdx = equippedGunSlots[i];
-
             if (gunList[equippedGunIdx] == gun)
             {
                 // Remove the gun

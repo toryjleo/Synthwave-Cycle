@@ -304,6 +304,10 @@ namespace Gun
         /// Used by GunTester to automatically fire this gun
         /// </summary>
         private bool externalFire = false;
+        /// <summary>
+        /// Color of this gun's barrel
+        /// </summary>
+        private Color barrelColor;
 
         [SerializeField] private AmmoCount ammoCount = null;
 
@@ -351,6 +355,11 @@ namespace Gun
         public bool AtMaxAmmo 
         {
             get => ammoCount.AtMaxAmmo;
+        }
+
+        public Color BarrelColor 
+        {
+            get => barrelColor;
         }
 
         #endregion
@@ -717,6 +726,7 @@ namespace Gun
                 Material newMaterial = new Material(barrel.material);
                 newMaterial.color = color;
                 barrel.material = newMaterial;
+                barrelColor = color;
             }
         }
 
