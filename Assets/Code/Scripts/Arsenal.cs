@@ -12,6 +12,11 @@ using static PlayerHealth;
 /// </summary>
 public class Arsenal : MonoBehaviour, IResettable
 {
+    #region Event Types
+    public delegate void NotifySlot(int slot);
+    public delegate void NotifyColors(List<Color> colors);
+    #endregion
+
     #region Pink Mist
     /// <summary>
     /// Contains code for handling Pink Mist
@@ -133,6 +138,11 @@ public class Arsenal : MonoBehaviour, IResettable
     /// Index of equippedGuns array of the gun the player is currently holding
     /// </summary>
     private int currentEquippedSlot = -1;
+    #endregion
+
+    #region Events
+    public NotifySlot notifySwapSlot = null;
+    public NotifyColors notifyEquipmentChange = null;
     #endregion
 
     #region Properties
