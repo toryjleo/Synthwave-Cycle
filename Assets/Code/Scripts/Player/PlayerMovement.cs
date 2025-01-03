@@ -113,10 +113,11 @@ public class PlayerMovement : MonoBehaviour
     #region NeverUpdated
     private Rigidbody rigidBody;
     private PlayerHealth playerHealth;
+
     /// <summary>
     /// Where to start at game start
     /// </summary>
-    private Vector3 start_position = new Vector3(0, 1, 0);
+    [SerializeField] private Vector3 start_position = new Vector3(0, 0.5f, 0);
     /// <summary>
     /// The motion functions defining the velocity and acceleration
     /// </summary>

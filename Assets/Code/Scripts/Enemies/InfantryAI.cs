@@ -17,14 +17,8 @@ public class InfantryAI : Ai
 
     public override void Attack()
     {
-
-        /*if (myGuns != null && myGuns[0].CanShootAgain())
-        {
-            this.myGuns[0].PrimaryFire(target.transform.position);
-            animationStateController.AimWhileWalking(true);
-        }*/
-
-
+        myGuns[0].ExternalFire = true;
+        animationStateController.AimWhileWalking(true);
     }
 
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
@@ -51,8 +45,7 @@ public class InfantryAI : Ai
         animationStateController = GetComponent<CyborgAnimationStateController>();
         health.Init(aiStats.Health);
 
-
-        // TODO: replace: myGuns[0].Init();
+        myGuns[0].Init(aiStats.GunStats);
 
         // Error checking
         if (animationStateController == null)
@@ -72,7 +65,7 @@ public class InfantryAI : Ai
     }
 
     /// <summary>
-    /// This Metod is used to set the animation speed without causing errors or Ai that do not have an animation state controller.
+    /// This Method is used to set the animation speed without causing errors or Ai that do not have an animation state controller.
     /// </summary>
     /// <param name="animationSpeed"></param>
     public virtual void SetAnimationSpeed(float animationSpeed)
@@ -81,6 +74,18 @@ public class InfantryAI : Ai
         {
             animationStateController.SetSpeed(animationSpeed);
         }
+    }
+
+    public override void HandleInRangeEnter()
+    {
+        animationStateController.AimWhileWalking(true);
+        base.HandleInRangeEnter();
+    }
+
+    public override void HandleInRangeExit()
+    {
+        animationStateController.AimWhileWalking(false);
+        base.HandleInRangeExit();
     }
 
     public override void HandleDeathEnter()
@@ -110,36 +115,32 @@ public class InfantryAI : Ai
     public void ApplyForce(Vector3 force, float fixedDeltaTime)
     {
         rb.AddForce(force * fixedDeltaTime);
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
     }
+
 
     public override void Chase(Vector3 target, float fixedDeltaTime)
     {
-        float desiredChase = stats.MaxChaseForce;
+        Vector3 toTarget = target - transform.position;
+        float distanceFromUsToTarget = toTarget.magnitude;
+        float distancefromUsToChasePoint = distanceFromUsToTarget - stats.ChaseRange;
 
-        // this logic creates the vector between where the entity is and where it wants to be
-        Vector3 desiredVec = target - transform.position;
-        // this creates a magnitude of the desired vector. This is the distance between the points
-        float dMag = desiredVec.magnitude;
-        // dMag is the distance between the two objects, by subtracting this, I make it so the object doesn't desire to move as far.
-        dMag -= stats.ChaseRange;
 
-        // one the distance is measured this vector can now be used to actually generate movement, 
-        // but that movement has to be constant or at least adaptable, which is what the next part does
-        desiredVec.Normalize();
-        transform.LookAt(target);
-
-        //Currently Walking towards the target
-        if (dMag < maxSpeed)
+        bool withinRange = distancefromUsToChasePoint < 0;
+        Vector3 steer = Vector3.zero;
+        if (withinRange)
         {
-            desiredVec *= dMag;
+            // We are trying to slow down, not chase
+            Vector3 velocity = rb.velocity;
+            steer = -velocity * stats.ArrivalWeight;
         }
         else
         {
-            desiredVec *= maxSpeed;
+
+            Vector3 currentLocationToChasePoint = toTarget.normalized * distancefromUsToChasePoint;
+            steer = currentLocationToChasePoint.normalized * stats.MaxChaseForce;
         }
 
-        // Subtract Velocity so we are not constantly adding to the velocity of the Entity
-        Vector3 steer = (desiredVec - rb.velocity) * desiredChase;
         ApplyForce(steer, fixedDeltaTime);
     }
 
@@ -178,11 +179,6 @@ public class InfantryAI : Ai
                 sum *= maxSpeed;
 
                 Vector3 steer = (sum - rb.velocity) * separateForce;
-                if (steer.magnitude > stats.MaxMovementForce)
-                {
-                    steer.Normalize();
-                    steer *= stats.MaxMovementForce;
-                }
 
                 ApplyForce(steer, fixedDeltaTime);
             }
@@ -225,11 +221,6 @@ public class InfantryAI : Ai
                 sum *= maxSpeed;
 
                 Vector3 steer = (sum - rb.velocity) * groupForce;
-                if (steer.magnitude > stats.MaxMovementForce)
-                {
-                    steer.Normalize();
-                    steer *= stats.MaxMovementForce;
-                }
 
                 ApplyForce(steer, fixedDeltaTime);
             }

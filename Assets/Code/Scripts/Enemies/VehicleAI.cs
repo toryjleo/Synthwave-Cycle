@@ -16,8 +16,6 @@ public abstract class VehicleAi : Ai
     /// </summary>
     [SerializeField] public float damageMultiplier = 1.0f;
 
-    [SerializeField] public GameObject itemDrop;
-
     [SerializeField] public GameObject movementTargetPosition;
 
     public override void ManualUpdate(ArrayList enemies, Vector3 wanderDirection, float fixedDeltaTime)
@@ -95,6 +93,8 @@ public abstract class VehicleAi : Ai
                                 Random.Range(-minMaxTorque, minMaxTorque)),
                                 ForceMode.Impulse);
         vehicleController.enabled = false;
+
+        PickupPooler.SpawnAtLocation(new Vector3(transform.position.x, -1.0f, transform.position.z));
 
         base.HandleDeathEnter();
     }

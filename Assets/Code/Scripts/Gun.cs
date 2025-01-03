@@ -115,14 +115,7 @@ namespace Gun
                     upperBounds = stats.AccuracyArrivalOverTime;
                 }
 
-                Debug.Log("Max accuracy change: " + stats.AccuracyArrivalOverTime);
-                Debug.Log("Clamped value: " + Mathf.Clamp(m_currentAccuracy, lowerBounds, upperBounds));
-
                 m_currentAccuracy = Mathf.Clamp(m_currentAccuracy, lowerBounds, upperBounds);
-
-
-                // Debug.Log("m_currentAccuracy: " + m_currentAccuracy);
-
             }
 
             public void Reset() 
@@ -277,10 +270,6 @@ namespace Gun
         // Explosions
         protected Generic.ObjectPool explosionPool = null;
         [SerializeField] private Explosion explosionPrefab = null;
-
-        // Impact Effect
-        protected Generic.ObjectPool impactEffectPool = null;
-        [SerializeField] private PooledParticle impactEffectPrefab = null;
         #endregion
 
         #region Turret Members
@@ -330,6 +319,10 @@ namespace Gun
             get { return externalFire; } set {  externalFire = value; }
         }
 
+        private bool IsPlayerGun 
+        {
+            get => gunStats.IsPlayerGun;
+        }
 
         /// <summary>
         /// Returns true if this gun is firing this frame
@@ -411,8 +404,15 @@ namespace Gun
 
         public void Init(EditorObject.GunStats stats) 
         {
-            this.gunStats = stats;
-            Init();
+            if (stats == null) 
+            {
+                Debug.LogError("Gun was passed a null gunstats");
+            }
+            else 
+            {
+                this.gunStats = stats;
+                Init();
+            }
         }
 
         private void Init() 
@@ -441,7 +441,6 @@ namespace Gun
 
             projectilePool.ResetGameObject();
             explosionPool.ResetGameObject();
-            impactEffectPool.ResetGameObject();
             areaOfEffectPool.ResetGameObject();
         }
 
@@ -460,7 +459,10 @@ namespace Gun
             {
                 m_accuracy = new AccuracyManager(gunStats);
                 m_timeBetweenShots = new TimeBetweenShotsManager(gunStats);
-                turretInputManager = new TurretInputManager(this.transform, crossHair, gunStats.IsTurret);
+                if (IsPlayerGun) 
+                {
+                    turretInputManager = new TurretInputManager(this.transform, crossHair, gunStats.IsTurret);
+                }
                 player = FindObjectOfType<PlayerMovement>();
 
                 stateController = new GunState.StateController(gunStats.ShotBurstCount, gunStats.PrintDebugState);
@@ -501,13 +503,6 @@ namespace Gun
                                            gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot * numberOfHits;
                     explosionPool = new Generic.ObjectPool(gunStats, explosionPrefab);
                     explosionPool.PoolObjects(instantiateCount);
-                }
-                if (impactEffectPool == null)
-                {
-                    int instantiateCount = gunStats.HasInfiniteAmmo ? INFINITE_AMMO_COUNT * gunStats.ProjectilesReleasedPerShot :
-                                                                   gunStats.AmmoCount * gunStats.ProjectilesReleasedPerShot;
-                    impactEffectPool = new Generic.ObjectPool(gunStats, impactEffectPrefab);
-                    impactEffectPool.PoolObjects(instantiateCount);
                 }
             }
         }
@@ -575,7 +570,10 @@ namespace Gun
         // Update is called once per frame
         void Update()
         {
-            turretInputManager.UpdateInputMethod();
+            if (IsPlayerGun) 
+            {
+                turretInputManager.UpdateInputMethod();
+            }
 
             UpdateGun(Time.deltaTime);
         }
@@ -583,7 +581,7 @@ namespace Gun
         // Update is called once per frame
         void FixedUpdate()
         {
-            if (gunStats.IsTurret && GameStateController.CanRunGameplay)
+            if (gunStats.IsTurret && IsPlayerGun && GameStateController.CanRunGameplay)
             {
                 turretInputManager.FixedUpdate();
             }
@@ -714,9 +712,12 @@ namespace Gun
         /// <param name="color">Color to set the barrel to</param>
         public void UpdateBarrelColor(Color color) 
         {
-            Material newMaterial = new Material(barrel.material);
-            newMaterial.color = color;
-            barrel.material = newMaterial;
+            if (gunStats.IsPlayerGun) 
+            {
+                Material newMaterial = new Material(barrel.material);
+                newMaterial.color = color;
+                barrel.material = newMaterial;
+            }
         }
 
         /// <summary>

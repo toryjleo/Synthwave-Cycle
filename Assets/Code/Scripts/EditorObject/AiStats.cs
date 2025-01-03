@@ -26,7 +26,6 @@ namespace EditorObject
         /// <summary>
         /// The maximum force determines how quickly an enemy groups and separates
         /// </summary>
-        [SerializeField] private float maxMovementForce = 1;
 
         /// <summary>
         /// The maximum chase force determines how much priority chasing has
@@ -59,6 +58,11 @@ namespace EditorObject
         [SerializeField] private float separateRange = 10;
 
         /// <summary>
+        /// This float will determine how fast an enemy slows down when they've arrived near the player
+        /// </summary>
+        [SerializeField] private float arrivalWeight = 0.0f;
+
+        /// <summary>
         /// The amount of danger level score an enemy gives upon death
         /// </summary>
         [SerializeField] private int dlScore = 10;
@@ -85,21 +89,38 @@ namespace EditorObject
         /// </summary>
         [SerializeField] private Enemy enemyType = Enemy.Rifleman;
 
+        [SerializeField] private GunStats gunStats = null;
+
         public float Health { get => health; }
         public float MovementGroup { get => movementGroup; }
         public float GearModifier { get => gearModifier; }
-        public float MaxMovementForce { get => maxMovementForce; }
         public float MaxChaseForce { get => maxChaseForce; }
         public float ChaseRange { get => chaseRange; }
         public float MaxGroupingForce { get => maxGroupingForce; }
         public float GroupingRange { get => groupingRange; }
         public float MaxSeparateForce { get => maxSeparateForce; }
         public float SeparateRange { get => separateRange; }
+        public float ArrivalWeight { get => arrivalWeight; }
         public int DlScore { get => dlScore; }
         public float AttackRange { get => attackRange; }
         public float TimeToAttack { get => timeToAttack; }
         public float TimeToDie { get => timeToDie; }
         public bool CanAim { get => canAim; }
         public Enemy EnemyType { get => enemyType; }
+        public GunStats GunStats
+        {
+            get
+            {
+                if (gunStats == null)
+                {
+                    Debug.LogError("No gunStats on this " + EnemyType.ToString());
+                    return null;
+                }
+                else
+                {
+                    return gunStats;
+                }
+            }
+        }
     }
 }

@@ -30,7 +30,7 @@ public enum SpawnLocation
 public class BiasSpawnVector
 {
     //Spawning Variables
-    [SerializeField] private int spawnDistance = 150;
+    [SerializeField] private int spawnDistance = 50;
     [SerializeField] private int spawnBiasAngle = 33;
 
     #region BiasSpawnVector
@@ -90,7 +90,7 @@ public class BiasSpawnVector
 
         spawnVector.Normalize();
         spawnVector *= distance;
-        spawnVector += player.transform.position;
+
         return spawnVector;
     }
     #endregion

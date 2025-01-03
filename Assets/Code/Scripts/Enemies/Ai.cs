@@ -175,7 +175,8 @@ public abstract class Ai : Poolable
     /// <param name="aimAt"></param>
     public virtual void Aim(Vector3 aimAt)
     {
-        transform.LookAt(aimAt);
+        Vector3 flatAim = new Vector3(aimAt.x, transform.position.y, aimAt.z);
+        transform.LookAt(flatAim);
     }
 
     /// <summary>
@@ -204,23 +205,21 @@ public abstract class Ai : Poolable
 
     #region EventHandlers
 
-    public void HandleInRangeEnter()
+    public virtual void HandleInRangeEnter()
     {
         attackTelegraph.SetActive(true);
     }
 
-    public void HandleInRangeExit()
+    public virtual void HandleInRangeExit()
     {
         attackTelegraph.SetActive(false);
     }
 
     public virtual void HandleAttackingEnter()
     {
-        if (stats.CanAim)
-        {
-            Aim(target.transform.position);
-        }
         Attack();
+
+        timeByTarget = 0f;
 
         stateController.HandleTrigger(AIState.StateTrigger.FollowAgain);
     }
@@ -268,6 +267,10 @@ public abstract class Ai : Poolable
     /// <param name="target"> Vector to target </param>
     public virtual void Move(Vector3 target, ArrayList enemyList, float fixedDeltaTime)
     {
+        if (stats.CanAim)
+        {
+            Aim(target);
+        }
         Chase(target, fixedDeltaTime);
         Separate(enemyList, fixedDeltaTime);
         Group(enemyList, fixedDeltaTime);
@@ -280,6 +283,8 @@ public abstract class Ai : Poolable
     public abstract void Separate(ArrayList pool, float fixedDeltaTime);
 
     public abstract void Group(ArrayList pool, float fixedDeltaTime);
+
+
     #endregion
 
     #region Getters & Setters
